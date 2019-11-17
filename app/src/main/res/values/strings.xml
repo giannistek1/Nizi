@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Nizi</string>
+    <string name="login">Inloggen</string>
+    <string name="username">Gebruikersnaam</string>
+    <string name="password">Wachtwoord</string>
+    <string name="help">Hulp nodig?</string>
+    <string name="help_desc">Neem contact op met Nierstichting of uw diëtist</string>
+    <string name="nierstichting_url">https://www.nierstichting.nl</string>
+    <string name="nierstichting_phonenumber">035 697 80 00</string>
+    <string name="nierstichting_phonenumber_desc">Op werkdagen tussen 09.00 en 17.00 uur</string>
+    <string name="nierstichting_email">info@nierstichting.nl</string>
+
 </resources>
