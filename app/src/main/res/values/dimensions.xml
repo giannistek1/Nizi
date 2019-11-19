@@ -3,6 +3,10 @@
     <dimen name="h1">24sp</dimen>
     <dimen name="h2">20sp</dimen>
 
-    <dimen name="paddingLeft">20dp</dimen>
-    <dimen name="paddingRight">20dp</dimen>
+    <dimen name="marginLeft">20dp</dimen>
+    <dimen name="marginRight">20dp</dimen>
+    <!--Top and bottom-->
+    <dimen name="marginSmall">10dp</dimen>
+    <dimen name="marginNormal">16dp</dimen>
+    <dimen name="marginDouble">32dp</dimen>
 </resources>

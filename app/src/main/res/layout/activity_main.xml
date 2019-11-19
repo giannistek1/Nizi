@@ -1,33 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/gray"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@color/gray"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/activity_main_txt_header"
-        android:textSize="@dimen/h1"
-        android:gravity="center"
-        android:text="@string/login"
+    <!--Header-->
+
+    <ImageView
+        android:id="@+id/activity_main_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/rectangle"
+        />
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/paddingLeft"
-        android:layout_marginRight="@dimen/paddingRight"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/marginLeft"
+        android:layout_marginRight="@dimen/marginRight"
         android:background="@color/white"
         android:orientation="vertical">
+
+        <LinearLayout
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/activity_main_txt_header"
+                android:textSize="@dimen/h1"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="@string/login"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_marginBottom="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/activity_main_txt_username"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/h2"
+            android:layout_marginLeft="@dimen/marginLeft"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"
             android:text="@string/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -35,21 +62,28 @@
         <EditText
             android:id="@+id/activity_main_et_username"
             android:hint="@string/username"
-            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/marginLeft"
+            android:layout_marginRight="@dimen/marginRight"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <TextView
-                android:id="@+id/activity_main_txt_password"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/h2"
-                android:text="@string/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            android:id="@+id/activity_main_txt_password"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/h2"
+            android:text="@string/password"
+            android:layout_marginLeft="@dimen/marginLeft"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/activity_main_et_password"
             android:hint="@string/password"
-            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/marginLeft"
+            android:layout_marginRight="@dimen/marginRight"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"/>
 
@@ -65,6 +99,9 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/h1"
             android:text="@string/help"
+            android:layout_marginLeft="@dimen/marginLeft"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -73,6 +110,7 @@
             android:id="@+id/activity_main_txt_helpDesc"
             android:textColor="@android:color/black"
             android:text="@string/help_desc"
+            android:layout_marginLeft="@dimen/marginLeft"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -80,6 +118,9 @@
             android:id="@+id/activity_main_txt_nierstichtingUrl"
             android:textColor="@color/colorPrimary"
             android:text="@string/nierstichting_url"
+            android:layout_marginLeft="@dimen/marginLeft"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -87,6 +128,7 @@
             android:id="@+id/activity_main_txt_nierstichtingPhonenumber"
             android:textColor="@color/colorPrimary"
             android:text="@string/nierstichting_phonenumber"
+            android:layout_marginLeft="@dimen/marginLeft"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -94,6 +136,9 @@
             android:id="@+id/activity_main_txt_nierstichtingPhonenumberDesc"
             android:textColor="@android:color/black"
             android:text="@string/nierstichting_phonenumber_desc"
+            android:layout_marginLeft="@dimen/marginLeft"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -101,9 +146,13 @@
             android:id="@+id/activity_main_txt_nierstichtingEmail"
             android:textColor="@color/colorPrimary"
             android:text="@string/nierstichting_email"
+            android:layout_marginLeft="@dimen/marginLeft"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-
     </LinearLayout>
-</LinearLayout>
+
+
+</FrameLayout>

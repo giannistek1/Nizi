@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF9900</color>
     <color name="white">#FFFFFF</color>
     <color name="gray">#E1E2E1</color>
+    <color name="red">#FF0000</color>
 </resources>

@@ -1,5 +1,8 @@
 <resources>
+    <string name="t">t</string>
     <string name="app_name">Nizi</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="food_diary">Voedingsdagboek</string>
     <string name="login">Inloggen</string>
     <string name="username">Gebruikersnaam</string>
     <string name="password">Wachtwoord</string>
@@ -9,5 +12,13 @@
     <string name="nierstichting_phonenumber">035 697 80 00</string>
     <string name="nierstichting_phonenumber_desc">Op werkdagen tussen 09.00 en 17.00 uur</string>
     <string name="nierstichting_email">info@nierstichting.nl</string>
-
+    <string name="today">Vandaag</string>
+    <string name="guidelines">Richtlijnen</string>
+    <string name="calories">Calorieën</string>
+    <string name="natrium">Natrium</string>
+    <string name="kalium">Kalium</string>
+    <string name="moisture">Vocht</string>
+    <string name="proteins">Eiwitten</string>
+    <string name="miligram_short">mg</string>
+    <string name="food">voeding</string>
 </resources>
