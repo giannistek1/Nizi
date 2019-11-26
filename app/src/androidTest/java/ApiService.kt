@@ -1,3 +1,4 @@
+import classes.PatientLogin
 import retrofit2.Call
 import retrofit2.http.*
 import java.text.SimpleDateFormat
@@ -122,11 +123,11 @@ interface ApiService {
         @Path("patientId") patientId: Int
     ) : Call<Unit>
 
-    // Get User As Patient from Acces Token
+    // Get User As Patient from Access Token
     @GET("/v1/login/patient")
     fun loginAsPatient(
 
-    ) : Call<Unit>
+    ) : Call<PatientLogin>
     //endregion
 
     //region Meal

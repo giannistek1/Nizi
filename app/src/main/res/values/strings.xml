@@ -6,6 +6,7 @@
     <string name="login">Inloggen</string>
     <string name="username">Gebruikersnaam</string>
     <string name="password">Wachtwoord</string>
+    <string name="password_forgotten">Wachtwoord vergeten?</string>
     <string name="help">Hulp nodig?</string>
     <string name="help_desc">Neem contact op met Nierstichting of uw diëtist</string>
     <string name="nierstichting_url">https://www.nierstichting.nl</string>
