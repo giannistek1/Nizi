@@ -1,5 +1,13 @@
 <resources>
-    <string name="t">t</string>
+    <string name="auth0_client_id">u937ofw0BYPGUHPgNUrfBpspIa0VSC86</string>
+    <!-- 5da30bf7475bc007512f2752 -->
+    <!-- 5da30a8ef151ae071ea92ca0 -->
+    <!-- u937ofw0BYPGUHPgNUrfBpspIa0VSC86 -->
+    <string name="auth0_domain">appnizi.eu.auth0.com</string>
+    <!-- appnizi.nl/api -->
+    <!-- https://appnizi.eu.auth0.com/api/v2/ -->
+    <!-- appnizi.eu.auth0.com -->
+
     <string name="app_name">Nizi</string>
     <string name="dashboard">Dashboard</string>
     <string name="food_diary">Voedingsdagboek</string>

@@ -1,10 +1,56 @@
 package repositories
 
 import ApiService
+import android.util.Log.d
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import classes.AccessTokenResult
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+// 1e API TEST = Patiënt
+// 3e API TEST = Dcotor
+
+// Patient:
+//HttpResponse<String> response = Unirest.post("https://appnizi.eu.auth0.com/oauth/token")
+//  .header("content-type", "application/json")
+//  .body("{\"client_id\":\"dVYtmSw5m819mX2nS2raMZwo5lXcwDg6\",\"client_secret\":\"vN6N5HNG25MP-gjBPsVhf01dzuIPqAixFFImtGUU4vy4RuJwFEYcPnJg4r6EOOdr\",\"audience\":\"appnizi.nl/api\",\"grant_type\":\"client_credentials\"}")
+//  .asString();
+
 class AuthRepository {
+
+    val client_id = "dVYtmSw5m819mX2nS2raMZwo5lXcwDg6"
+    val client_secret = "vN6N5HNG25MP-gjBPsVhf01dzuIPqAixFFImtGUU4vy4RuJwFEYcPnJg4r6EOOdr"
+    val audience = "appnizi.nl/api"
+    val grant_type = "client_credentials"
+
+    private fun getAccessToken() : LiveData<AccessTokenResult>
+    {
+        val result = MutableLiveData<AccessTokenResult>()
+
+        service.getAccessToken(
+            client_secret = client_secret,
+            client_id = client_id,
+            audience = audience,
+            grant_type = grant_type)
+            .enqueue(object: Callback<AccessTokenResult> {
+                override fun onResponse(call: Call<AccessTokenResult>, response: Response<AccessTokenResult>) {
+                if (response.isSuccessful && response.body() != null) {
+                    result.value = response.body()
+                } else {
+                    d("", "Response, not successful: ${response.body()}")
+                }
+            }
+
+            override fun onFailure(call: Call<AccessTokenResult>, t: Throwable) {
+                d("", t.toString())
+            }
+        })
+        return result
+    }
 
     private val service: ApiService = getApiService()
 

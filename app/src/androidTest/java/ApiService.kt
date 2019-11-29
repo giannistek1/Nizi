@@ -1,3 +1,4 @@
+import classes.AccessTokenResult
 import classes.PatientLogin
 import retrofit2.Call
 import retrofit2.http.*
@@ -6,6 +7,19 @@ import java.text.SimpleDateFormat
 // Swagger: https://appnizi-api.azurewebsites.net/api/swagger/ui#/
 
 interface ApiService {
+
+    //region AccessToken
+    @POST("https://appnizi.eu.auth0.com/oauth/token")
+    fun getAccessToken(
+        @Header("content-type:application/json")
+        @Field("client_id") client_id: String,
+        @Field("client_secret") client_secret: String,
+        @Field("audience") audience: String,
+        @Field("grant_type") grant_type: String
+    ) : Call<AccessTokenResult>
+
+    //endregion
+
     //region Consumption
     @POST("/v1/consumptions")
     fun addConsumption(
