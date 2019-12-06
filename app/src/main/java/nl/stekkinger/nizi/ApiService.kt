@@ -1,5 +1,7 @@
-import classes.AccessTokenResult
-import classes.PatientLogin
+package nl.stekkinger.nizi
+
+import nl.stekkinger.nizi.classes.AccessTokenResult
+import nl.stekkinger.nizi.classes.PatientLogin
 import retrofit2.Call
 import retrofit2.http.*
 import java.text.SimpleDateFormat
@@ -137,10 +139,11 @@ interface ApiService {
         @Path("patientId") patientId: Int
     ) : Call<Unit>
 
-    // Get User As Patient from Access Token
-    @GET("/v1/login/patient")
-    fun loginAsPatient(
 
+    // Get User As Patient from Access Token
+    @GET("v1/login/patient")
+    fun loginAsPatient(
+        @Header("Authorization") authHeader : String
     ) : Call<PatientLogin>
     //endregion
 

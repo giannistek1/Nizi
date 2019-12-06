@@ -1,6 +1,4 @@
-package classes
-
-import java.text.SimpleDateFormat
+package nl.stekkinger.nizi.classes
 
 data class Food (
     val FoodId: Int,

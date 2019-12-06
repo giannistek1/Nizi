@@ -1,4 +1,4 @@
-package classes
+package nl.stekkinger.nizi.classes
 
 data class Meal (
     val MealId: Int,

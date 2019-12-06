@@ -10,6 +10,8 @@
 
     <!-- Texts -->
     <string name="app_name">Nizi</string>
+    <string name="login_success">Inloggen gelukt!</string>
+    <string name="login_fail">Inloggen mislukt!</string>
     <string name="dashboard">Dashboard</string>
     <string name="food_diary">Voedingsdagboek</string>
     <string name="login">Inloggen</string>

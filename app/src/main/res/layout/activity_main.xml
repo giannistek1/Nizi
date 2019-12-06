@@ -120,6 +120,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/activity_main_progressbar"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+
         <TextView
             android:id="@+id/activity_main_txt_help"
             android:textColor="@android:color/black"
