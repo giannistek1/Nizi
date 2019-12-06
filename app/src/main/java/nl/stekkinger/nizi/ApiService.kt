@@ -124,9 +124,15 @@ interface ApiService {
 
     ) : Call<Unit>
 
+    @FormUrlEncoded
     @POST("/v1/patient")
     fun registerPatient(
-
+        @Header("Authorization") authHeader : String,
+        @Field("firstName") firstName: String,
+        @Field("lastName") lastName: String,
+        @Field("dateOfBirth") dateOfBirth: String,
+        @Field("weight") weight: Float,
+        @Field("doctorId") doctorId: Int
     ) : Call<Unit>
 
     @GET("/v1/patient/{patientId}")

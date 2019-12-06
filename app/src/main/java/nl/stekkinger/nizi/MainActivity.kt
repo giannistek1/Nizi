@@ -17,7 +17,6 @@ class MainActivity : AppCompatActivity() {
 
     val EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS"
     val EXTRA_ACCESS_TOKEN = "com.auth0.ACCESS_TOKEN"
-    val EXTRA_ID_TOKEN = "com.auth0.ID_TOKEN"
 
     private val authRepository: AuthRepository = AuthRepository()
     private var model: PatientLogin? = null
@@ -33,25 +32,24 @@ class MainActivity : AppCompatActivity() {
 
         //model = ViewModelProviders.of(this)[PatientLogin::class.java]
 
+        activity_main_btn_register.setOnClickListener { registerPatient() }
         activity_main_btn_login.setOnClickListener { loginPatient() }
         activity_main_btn_logout.setOnClickListener { logout() }
 
         //Obtain the token from the Intent's extras
         accessToken = intent.getStringExtra(EXTRA_ACCESS_TOKEN)
-        activity_main_txt_credentials.text = accessToken
+        //activity_main_txt_credentials.text = accessToken
 
 
+    }
+
+    private fun registerPatient() {
+        registerPatientAsyncTask(accessToken).execute()
     }
 
     private fun loginPatient() {
 
         loginPatientAsyncTask(accessToken).execute()
-
-        /*model = authRepository.loginAsPatient(accessToken)
-
-        model?.let {
-            activity_main_txt_nierstichtingPhonenumber.text = it.account.Role
-        }*/
 
 
         /*val intent = Intent(this@MainActivity, LoginActivity::class.java)
@@ -65,6 +63,21 @@ class MainActivity : AppCompatActivity() {
         intent.putExtra(EXTRA_CLEAR_CREDENTIALS, true)
         startActivity(intent)
         finish()
+    }
+
+    inner class registerPatientAsyncTask(accessToken: String) : AsyncTask<Void, Void, Void>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+            // Progressbar
+            progressBar.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): Void? {
+            authRepository.registerPatient(accessToken)
+            return null
+        }
+
     }
 
     inner class loginPatientAsyncTask(accessToken: String) : AsyncTask<Void, Void, PatientLogin>()

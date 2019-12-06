@@ -14,6 +14,7 @@
     <string name="login_fail">Inloggen mislukt!</string>
     <string name="dashboard">Dashboard</string>
     <string name="food_diary">Voedingsdagboek</string>
+    <string name="register">Registreren</string>
     <string name="login">Inloggen</string>
     <string name="logout">Uitloggen</string>
     <string name="username">Gebruikersnaam</string>
