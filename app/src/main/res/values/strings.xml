@@ -16,6 +16,8 @@
     <string name="food_diary">Voedingsdagboek</string>
     <string name="register">Registreren</string>
     <string name="login">Inloggen</string>
+    <string name="login_as_patient">Inloggen als patiënt</string>
+    <string name="login_as_doctor">Inloggen als doctor</string>
     <string name="logout">Uitloggen</string>
     <string name="username">Gebruikersnaam</string>
     <string name="password">Wachtwoord</string>

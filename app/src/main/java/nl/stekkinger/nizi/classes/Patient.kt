@@ -8,5 +8,7 @@ data class Patient (
     val doctorId: Int,
     val firstName: String,
     val lastName: String,
-    val dateOfBirth: SimpleDateFormat
+    val dateOfBirth: String,
+    val weightInKilograms: Float,
+    val guid: String
 )

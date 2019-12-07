@@ -37,7 +37,8 @@ class LoginActivity : AppCompatActivity() {
 
         //Setup the UI
         setContentView(R.layout.activity_login)
-        activity_login_btn_login.setOnClickListener { doLogin() }
+        activity_login_btn_loginAsPatient.setOnClickListener { doLogin(false) }
+        activity_login_btn_loginAsPatient.setOnClickListener { doLogin(true) }
 
         //Setup CredentialsManager
         auth0 = Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain))
@@ -99,7 +100,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun doLogin() {
+    private fun doLogin(isDoctor: Boolean) {
         auth0?.let {
             WebAuthProvider.login(it)
                 .withScheme(getString(R.string.auth0_scheme))

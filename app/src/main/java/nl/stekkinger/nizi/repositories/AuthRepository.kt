@@ -30,11 +30,11 @@ class AuthRepository {
     val client_secret = "vN6N5HNG25MP-gjBPsVhf01dzuIPqAixFFImtGUU4vy4RuJwFEYcPnJg4r6EOOdr"
     val audience = "appnizi.nl/api"
     val grant_type = "client_credentials"
-    val test_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5ERkdPRFUxTnpJNFJEZ3lNakkxUmtFMU5EZ3dRMEUxTkVJM05UTTBSRGRFUTBFNE5FWkdNZyJ9.eyJpc3MiOiJodHRwczovL2FwcG5pemkuZXUuYXV0aDAuY29tLyIsInN1YiI6ImRWWXRtU3c1bTgxOW1YMm5TMnJhTVp3bzVsWGN3RGc2QGNsaWVudHMiLCJhdWQiOiJhcHBuaXppLm5sL2FwaSIsImlhdCI6MTU3NTU4NzE4NCwiZXhwIjoxNTc1NjczNTg0LCJhenAiOiJkVll0bVN3NW04MTltWDJuUzJyYU1ad281bFhjd0RnNiIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.evjlqDofSKTKkxK_vzZeRSah0HbL6cANrLY_ChD5m2Rf6Baft_k4slh6tW-5HGtrANarbttPBB3RSr8ZSQCsLxXYzpmVkYwtZl3KXb4jI_9NEQ4Htdqraq42cUyfUG0sZ6KHhKXUcYBHPm9Ls0RsybopY6ijzI_9qV6FLrYI8fN6orl6lGowUbABAtoRGnHO_BGQjrNMGx-SBURFystsh4BiEJrtMRkZO24loL-GUr_a3fLsHHLnmH8qIiBeroF51TkHE5dXgxzPZNFKbH_5DPDhi_2n6fvBKwqqgqXQnKqbiiUJGKc9NzYPuXeKpFBNwuzBOcr3WmUJM90mnX9Ytw"
+    val test_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5ERkdPRFUxTnpJNFJEZ3lNakkxUmtFMU5EZ3dRMEUxTkVJM05UTTBSRGRFUTBFNE5FWkdNZyJ9.eyJpc3MiOiJodHRwczovL2FwcG5pemkuZXUuYXV0aDAuY29tLyIsInN1YiI6ImRWWXRtU3c1bTgxOW1YMm5TMnJhTVp3bzVsWGN3RGc2QGNsaWVudHMiLCJhdWQiOiJhcHBuaXppLm5sL2FwaSIsImlhdCI6MTU3NTc0OTM4MywiZXhwIjoxNTc1ODM1NzgzLCJhenAiOiJkVll0bVN3NW04MTltWDJuUzJyYU1ad281bFhjd0RnNiIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.B5SrwGFKykFMmae9zJi6e3TIpnWTIWycjT6IbOl2_2DLDrsbCzQv6Ny3jBdo-9qiJ4J8A1oeMe6qrsslKFfQDSz77hedsJRoTWNCHWnPle1gCgB4rbNvG1cnHo0vJZ2npSx0qJIzSEza0TZGVQ4soGzYiSADuBxLsws_bLKN3aXfk8ECoOKEiPeNo-5ZFmUprzhp9haxOahH5IrLXgMmRwPNKYKYgiavMhoiYDXkJIZoHmUABIrfQAwJ54XPLu6FfXQKJcMxCdr_Yd5G_0qxFVtNyZOBGHV1mPYlf2f0BoEE_ua7sWsjIJLsu8rhyzL8D15HNwY4RAtJRfB0D-F4Vw"
 
     fun registerPatient(accessToken: String)
     {
-        var authHeader = "Bearer " + accessToken
+        var authHeader = "Bearer " + test_token
 
         // DoB = "YYYY-MM-DDT10:55:38.738Z"
         service.registerPatient(authHeader, "Gianni", "Stekkinger", "1998-12-06T10:55:38.738Z", 60f, 1).execute().body()//.enqueue(loginAsPatientCallback)

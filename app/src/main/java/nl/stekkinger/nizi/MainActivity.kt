@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity() {
             progressBar.visibility = View.GONE
             if (result != null) {
                 Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
-                activity_main_txt_nierstichtingPhonenumber.text = result.account.Role
+                activity_main_txt_nierstichtingPhonenumber.text = result.account.role
             } else {
                 Toast.makeText(baseContext, R.string.login_fail, Toast.LENGTH_SHORT).show()
             }

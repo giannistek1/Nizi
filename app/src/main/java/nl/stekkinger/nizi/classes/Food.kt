@@ -1,14 +1,14 @@
 package nl.stekkinger.nizi.classes
 
 data class Food (
-    val FoodId: Int,
-    val Name: String,
-    val KCal: Double,
-    val Protein: Double,
-    val Fiber: Double,
-    val Sodium: Double,
-    val Calcium: Double,
-    val PortionSize: Int,
-    val WeightUnit: String,
-    val Picture: String
+    val foodId: Int,
+    val name: String,
+    val kCal: Double,
+    val protein: Double,
+    val fiber: Double,
+    val sodium: Double,
+    val calcium: Double,
+    val portionSize: Int,
+    val weightUnit: String,
+    val picture: String
 )

@@ -1,9 +1,9 @@
 package nl.stekkinger.nizi.classes
 
 data class DietaryManagementModel (
-    val Id: Int,
-    val Description: String,
-    val Amount: Int,
-    val IsActive: Boolean,
-    val PatientId: Int
+    val id: Int,
+    val description: String,
+    val amount: Int,
+    val isActive: Boolean,
+    val patientId: Int
 )

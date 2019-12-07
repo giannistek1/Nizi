@@ -1,6 +1,7 @@
 package nl.stekkinger.nizi.classes
 
+// inside PatientLogin
 data class AuthLogin (
-    val Guid: String,
-    val Token: Token
+    val guid: String,
+    val token: Token
 )
