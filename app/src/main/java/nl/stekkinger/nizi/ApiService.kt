@@ -1,6 +1,7 @@
 package nl.stekkinger.nizi
 
 import nl.stekkinger.nizi.classes.AccessTokenResult
+import nl.stekkinger.nizi.classes.DoctorLogin
 import nl.stekkinger.nizi.classes.PatientLogin
 import retrofit2.Call
 import retrofit2.http.*
@@ -209,8 +210,8 @@ interface ApiService {
     // Descriptie fout
     @GET("/v1/login/doctor")
     fun loginAsDoctor(
-
-    ) : Call<Unit>
+        @Header("Authorization") authHeader : String
+    ) : Call<DoctorLogin>
     //endregion
 
     //region DietaryManagement

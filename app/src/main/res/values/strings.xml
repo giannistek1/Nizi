@@ -10,10 +10,15 @@
 
     <!-- Texts -->
     <string name="app_name">Nizi</string>
+
+    <!-- Navigatie -->
+    <string name="home">Home</string>
+    <string name="diary">Dagboek</string>
+    <string name="dashboard">Dashboard</string>
+
+    <!-- login/register -->
     <string name="login_success">Inloggen gelukt!</string>
     <string name="login_fail">Inloggen mislukt!</string>
-    <string name="dashboard">Dashboard</string>
-    <string name="food_diary">Voedingsdagboek</string>
     <string name="register">Registreren</string>
     <string name="login">Inloggen</string>
     <string name="login_as_patient">Inloggen als patiënt</string>
@@ -22,12 +27,15 @@
     <string name="username">Gebruikersnaam</string>
     <string name="password">Wachtwoord</string>
     <string name="password_forgotten">Wachtwoord vergeten?</string>
+
+    <!-- contact -->
     <string name="help">Hulp nodig?</string>
     <string name="help_desc">Neem contact op met Nierstichting of uw diëtist</string>
     <string name="nierstichting_url">https://www.nierstichting.nl</string>
     <string name="nierstichting_phonenumber">035 697 80 00</string>
     <string name="nierstichting_phonenumber_desc">Op werkdagen tussen 09.00 en 17.00 uur</string>
     <string name="nierstichting_email">info@nierstichting.nl</string>
+
     <string name="today">Vandaag</string>
     <string name="guidelines">Richtlijnen</string>
     <string name="calories">Calorieën</string>
@@ -36,5 +44,40 @@
     <string name="moisture">Vocht</string>
     <string name="proteins">Eiwitten</string>
     <string name="miligram_short">mg</string>
-    <string name="food">voeding</string>
+    <string name="recent_nutrition">Recente voeding</string>
+    <string name="recent">Recent</string>
+    <string name="nutrition">Voeding</string>
+    <string name="add_food">Voeding toevoegen</string>
+    <string name="products">Producten</string>
+    <string name="meals">Maaltijden</string>
+    <string name="favorites">Favorieten</string>
+    <string name="search_product">Product zoeken</string>
+    <string name="scan_product">Scan product</string>
+    <string name="portion">Portie</string>
+
+    <!-- Dashboard -->
+    <string name="statistics">Statistieken</string>
+    <string name="minimum">Minimaal</string>
+    <string name="maximum">Maximaal</string>
+
+    <!-- doctor -->
+    <string name="patients">Patiënten</string>
+    <string name="search_by_name">Zoek op naam</string>
+
+    <string name="food_diary">Voedingsdagboek</string>
+
+    <!-- months -->
+    <string name="january">Januari</string>
+    <string name="february">Februari</string>
+    <string name="march">Maart</string>
+    <string name="april">April</string>
+    <string name="may">Mei</string>
+    <string name="june">Juni</string>
+    <string name="july">Juli</string>
+    <string name="august">Augustus</string>
+    <string name="september">September</string>
+    <string name="october">Oktober</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
+
 </resources>

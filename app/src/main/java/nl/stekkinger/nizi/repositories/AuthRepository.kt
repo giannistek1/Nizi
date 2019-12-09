@@ -4,9 +4,7 @@ import android.util.Log.d
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import nl.stekkinger.nizi.ApiService
-import nl.stekkinger.nizi.classes.AccessTokenResult
-import nl.stekkinger.nizi.classes.Patient
-import nl.stekkinger.nizi.classes.PatientLogin
+import nl.stekkinger.nizi.classes.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -40,7 +38,6 @@ class AuthRepository {
         service.registerPatient(authHeader, "Gianni", "Stekkinger", "1998-12-06T10:55:38.738Z", 60f, 1).execute().body()//.enqueue(loginAsPatientCallback)
     }
 
-
     fun loginAsPatient(accessToken: String) : PatientLogin?
     {
         var authHeader = "Bearer " + accessToken
@@ -48,45 +45,11 @@ class AuthRepository {
         return service.loginAsPatient(authHeader).execute().body()//.enqueue(loginAsPatientCallback)
     }
 
-    private val loginAsPatientCallback = object: Callback<PatientLogin> {
-        val result = MutableLiveData<PatientLogin>()
-
-        override fun onResponse(call: Call<PatientLogin>, response: Response<PatientLogin>) {
-            if (response.isSuccessful && response.body() != null) {
-                result.value = response.body()
-            } else {
-                d("", "Response, not successful: ${response.body()}")
-            }
-        }
-
-        override fun onFailure(call: Call<PatientLogin>, t: Throwable) {
-            d(TAG, t.toString())
-        }
-    }
-
-    private fun getAccessToken() : LiveData<AccessTokenResult>
+    fun loginAsDoctor(accessToken: String) : DoctorLogin?
     {
-        val result = MutableLiveData<AccessTokenResult>()
+        var authHeader = "Bearer " + test_token
 
-        service.getAccessToken(
-            client_secret = client_secret,
-            client_id = client_id,
-            audience = audience,
-            grant_type = grant_type)
-            .enqueue(object: Callback<AccessTokenResult> {
-                override fun onResponse(call: Call<AccessTokenResult>, response: Response<AccessTokenResult>) {
-                if (response.isSuccessful && response.body() != null) {
-                    result.value = response.body()
-                } else {
-                    d("", "Response, not successful: ${response.body()}")
-                }
-            }
-
-            override fun onFailure(call: Call<AccessTokenResult>, t: Throwable) {
-                d("", t.toString())
-            }
-        })
-        return result
+        return service.loginAsDoctor(authHeader).execute().body()//.enqueue(loginAsPatientCallback)
     }
 
     private val service: ApiService = getApiService()

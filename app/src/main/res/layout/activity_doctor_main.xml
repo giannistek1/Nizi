@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray"
+    tools:context=".DoctorMainActivity">
+
+    <!-- HEADER -->
+
+    <ImageView
+        android:id="@+id/activity_main_background"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/rectangle"
+        />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/marginLeft"
+        android:layout_marginRight="@dimen/marginRight"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <!-- Blue background -->
+        <LinearLayout
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/activity_patients_txt_header"
+                android:textSize="@dimen/h1"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:text="@string/patients"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_marginBottom="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+        <Button
+            android:id="@+id/activity_doctor_main_btn_logout"
+            android:text="@string/logout"
+            android:background="@color/colorAccent"
+            android:textColor="@android:color/white"
+            android:layout_marginLeft="@dimen/marginLeft"
+            android:layout_marginRight="@dimen/marginRight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/activity_patients_progressbar"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+
+        <!--<androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>-->
+
+    </LinearLayout>
+</FrameLayout>

@@ -1,7 +1,9 @@
 package nl.stekkinger.nizi
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -19,30 +21,50 @@ import com.auth0.android.provider.VoidCallback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
 import kotlinx.android.synthetic.main.activity_login.*
+import nl.stekkinger.nizi.classes.DoctorLogin
+import nl.stekkinger.nizi.classes.PatientLogin
 
 class LoginActivity : AppCompatActivity() {
 
     private var TAG = "Login"
 
-    private var auth0: Auth0? = null
-    private var credentialsManager: SecureCredentialsManager? = null
-
+    //Shared preferences/extras
     private val CODE_DEVICE_AUTHENTICATION = 22
     val EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS"
     val EXTRA_ACCESS_TOKEN = "com.auth0.ACCESS_TOKEN"
     val EXTRA_ID_TOKEN = "com.auth0.ID_TOKEN"
+    val PREF_ISDOCTOR = "IS_DOCTOR"
+
+    private var auth0: Auth0? = null
+    private var credentialsManager: SecureCredentialsManager? = null
+
+    private var isDoctor = false
+    private lateinit var patientLogin: PatientLogin
+    private lateinit var doctorLogin: DoctorLogin
+    lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
+
         //Setup the UI
         setContentView(R.layout.activity_login)
-        activity_login_btn_loginAsPatient.setOnClickListener { doLogin(false) }
-        activity_login_btn_loginAsPatient.setOnClickListener { doLogin(true) }
+        activity_login_btn_loginAsPatient.setOnClickListener {
+            isDoctor = false
+            prefs.edit().putBoolean(PREF_ISDOCTOR, false).apply()
+            doLogin()
+        }
+        activity_login_btn_loginAsDoctor.setOnClickListener {
+            isDoctor = true
+            prefs.edit().putBoolean(PREF_ISDOCTOR, true).apply()
+            doLogin()
+        }
 
         //Setup CredentialsManager
         auth0 = Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain))
         auth0?.let {
+            // needed for universal login
             it.isOIDCConformant = true
 
             credentialsManager = SecureCredentialsManager(this,
@@ -57,27 +79,15 @@ class LoginActivity : AppCompatActivity() {
             return
         }
 
+        // if already logged in
         credentialsManager?.let {
             if (it.hasValidCredentials()) {
                 // Obtain the existing credentials and move to the next activity
+                isDoctor = prefs.getBoolean(PREF_ISDOCTOR, false)
                 showNextActivity()
             }
         }
 
-    }
-
-    /** NOT USED
-     * Override required when setting up Local Authentication in the Credential Manager
-     * Refer to SecureCredentialsManager#requireAuthentication method for more information.
-     */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        credentialsManager?.let {
-            if (it.checkAuthenticationResult(requestCode, resultCode)) {
-                return
-            }
-        }
-
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     private fun showNextActivity() {
@@ -85,9 +95,15 @@ class LoginActivity : AppCompatActivity() {
             it.getCredentials(object :
                 BaseCallback<Credentials, CredentialsManagerException> {
                 override fun onSuccess(credentials: Credentials) {
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                    var intent: Intent
+
+                    if (isDoctor)
+                        intent = Intent(this@LoginActivity, DoctorMainActivity::class.java)
+                    else
+                        intent = Intent(this@LoginActivity, MainActivity::class.java)
                     intent.putExtra(EXTRA_ACCESS_TOKEN, credentials.accessToken)
                     intent.putExtra(EXTRA_ID_TOKEN, credentials.idToken)
+                    //intent.putExtra(EXTRA_ISDOCTOR, isDoctor)
                     startActivity(intent)
                     finish()
                 }
@@ -100,7 +116,7 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun doLogin(isDoctor: Boolean) {
+    private fun doLogin() {
         auth0?.let {
             WebAuthProvider.login(it)
                 .withScheme(getString(R.string.auth0_scheme))
@@ -136,6 +152,7 @@ class LoginActivity : AppCompatActivity() {
         override fun onSuccess(credentials: Credentials) {
             credentialsManager?.let {
                 it.saveCredentials(credentials)
+                prefs.edit().remove(PREF_ISDOCTOR).commit()
                 showNextActivity()
 
                 Log.d(TAG, "Succesfully logged in!")

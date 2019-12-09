@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
@@ -8,233 +8,36 @@
     android:background="@color/gray"
     tools:context=".MainActivity">
 
-    <!-- HEADER -->
-
-    <ImageView
-        android:id="@+id/activity_main_background"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/rectangle"
-        />
-
-
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/activity_main_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/marginLeft"
-        android:layout_marginRight="@dimen/marginRight"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:layout_above="@+id/activity_main_btn_logout">
 
-        <LinearLayout
-            android:background="@color/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/activity_main_txt_header"
-                android:textSize="@dimen/h1"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:text="@string/login"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginBottom="@dimen/marginNormal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/activity_main_txt_username"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/h2"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:text="@string/username"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/activity_main_et_username"
-            android:hint="@string/username"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginRight="@dimen/marginRight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/activity_main_txt_password"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/h2"
-            android:text="@string/password"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <EditText
-            android:id="@+id/activity_main_et_password"
-            android:hint="@string/password"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginRight="@dimen/marginRight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"/>
-
-        <Button
-            android:id="@+id/activity_main_btn_register"
-            android:text="@string/register"
-            android:background="@color/colorAccent"
-            android:textColor="@android:color/white"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginRight="@dimen/marginRight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/activity_main_btn_login"
-            android:text="@string/login"
-            android:background="@color/colorAccent"
-            android:textColor="@android:color/white"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginRight="@dimen/marginRight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <Button
-            android:id="@+id/activity_main_btn_logout"
-            android:text="@string/logout"
-            android:background="@color/colorAccent"
-            android:textColor="@android:color/white"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginRight="@dimen/marginRight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/activity_main_txt_password_forgotten"
-            android:text="@string/password_forgotten"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"/>
 
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/activity_main_progressbar"
             android:layout_width="10dp"
             android:layout_height="10dp"/>
+    </RelativeLayout>
 
-        <TextView
-            android:id="@+id/activity_main_txt_help"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/h1"
-            android:text="@string/help"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-
-        <TextView
-            android:id="@+id/activity_main_txt_help_desc"
-            android:textColor="@android:color/black"
-            android:text="@string/help_desc"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-    <!-- WEBSITE INFO -->
-    <LinearLayout
+    <Button
+        android:id="@+id/activity_main_btn_logout"
+        android:text="@string/logout"
+        android:background="@color/colorAccent"
+        android:textColor="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_above="@+id/activity_main_bottom_navigation"/>
 
-        <ImageView
-            android:id="@+id/activity_main_ic_website"
-            android:scaleType="fitCenter"
-            android:tint="@color/colorPrimary"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_website"/>
+    <!-- Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/activity_main_bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="?android:attr/windowBackground"
+        android:theme="@style/BottomNavigationTheme"
+        app:menu="@menu/bottom_navigation"/>
 
-        <TextView
-            android:id="@+id/activity_main_txt_nierstichtingUrl"
-            android:textColor="@color/colorPrimary"
-            android:text="@string/nierstichting_url"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-        <!-- TELEPHONE INFO -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/activity_main_ic_telephone"
-                android:scaleType="fitCenter"
-                android:tint="@color/colorPrimary"
-                android:layout_marginLeft="@dimen/marginLeft"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_telephone"/>
-
-            <TextView
-                android:id="@+id/activity_main_txt_nierstichtingPhonenumber"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/nierstichting_phonenumber"
-                android:layout_marginLeft="@dimen/marginLeft"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/activity_main_txt_nierstichtingPhonenumberDesc"
-            android:textColor="@android:color/black"
-            android:text="@string/nierstichting_phonenumber_desc"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <!-- EMAIL INFO INFO -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/activity_main_ic_mail"
-                android:scaleType="fitCenter"
-                android:tint="@color/colorPrimary"
-                android:layout_marginLeft="@dimen/marginLeft"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_mail"/>
-
-            <TextView
-                android:id="@+id/activity_main_txt_nierstichtingEmail"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/nierstichting_email"
-                android:layout_marginLeft="@dimen/marginLeft"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginBottom="@dimen/marginNormal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-    </LinearLayout>
-</FrameLayout>
+</RelativeLayout>
