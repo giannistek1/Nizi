@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.Log.d
 import android.widget.Toast
 import com.auth0.android.Auth0
 import com.auth0.android.Auth0Exception
@@ -150,6 +151,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         override fun onSuccess(credentials: Credentials) {
+            d("cr", credentials.accessToken)
             credentialsManager?.let {
                 it.saveCredentials(credentials)
                 prefs.edit().remove(PREF_ISDOCTOR).commit()

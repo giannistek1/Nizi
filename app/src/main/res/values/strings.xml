@@ -47,6 +47,9 @@
     <string name="recent_nutrition">Recente voeding</string>
     <string name="recent">Recent</string>
     <string name="nutrition">Voeding</string>
+    <string name="breakfast">Ontbijt</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Avondeten</string>
     <string name="add_food">Voeding toevoegen</string>
     <string name="products">Producten</string>
     <string name="meals">Maaltijden</string>
