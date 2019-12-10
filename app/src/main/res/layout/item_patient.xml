@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:paddingStart="@dimen/marginNormal"
         android:textColor="@color/colorPrimary"/>
 
     <TextView
@@ -14,5 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/item_patient_id"
+        android:paddingStart="@dimen/marginNormal"
         android:textColor="@color/colorPrimary"/>
 </RelativeLayout>

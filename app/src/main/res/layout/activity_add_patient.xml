@@ -1,9 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.AddPatientActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- HEADER -->
+    <ImageView
+        android:id="@+id/activity_main_background"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="fitCenter"
+        android:contentDescription="@string/header_background"
+        android:src="@drawable/rectangle"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/marginLeft"
+        android:layout_marginEnd="@dimen/marginRight"
+        android:background="@color/white">
+
+        <!-- Blue background -->
+        <LinearLayout
+            android:id="@+id/activity_add_patient_ll_header"
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/activity_add_patient_txt_header"
+                android:text="@string/profile_patient"
+                android:textSize="@dimen/h1"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_marginBottom="@dimen/marginNormal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <!-- First Name -->
+        <TextView
+            android:id="@+id/activity_add_patient_txt_firstName"
+            android:text="@string/first_name"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/h1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_patient_ll_header"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal"/>
+
+        <EditText
+            android:id="@+id/activity_add_patient_et_firstName"
+            android:inputType="text"
+            android:hint="@string/first_name"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_patient_txt_firstName"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal" />
+
+        <!-- Last Name -->
+        <TextView
+            android:id="@+id/activity_add_patient_txt_lastName"
+            android:text="@string/last_name"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/h1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_patient_et_firstName"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal"/>
+
+        <EditText
+            android:id="@+id/activity_add_patient_et_lastName"
+            android:inputType="text"
+            android:hint="@string/last_name"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_patient_txt_lastName"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal" />
+
+        <!-- DoB -->
+        <TextView
+            android:id="@+id/activity_add_patient_txt_dob"
+            android:text="@string/date_of_birth"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/h1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_patient_et_lastName"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal"/>
+
+
+        <EditText
+            android:id="@+id/activity_add_patient_et_dob"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_patient_txt_dob"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:inputType="text"
+            android:hint="@string/date_of_birth"/>
+
+        <!-- Weight -->
+        <TextView
+            android:id="@+id/activity_add_patient_txt_weight"
+            android:text="@string/weight"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/h1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_patient_et_dob"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal"/>
+
+        <EditText
+            android:id="@+id/activity_add_patient_et_weight"
+            android:inputType="text"
+            android:hint="@string/weight"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_patient_txt_weight"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal" />
+
+        <Spinner
+            android:id="@+id/activity_add_patient_spr_guidelines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_patient_et_weight"
+            android:layout_marginStart="@dimen/marginNormal"
+            android:background="@android:drawable/btn_dropdown"
+            android:spinnerMode="dropdown"/>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/activity_doctor_main_progressbar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_above="@+id/activity_add_patient_btn_save"/>
+
+        <Button
+            android:id="@+id/activity_add_patient_btn_save"
+            android:text="@string/save"
+            android:background="@color/colorAccent"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="@dimen/marginLeft"
+            android:layout_marginEnd="@dimen/marginRight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+</FrameLayout>

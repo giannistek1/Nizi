@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="fitCenter"
+        android:contentDescription="@string/header_background"
         android:src="@drawable/rectangle"
         />
 
@@ -21,8 +22,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/marginLeft"
-        android:layout_marginRight="@dimen/marginRight"
+        android:layout_marginStart="@dimen/marginLeft"
+        android:layout_marginEnd="@dimen/marginRight"
         android:background="@color/white">
 
         <!-- Blue background -->
@@ -33,7 +34,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/activity_patients_txt_header"
+                android:id="@+id/activity_doctor_main_txt_header"
                 android:textSize="@dimen/h1"
                 android:gravity="center"
                 android:textColor="@color/white"
@@ -45,26 +46,49 @@
 
         </LinearLayout>
 
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/activity_patients_progressbar"
-            android:layout_width="10dp"
-            android:layout_height="10dp"/>
+        <EditText
+            android:id="@+id/activity_doctor_main_et_searchPatients"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_doctor_main_ll_header"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:inputType="text"
+            android:hint="@string/search_by_name"/>
+
+        <ImageView
+            android:id="@+id/activity_doctor_main_btn_addPatient"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@+id/activity_doctor_main_ll_header"
+            android:layout_toEndOf="@+id/activity_doctor_main_et_searchPatients"
+            android:layout_marginStart="@dimen/marginSmall"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:scaleType="fitCenter"
+            android:tint="@color/colorPrimary"
+            android:clickable="true"
+            android:contentDescription="@string/add_patient"
+            android:src="@drawable/ic_add" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/activity_doctor_main_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/activity_doctor_main_ll_header">
+            android:layout_below="@+id/activity_doctor_main_et_searchPatients">
 
         </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/activity_doctor_main_progressbar"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
 
         <Button
             android:id="@+id/activity_doctor_main_btn_logout"
             android:text="@string/logout"
             android:background="@color/colorAccent"
             android:textColor="@android:color/white"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginRight="@dimen/marginRight"
+            android:layout_marginStart="@dimen/marginLeft"
+            android:layout_marginEnd="@dimen/marginRight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"/>

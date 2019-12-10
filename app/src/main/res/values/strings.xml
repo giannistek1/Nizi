@@ -65,6 +65,19 @@
     <string name="get_patients_success">Patiënten opgehaald!</string>
     <string name="get_patients_fail">Patiënten ophalen mislukt!</string>
     <string name="search_by_name">Zoek op naam</string>
+    <string name="add_patient">Patiënt toevoegen</string>
+    <string name="edit_patient">Patiënt bewerken</string>
+    <string name="delete_patient">Patiënt verwijderen</string>
+
+    <string name="profile">Profiel</string>
+    <string name="profile_patient">Profiel patiënt</string>
+    <string name="first_name">Voornaam</string>
+    <string name="last_name">Achternaam</string>
+    <string name="date_of_birth">Geboortedatum</string>
+    <string name="date_of_birth_format">DD/MM/YYYY</string>
+    <string name="weight">Gewicht</string>
+    <string name="save">Opslaan</string>
+    <string name="patient_added">Patiënt toegevoegd</string>
 
 
     <string name="food_diary">Voedingsdagboek</string>
@@ -83,4 +96,5 @@
     <string name="november">November</string>
     <string name="december">December</string>
 
+    <string name="header_background">Kop achtergrond</string>
 </resources>

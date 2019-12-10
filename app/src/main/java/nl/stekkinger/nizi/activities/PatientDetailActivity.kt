@@ -8,7 +8,7 @@ class PatientDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_doctor_detail)
+        setContentView(R.layout.activity_patient_detail)
 
 
     }

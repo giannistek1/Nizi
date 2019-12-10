@@ -17,37 +17,40 @@ import nl.stekkinger.nizi.repositories.PatientRepository
 
 class DoctorMainActivity : AppCompatActivity() {
 
-    private var TAG = "Patients"
+    private var TAG = "DoctorMain"
 
     val EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS"
     val EXTRA_ACCESS_TOKEN = "com.auth0.ACCESS_TOKEN"
+    val EXTRA_DOCTOR_ID = "DOCTOR_ID"
 
     private val authRepository: AuthRepository = AuthRepository()
     private val patientRepository: PatientRepository = PatientRepository()
 
-    private var model: DoctorLogin? = null
+    private lateinit var model: DoctorLogin
 
     private lateinit var progressBar: View
     private lateinit var accessToken: String
     val patientList = ArrayList<PatientItem>()
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_doctor_main)
-        progressBar = activity_patients_progressbar
+        progressBar = activity_doctor_main_progressbar
         activity_doctor_main_btn_logout.setOnClickListener { logout() }
 
         // Get accesstoken
         accessToken = intent.getStringExtra(EXTRA_ACCESS_TOKEN)
 
+        // Login as doctor for doctor data
         loginDoctorAsyncTask().execute()
-    }
 
-    /*private fun registerPatient() {
-        registerPatientAsyncTask().execute()
-    }*/
+        activity_doctor_main_btn_addPatient.setOnClickListener {
+            val intent: Intent = Intent(this@DoctorMainActivity, AddPatientActivity::class.java)
+            intent.putExtra(EXTRA_ACCESS_TOKEN, accessToken)
+            intent.putExtra(EXTRA_DOCTOR_ID, model.doctor.doctorId)
+            startActivity(intent)
+        }
+    }
 
     private fun setupRecyclerView() {
 
@@ -65,8 +68,7 @@ class DoctorMainActivity : AppCompatActivity() {
         }
 
         // Create adapter (data)
-        activity_doctor_main_rv.adapter =
-            PatientAdapter(this, patientList, listener)
+        activity_doctor_main_rv.adapter = PatientAdapter(this, patientList, listener)
 
         // Create Linear Layout Manager
         activity_doctor_main_rv.layoutManager = LinearLayoutManager(this)
@@ -146,20 +148,4 @@ class DoctorMainActivity : AppCompatActivity() {
             }
         }
     }
-
-    inner class registerPatientAsyncTask() : AsyncTask<Void, Void, Void>()
-    {
-        override fun onPreExecute() {
-            super.onPreExecute()
-            // Progressbar
-            progressBar.visibility = View.VISIBLE
-        }
-
-        override fun doInBackground(vararg p0: Void?): Void? {
-            patientRepository.registerPatient(accessToken)
-            return null
-        }
-
-    }
-
 }
