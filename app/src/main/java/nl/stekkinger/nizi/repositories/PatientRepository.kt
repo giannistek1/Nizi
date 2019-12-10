@@ -27,7 +27,6 @@ class PatientRepository {
         service.registerPatient(authHeader, firstName, lastName, dateOfBirth, weight, doctorId).execute().body()//.enqueue(loginAsPatientCallback)
     }
 
-
     fun getPatientsFromDoctor(accessToken: String, doctorId: Int) : List<Patient>?
     {
         var authHeader = "Bearer " + accessToken

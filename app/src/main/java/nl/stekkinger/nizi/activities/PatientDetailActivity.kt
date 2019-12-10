@@ -2,6 +2,7 @@ package nl.stekkinger.nizi.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import kotlinx.android.synthetic.main.activity_patient_detail.*
 import nl.stekkinger.nizi.R
 
 class PatientDetailActivity : AppCompatActivity() {
@@ -10,6 +11,7 @@ class PatientDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_patient_detail)
 
-
+        // Get accesstoken
+        activity_patient_detail_dataOfPatient.text = "${getString(R.string.data_of)} ${intent.getStringExtra("NAME")}"
     }
 }

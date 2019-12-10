@@ -61,8 +61,7 @@ class DoctorMainActivity : AppCompatActivity() {
                 // Open detail page when clickec
                 val intent: Intent = Intent(this@DoctorMainActivity, PatientDetailActivity::class.java)
 
-                intent.putExtra("ID", position.toString())
-                intent.putExtra("NAME", "${patientList[position].name}" )
+                intent.putExtra("NAME", "${patientList[position].name}")
                 startActivity(intent)
             }
         }
@@ -137,8 +136,8 @@ class DoctorMainActivity : AppCompatActivity() {
                 patientList.clear()
 
                 // Fill
-                (0..result.count()).forEach {
-                    val pi = PatientItem(result[it].patientId, "${result[it].firstName} ${result[it].lastName}")
+                (0..result.count()-1).forEach {
+                    val pi = PatientItem(it+1, "${result[it].firstName} ${result[it].lastName}")
                     patientList.add(pi)
                 }
 

@@ -1,9 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray"
     tools:context=".activities.PatientDetailActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Header (REUSEABLE BUT NOT IMPLEMENTED YET) -->
+    <LinearLayout
+        android:id="@+id/activity_main_header_background"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/activity_main_txt_header"
+            android:textSize="@dimen/h1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="@string/today"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/activity_patient_detail_dataOfPatient"
+        android:textColor="@color/black"
+        android:textSize="@dimen/h2"
+        android:text="@string/data_of"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_main_header_background"
+        android:layout_marginStart="@dimen/marginLeft"
+        android:layout_marginTop="@dimen/marginNormal"
+        android:layout_marginBottom="@dimen/marginNormal"/>
+
+    <!-- Guidelines -->
+    <RelativeLayout
+        android:id="@+id/activity_patient_detail_rl_guidelines"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_patient_detail_dataOfPatient">
+
+        <TextView
+            android:id="@+id/activity_patient_detail_guidelines"
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2"
+            android:text="@string/guidelines"
+            android:layout_marginStart="@dimen/marginLeft"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
+    <!-- Guidelines -->
+    <RelativeLayout
+        android:id="@+id/activity_patient_detail_rl_trends"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_patient_detail_rl_guidelines">
+
+        <TextView
+            android:id="@+id/activity_patient_detail_trends"
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2"
+            android:text="@string/trends"
+            android:layout_marginStart="@dimen/marginLeft"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+</RelativeLayout>

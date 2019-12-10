@@ -34,12 +34,17 @@ class AddPatientActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_patient)
+        progressBar = activity_add_patient_progressbar
 
-        activity_add_patient_btn_save.setOnClickListener { registerPatientAsyncTask().execute() }
+        activity_add_patient_btn_save.setOnClickListener { registerPatient()  }
 
         // Get accesstoken & doctorId
         accessToken = intent.getStringExtra(EXTRA_ACCESS_TOKEN)
         doctorId = intent.getIntExtra(EXTRA_DOCTOR_ID, 0)
+    }
+
+    private fun registerPatient() {
+        registerPatientAsyncTask().execute()
     }
 
     inner class registerPatientAsyncTask() : AsyncTask<Void, Void, Void>()

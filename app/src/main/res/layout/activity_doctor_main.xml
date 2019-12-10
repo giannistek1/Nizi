@@ -66,6 +66,7 @@
             android:scaleType="fitCenter"
             android:tint="@color/colorPrimary"
             android:clickable="true"
+            android:focusable="true"
             android:contentDescription="@string/add_patient"
             android:src="@drawable/ic_add" />
 
@@ -73,14 +74,15 @@
             android:id="@+id/activity_doctor_main_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/activity_doctor_main_et_searchPatients">
+            android:layout_below="@+id/activity_doctor_main_et_searchPatients"
+            android:layout_marginTop="@dimen/marginNormal">
 
         </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/activity_doctor_main_progressbar"
             android:layout_width="10dp"
-            android:layout_height="10dp"/>
+            android:layout_height="10dp" />
 
         <Button
             android:id="@+id/activity_doctor_main_btn_logout"

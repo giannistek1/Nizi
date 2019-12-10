@@ -81,6 +81,8 @@
     <string name="weight">Gewicht</string>
     <string name="save">Opslaan</string>
     <string name="patient_added">Patiënt toegevoegd</string>
+    <string name="data_of">Gegevens van</string>
+    <string name="trends">Trends</string>
 
 
     <string name="food_diary">Voedingsdagboek</string>

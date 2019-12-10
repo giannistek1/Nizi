@@ -62,7 +62,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/activity_add_patient_txt_firstName"
-            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginTop="@dimen/marginSmall"
             android:layout_marginStart="@dimen/marginNormal" />
 
         <!-- Last Name -->
@@ -84,7 +84,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/activity_add_patient_txt_lastName"
-            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginTop="@dimen/marginSmall"
             android:layout_marginStart="@dimen/marginNormal" />
 
         <!-- DoB -->
@@ -105,7 +105,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/activity_add_patient_txt_dob"
-            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginTop="@dimen/marginSmall"
             android:layout_marginStart="@dimen/marginNormal"
             android:inputType="text"
             android:hint="@string/date_of_birth"/>
@@ -129,20 +129,34 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/activity_add_patient_txt_weight"
-            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginTop="@dimen/marginSmall"
             android:layout_marginStart="@dimen/marginNormal" />
+
+        <!-- Guidelines -->
+        <TextView
+            android:id="@+id/activity_add_patient_txt_guidelines"
+            android:text="@string/guidelines"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/h1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_add_patient_et_weight"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginNormal"/>
 
         <Spinner
             android:id="@+id/activity_add_patient_spr_guidelines"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_patient_et_weight"
+            android:layout_below="@+id/activity_add_patient_txt_guidelines"
             android:layout_marginStart="@dimen/marginNormal"
+            android:layout_marginTop="@dimen/marginSmall"
+            android:layout_marginEnd="@dimen/marginNormal"
             android:background="@android:drawable/btn_dropdown"
             android:spinnerMode="dropdown"/>
 
         <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/activity_doctor_main_progressbar"
+            android:id="@+id/activity_add_patient_progressbar"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_above="@+id/activity_add_patient_btn_save"/>
