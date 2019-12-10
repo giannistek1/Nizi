@@ -1,21 +1,18 @@
 package nl.stekkinger.nizi
 
 import android.app.SearchManager
-import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import java.util.zip.Inflater
 import android.content.Context.SEARCH_SERVICE
-import android.content.SharedPreferences
 import android.util.Log
 import android.util.Log.d
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import nl.stekkinger.nizi.classes.Food
+import kotlinx.android.synthetic.main.fragment_add_food.view.*
 import nl.stekkinger.nizi.classes.FoodSearchAdapter
 import nl.stekkinger.nizi.repositories.FoodRepository
 
@@ -30,10 +27,6 @@ class AddFoodFragment: Fragment() {
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var adapter: FoodSearchAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_add_food, container, false)
 
@@ -43,12 +36,12 @@ class AddFoodFragment: Fragment() {
         val recyclerView: RecyclerView = view.findViewById(R.id.food_search_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        adapter = FoodSearchAdapter()
-        recyclerView.adapter = adapter
-
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
+
+        adapter = FoodSearchAdapter(model)
+        recyclerView.adapter = adapter
 
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
@@ -66,6 +59,8 @@ class AddFoodFragment: Fragment() {
                 }
             }
             searchView.setOnQueryTextListener(queryTextListener)
+        } else {
+            model.setFoodSearch("")
         }
 
         // get the results of food search
@@ -75,9 +70,5 @@ class AddFoodFragment: Fragment() {
         })
 
         return view
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 }

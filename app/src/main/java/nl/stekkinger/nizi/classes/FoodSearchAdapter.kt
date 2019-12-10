@@ -4,9 +4,9 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import nl.stekkinger.nizi.DiaryViewModel
@@ -30,7 +30,8 @@ class FoodSearchAdapter(
         return ViewHolder(view)
             .listen { pos, _ ->
                 var food = dataset[pos]
-                model.select(food)
+                val activity = view.context as AppCompatActivity
+                model.select(activity, food)
             }
     }
 
