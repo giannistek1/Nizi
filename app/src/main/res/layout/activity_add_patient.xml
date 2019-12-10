@@ -33,6 +33,7 @@
             <TextView
                 android:id="@+id/activity_add_patient_txt_header"
                 android:text="@string/profile_patient"
+                android:fontFamily="@font/segoe_ui_semibold"
                 android:textSize="@dimen/h1"
                 android:gravity="center"
                 android:textColor="@color/white"

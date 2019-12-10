@@ -2,6 +2,7 @@
 <resources>
     <dimen name="h1">24sp</dimen>
     <dimen name="h2">20sp</dimen>
+    <dimen name="h3">16sp</dimen>
 
     <dimen name="marginLeft">20dp</dimen>
     <dimen name="marginRight">20dp</dimen>

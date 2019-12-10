@@ -9,9 +9,8 @@ class PatientDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // setup UI
         setContentView(R.layout.activity_patient_detail)
-
-        // Get accesstoken
         activity_patient_detail_dataOfPatient.text = "${getString(R.string.data_of)} ${intent.getStringExtra("NAME")}"
     }
 }

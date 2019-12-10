@@ -18,7 +18,6 @@
         android:src="@drawable/rectangle"
         />
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -36,6 +35,7 @@
             <TextView
                 android:id="@+id/activity_doctor_main_txt_header"
                 android:textSize="@dimen/h1"
+                android:fontFamily="@font/segoe_ui_semibold"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:text="@string/patients"
@@ -51,6 +51,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/activity_doctor_main_ll_header"
+            android:layout_marginStart="@dimen/marginSmall"
             android:layout_marginTop="@dimen/marginNormal"
             android:inputType="text"
             android:hint="@string/search_by_name"/>
@@ -75,7 +76,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/activity_doctor_main_et_searchPatients"
-            android:layout_marginTop="@dimen/marginNormal">
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginStart="@dimen/marginSmall">
 
         </androidx.recyclerview.widget.RecyclerView>
 
