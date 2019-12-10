@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi
 
+import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
@@ -47,6 +48,8 @@ class MainActivity : AppCompatActivity() {
 
         // Obtain the token from the Intent's extras
         accessToken = intent.getStringExtra(EXTRA_ACCESS_TOKEN)
+        val preferences = getSharedPreferences("NIZI", Context.MODE_PRIVATE)
+        preferences.edit().putString("TOKEN", accessToken).apply()
 
         // Login
         loginPatientAsyncTask(accessToken)
