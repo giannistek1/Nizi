@@ -43,7 +43,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.6.1'
     // Navigation drawer
     implementation 'com.google.android.material:material:1.0.0'
-
+    // picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
     // Auth0
     implementation 'com.auth0.android:auth0:1.19.0'
 

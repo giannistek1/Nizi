@@ -2,8 +2,9 @@ package nl.stekkinger.nizi
 
 import nl.stekkinger.nizi.classes.AccessTokenResult
 import nl.stekkinger.nizi.classes.DoctorLogin
-import nl.stekkinger.nizi.classes.Patient
+import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.PatientLogin
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import java.text.SimpleDateFormat
@@ -67,9 +68,10 @@ interface ApiService {
 
     @GET("v1/food/partial/{foodName}/{count}")
     fun searchFoodDB(
+        @Header("Authorization") authHeader : String,
         @Path("foodName") foodName: String,
         @Path("count") count: Int
-    ) : Call<Unit>
+    ) : Call<ArrayList<Food>>
 
     @GET("v1/food/favorite/{patientId}")
     fun getFavoriteFoods(

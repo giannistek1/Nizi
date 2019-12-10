@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
 
     private var model: PatientLogin? = null
 
+    private lateinit var diaryModel: DiaryViewModel
+
     private lateinit var progressBar: View
 
     private lateinit var accessToken: String
@@ -35,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // UI
         setContentView(R.layout.activity_main)
+
+        diaryModel = ViewModelProviders.of(this)[DiaryViewModel::class.java]
 
         // Checks if  fragment state is null, else start with homeFragment
         if (savedInstanceState == null) {
