@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi
+package nl.stekkinger.nizi.activities
 
 import android.content.Intent
 import android.os.AsyncTask
@@ -6,12 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProviders
-import com.auth0.android.provider.WebAuthProvider.logout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import nl.stekkinger.nizi.classes.DoctorLogin
+import nl.stekkinger.nizi.fragments.DashboardFragment
+import nl.stekkinger.nizi.fragments.DiaryFragment
+import nl.stekkinger.nizi.fragments.HomeFragment
+import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.PatientLogin
 import nl.stekkinger.nizi.repositories.AuthRepository
 
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         accessToken = intent.getStringExtra(EXTRA_ACCESS_TOKEN)
 
         // Login
-        loginPatientAsyncTask(accessToken)
+        loginPatientAsyncTask().execute()
 
         activity_main_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
     }
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
 
-            R.id.nav_diary-> {
+            R.id.nav_diary -> {
                 val fragment = DiaryFragment()
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
                     .commit()
@@ -88,7 +88,7 @@ class MainActivity : AppCompatActivity() {
         finish()
     }
 
-    inner class loginPatientAsyncTask(accessToken: String) : AsyncTask<Void, Void, PatientLogin>()
+    inner class loginPatientAsyncTask() : AsyncTask<Void, Void, PatientLogin>()
     {
         override fun onPreExecute() {
             super.onPreExecute()

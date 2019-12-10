@@ -22,7 +22,7 @@
     <string name="register">Registreren</string>
     <string name="login">Inloggen</string>
     <string name="login_as_patient">Inloggen als patiënt</string>
-    <string name="login_as_doctor">Inloggen als doctor</string>
+    <string name="login_as_dietist">Inloggen als diëtist</string>
     <string name="logout">Uitloggen</string>
     <string name="username">Gebruikersnaam</string>
     <string name="password">Wachtwoord</string>
@@ -62,7 +62,10 @@
 
     <!-- doctor -->
     <string name="patients">Patiënten</string>
+    <string name="get_patients_success">Patiënten opgehaald!</string>
+    <string name="get_patients_fail">Patiënten ophalen mislukt!</string>
     <string name="search_by_name">Zoek op naam</string>
+
 
     <string name="food_diary">Voedingsdagboek</string>
 

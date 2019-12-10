@@ -2,6 +2,7 @@ package nl.stekkinger.nizi
 
 import nl.stekkinger.nizi.classes.AccessTokenResult
 import nl.stekkinger.nizi.classes.DoctorLogin
+import nl.stekkinger.nizi.classes.Patient
 import nl.stekkinger.nizi.classes.PatientLogin
 import retrofit2.Call
 import retrofit2.http.*
@@ -11,7 +12,7 @@ import java.text.SimpleDateFormat
 
 interface ApiService {
 
-    //region AccessToken
+    //region TEST AccessToken
     @POST("https://appnizi.eu.auth0.com/oauth/token")
     fun getAccessToken(
         @Header("content-type:application/json")
@@ -24,59 +25,59 @@ interface ApiService {
     //endregion
 
     //region Consumption
-    @POST("/v1/consumptions")
+    @POST("v1/consumptions")
     fun addConsumption(
 
     )
 
-    @GET("/v1/consumptions")
+    @GET("v1/consumptions")
     fun fetchConsumptions(
         @Query("patientId") patientId: Int,
         @Query("startDate") startDate: SimpleDateFormat,
         @Query("endDate") endDate: SimpleDateFormat
     )
 
-    @GET("/v1/consumption/{consumptionId}")
+    @GET("v1/consumption/{consumptionId}")
     fun fetchConsumptionById(
         @Path("consumptionId") consumptionId: Int
     ) : Call<Unit>
 
-    @PUT("/v1/consumption/{consumptionId}")
+    @PUT("v1/consumption/{consumptionId}")
     fun updateConsumptionById(
         @Path("consumptionId") consumptionId: Int
     ) : Call<Unit>
 
-    @DELETE("/v1/consumption/{consumptionId}")
+    @DELETE("v1/consumption/{consumptionId}")
     fun deleteConsumption(
         @Path("consumptionId") consumptionId: Int
     ) : Call<Unit>
     //endregion
 
     //region Food
-    @POST("/v1/food/favorite")
+    @POST("v1/food/favorite")
     fun addFoodToFavorites(
         @Field("patientId") patientId: Int,
         @Field("foodId") foodId: Int
     ) : Call<Unit>
 
-    @GET("/v1/food/{foodId}")
+    @GET("v1/food/{foodId}")
     fun getFood(
         @Path("foodId") foodId: Int
     ) : Call<Unit>
 
-    @GET("/v1/food/partial/{foodName}/{count}")
+    @GET("v1/food/partial/{foodName}/{count}")
     fun searchFoodDB(
         @Path("foodName") foodName: String,
         @Path("count") count: Int
     ) : Call<Unit>
 
-    @GET("/v1/food/favorite/{patientId}")
+    @GET("v1/food/favorite/{patientId}")
     fun getFavoriteFoods(
         @Path("patientId") patientId: Int
     ) : Call<Unit>
 
     // Staat hier ook een fout in bij swagger
-    @DELETE("/v1/food/favorite")
+    @DELETE("v1/food/favorite")
     fun deleteFoodFromFavorites(
         @Query("patientId") patientId: Int,
         @Query("foodId") foodId: Int
@@ -84,33 +85,33 @@ interface ApiService {
     //endregion
 
     //region WaterConsumption
-    @POST("/v1/waterconsumption")
+    @POST("v1/waterconsumption")
     fun addWaterConsumption(
 
     ) : Call<Unit>
 
-    @GET("/v1/waterconsumption/{waterId}")
+    @GET("v1/waterconsumption/{waterId}")
     fun getWaterConsumption(
         @Path("waterId") waterId: Int
     ) : Call<Unit>
 
-    @PUT("/v1/waterconsumption/{waterId}")
+    @PUT("v1/waterconsumption/{waterId}")
     fun updateWaterConsumption(
         @Path("waterId") waterId: Int
     ) : Call<Unit>
 
-    @DELETE("/v1/waterconsumption/{waterId}")
+    @DELETE("v1/waterconsumption/{waterId}")
     fun deleteWaterConsumption(
         @Path("waterId") waterId: Int
     ) : Call<Unit>
 
-    @GET("/v1/waterconsumption/daily/{patientId}")
+    @GET("v1/waterconsumption/daily/{patientId}")
     fun getWaterConsumptionByDate(
         @Path("patientId") patientId: Int,
         @Query("date") date: SimpleDateFormat
     ) : Call<Unit>
 
-    @GET("/v1/waterconsumption/period/{patientId}")
+    @GET("v1/waterconsumption/period/{patientId}")
     fun getWaterConsumptionByPeriod(
         @Path("patientId") patientId: Int,
         @Query("beginDate") beginDate: SimpleDateFormat,
@@ -120,13 +121,13 @@ interface ApiService {
 
     //region Patient
     // Staat twee fouten in Swagger
-    @GET("/v1/patients")
+    @GET("v1/patients")
     fun getPatients(
-
-    ) : Call<Unit>
+        @Header("Authorization") authHeader : String
+    ) : Call<List<Patient>>
 
     @FormUrlEncoded
-    @POST("/v1/patient")
+    @POST("v1/patient")
     fun registerPatient(
         @Header("Authorization") authHeader : String,
         @Field("firstName") firstName: String,
@@ -136,12 +137,12 @@ interface ApiService {
         @Field("doctorId") doctorId: Int
     ) : Call<Unit>
 
-    @GET("/v1/patient/{patientId}")
+    @GET("v1/patient/{patientId}")
     fun getPatient(
         @Path("patientId") patientId: Int
     ) : Call<Unit>
 
-    @DELETE("/v1/patient/{patientId}")
+    @DELETE("v1/patient/{patientId}")
     fun deletePatient(
         @Path("patientId") patientId: Int
     ) : Call<Unit>
@@ -182,50 +183,51 @@ interface ApiService {
 
     //region Doctor
     // /v1/doctor? niet /v1/doctors?
-    @GET("/v1/doctor")
+    @GET("v1/doctor")
     fun getDoctors(
 
     ) : Call<Unit>
 
-    @POST("/v1/doctor")
+    @POST("v1/doctor")
     fun addDoctor(
 
     ) : Call<Unit>
 
-    @GET("/v1/doctor/{doctorId}")
+    @GET("v1/doctor/{doctorId}")
     fun getDoctor(
         @Path("doctorId") doctorId: Int
     ) : Call<Unit>
 
-    @DELETE("/v1/doctor/{doctorId}")
+    @DELETE("v1/doctor/{doctorId}")
     fun deleteDoctor(
         @Path("doctorId") doctorId: Int
     ) : Call<Unit>
 
-    @GET("/v1/doctor/{doctorId}/patients")
+    @GET("v1/doctor/{doctorId}/patients")
     fun getPatientsFromDoctor(
+        @Header("Authorization") authHeader : String,
         @Path("doctorId") doctorId: Int
-    ) : Call<Unit>
+    ) : Call<List<Patient>>
 
     // Descriptie fout
-    @GET("/v1/login/doctor")
+    @GET("v1/login/doctor")
     fun loginAsDoctor(
         @Header("Authorization") authHeader : String
     ) : Call<DoctorLogin>
     //endregion
 
     //region DietaryManagement
-    @POST("/v1/dietaryManagement")
+    @POST("v1/dietaryManagement")
     fun addDietary(
 
     ) : Call<Unit>
 
-    @GET("/v1/dietaryManagement/{patientId}")
+    @GET("v1/dietaryManagement/{patientId}")
     fun getDietary(
         @Path("patientId") patientId: Int
     ) : Call<Unit>
 
-    @PUT("/v1/dietaryManagement/{dietId}")
+    @PUT("v1/dietaryManagement/{dietId}")
     fun updateDietary(
         @Path("dietId") dietId: Int
     ) : Call<Unit>

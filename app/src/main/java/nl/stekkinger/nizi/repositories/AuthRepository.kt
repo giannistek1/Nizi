@@ -30,13 +30,6 @@ class AuthRepository {
     val grant_type = "client_credentials"
     val test_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5ERkdPRFUxTnpJNFJEZ3lNakkxUmtFMU5EZ3dRMEUxTkVJM05UTTBSRGRFUTBFNE5FWkdNZyJ9.eyJpc3MiOiJodHRwczovL2FwcG5pemkuZXUuYXV0aDAuY29tLyIsInN1YiI6ImRWWXRtU3c1bTgxOW1YMm5TMnJhTVp3bzVsWGN3RGc2QGNsaWVudHMiLCJhdWQiOiJhcHBuaXppLm5sL2FwaSIsImlhdCI6MTU3NTc0OTM4MywiZXhwIjoxNTc1ODM1NzgzLCJhenAiOiJkVll0bVN3NW04MTltWDJuUzJyYU1ad281bFhjd0RnNiIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.B5SrwGFKykFMmae9zJi6e3TIpnWTIWycjT6IbOl2_2DLDrsbCzQv6Ny3jBdo-9qiJ4J8A1oeMe6qrsslKFfQDSz77hedsJRoTWNCHWnPle1gCgB4rbNvG1cnHo0vJZ2npSx0qJIzSEza0TZGVQ4soGzYiSADuBxLsws_bLKN3aXfk8ECoOKEiPeNo-5ZFmUprzhp9haxOahH5IrLXgMmRwPNKYKYgiavMhoiYDXkJIZoHmUABIrfQAwJ54XPLu6FfXQKJcMxCdr_Yd5G_0qxFVtNyZOBGHV1mPYlf2f0BoEE_ua7sWsjIJLsu8rhyzL8D15HNwY4RAtJRfB0D-F4Vw"
 
-    fun registerPatient(accessToken: String)
-    {
-        var authHeader = "Bearer " + test_token
-
-        // DoB = "YYYY-MM-DDT10:55:38.738Z"
-        service.registerPatient(authHeader, "Gianni", "Stekkinger", "1998-12-06T10:55:38.738Z", 60f, 1).execute().body()//.enqueue(loginAsPatientCallback)
-    }
 
     fun loginAsPatient(accessToken: String) : PatientLogin?
     {
@@ -47,7 +40,7 @@ class AuthRepository {
 
     fun loginAsDoctor(accessToken: String) : DoctorLogin?
     {
-        var authHeader = "Bearer " + test_token
+        var authHeader = "Bearer " + accessToken
 
         return service.loginAsDoctor(authHeader).execute().body()//.enqueue(loginAsPatientCallback)
     }

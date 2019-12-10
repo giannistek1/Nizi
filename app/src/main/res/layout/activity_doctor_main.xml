@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray"
-    tools:context=".DoctorMainActivity">
+    tools:context=".activities.DoctorMainActivity">
 
     <!-- HEADER -->
 
@@ -18,16 +18,16 @@
         />
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="@dimen/marginLeft"
         android:layout_marginRight="@dimen/marginRight"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:background="@color/white">
 
         <!-- Blue background -->
         <LinearLayout
+            android:id="@+id/activity_doctor_main_ll_header"
             android:background="@color/colorPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -45,6 +45,18 @@
 
         </LinearLayout>
 
+        <androidx.core.widget.ContentLoadingProgressBar
+            android:id="@+id/activity_patients_progressbar"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/activity_doctor_main_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/activity_doctor_main_ll_header">
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <Button
             android:id="@+id/activity_doctor_main_btn_logout"
@@ -54,16 +66,7 @@
             android:layout_marginLeft="@dimen/marginLeft"
             android:layout_marginRight="@dimen/marginRight"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/activity_patients_progressbar"
-            android:layout_width="10dp"
-            android:layout_height="10dp"/>
-
-        <!--<androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>-->
-
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
 </FrameLayout>

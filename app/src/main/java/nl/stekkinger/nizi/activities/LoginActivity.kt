@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi
+package nl.stekkinger.nizi.activities
 
 import android.app.Dialog
 import android.content.Context
@@ -21,6 +21,7 @@ import com.auth0.android.provider.VoidCallback
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
 import kotlinx.android.synthetic.main.activity_login.*
+import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DoctorLogin
 import nl.stekkinger.nizi.classes.PatientLogin
 
@@ -52,12 +53,12 @@ class LoginActivity : AppCompatActivity() {
         setContentView(R.layout.activity_login)
         activity_login_btn_loginAsPatient.setOnClickListener {
             isDoctor = false
-            prefs.edit().putBoolean(PREF_ISDOCTOR, false).apply()
+            prefs.edit().putBoolean(PREF_ISDOCTOR, isDoctor).commit()
             doLogin()
         }
         activity_login_btn_loginAsDoctor.setOnClickListener {
             isDoctor = true
-            prefs.edit().putBoolean(PREF_ISDOCTOR, true).apply()
+            prefs.edit().putBoolean(PREF_ISDOCTOR, isDoctor).commit()
             doLogin()
         }
 
@@ -102,8 +103,6 @@ class LoginActivity : AppCompatActivity() {
                     else
                         intent = Intent(this@LoginActivity, MainActivity::class.java)
                     intent.putExtra(EXTRA_ACCESS_TOKEN, credentials.accessToken)
-                    intent.putExtra(EXTRA_ID_TOKEN, credentials.idToken)
-                    //intent.putExtra(EXTRA_ISDOCTOR, isDoctor)
                     startActivity(intent)
                     finish()
                 }
@@ -152,7 +151,6 @@ class LoginActivity : AppCompatActivity() {
         override fun onSuccess(credentials: Credentials) {
             credentialsManager?.let {
                 it.saveCredentials(credentials)
-                prefs.edit().remove(PREF_ISDOCTOR).commit()
                 showNextActivity()
 
                 Log.d(TAG, "Succesfully logged in!")
@@ -164,6 +162,7 @@ class LoginActivity : AppCompatActivity() {
         override fun onSuccess(payload: Void?) {
             credentialsManager?.let {
                 it.clearCredentials()
+                prefs.edit().remove(PREF_ISDOCTOR).commit()
                 Log.d(TAG, "Succesfully logged out!")
             }
         }
