@@ -29,7 +29,7 @@ class FoodRepository {
 
         var authHeader = "Bearer " + test_token
 
-        service.searchFoodDB(authHeader = authHeader, foodName = "b", count = 5).enqueue(object: Callback<ArrayList<Food>> {
+        service.searchFoodDB(authHeader = authHeader, foodName = search, count = 10).enqueue(object: Callback<ArrayList<Food>> {
             override fun onResponse(call: Call<ArrayList<Food>>, response: Response<ArrayList<Food>>) {
                 if (response.isSuccessful && response.body() != null) {
                     for (food: Food in response.body()!!) {

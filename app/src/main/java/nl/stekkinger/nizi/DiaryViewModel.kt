@@ -29,7 +29,12 @@ class DiaryViewModel(
         return mFoodSearch
     }
 
-    fun select(food: Food) {
-        // switch to detail fragment
+    // for food view fragment
+    val selected = MutableLiveData<Food>()
+
+    // load the food view fragment with the selected food
+    fun select(activity: AppCompatActivity, food: Food) {
+        (activity).supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, FoodViewFragment()).commit()
+        selected.value = food
     }
 }
