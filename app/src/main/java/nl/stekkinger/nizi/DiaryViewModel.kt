@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -26,5 +27,9 @@ class DiaryViewModel(
 
     fun getFoodSearch(): LiveData<ArrayList<Food>> {
         return mFoodSearch
+    }
+
+    fun select(food: Food) {
+        // switch to detail fragment
     }
 }

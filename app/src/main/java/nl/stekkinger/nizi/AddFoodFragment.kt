@@ -13,6 +13,10 @@ import android.util.Log
 import android.util.Log.d
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import nl.stekkinger.nizi.classes.Food
+import nl.stekkinger.nizi.classes.FoodSearchAdapter
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
@@ -21,9 +25,12 @@ class AddFoodFragment: Fragment() {
     private lateinit var model: DiaryViewModel
     private lateinit var searchView: SearchView
     private lateinit var queryTextListener: SearchView.OnQueryTextListener
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: RecyclerView.Adapter<*>
+    private lateinit var viewManager: RecyclerView.LayoutManager
+    private lateinit var adapter: FoodSearchAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
     }
 
@@ -32,6 +39,12 @@ class AddFoodFragment: Fragment() {
 
         val searchView = view.findViewById(R.id.search_food) as SearchView
         val searchManager: SearchManager = activity!!.getSystemService(SEARCH_SERVICE) as SearchManager
+
+        val recyclerView: RecyclerView = view.findViewById(R.id.food_search_recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+
+        adapter = FoodSearchAdapter()
+        recyclerView.adapter = adapter
 
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
@@ -58,6 +71,7 @@ class AddFoodFragment: Fragment() {
         // get the results of food search
         model.getFoodSearch().observe(viewLifecycleOwner, Observer { foodList ->
             d("LOGLIST", foodList.toString())
+            adapter.setFoodList(foodList)
         })
 
         return view
