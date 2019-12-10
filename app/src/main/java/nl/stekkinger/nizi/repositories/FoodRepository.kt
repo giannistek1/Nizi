@@ -23,8 +23,9 @@ class FoodRepository {
     val grant_type = "client_credentials"
     val test_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5ERkdPRFUxTnpJNFJEZ3lNakkxUmtFMU5EZ3dRMEUxTkVJM05UTTBSRGRFUTBFNE5FWkdNZyJ9.eyJpc3MiOiJodHRwczovL2FwcG5pemkuZXUuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDVkZGZiM2I5MjlmOWNkMGUzMjA0MDViZiIsImF1ZCI6WyJhcHBuaXppLm5sL2FwaSIsImh0dHBzOi8vYXBwbml6aS5ldS5hdXRoMC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNTc1OTY2ODk0LCJleHAiOjE1NzYwNTMyOTQsImF6cCI6InU5MzdvZncwQllQR1VIUGdOVXJmQnBzcElhMFZTQzg2Iiwic2NvcGUiOiJvcGVuaWQifQ.Vd3PdGhs0slRbkhbHkHwB_BM-Ch5Tij497cZJqM29FpOLI8DZMNpG0yeJSS2PJXRWrst8kcHf7VhZvvC22kttRCcGiDum-_1wBvfXT4sB0k5xMh75hRufV5doN47cLR6wXAnt7OzjI5u5huoxcG1afKo1hCkrHOz7v-liSUGqXbbj5sKAA0Krm640_eQKY4bjyU2VkOduZbgyDo0DZ_tzJ9xHutPxhEDA_TkTmyRgSeRey5di3ZUunf0-nw1lN6Xs7lMYHowPe39-u0EIW8f90aY8kmsVC2LM3kUr9w7w0gzd3ebXK00IJhwlwcTMMAXmWZeNUACPg144VS1IfXZCQ"
 
-    fun searchFood(search: String): ArrayList<Food>? {
+    fun searchFood(search: String): MutableLiveData<ArrayList<Food>?> {
         var foodList: ArrayList<Food> = arrayListOf()
+        val result = MutableLiveData<ArrayList<Food>?>()
 
         var authHeader = "Bearer " + test_token
 
@@ -35,6 +36,7 @@ class FoodRepository {
                         Log.i("onResponse", food.toString())
                         foodList.add(food)
                     }
+                    result.value = foodList
                 } else {
                     d("rene", "response, not succesfull: ${response.body()}")
                 }
@@ -43,7 +45,7 @@ class FoodRepository {
                 d("rene", "onFailure")
             }
         })
-        return foodList
+        return result
     }
 
 

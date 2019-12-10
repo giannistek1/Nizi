@@ -12,11 +12,19 @@ class DiaryViewModel(
     private var searchText: MutableLiveData<String> = MutableLiveData()
 ) : ViewModel() {
 
-//    private var mSearchFood: LiveData<Food> = Transformations.switchMap<String, Food>(
-//        searchText
-//    ) { text ->  getFoodSearch(text) }
+    private var mFoodSearch: LiveData<ArrayList<Food>> = Transformations.switchMap<String, ArrayList<Food>>(
+        searchText
+    ) { search ->  foodSearch(search) }
 
-//    private fun getFoodSearch(searchText: String): MutableLiveData<Food> {
-//        return mRepository.searchFood(searchText)
-//    }
+    private fun foodSearch(searchText: String): MutableLiveData<ArrayList<Food>?> {
+        return mRepository.searchFood(searchText)
+    }
+
+    fun setFoodSearch(text: String) {
+        searchText.value = text
+    }
+
+    fun getFoodSearch(): LiveData<ArrayList<Food>> {
+        return mFoodSearch
+    }
 }

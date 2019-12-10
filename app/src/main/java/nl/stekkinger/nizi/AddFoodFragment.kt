@@ -11,6 +11,8 @@ import android.content.Context.SEARCH_SERVICE
 import android.content.SharedPreferences
 import android.util.Log
 import android.util.Log.d
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
@@ -31,8 +33,10 @@ class AddFoodFragment: Fragment() {
         val searchView = view.findViewById(R.id.search_food) as SearchView
         val searchManager: SearchManager = activity!!.getSystemService(SEARCH_SERVICE) as SearchManager
 
-        val prefs: SharedPreferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
-        prefs.getString("token", "")
+        model = activity?.run {
+            ViewModelProviders.of(this)[DiaryViewModel::class.java]
+        } ?: throw Exception("Invalid Activity")
+
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
 
@@ -44,14 +48,17 @@ class AddFoodFragment: Fragment() {
                 }
 
                 override fun onQueryTextSubmit(query: String): Boolean {
-//                    d("log", mRepository.searchFood(query)!!.toString())
-                    var wil = mRepository.searchFood(query)
-                    d("logG", wil.toString())
+                    model.setFoodSearch(query)
                     return true
                 }
             }
             searchView.setOnQueryTextListener(queryTextListener)
         }
+
+        // get the results of food search
+        model.getFoodSearch().observe(viewLifecycleOwner, Observer { foodList ->
+            d("LOGLIST", foodList.toString())
+        })
 
         return view
     }
