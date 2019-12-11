@@ -38,13 +38,10 @@ class FoodSearchAdapter(
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var food : Food = dataset[position]
-        val tmpPicture = "https://vaperztx.com/wp-content/uploads/2016/02/bynytdy6elugfira8nsh.jpg"
-        val uri: Uri = Uri.parse(tmpPicture)
-        Picasso.get().load(tmpPicture).resize(40, 40).into(holder.image) // TODO: food.Picture
-        holder.image.setImageURI(uri)
+        Picasso.get().load(food.Picture).resize(40, 40).into(holder.image)
+//        holder.image.setImageURI(uri)
         holder.title.text = food.Name
         holder.summary.text = food.PortionSize.toString() + " " + food.WeightUnit
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
