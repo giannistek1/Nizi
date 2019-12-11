@@ -1,9 +1,11 @@
 package nl.stekkinger.nizi
 
+import com.google.gson.JsonObject
 import nl.stekkinger.nizi.classes.AccessTokenResult
 import nl.stekkinger.nizi.classes.DoctorLogin
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.PatientLogin
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -128,15 +130,10 @@ interface ApiService {
         @Header("Authorization") authHeader : String
     ) : Call<List<Patient>>
 
-    @FormUrlEncoded
     @POST("v1/patient")
     fun registerPatient(
         @Header("Authorization") authHeader : String,
-        @Field("firstName") firstName: String,
-        @Field("lastName") lastName: String,
-        @Field("dateOfBirth") dateOfBirth: String,
-        @Field("weight") weight: Float,
-        @Field("doctorId") doctorId: Int
+        @Body body: PatientLogin
     ) : Call<Unit>
 
     @GET("v1/patient/{patientId}")

@@ -3,6 +3,8 @@ package nl.stekkinger.nizi.repositories
 import android.util.Log.d
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import nl.stekkinger.nizi.ApiService
 import nl.stekkinger.nizi.classes.*
 import retrofit2.Call
@@ -23,8 +25,15 @@ class PatientRepository {
     {
         var authHeader = "Bearer " + accessToken
 
+        val account = Account(20, "Patient")
+        val patient = Patient(57, 57, doctorId = doctorId, firstName = firstName, lastName = lastName, dateOfBirth = dateOfBirth, weightInKilograms = weight, guid = " ")
+        val doctor = Doctor(doctorId, "Dr", "Pepper", "Maastricht")
+        val authLogin = AuthLogin(" ", Token(" "," "))
+
+        val newPatientLogin = PatientLogin(account, patient, doctor, authLogin)
+
         // DoB = "YYYY-MM-DDT10:55:38.738Z"
-        service.registerPatient(authHeader, firstName, lastName, dateOfBirth, weight, doctorId).execute().body()//.enqueue(loginAsPatientCallback)
+        service.registerPatient(authHeader, newPatientLogin).execute()//.enqueue(loginAsPatientCallback)
     }
 
     fun getPatientsFromDoctor(accessToken: String, doctorId: Int) : List<Patient>?
