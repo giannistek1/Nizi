@@ -36,15 +36,30 @@ class AddPatientActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         progressBar = activity_add_patient_progressbar
 
-        activity_add_patient_btn_save.setOnClickListener { registerPatient()  }
+        activity_add_patient_btn_save.setOnClickListener {
+            // Checks
+            if (activity_add_patient_et_firstName.text.toString() == "") {
+                return@setOnClickListener
+            }
+
+            if (activity_add_patient_et_lastName.text.toString() == "") {
+                return@setOnClickListener
+            }
+
+            if (activity_add_patient_et_dob.text.toString() == "") {
+                return@setOnClickListener
+            }
+
+            if (activity_add_patient_et_weight.text.toString() == "") {
+                return@setOnClickListener
+            }
+
+            registerPatientAsyncTask().execute()  }
 
         // Get doctorId
         doctorId = intent.getIntExtra(EXTRA_DOCTOR_ID, 0)
     }
 
-    private fun registerPatient() {
-        registerPatientAsyncTask().execute()
-    }
 
     inner class registerPatientAsyncTask() : AsyncTask<Void, Void, Void>()
     {

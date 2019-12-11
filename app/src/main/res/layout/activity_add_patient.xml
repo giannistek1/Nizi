@@ -111,7 +111,7 @@
             android:layout_below="@+id/activity_add_patient_txt_dob"
             android:layout_marginTop="@dimen/marginSmall"
             android:layout_marginStart="@dimen/marginNormal"
-            android:inputType="text"
+            android:inputType="date"
             android:hint="@string/date_of_birth"/>
 
         <!-- Weight -->
@@ -129,7 +129,7 @@
 
         <EditText
             android:id="@+id/activity_add_patient_et_weight"
-            android:inputType="text"
+            android:inputType="numberDecimal"
             android:hint="@string/weight"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
