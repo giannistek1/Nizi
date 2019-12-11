@@ -1,24 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/title_food_view"
+        android:textColor="@color/black"
+        android:textSize="@dimen/h2"
+        android:layout_marginTop="@dimen/marginNormal"
+        android:layout_marginBottom="@dimen/marginNormal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        tools:text="Title"/>
+
+    <ImageView
+        android:id="@+id/image_food_view"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_below="@+id/title_food_view"
+        android:src="@drawable/ic_food"/>
+
+    <LinearLayout
+        android:id="@+id/serving_size_section"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/image_food_view">
 
         <TextView
-            android:id="@+id/title_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textSize="@dimen/h1"
-            android:gravity="center"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2"
             android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            tools:text="Title"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/servings" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/serving_size_value"
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="0 gram"/>
 
-</LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/serving_input_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/serving_size_section">
+
+        <TextView
+            android:id="@+id/serving_input_label"
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nr_servings" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_marginLeft="@dimen/marginLeft"
+            android:id="@+id/serving_input_value"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1"
+                android:inputType="number"
+                android:maxLength="3"
+                android:textColorHighlight="@color/colorPrimary" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/food_view_nutrition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/h1"
+        android:text="@string/nutricion_values"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/marginNormal"
+        android:layout_marginBottom="@dimen/marginNormal"
+        android:layout_below="@+id/serving_input_section"/>
+
+    <!-- All nutricien values -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/food_view_nutrition"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="@string/calories"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp" />
+            
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_calories_s"/>
+
+            <TextView
+                android:id="@+id/calories_value_food_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                tools:text="0 kcal"/>
+            
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="@string/fibers"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_calories_s"/>
+
+            <TextView
+                android:id="@+id/fiber_value_food_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                tools:text="0 kcal"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="@string/proteins"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_calories_s"/>
+
+            <TextView
+                android:id="@+id/protein_value_food_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                tools:text="0 kcal"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="@string/water"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_calories_s"/>
+
+            <TextView
+                android:id="@+id/water_value_food_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                tools:text="0 kcal"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="@string/sodium"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_calories_s"/>
+
+            <TextView
+                android:id="@+id/sodium_value_food_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                tools:text="0 kcal"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:text="@string/calcium"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_calories_s"/>
+
+            <TextView
+                android:id="@+id/calcium_value_food_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14dp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                tools:text="0 kcal"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

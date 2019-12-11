@@ -36,11 +36,15 @@
     <string name="nierstichting_phonenumber_desc">Op werkdagen tussen 09.00 en 17.00 uur</string>
     <string name="nierstichting_email">info@nierstichting.nl</string>
 
+    <!-- food related -->
     <string name="today">Vandaag</string>
     <string name="guidelines">Richtlijnen</string>
+    <string name="nutricion_values">VOEDINGSWAARDEN</string>
     <string name="calories">Calorieën</string>
-    <string name="natrium">Natrium</string>
-    <string name="kalium">Kalium</string>
+    <string name="fibers">Vezels</string>
+    <string name="sodium">Natrium</string>
+    <string name="calcium">Kalium</string>
+    <string name="water">Vocht</string>
     <string name="moisture">Vocht</string>
     <string name="proteins">Eiwitten</string>
     <string name="miligram_short">mg</string>
@@ -56,7 +60,8 @@
     <string name="favorites">Favorieten</string>
     <string name="search_product">Product zoeken</string>
     <string name="scan_product">Scan product</string>
-    <string name="portion">Portie</string>
+    <string name="servings">Portie: </string>
+    <string name="nr_servings">Aantal porties: </string>
 
     <!-- Dashboard -->
     <string name="statistics">Statistieken</string>
