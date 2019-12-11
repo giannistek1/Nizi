@@ -2,9 +2,8 @@ package nl.stekkinger.nizi
 
 import android.os.Bundle
 import android.util.Log.d
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -16,9 +15,13 @@ class FoodViewFragment : Fragment() {
 
     private lateinit var model: DiaryViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view: View = inflater.inflate(R.layout.fragment_food_view, container, false)
-        //TODO: add food item data
+        setHasOptionsMenu(true)
 
         // get the DiaryViewModel
         model = activity?.run {
@@ -34,11 +37,25 @@ class FoodViewFragment : Fragment() {
             fiber_value_food_view.text = food.Fiber.toString() + " g"
             protein_value_food_view.text = food.Protein.toString() + " g"
             water_value_food_view.text = "10 g" // TODO update API with water input
-            sodium_value_food_view.text = (food.Sodium*1000).toString() + " mg"
-            calcium_value_food_view.text = (food.Calcium*1000).toString() + " mg"
+            sodium_value_food_view.text = (food.Sodium * 1000).toString() + " mg"
+            calcium_value_food_view.text = (food.Calcium * 1000).toString() + " mg"
 
         })
 
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_confirm, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.confirm_add_food -> {
+                Toast.makeText(this.context, "adding", Toast.LENGTH_LONG).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }
