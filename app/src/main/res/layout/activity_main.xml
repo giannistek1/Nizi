@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray"
@@ -20,15 +19,6 @@
             android:layout_width="10dp"
             android:layout_height="10dp"/>
     </RelativeLayout>
-
-    <Button
-        android:id="@+id/activity_main_btn_logout"
-        android:text="@string/logout"
-        android:background="@color/colorAccent"
-        android:textColor="@android:color/white"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/activity_main_bottom_navigation"/>
 
     <!-- Navigation -->
     <com.google.android.material.bottomnavigation.BottomNavigationView

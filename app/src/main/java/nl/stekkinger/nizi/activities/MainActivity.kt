@@ -1,21 +1,23 @@
 package nl.stekkinger.nizi.activities
 
-import android.content.Context
 import android.content.Intent
+import android.drm.DrmStore
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-import nl.stekkinger.nizi.DiaryViewModel
+import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.fragments.DashboardFragment
-import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.fragments.HomeFragment
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.PatientLogin
+import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository
 
 class MainActivity : AppCompatActivity() {
@@ -24,7 +26,6 @@ class MainActivity : AppCompatActivity() {
 
     // Shared preferences/extras
     val EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS"
-    val EXTRA_ACCESS_TOKEN = "com.auth0.ACCESS_TOKEN"
 
     private val authRepository: AuthRepository = AuthRepository()
 
@@ -33,8 +34,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var diaryModel: DiaryViewModel
 
     private lateinit var progressBar: View
-
-    private lateinit var accessToken: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,12 +49,6 @@ class MainActivity : AppCompatActivity() {
                 .commit()
         }
         progressBar = activity_main_progressbar
-        activity_main_btn_logout.setOnClickListener { logout() }
-
-        // Obtain the token from the Intent's extras
-        accessToken = intent.getStringExtra(EXTRA_ACCESS_TOKEN)
-        val preferences = getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-        preferences.edit().putString("TOKEN", accessToken).apply()
 
         // Login
         loginPatientAsyncTask().execute()
@@ -89,6 +82,23 @@ class MainActivity : AppCompatActivity() {
         false
     }
 
+    //region Toolbar
+    // Inflates toolbar
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId)
+        {
+            R.id.menu_toolbar_logout -> {
+                logout()
+            }
+        }
+        return true
+    }
+    //endregion
 
     private fun logout() {
         val intent = Intent(this@MainActivity, LoginActivity::class.java)
@@ -106,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): PatientLogin? {
-            return authRepository.loginAsPatient(accessToken)
+            return authRepository.loginAsPatient()
         }
 
         override fun onPostExecute(result: PatientLogin?) {

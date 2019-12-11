@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import nl.stekkinger.nizi.DiaryViewModel
 import nl.stekkinger.nizi.R
 
 class FoodSearchAdapter(

@@ -76,25 +76,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/activity_doctor_main_et_searchPatients"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginStart="@dimen/marginSmall">
+            android:layout_marginTop="@dimen/marginNormal">
 
         </androidx.recyclerview.widget.RecyclerView>
 
         <androidx.core.widget.ContentLoadingProgressBar
             android:id="@+id/activity_doctor_main_progressbar"
-            android:layout_width="10dp"
-            android:layout_height="10dp" />
-
-        <Button
-            android:id="@+id/activity_doctor_main_btn_logout"
-            android:text="@string/logout"
-            android:background="@color/colorAccent"
-            android:textColor="@android:color/white"
-            android:layout_marginStart="@dimen/marginLeft"
-            android:layout_marginEnd="@dimen/marginRight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"/>
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
     </RelativeLayout>
 </FrameLayout>

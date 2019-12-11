@@ -103,7 +103,9 @@ class LoginActivity : AppCompatActivity() {
                         intent = Intent(this@LoginActivity, DoctorMainActivity::class.java)
                     else
                         intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    intent.putExtra(EXTRA_ACCESS_TOKEN, credentials.accessToken)
+                    // Save token in sharedPrefs
+                    val preferences = getSharedPreferences("NIZI", Context.MODE_PRIVATE)
+                    preferences.edit().putString("TOKEN", credentials.accessToken).apply()
                     startActivity(intent)
                     finish()
                 }
@@ -151,6 +153,7 @@ class LoginActivity : AppCompatActivity() {
 
         override fun onSuccess(credentials: Credentials) {
             d("cr", credentials.accessToken)
+
             credentialsManager?.let {
                 it.saveCredentials(credentials)
                 showNextActivity()
@@ -164,7 +167,8 @@ class LoginActivity : AppCompatActivity() {
         override fun onSuccess(payload: Void?) {
             credentialsManager?.let {
                 it.clearCredentials()
-                prefs.edit().remove(PREF_ISDOCTOR).commit()
+                prefs.edit().remove("TOKEN").apply()
+                prefs.edit().remove(PREF_ISDOCTOR).apply()
                 Log.d(TAG, "Succesfully logged out!")
             }
         }

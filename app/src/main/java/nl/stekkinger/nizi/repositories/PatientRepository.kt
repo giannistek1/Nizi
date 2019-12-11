@@ -1,11 +1,13 @@
 package nl.stekkinger.nizi.repositories
 
+import android.content.Context
 import android.util.Log.d
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import nl.stekkinger.nizi.ApiService
+import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.classes.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -21,7 +23,10 @@ class PatientRepository {
 
     private val TAG = "PatientRepository"
 
-    fun registerPatient(accessToken: String, firstName: String, lastName: String, dateOfBirth: String, weight: Float, doctorId: Int)
+    var preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
+    var accessToken = preferences.getString("TOKEN", null)
+
+    fun registerPatient(firstName: String, lastName: String, dateOfBirth: String, weight: Float, doctorId: Int)
     {
         var authHeader = "Bearer " + accessToken
 
@@ -36,7 +41,7 @@ class PatientRepository {
         service.registerPatient(authHeader, newPatientLogin).execute()//.enqueue(loginAsPatientCallback)
     }
 
-    fun getPatientsFromDoctor(accessToken: String, doctorId: Int) : List<Patient>?
+    fun getPatientsFromDoctor(doctorId: Int) : List<Patient>?
     {
         var authHeader = "Bearer " + accessToken
 

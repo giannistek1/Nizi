@@ -1,13 +1,14 @@
-package nl.stekkinger.nizi
+package nl.stekkinger.nizi.fragments
 
 import android.os.Bundle
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.Food
 
 class FoodViewFragment : Fragment() {

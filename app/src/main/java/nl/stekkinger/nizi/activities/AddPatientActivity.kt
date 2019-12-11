@@ -17,13 +17,11 @@ class AddPatientActivity : AppCompatActivity() {
 
     private var TAG = "AddPatient"
 
-    val EXTRA_ACCESS_TOKEN = "com.auth0.ACCESS_TOKEN"
     val EXTRA_DOCTOR_ID = "DOCTOR_ID"
 
     private val patientRepository: PatientRepository = PatientRepository()
 
     private lateinit var progressBar: View
-    private lateinit var accessToken: String
 
     private lateinit var mFirstName: String
     private lateinit var mLastName: String
@@ -34,12 +32,13 @@ class AddPatientActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_patient)
+
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         progressBar = activity_add_patient_progressbar
 
         activity_add_patient_btn_save.setOnClickListener { registerPatient()  }
 
-        // Get accesstoken & doctorId
-        accessToken = intent.getStringExtra(EXTRA_ACCESS_TOKEN)
+        // Get doctorId
         doctorId = intent.getIntExtra(EXTRA_DOCTOR_ID, 0)
     }
 
@@ -62,7 +61,7 @@ class AddPatientActivity : AppCompatActivity() {
 
         override fun doInBackground(vararg p0: Void?): Void? {
             doctorId?.let {
-                patientRepository.registerPatient(accessToken, mFirstName, mLastName, mDateOfBirth, mWeight, it)
+                patientRepository.registerPatient(mFirstName, mLastName, mDateOfBirth, mWeight, it)
             }
             return null
         }

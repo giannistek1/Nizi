@@ -1,11 +1,12 @@
-package nl.stekkinger.nizi
+package nl.stekkinger.nizi.classes
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import nl.stekkinger.nizi.classes.*
+import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.fragments.FoodViewFragment
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 class DiaryViewModel(
@@ -34,7 +35,10 @@ class DiaryViewModel(
 
     // load the food view fragment with the selected food
     fun select(activity: AppCompatActivity, food: Food) {
-        (activity).supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, FoodViewFragment()).commit()
+        (activity).supportFragmentManager.beginTransaction().replace(
+            R.id.activity_main_fragment_container,
+            FoodViewFragment()
+        ).commit()
         selected.value = food
     }
 }

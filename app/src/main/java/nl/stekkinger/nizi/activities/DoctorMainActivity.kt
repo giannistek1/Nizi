@@ -4,9 +4,12 @@ import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_doctor_main.*
 import nl.stekkinger.nizi.adapters.PatientAdapter
 import nl.stekkinger.nizi.adapters.PatientAdapterListener
@@ -20,7 +23,6 @@ class DoctorMainActivity : AppCompatActivity() {
     private var TAG = "DoctorMain"
 
     val EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS"
-    val EXTRA_ACCESS_TOKEN = "com.auth0.ACCESS_TOKEN"
     val EXTRA_DOCTOR_ID = "DOCTOR_ID"
 
     private val authRepository: AuthRepository = AuthRepository()
@@ -29,28 +31,41 @@ class DoctorMainActivity : AppCompatActivity() {
     private lateinit var model: DoctorLogin
 
     private lateinit var progressBar: View
-    private lateinit var accessToken: String
     val patientList = ArrayList<PatientItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_doctor_main)
         progressBar = activity_doctor_main_progressbar
-        activity_doctor_main_btn_logout.setOnClickListener { logout() }
-
-        // Get accesstoken
-        accessToken = intent.getStringExtra(EXTRA_ACCESS_TOKEN)
 
         // Login as doctor for doctor data
         loginDoctorAsyncTask().execute()
 
         activity_doctor_main_btn_addPatient.setOnClickListener {
             val intent: Intent = Intent(this@DoctorMainActivity, AddPatientActivity::class.java)
-            intent.putExtra(EXTRA_ACCESS_TOKEN, accessToken)
             intent.putExtra(EXTRA_DOCTOR_ID, model.doctor.doctorId)
             startActivity(intent)
         }
     }
+
+    //region Toolbar
+    // Inflates toolbar
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId)
+        {
+            R.id.menu_toolbar_logout -> {
+                logout()
+            }
+        }
+        return true
+    }
+
+    //endregion
 
     private fun setupRecyclerView() {
 
@@ -58,7 +73,7 @@ class DoctorMainActivity : AppCompatActivity() {
         val listener = object: PatientAdapterListener
         {
             override fun onItemClick(position: Int) {
-                // Open detail page when clickec
+                // Open detail page when clicked
                 val intent: Intent = Intent(this@DoctorMainActivity, PatientDetailActivity::class.java)
 
                 intent.putExtra("NAME", "${patientList[position].name}")
@@ -91,7 +106,7 @@ class DoctorMainActivity : AppCompatActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): DoctorLogin? {
-            return authRepository.loginAsDoctor(accessToken)
+            return authRepository.loginAsDoctor()
         }
 
         override fun onPostExecute(result: DoctorLogin?) {
@@ -119,10 +134,7 @@ class DoctorMainActivity : AppCompatActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): List<Patient>? {
-            model?.let {
-                return patientRepository.getPatientsFromDoctor(accessToken, it.doctor.doctorId)
-            }
-            return null
+                return patientRepository.getPatientsFromDoctor(model.doctor.doctorId)
         }
 
         override fun onPostExecute(result: List<Patient>?) {

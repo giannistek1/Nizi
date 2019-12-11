@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi
+package nl.stekkinger.nizi.fragments
 
 import android.app.SearchManager
 import android.os.Bundle
@@ -12,7 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_add_food.view.*
+import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.FoodSearchAdapter
 import nl.stekkinger.nizi.repositories.FoodRepository
 
