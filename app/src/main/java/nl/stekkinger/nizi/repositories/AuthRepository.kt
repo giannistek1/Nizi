@@ -1,11 +1,15 @@
 package nl.stekkinger.nizi.repositories
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log.d
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import nl.stekkinger.nizi.ApiService
 import nl.stekkinger.nizi.NiziApplication
+import nl.stekkinger.nizi.activities.LoginActivity
 import nl.stekkinger.nizi.classes.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,6 +30,8 @@ class AuthRepository {
 
     private val TAG = "AuthRepository"
 
+    val EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS"
+
     val client_id = "dVYtmSw5m819mX2nS2raMZwo5lXcwDg6"
     val client_secret = "vN6N5HNG25MP-gjBPsVhf01dzuIPqAixFFImtGUU4vy4RuJwFEYcPnJg4r6EOOdr"
     val audience = "appnizi.nl/api"
@@ -34,19 +40,21 @@ class AuthRepository {
 
     var preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
     var accessToken = preferences.getString("TOKEN", null)
+    var authHeader = "Bearer " + accessToken
 
-    fun loginAsPatient() : PatientLogin?
-    {
-        var authHeader = "Bearer " + accessToken
-
+    fun loginAsPatient() : PatientLogin? {
         return service.loginAsPatient(authHeader).execute().body()//.enqueue(loginAsPatientCallback)
     }
 
-    fun loginAsDoctor() : DoctorLogin?
-    {
-        var authHeader = "Bearer " + accessToken
-
+    fun loginAsDoctor() : DoctorLogin? {
         return service.loginAsDoctor(authHeader).execute().body()//.enqueue(loginAsPatientCallback)
+    }
+
+    fun logout(context: Context, activity: AppCompatActivity) {
+        val newIntent = Intent(context, LoginActivity::class.java)
+        newIntent.putExtra(EXTRA_CLEAR_CREDENTIALS, true)
+        activity.startActivity(newIntent)
+        activity.finish()
     }
 
     private val service: ApiService = getApiService()

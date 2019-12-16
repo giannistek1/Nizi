@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi.classes
+package nl.stekkinger.nizi.classes.wont_use
 
 // For test tokens (NOT USED)
 data class AccessTokenResult (

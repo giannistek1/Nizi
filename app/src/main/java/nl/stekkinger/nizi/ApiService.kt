@@ -1,12 +1,9 @@
 package nl.stekkinger.nizi
 
-import com.google.gson.JsonObject
-import nl.stekkinger.nizi.classes.AccessTokenResult
+import nl.stekkinger.nizi.classes.wont_use.AccessTokenResult
 import nl.stekkinger.nizi.classes.DoctorLogin
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.PatientLogin
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 import java.text.SimpleDateFormat
@@ -206,7 +203,7 @@ interface ApiService {
     fun getPatientsFromDoctor(
         @Header("Authorization") authHeader : String,
         @Path("doctorId") doctorId: Int
-    ) : Call<List<Patient>>
+    ) : Call<ArrayList<Patient>>
 
     // Descriptie fout
     @GET("v1/login/doctor")

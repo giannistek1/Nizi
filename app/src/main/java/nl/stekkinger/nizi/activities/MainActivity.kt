@@ -10,6 +10,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import com.auth0.android.provider.WebAuthProvider.logout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import nl.stekkinger.nizi.classes.DiaryViewModel
@@ -93,19 +94,12 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId)
         {
             R.id.menu_toolbar_logout -> {
-                logout()
+                authRepository.logout(this, this)
             }
         }
         return true
     }
     //endregion
-
-    private fun logout() {
-        val intent = Intent(this@MainActivity, LoginActivity::class.java)
-        intent.putExtra(EXTRA_CLEAR_CREDENTIALS, true)
-        startActivity(intent)
-        finish()
-    }
 
     inner class loginPatientAsyncTask() : AsyncTask<Void, Void, PatientLogin>()
     {

@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.auth0.android.provider.WebAuthProvider.logout
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_doctor_main.*
 import nl.stekkinger.nizi.adapters.PatientAdapter
@@ -59,7 +60,7 @@ class DoctorMainActivity : AppCompatActivity() {
         when (item.itemId)
         {
             R.id.menu_toolbar_logout -> {
-                logout()
+                authRepository.logout(this,this)
             }
         }
         return true
@@ -86,14 +87,6 @@ class DoctorMainActivity : AppCompatActivity() {
 
         // Create Linear Layout Manager
         activity_doctor_main_rv.layoutManager = LinearLayoutManager(this)
-    }
-
-    // Dubbel
-    private fun logout() {
-        val intent = Intent(this@DoctorMainActivity, LoginActivity::class.java)
-        intent.putExtra(EXTRA_CLEAR_CREDENTIALS, true)
-        startActivity(intent)
-        finish()
     }
 
 
