@@ -26,7 +26,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 //  .body("{\"client_id\":\"dVYtmSw5m819mX2nS2raMZwo5lXcwDg6\",\"client_secret\":\"vN6N5HNG25MP-gjBPsVhf01dzuIPqAixFFImtGUU4vy4RuJwFEYcPnJg4r6EOOdr\",\"audience\":\"appnizi.nl/api\",\"grant_type\":\"client_credentials\"}")
 //  .asString();
 
-class AuthRepository {
+class AuthRepository : Repository() {
 
     private val TAG = "AuthRepository"
 
@@ -38,9 +38,9 @@ class AuthRepository {
     val grant_type = "client_credentials"
     val test_token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6Ik5ERkdPRFUxTnpJNFJEZ3lNakkxUmtFMU5EZ3dRMEUxTkVJM05UTTBSRGRFUTBFNE5FWkdNZyJ9.eyJpc3MiOiJodHRwczovL2FwcG5pemkuZXUuYXV0aDAuY29tLyIsInN1YiI6ImRWWXRtU3c1bTgxOW1YMm5TMnJhTVp3bzVsWGN3RGc2QGNsaWVudHMiLCJhdWQiOiJhcHBuaXppLm5sL2FwaSIsImlhdCI6MTU3NTc0OTM4MywiZXhwIjoxNTc1ODM1NzgzLCJhenAiOiJkVll0bVN3NW04MTltWDJuUzJyYU1ad281bFhjd0RnNiIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.B5SrwGFKykFMmae9zJi6e3TIpnWTIWycjT6IbOl2_2DLDrsbCzQv6Ny3jBdo-9qiJ4J8A1oeMe6qrsslKFfQDSz77hedsJRoTWNCHWnPle1gCgB4rbNvG1cnHo0vJZ2npSx0qJIzSEza0TZGVQ4soGzYiSADuBxLsws_bLKN3aXfk8ECoOKEiPeNo-5ZFmUprzhp9haxOahH5IrLXgMmRwPNKYKYgiavMhoiYDXkJIZoHmUABIrfQAwJ54XPLu6FfXQKJcMxCdr_Yd5G_0qxFVtNyZOBGHV1mPYlf2f0BoEE_ua7sWsjIJLsu8rhyzL8D15HNwY4RAtJRfB0D-F4Vw"
 
-    var preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-    var accessToken = preferences.getString("TOKEN", null)
-    var authHeader = "Bearer " + accessToken
+    private val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
+    private val accessToken = preferences.getString("TOKEN", null)
+    private val authHeader = "Bearer " + accessToken
 
     fun loginAsPatient() : PatientLogin? {
         return service.loginAsPatient(authHeader).execute().body()//.enqueue(loginAsPatientCallback)
@@ -55,16 +55,5 @@ class AuthRepository {
         newIntent.putExtra(EXTRA_CLEAR_CREDENTIALS, true)
         activity.startActivity(newIntent)
         activity.finish()
-    }
-
-    private val service: ApiService = getApiService()
-
-    private fun getApiService(): ApiService {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://appnizi-api.azurewebsites.net/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        return retrofit.create(ApiService::class.java)
     }
 }

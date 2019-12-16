@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 // 3e API TEST = Dcotor
 
 
-class PatientRepository {
+class PatientRepository : Repository(){
 
     private val TAG = "PatientRepository"
 
@@ -68,16 +68,5 @@ class PatientRepository {
             }
         })
         return result
-    }
-
-    private val service: ApiService = getApiService()
-
-    private fun getApiService(): ApiService {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://appnizi-api.azurewebsites.net/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        return retrofit.create(ApiService::class.java)
     }
 }

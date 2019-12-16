@@ -23,7 +23,6 @@ class DoctorMainActivity : AppCompatActivity() {
 
     private var TAG = "DoctorMain"
 
-    val EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS"
     val EXTRA_DOCTOR_ID = "DOCTOR_ID"
 
     private val authRepository: AuthRepository = AuthRepository()
@@ -65,7 +64,6 @@ class DoctorMainActivity : AppCompatActivity() {
         }
         return true
     }
-
     //endregion
 
     private fun setupRecyclerView() {
@@ -89,7 +87,7 @@ class DoctorMainActivity : AppCompatActivity() {
         activity_doctor_main_rv.layoutManager = LinearLayoutManager(this)
     }
 
-
+    //region Doctor Login
     inner class loginDoctorAsyncTask() : AsyncTask<Void, Void, DoctorLogin>()
     {
         override fun onPreExecute() {
@@ -117,6 +115,7 @@ class DoctorMainActivity : AppCompatActivity() {
             }
         }
     }
+    //endregion
 
     inner class getPatientsFromDoctorAsyncTask() : AsyncTask<Void, Void, List<Patient>>()
     {

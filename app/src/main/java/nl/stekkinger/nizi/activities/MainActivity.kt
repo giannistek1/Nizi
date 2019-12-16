@@ -25,9 +25,6 @@ class MainActivity : AppCompatActivity() {
 
     private var TAG = "Main"
 
-    // Shared preferences/extras
-    val EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS"
-
     private val authRepository: AuthRepository = AuthRepository()
 
     private var model: PatientLogin? = null
@@ -57,6 +54,7 @@ class MainActivity : AppCompatActivity() {
         activity_main_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
     }
 
+    //region Bottom Nav
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener {  menuItem ->
         when (menuItem.itemId) {
             R.id.nav_home -> {
@@ -82,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         }
         false
     }
+    //endregion
 
     //region Toolbar
     // Inflates toolbar
@@ -101,6 +100,7 @@ class MainActivity : AppCompatActivity() {
     }
     //endregion
 
+    //region Patient Login
     inner class loginPatientAsyncTask() : AsyncTask<Void, Void, PatientLogin>()
     {
         override fun onPreExecute() {
@@ -122,7 +122,7 @@ class MainActivity : AppCompatActivity() {
             } else {
                 Toast.makeText(baseContext, R.string.login_fail, Toast.LENGTH_SHORT).show()
             }
-
         }
     }
+    //endregion
  }
