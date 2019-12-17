@@ -10,4 +10,7 @@
     <dimen name="marginSmall">10dp</dimen>
     <dimen name="marginNormal">16dp</dimen>
     <dimen name="marginDouble">32dp</dimen>
+
+    <!-- Shadow -->
+    <dimen name="elevationNormal">5dp</dimen>
 </resources>

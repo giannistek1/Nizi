@@ -29,23 +29,24 @@ class DoctorMainActivity : AppCompatActivity() {
     private val patientRepository: PatientRepository = PatientRepository()
 
     private lateinit var model: DoctorLogin
+    val patientList = ArrayList<PatientItem>()
 
     private lateinit var progressBar: View
-    val patientList = ArrayList<PatientItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // setup UI
         setContentView(R.layout.activity_doctor_main)
         progressBar = activity_doctor_main_progressbar
-
-        // Login as doctor for doctor data
-        loginDoctorAsyncTask().execute()
 
         activity_doctor_main_btn_addPatient.setOnClickListener {
             val intent: Intent = Intent(this@DoctorMainActivity, AddPatientActivity::class.java)
             intent.putExtra(EXTRA_DOCTOR_ID, model.doctor.doctorId)
             startActivity(intent)
         }
+
+        // Login as doctor for doctor data
+        loginDoctorAsyncTask().execute()
     }
 
     //region Toolbar

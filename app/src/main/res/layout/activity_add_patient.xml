@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.AddPatientActivity">
 
-    <!-- HEADER -->
+    <!-- Blue bg behind white bg -->
     <ImageView
         android:id="@+id/activity_main_background"
         android:layout_width="match_parent"
@@ -18,12 +18,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/marginLeft"
-        android:layout_marginEnd="@dimen/marginRight"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
-        <!-- Blue background -->
+        <!-- Header -->
         <LinearLayout
             android:id="@+id/activity_add_patient_ll_header"
             android:background="@color/colorPrimary"
@@ -41,141 +38,148 @@
                 android:layout_marginBottom="@dimen/marginNormal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
         </LinearLayout>
 
-        <!-- First Name -->
-        <TextView
-            android:id="@+id/activity_add_patient_txt_firstName"
-            android:text="@string/first_name"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/h3"
-            android:fontFamily="@font/segoe_ui_semibold"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/activity_add_patient_ll_header"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginStart="@dimen/marginNormal"/>
-
-        <EditText
-            android:id="@+id/activity_add_patient_et_firstName"
-            android:inputType="textCapSentences"
-            android:hint="@string/first_name"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_patient_txt_firstName"
-            android:layout_marginTop="@dimen/marginSmall"
-            android:layout_marginStart="@dimen/marginNormal" />
-
-        <!-- Last Name -->
-        <TextView
-            android:id="@+id/activity_add_patient_txt_lastName"
-            android:text="@string/last_name"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/h3"
-            android:fontFamily="@font/segoe_ui_semibold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_patient_et_firstName"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginStart="@dimen/marginNormal"/>
-
-        <EditText
-            android:id="@+id/activity_add_patient_et_lastName"
-            android:inputType="textCapSentences"
-            android:hint="@string/last_name"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_patient_txt_lastName"
-            android:layout_marginTop="@dimen/marginSmall"
-            android:layout_marginStart="@dimen/marginNormal" />
-
-        <!-- DoB -->
-        <TextView
-            android:id="@+id/activity_add_patient_txt_dob"
-            android:text="@string/date_of_birth"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/h3"
-            android:fontFamily="@font/segoe_ui_semibold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_patient_et_lastName"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginStart="@dimen/marginNormal"/>
-
-
-        <EditText
-            android:id="@+id/activity_add_patient_et_dob"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_patient_txt_dob"
-            android:layout_marginTop="@dimen/marginSmall"
-            android:layout_marginStart="@dimen/marginNormal"
-            android:inputType="date"
-            android:hint="@string/date_of_birth"/>
-
-        <!-- Weight -->
-        <TextView
-            android:id="@+id/activity_add_patient_txt_weight"
-            android:text="@string/weight"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/h3"
-            android:fontFamily="@font/segoe_ui_semibold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_patient_et_dob"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginStart="@dimen/marginNormal"/>
-
-        <EditText
-            android:id="@+id/activity_add_patient_et_weight"
-            android:inputType="numberDecimal"
-            android:hint="@string/weight"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_patient_txt_weight"
-            android:layout_marginTop="@dimen/marginSmall"
-            android:layout_marginStart="@dimen/marginNormal" />
-
-        <!-- Guidelines -->
-        <TextView
-            android:id="@+id/activity_add_patient_txt_guidelines"
-            android:text="@string/guidelines"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/h3"
-            android:fontFamily="@font/segoe_ui_semibold"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_patient_et_weight"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginStart="@dimen/marginNormal"/>
-
-        <Spinner
-            android:id="@+id/activity_add_patient_spr_guidelines"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_add_patient_txt_guidelines"
-            android:layout_marginStart="@dimen/marginNormal"
-            android:layout_marginTop="@dimen/marginSmall"
-            android:layout_marginEnd="@dimen/marginNormal"
-            android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown"/>
-
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/activity_add_patient_progressbar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_above="@+id/activity_add_patient_btn_save"/>
-
-        <Button
-            android:id="@+id/activity_add_patient_btn_save"
-            android:text="@string/save"
-            android:background="@color/colorAccent"
-            android:textColor="@android:color/white"
             android:layout_marginStart="@dimen/marginLeft"
             android:layout_marginEnd="@dimen/marginRight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"/>
+            android:layout_marginBottom="@dimen/marginNormal"
+            android:background="@color/white"
+            android:elevation="@dimen/elevationNormal">
+
+            <!-- First Name -->
+            <TextView
+                android:id="@+id/activity_add_patient_txt_firstName"
+                android:text="@string/first_name"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h3"
+                android:fontFamily="@font/segoe_ui_semibold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_marginStart="@dimen/marginNormal"/>
+
+            <EditText
+                android:id="@+id/activity_add_patient_et_firstName"
+                android:inputType="textCapSentences"
+                android:hint="@string/first_name"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_patient_txt_firstName"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_marginStart="@dimen/marginNormal" />
+
+            <!-- Last Name -->
+            <TextView
+                android:id="@+id/activity_add_patient_txt_lastName"
+                android:text="@string/last_name"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h3"
+                android:fontFamily="@font/segoe_ui_semibold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_patient_et_firstName"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_marginStart="@dimen/marginNormal"/>
+
+            <EditText
+                android:id="@+id/activity_add_patient_et_lastName"
+                android:inputType="textCapSentences"
+                android:hint="@string/last_name"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_patient_txt_lastName"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_marginStart="@dimen/marginNormal" />
+
+            <!-- DoB -->
+            <TextView
+                android:id="@+id/activity_add_patient_txt_dob"
+                android:text="@string/date_of_birth"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h3"
+                android:fontFamily="@font/segoe_ui_semibold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_patient_et_lastName"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_marginStart="@dimen/marginNormal"/>
+
+
+            <EditText
+                android:id="@+id/activity_add_patient_et_dob"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_patient_txt_dob"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:inputType="date"
+                android:hint="@string/date_of_birth"/>
+
+            <!-- Weight -->
+            <TextView
+                android:id="@+id/activity_add_patient_txt_weight"
+                android:text="@string/weight"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h3"
+                android:fontFamily="@font/segoe_ui_semibold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_patient_et_dob"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_marginStart="@dimen/marginNormal"/>
+
+            <EditText
+                android:id="@+id/activity_add_patient_et_weight"
+                android:inputType="numberDecimal"
+                android:hint="@string/weight"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_patient_txt_weight"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_marginStart="@dimen/marginNormal" />
+
+            <!-- Guidelines -->
+            <TextView
+                android:id="@+id/activity_add_patient_txt_guidelines"
+                android:text="@string/guidelines"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h3"
+                android:fontFamily="@font/segoe_ui_semibold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_patient_et_weight"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_marginStart="@dimen/marginNormal"/>
+
+            <Spinner
+                android:id="@+id/activity_add_patient_spr_guidelines"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_patient_txt_guidelines"
+                android:layout_marginStart="@dimen/marginNormal"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_marginEnd="@dimen/marginNormal"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown"/>
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/activity_add_patient_progressbar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_above="@+id/activity_add_patient_btn_save"/>
+
+            <Button
+                android:id="@+id/activity_add_patient_btn_save"
+                android:text="@string/save"
+                android:background="@color/colorAccent"
+                android:textColor="@android:color/white"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
     </RelativeLayout>
 </FrameLayout>

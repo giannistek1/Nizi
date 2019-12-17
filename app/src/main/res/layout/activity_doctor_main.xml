@@ -7,25 +7,20 @@
     android:background="@color/gray"
     tools:context=".activities.DoctorMainActivity">
 
-    <!-- HEADER -->
-
+    <!-- Blue bg behind white bg -->
     <ImageView
         android:id="@+id/activity_main_background"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="fitCenter"
         android:contentDescription="@string/header_background"
-        android:src="@drawable/rectangle"
-        />
+        android:src="@drawable/rectangle" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="@dimen/marginLeft"
-        android:layout_marginEnd="@dimen/marginRight"
-        android:background="@color/white">
+        android:layout_height="match_parent">
 
-        <!-- Blue background -->
+        <!-- Header -->
         <LinearLayout
             android:id="@+id/activity_doctor_main_ll_header"
             android:background="@color/colorPrimary"
@@ -43,46 +38,57 @@
                 android:layout_marginBottom="@dimen/marginNormal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-
         </LinearLayout>
 
-        <EditText
-            android:id="@+id/activity_doctor_main_et_searchPatients"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_doctor_main_ll_header"
-            android:layout_marginStart="@dimen/marginSmall"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:inputType="text"
-            android:hint="@string/search_by_name"/>
-
-        <ImageView
-            android:id="@+id/activity_doctor_main_btn_addPatient"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_below="@+id/activity_doctor_main_ll_header"
-            android:layout_toEndOf="@+id/activity_doctor_main_et_searchPatients"
-            android:layout_marginStart="@dimen/marginSmall"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:scaleType="fitCenter"
-            android:tint="@color/colorPrimary"
-            android:clickable="true"
-            android:focusable="true"
-            android:contentDescription="@string/add_patient"
-            android:src="@drawable/ic_add" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/activity_doctor_main_rv"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/activity_doctor_main_et_searchPatients"
-            android:layout_marginTop="@dimen/marginNormal">
+            android:layout_below="@+id/activity_doctor_main_ll_header"
+            android:layout_marginStart="@dimen/marginLeft"
+            android:layout_marginEnd="@dimen/marginRight"
+            android:layout_marginBottom="@dimen/marginNormal"
+            android:background="@color/white"
+            android:elevation="@dimen/elevationNormal">
 
-        </androidx.recyclerview.widget.RecyclerView>
 
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/activity_doctor_main_progressbar"
-            android:layout_width="30dp"
-            android:layout_height="30dp" />
+            <EditText
+                android:id="@+id/activity_doctor_main_et_searchPatients"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/marginSmall"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:inputType="text"
+                android:hint="@string/search_by_name"/>
+
+            <ImageView
+                android:id="@+id/activity_doctor_main_btn_addPatient"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_toEndOf="@+id/activity_doctor_main_et_searchPatients"
+                android:layout_marginStart="@dimen/marginSmall"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:scaleType="fitCenter"
+                android:tint="@color/colorPrimary"
+                android:clickable="true"
+                android:focusable="true"
+                android:contentDescription="@string/add_patient"
+                android:src="@drawable/ic_add" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/activity_doctor_main_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/activity_doctor_main_et_searchPatients"
+                android:layout_marginTop="@dimen/marginNormal">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <androidx.core.widget.ContentLoadingProgressBar
+                android:id="@+id/activity_doctor_main_progressbar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"/>
+        </RelativeLayout>
     </RelativeLayout>
 </FrameLayout>
