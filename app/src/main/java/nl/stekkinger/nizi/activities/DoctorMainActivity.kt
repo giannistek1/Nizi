@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -53,6 +55,11 @@ class DoctorMainActivity : AppCompatActivity() {
 
         // Login as doctor for doctor data
         loginDoctorAsyncTask().execute()
+
+        patientListViewModel.setDoctorId(3)
+        patientListViewModel.loadPatients().observe(this, Observer { patientList ->
+            Log.d("log", patientList.toString())
+        })
     }
 
     //region Toolbar
