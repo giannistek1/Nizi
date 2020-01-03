@@ -8,6 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.auth0.android.provider.WebAuthProvider.logout
 import com.google.android.material.navigation.NavigationView
@@ -29,7 +31,8 @@ class DoctorMainActivity : AppCompatActivity() {
     private val patientRepository: PatientRepository = PatientRepository()
 
     private lateinit var model: DoctorLogin
-    val patientList = ArrayList<PatientItem>()
+    private lateinit var patientListViewModel: PatientListViewModel
+    var patientList = ArrayList<PatientItem>()
 
     private lateinit var progressBar: View
 
@@ -44,6 +47,9 @@ class DoctorMainActivity : AppCompatActivity() {
             intent.putExtra(EXTRA_DOCTOR_ID, model.doctor.doctorId)
             startActivity(intent)
         }
+
+        // Get viewmodel
+        patientListViewModel = ViewModelProviders.of(this).get(PatientListViewModel::class.java)
 
         // Login as doctor for doctor data
         loginDoctorAsyncTask().execute()
