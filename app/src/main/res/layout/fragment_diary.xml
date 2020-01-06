@@ -44,6 +44,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/diary_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="2dp"
+            android:layout_marginTop="2dp"
+            android:scrollbars="vertical"
+            android:background="@android:color/darker_gray"
+            android:layout_below="@+id/activity_main_txt_food"/>
+
         <TextView
             android:id="@+id/activity_add_food"
             android:textColor="@color/black"

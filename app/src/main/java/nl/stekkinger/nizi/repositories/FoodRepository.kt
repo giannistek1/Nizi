@@ -1,24 +1,15 @@
 package nl.stekkinger.nizi.repositories
 
-import android.app.Application
-import android.app.PendingIntent.getActivity
 import android.content.Context
-import android.preference.PreferenceManager
 import android.util.Log
 import android.util.Log.d
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import nl.stekkinger.nizi.ApiService
 import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.classes.*
-import okhttp3.MediaType
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.collections.ArrayList
 
 class FoodRepository : Repository() {
 
@@ -27,6 +18,28 @@ class FoodRepository : Repository() {
     private val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
     private val accessToken = preferences.getString("TOKEN", null)
     private val authHeader = "Bearer " + accessToken
+
+    fun getDiary(startDate: String, endDate: String): MutableLiveData<Consumptions.Result> {
+        val result = MutableLiveData<Consumptions.Result>()
+        d("logV", authHeader + " " + preferences.getInt("patient", 0).toString() + " " + startDate + " " + endDate)
+
+        service.fetchConsumptions(authHeader = authHeader, patientId = preferences.getInt("patient", 0), startDate = startDate, endDate = endDate ).enqueue(object: Callback<Consumptions.Result> {
+            override fun onResponse(call: Call<Consumptions.Result>, response: Response<Consumptions.Result>) {
+                if (response.isSuccessful) {
+                    result.value = response.body()
+                    d("succ", response.code().toString())
+                    d("succ", response.body().toString())
+                } else {
+                    d("resp", response.code().toString())
+                    d("rene", "response, not succesfull: ${response}")
+                }
+            }
+            override fun onFailure(call: Call<Consumptions.Result>, t: Throwable) {
+                d("rene", "onFailure")
+            }
+        })
+        return result
+    }
 
     fun searchFood(search: String): MutableLiveData<ArrayList<Food>?> {
         var foodList: ArrayList<Food> = arrayListOf()

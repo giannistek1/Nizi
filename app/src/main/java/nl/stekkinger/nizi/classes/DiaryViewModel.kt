@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.app.PendingIntent.getActivity
 import android.content.Context
+import android.util.Log
 import android.util.Log.d
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
@@ -22,11 +23,41 @@ import kotlin.collections.ArrayList
 
 class DiaryViewModel(
     private val mRepository: FoodRepository = FoodRepository(),
-    private var searchText: MutableLiveData<String> = MutableLiveData()
+    private var mStartDate: MutableLiveData<String> = MutableLiveData(),
+    private var mSearchText: MutableLiveData<String> = MutableLiveData()
 ) : ViewModel() {
 
+    // diary
+    private var mDiary: LiveData<Consumptions.Result> = Transformations.switchMap<String, Consumptions.Result>(
+        mStartDate
+    ) { date ->  diary(date) }
+
+    private fun diary(startDate: String): MutableLiveData<Consumptions.Result> {
+        d("t", startDate)
+//        var endDate = startDate
+//        var sdf = SimpleDateFormat("yyyy-MM-dd")
+//        val c = Calendar.getInstance()
+//        c.time = sdf.parse(endDate)
+//        c.add(Calendar.DATE, 1)
+//        val resultdate = Date(c.timeInMillis)
+//        endDate = sdf.format(resultdate)
+//
+//        d("date", startDate + " " + endDate)
+//        return mRepository.getDiary(startDate, endDate)
+        return mRepository.getDiary("2020-01-06", "2020-01-07")
+    }
+
+    fun setDiaryDate(date: String) {
+        mStartDate.value = date
+    }
+
+    fun getDiary(): LiveData<Consumptions.Result> {
+        return mDiary
+    }
+
+    // foodSearch
     private var mFoodSearch: LiveData<ArrayList<Food>> = Transformations.switchMap<String, ArrayList<Food>>(
-        searchText
+        mSearchText
     ) { search ->  foodSearch(search) }
 
     private fun foodSearch(searchText: String): MutableLiveData<ArrayList<Food>?> {
@@ -34,7 +65,7 @@ class DiaryViewModel(
     }
 
     fun setFoodSearch(text: String) {
-        searchText.value = text
+        mSearchText.value = text
     }
 
     fun getFoodSearch(): LiveData<ArrayList<Food>> {
@@ -56,7 +87,7 @@ class DiaryViewModel(
 
     fun addFood(food: Food, portion: Double = 1.0) {
         val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-        val date = SimpleDateFormat("yyyy-MM-dd").format(Date()) + "T00:00:00"
+        val date = SimpleDateFormat("yyyy-MM-dd").format(Date()) + "T00:00:01"
 
         val consumption = Consumption(
             FoodName = food.Name,

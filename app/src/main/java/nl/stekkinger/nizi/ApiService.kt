@@ -4,7 +4,6 @@ import nl.stekkinger.nizi.classes.wont_use.AccessTokenResult
 import nl.stekkinger.nizi.classes.DoctorLogin
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.PatientLogin
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 import java.text.SimpleDateFormat
@@ -34,10 +33,11 @@ interface ApiService {
 
     @GET("v1/consumptions")
     fun fetchConsumptions(
+        @Header("Authorization") authHeader : String,
         @Query("patientId") patientId: Int,
-        @Query("startDate") startDate: SimpleDateFormat,
-        @Query("endDate") endDate: SimpleDateFormat
-    )
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ) : Call<Consumptions.Result>
 
     @GET("v1/consumption/{consumptionId}")
     fun fetchConsumptionById(
