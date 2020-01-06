@@ -1,11 +1,15 @@
 package nl.stekkinger.nizi.fragments
 
+import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_food_view.*
 import nl.stekkinger.nizi.R
@@ -15,6 +19,9 @@ import nl.stekkinger.nizi.classes.Food
 class FoodViewFragment : Fragment() {
 
     private lateinit var model: DiaryViewModel
+    private lateinit var mFood: Food
+    private lateinit var mServingInput: TextInputLayout
+//    private lateinit var mContext: AppCompatActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,6 +30,10 @@ class FoodViewFragment : Fragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_food_view, container, false)
         setHasOptionsMenu(true)
+
+//        mContext = Activity()
+
+        mServingInput = view.findViewById(R.id.serving_input_value)
 
         // get the DiaryViewModel
         model = activity?.run {
@@ -41,6 +52,8 @@ class FoodViewFragment : Fragment() {
             sodium_value_food_view.text = (food.Sodium * 1000).toString() + " mg"
             calcium_value_food_view.text = (food.Calcium * 1000).toString() + " mg"
 
+            // store food product
+            mFood = food
         })
 
         return view
@@ -53,7 +66,12 @@ class FoodViewFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.confirm_add_food -> {
-                Toast.makeText(this.context, "adding", Toast.LENGTH_LONG).show()
+
+                Log.d("hi", "added override")
+                Toast.makeText(this.context, "added ovr", Toast.LENGTH_LONG).show()
+
+                val portion = mServingInput.editText?.text.toString().trim().toDouble()
+                model.addFood(mFood, portion)
                 true
             }
             else -> super.onOptionsItemSelected(item)

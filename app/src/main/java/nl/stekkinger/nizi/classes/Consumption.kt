@@ -3,15 +3,15 @@ package nl.stekkinger.nizi.classes
 import java.text.SimpleDateFormat
 
 data class Consumption (
-    val foodName: String,
-    val kCal: Float,
-    val protein: Float,
-    val fiber: Float,
-    val sodium: Float,
-    val calcium: Float,
-    val amount: Int,
-    val weightUnitId: Int,
-    val date: SimpleDateFormat,
-    val patientId: Int,
-    val id: Int
+    val FoodName: String,
+    val KCal: Float,
+    val Protein: Float,
+    val Fiber: Float,
+    val Calium: Float,
+    val Sodium: Float,
+    val Amount: Int,
+    val WeightUnitId: Int,
+    val Date: String,
+    val PatientId: Int,
+    val Id: Int
 )

@@ -4,6 +4,7 @@ import nl.stekkinger.nizi.classes.wont_use.AccessTokenResult
 import nl.stekkinger.nizi.classes.DoctorLogin
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.PatientLogin
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 import java.text.SimpleDateFormat
@@ -27,8 +28,9 @@ interface ApiService {
     //region Consumption
     @POST("v1/consumptions")
     fun addConsumption(
-
-    )
+        @Header("Authorization") authHeader : String,
+        @Body body: Consumption
+    ) : Call<Unit>
 
     @GET("v1/consumptions")
     fun fetchConsumptions(

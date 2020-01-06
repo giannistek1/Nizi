@@ -1,10 +1,12 @@
 package nl.stekkinger.nizi.activities
 
+import android.content.Context
 import android.content.Intent
 import android.drm.DrmStore
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log.d
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -13,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.auth0.android.provider.WebAuthProvider.logout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.fragments.DashboardFragment
 import nl.stekkinger.nizi.fragments.HomeFragment
@@ -95,6 +98,9 @@ class MainActivity : AppCompatActivity() {
             R.id.menu_toolbar_logout -> {
                 authRepository.logout(this, this)
             }
+            R.id.confirm_add_food -> {
+                return false
+            }
         }
         return true
     }
@@ -115,6 +121,11 @@ class MainActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: PatientLogin?) {
             super.onPostExecute(result)
+
+            val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
+            preferences.edit().putInt("patient", result!!.patient.patientId).commit()
+            d("con", preferences.getInt("patient", 0).toString())
+            d("login", result.patient.patientId.toString())
             // Progressbar
             progressBar.visibility = View.GONE
             if (result != null) {

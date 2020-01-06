@@ -11,6 +11,8 @@ import androidx.lifecycle.MutableLiveData
 import nl.stekkinger.nizi.ApiService
 import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.classes.*
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -47,5 +49,28 @@ class FoodRepository : Repository() {
             }
         })
         return result
+    }
+
+    fun addConsumption(consumption: Consumption) {
+
+        val con = "{ \"FoodName\": \"brood (bruin)\", \"KCal\": 62, \"Protein\": 1, \"Fiber\": 1, \"Calium\": 1, \"Sodium\": 1, \"Amount\": 1, \"WeightUnitId\": 1, \"Date\": \"2020-01-04T00:00:00\", \"PatientId\": 56, \"Id\": 0 }"
+//        val body = RequestBody.create(MediaType.parse("text/plain"), consumption)
+        service.addConsumption(authHeader = authHeader, body = consumption).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    d("resp", response.code().toString())
+                    d("rene", consumption.toString())
+                    d("rene", con)
+                } else {
+                    d("resp", response.code().toString())
+                    d("rene", consumption.toString())
+                    d("rene", con)
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                d("rene", "onFailure")
+            }
+        })
     }
 }
