@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.FoodSearchAdapter
+import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 

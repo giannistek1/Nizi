@@ -41,6 +41,22 @@ class FoodRepository : Repository() {
         return result
     }
 
+    fun deleteConsumption(id: Int) {
+        service.deleteConsumption(authHeader = authHeader, consumptionId = id).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    d("del", response.code().toString())
+                } else {
+                    d("del", response.code().toString())
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                d("rene", "onFailure")
+            }
+        })
+    }
+
     fun searchFood(search: String): MutableLiveData<ArrayList<Food>?> {
         var foodList: ArrayList<Food> = arrayListOf()
         val result = MutableLiveData<ArrayList<Food>?>()

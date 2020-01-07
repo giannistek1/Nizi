@@ -1,6 +1,5 @@
-package nl.stekkinger.nizi.classes
+package nl.stekkinger.nizi.adapters
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.classes.Food
 
 class FoodSearchAdapter(
     private var model: DiaryViewModel = DiaryViewModel(),

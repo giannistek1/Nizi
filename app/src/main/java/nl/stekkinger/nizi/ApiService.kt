@@ -51,6 +51,7 @@ interface ApiService {
 
     @DELETE("v1/consumption/{consumptionId}")
     fun deleteConsumption(
+        @Header("Authorization") authHeader : String,
         @Path("consumptionId") consumptionId: Int
     ) : Call<Unit>
     //endregion

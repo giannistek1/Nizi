@@ -13,12 +13,14 @@ import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_food_view.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.classes.Consumption
+import nl.stekkinger.nizi.classes.Consumptions
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.Food
 
-class FoodViewFragment : Fragment() {
+class ConsumptionViewFragment : Fragment() {
     private lateinit var model: DiaryViewModel
-    private lateinit var mFood: Food
+    private lateinit var mConsumption: Consumptions.Consumption
     private lateinit var mServingInput: TextInputLayout
 
     override fun onCreateView(
@@ -29,7 +31,6 @@ class FoodViewFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_food_view, container, false)
         setHasOptionsMenu(true)
 
-
         mServingInput = view.findViewById(R.id.serving_input_value)
 
         // get the DiaryViewModel
@@ -37,21 +38,15 @@ class FoodViewFragment : Fragment() {
             ViewModelProviders.of(this).get(DiaryViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        model.selected.observe(this, Observer<Food> { food ->
-            // Update the UI
-            title_food_view.text = food.Name
-            Picasso.get().load(food.Picture).into(image_food_view)
-            serving_size_value.text = food.PortionSize.toString() + " " + food.WeightUnit
-            calories_value_food_view.text = food.KCal.toString() + " Kcal"
-            fiber_value_food_view.text = food.Fiber.toString() + " g"
-            protein_value_food_view.text = food.Protein.toString() + " g"
-            water_value_food_view.text = "10 g" // TODO update API with water input
-            sodium_value_food_view.text = (food.Sodium * 1000).toString() + " mg"
-            calcium_value_food_view.text = (food.Calcium * 1000).toString() + " mg"
-
-            // store food product
-            mFood = food
-        })
+        // Update the UI
+        title_food_view.text = mConsumption.FoodName
+        serving_size_value.text = mConsumption.Amount.toString() + " " + mConsumption.Weight.Unit
+        calories_value_food_view.text = mConsumption.KCal.toString() + " Kcal"
+        fiber_value_food_view.text = mConsumption.Fiber.toString() + " g"
+        protein_value_food_view.text = mConsumption.Protein.toString() + " g"
+        water_value_food_view.text = "0 ml" // TODO update API with water input
+        sodium_value_food_view.text = (mConsumption.Sodium * 1000).toString() + " mg"
+        calcium_value_food_view.text = (mConsumption.Calium * 1000).toString() + " mg"
 
         return view
     }
@@ -64,11 +59,6 @@ class FoodViewFragment : Fragment() {
         return when (item.itemId) {
             R.id.confirm_add_food -> {
 
-                Log.d("hi", "added override")
-                Toast.makeText(this.context, "added ovr", Toast.LENGTH_LONG).show()
-
-                val portion = mServingInput.editText?.text.toString().trim().toDouble()
-                model.addFood(mFood, portion)
                 true
             }
             else -> super.onOptionsItemSelected(item)

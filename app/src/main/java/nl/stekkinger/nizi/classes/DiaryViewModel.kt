@@ -4,8 +4,11 @@ import android.app.Activity
 import android.app.Application
 import android.app.PendingIntent.getActivity
 import android.content.Context
+import android.os.AsyncTask
 import android.util.Log
 import android.util.Log.d
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import nl.stekkinger.nizi.NiziApplication
@@ -15,6 +18,7 @@ import nl.stekkinger.nizi.fragments.FoodViewFragment
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.text.SimpleDateFormat
 import nl.stekkinger.nizi.classes.Consumption
+import nl.stekkinger.nizi.fragments.ConsumptionViewFragment
 import java.text.DateFormat.getDateInstance
 import java.util.*
 import kotlin.collections.ArrayList
@@ -23,37 +27,40 @@ import kotlin.collections.ArrayList
 
 class DiaryViewModel(
     private val mRepository: FoodRepository = FoodRepository(),
-    private var mStartDate: MutableLiveData<String> = MutableLiveData(),
+    private var mDate: MutableLiveData<String> = MutableLiveData(),
+    private var mCurrentDay: String = SimpleDateFormat("yyyy-MM-dd").format(Date()),
     private var mSearchText: MutableLiveData<String> = MutableLiveData()
 ) : ViewModel() {
 
-    // diary
+    // diary/consumption area
     private var mDiary: LiveData<Consumptions.Result> = Transformations.switchMap<String, Consumptions.Result>(
-        mStartDate
+        mDate
     ) { date ->  diary(date) }
 
-    private fun diary(startDate: String): MutableLiveData<Consumptions.Result> {
-        d("t", startDate)
-//        var endDate = startDate
-//        var sdf = SimpleDateFormat("yyyy-MM-dd")
-//        val c = Calendar.getInstance()
-//        c.time = sdf.parse(endDate)
-//        c.add(Calendar.DATE, 1)
-//        val resultdate = Date(c.timeInMillis)
-//        endDate = sdf.format(resultdate)
-//
-//        d("date", startDate + " " + endDate)
-//        return mRepository.getDiary(startDate, endDate)
-        return mRepository.getDiary("2020-01-06", "2020-01-07")
+    private fun diary(date: String): MutableLiveData<Consumptions.Result> {
+        d("t", date)
+        val endDate: String = date.substringAfter("/")
+        val startDate: String = date.substringBefore("/")
+        return mRepository.getDiary(startDate, endDate)
     }
 
     fun setDiaryDate(date: String) {
-        mStartDate.value = date
+        mDate.value = date
+        mCurrentDay = date.substringBefore("/")
     }
 
     fun getDiary(): LiveData<Consumptions.Result> {
         return mDiary
     }
+
+    fun deleteConsumption(id: Int) {
+        mRepository.deleteConsumption(id)
+    }
+
+    fun updateConsumption(consumption: Consumptions.Consumption) {
+
+    }
+
 
     // foodSearch
     private var mFoodSearch: LiveData<ArrayList<Food>> = Transformations.switchMap<String, ArrayList<Food>>(
@@ -84,10 +91,16 @@ class DiaryViewModel(
         selected.value = food
     }
 
+    fun selectEdit(activity: AppCompatActivity, consumption: Consumptions.Consumption) {
+        (activity).supportFragmentManager.beginTransaction().replace(
+            R.id.activity_main_fragment_container,
+            ConsumptionViewFragment()
+        ).commit()
+    }
+
 
     fun addFood(food: Food, portion: Double = 1.0) {
         val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-        val date = SimpleDateFormat("yyyy-MM-dd").format(Date()) + "T00:00:01"
 
         val consumption = Consumption(
             FoodName = food.Name,
@@ -98,7 +111,7 @@ class DiaryViewModel(
             Sodium = (food.Sodium * portion).toFloat(),
             Amount = (food.PortionSize * portion).toInt(),
             WeightUnitId = 1,
-            Date = date,
+            Date = mCurrentDay,
             PatientId = preferences.getInt("patient", 0),
             Id = 0
         )
@@ -117,9 +130,9 @@ class DiaryViewModel(
 
 
         mRepository.addConsumption(consumption)
+        d("AF", "---------")
+        d("AF", mCurrentDay)
+        d("AF", "---------")
 
-        d("con", consumption.toString())
-        d("con", portion.toString())
-        d("con", preferences.getInt("patient", 0).toString())
     }
 }

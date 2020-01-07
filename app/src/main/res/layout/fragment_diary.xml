@@ -4,25 +4,340 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- Header (REUSEABLE BUT NOT IMPLEMENTED YET) -->
+
+    <!-- Guidelines -->
+    <RelativeLayout
+        android:id="@+id/fragment_diary_guidelines"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/gray">
+
+        <TextView
+            android:id="@+id/fragment_diary_txt_guidelines"
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2"
+            android:text="@string/guidelines"
+            android:layout_marginLeft="@dimen/marginLeft"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <LinearLayout
+            android:id="@+id/top_guidelines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/fragment_diary_txt_guidelines">
+
+            <RelativeLayout
+                android:id="@+id/diary_guidelines_kcal"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp">
+
+                <ImageView
+                    android:id="@+id/diary_guidelines_kcal_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_calories_s"/>
+
+                <TextView
+                    android:id="@+id/diary_guidelines_kcal_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/calories"
+                    android:layout_toEndOf="@+id/diary_guidelines_kcal_img"
+                    />
+
+                <TextView
+                    android:id="@+id/diary_guidelines_kcal_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:layout_below="@+id/diary_guidelines_kcal_img"
+                    />
+
+                <TextView
+                    android:id="@+id/diary_guidelines_kcal_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="kcal"
+                    android:layout_marginLeft="5dp"
+                    android:layout_below="@+id/diary_guidelines_kcal_img"
+                    android:layout_toEndOf="@+id/diary_guidelines_kcal_val"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/diary_guidelines_fiber"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp">
+
+                <ImageView
+                    android:id="@+id/diary_guidelines_fiber_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_grain_s"/>
+
+                <TextView
+                    android:id="@+id/diary_guidelines_fiber_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fibers"
+                    android:layout_toEndOf="@+id/diary_guidelines_fiber_img"
+                    />
+
+                <TextView
+                    android:id="@+id/diary_guidelines_fiber_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:layout_below="@+id/diary_guidelines_fiber_img"
+                    />
+
+                <TextView
+                    android:id="@+id/diary_guidelines_fiber_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="g"
+                    android:layout_marginLeft="5dp"
+                    android:layout_below="@+id/diary_guidelines_fiber_img"
+                    android:layout_toEndOf="@+id/diary_guidelines_fiber_val"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/diary_guidelines_protein"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp">
+
+                <ImageView
+                    android:id="@+id/diary_guidelines_protein_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_protein_s"/>
+
+                <TextView
+                    android:id="@+id/diary_guidelines_protein_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/proteins"
+                    android:layout_toEndOf="@+id/diary_guidelines_protein_img"
+                    />
+
+                <TextView
+                    android:id="@+id/diary_guidelines_protein_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:layout_below="@+id/diary_guidelines_protein_img"
+                    />
+
+                <TextView
+                    android:id="@+id/diary_guidelines_protein_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="mg"
+                    android:layout_marginLeft="5dp"
+                    android:layout_below="@+id/diary_guidelines_protein_img"
+                    android:layout_toEndOf="@+id/diary_guidelines_protein_val"
+                    />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/bottom_guidelines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/top_guidelines">
+
+            <RelativeLayout
+                android:id="@+id/diary_guidelines_water"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp">
+
+                <ImageView
+                    android:id="@+id/diary_guidelines_water_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_water_s"/>
+
+                <TextView
+                    android:id="@+id/diary_guidelines_water_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/water"
+                    android:layout_toEndOf="@+id/diary_guidelines_water_img"
+                    />
+
+                <TextView
+                    android:id="@+id/diary_guidelines_water_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:layout_below="@+id/diary_guidelines_water_img"
+                    />
+
+                <TextView
+                    android:id="@+id/diary_guidelines_water_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="g"
+                    android:layout_marginLeft="5dp"
+                    android:layout_below="@+id/diary_guidelines_water_img"
+                    android:layout_toEndOf="@+id/diary_guidelines_water_val"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/diary_guidelines_calcium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp">
+
+                <ImageView
+                    android:id="@+id/diary_guidelines_calcium_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_salt_s"/>
+
+                <TextView
+                    android:id="@+id/diary_guidelines_calcium_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/calcium"
+                    android:layout_toEndOf="@+id/diary_guidelines_calcium_img"
+                    />
+
+                <TextView
+                    android:id="@+id/diary_guidelines_calcium_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:layout_below="@+id/diary_guidelines_calcium_img"
+                    />
+
+                <TextView
+                    android:id="@+id/diary_guidelines_calcium_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="mg"
+                    android:layout_marginLeft="5dp"
+                    android:layout_below="@+id/diary_guidelines_calcium_img"
+                    android:layout_toEndOf="@+id/diary_guidelines_calcium_val"
+                    />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/diary_guidelines_sodium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="20dp">
+
+                <ImageView
+                    android:id="@+id/diary_guidelines_sodium_img"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_salt_s"/>
+
+                <TextView
+                    android:id="@+id/diary_guidelines_sodium_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sodium"
+                    android:layout_toEndOf="@+id/diary_guidelines_sodium_img"
+                    />
+
+                <TextView
+                    android:id="@+id/diary_guidelines_sodium_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:layout_below="@+id/diary_guidelines_sodium_img"
+                    />
+
+                <TextView
+                    android:id="@+id/diary_guidelines_sodium_unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="mg"
+                    android:layout_marginLeft="5dp"
+                    android:layout_below="@+id/diary_guidelines_sodium_img"
+                    android:layout_toEndOf="@+id/diary_guidelines_sodium_val"
+                    />
+
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <!-- end guidelines -->
+
     <LinearLayout
         android:id="@+id/activity_main_header_background"
         android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:layout_below="@+id/fragment_diary_guidelines"
+        android:orientation="horizontal">
+
+        <ImageButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/diary_prev_date"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_left_key" />
 
         <TextView
             android:id="@+id/activity_main_txt_header"
             android:textSize="@dimen/h1"
             android:fontFamily="@font/segoe_ui_semibold"
-            android:gravity="center"
             android:textColor="@color/white"
             android:text="@string/today"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            style="?android:attr/borderlessButtonStyle"
+            android:id="@+id/diary_next_date"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_right_key" />
 
     </LinearLayout>
 
@@ -39,8 +354,8 @@
             android:textSize="@dimen/h2"
             android:text="@string/nutrition"
             android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             />
@@ -60,33 +375,16 @@
             android:textColor="@color/black"
             android:textSize="@dimen/h2"
             android:text="@string/add_food"
-            android:layout_marginLeft="@dimen/marginLeft"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:background="@color/white"
             android:layout_marginTop="@dimen/marginNormal"
             android:layout_marginBottom="@dimen/marginNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_main_txt_food"
+            android:layout_alignParentBottom="true"
             />
     </RelativeLayout>
 
-    <!-- Guidelines -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/gray"
-        android:layout_alignParentBottom="true">
-
-        <TextView
-            android:id="@+id/fragment_diary_txt_guidelines"
-            android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:text="@string/guidelines"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-    </RelativeLayout>
 </RelativeLayout>
