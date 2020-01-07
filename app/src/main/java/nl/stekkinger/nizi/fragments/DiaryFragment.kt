@@ -48,15 +48,12 @@ class DiaryFragment: Fragment() {
 
         // setting date for diary
         mCurrentDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
-        var startDate: String = getDay(mCurrentDate, 1)
-        var endDate: String = getDay(mCurrentDate, 2)
+        var startDate: String = getDay(mCurrentDate, 0)
+        var endDate: String = getDay(mCurrentDate, 1)
         model.setDiaryDate(startDate + "/" + endDate)
 
         // get the results of food search
         model.getDiary().observe(viewLifecycleOwner, Observer { result ->
-            Log.d("LOGLIST", result.KCalTotal.toString())
-            // update UI
-//            round(3.14159265359 * 100) / 100 == 3.14
             // update total intake values of the day (guidelines)
             diary_guidelines_kcal_val.text = (round(result.KCalTotal * 100) / 100).toString()
             diary_guidelines_fiber_val.text = (round(result.FiberTotal * 100.0) / 100.0).toString()
@@ -85,6 +82,11 @@ class DiaryFragment: Fragment() {
             model.setDiaryDate(startDate + "/" + endDate)
             mCurrentDate = startDate
             d("date", startDate + "/" + endDate)
+            if(SimpleDateFormat("yyyy-MM-dd").format(Date()) == endDate) {
+                activity_main_txt_header.text = "Gisteren"
+            } else {
+                activity_main_txt_header.text = startDate
+            }
         }
         mNextDate.setOnClickListener {
             if(SimpleDateFormat("yyyy-MM-dd").format(Date()) != mCurrentDate) {
@@ -93,6 +95,13 @@ class DiaryFragment: Fragment() {
                 model.setDiaryDate(startDate + "/" + endDate)
                 mCurrentDate = startDate
                 d("date", startDate + "/" + endDate)
+                if(SimpleDateFormat("yyyy-MM-dd").format(Date()) == startDate) {
+                    activity_main_txt_header.text = "Vandaag"
+                } else if(SimpleDateFormat("yyyy-MM-dd").format(Date()) == endDate) {
+                    activity_main_txt_header.text = "Gisteren"
+                } else {
+                    activity_main_txt_header.text = startDate
+                }
             }
         }
 
@@ -100,6 +109,7 @@ class DiaryFragment: Fragment() {
         return view
     }
     fun getDay(date: String, daysAdded: Int): String {
+        d("AAAAAA", "BBBBB")
         var newDate = date
         var sdf = SimpleDateFormat("yyyy-MM-dd")
         val c = Calendar.getInstance()
