@@ -135,4 +135,25 @@ class DiaryViewModel(
         d("AF", "---------")
 
     }
+
+    // meals
+//    fun getMeals(): LiveData<ArrayList<Meal>> {
+//        return getMealsAsyncTask().execute()
+//    }
+//
+//    class getMealsAsyncTask() : AsyncTask<Void, Void, Meal>() {
+//        override fun doInBackground(vararg params: Void?): Meal? {
+//            return mRepository.getMeals()
+//        }
+//
+//        override fun onPreExecute() {
+//            super.onPreExecute()
+//            // ...
+//        }
+//
+//        override fun onPostExecute(result: String?) {
+//            super.onPostExecute(result)
+//            // ...
+//        }
+//    }
 }

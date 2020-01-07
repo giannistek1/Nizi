@@ -1,7 +1,6 @@
 package nl.stekkinger.nizi.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +22,7 @@ import java.util.*
 
 class DiaryFragment: Fragment() {
     private lateinit var mAddFood: TextView
+    private lateinit var mAddMeal: TextView
     private lateinit var mPrevDate: ImageButton
     private lateinit var mNextDate: ImageButton
     private lateinit var mCurrentDate: String
@@ -32,6 +32,7 @@ class DiaryFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
         mAddFood = view.findViewById(R.id.activity_add_food) as TextView
+        mAddMeal = view.findViewById(R.id.activity_add_meal) as TextView
         mPrevDate = view.findViewById(R.id.diary_prev_date)
         mNextDate = view.findViewById(R.id.diary_next_date)
 
@@ -76,12 +77,21 @@ class DiaryFragment: Fragment() {
                 .commit()
         }
 
+        mAddMeal.setOnClickListener {
+            fragmentManager!!
+                .beginTransaction()
+                .replace(
+                    R.id.activity_main_fragment_container,
+                    AddMealFragment()
+                )
+                .commit()
+        }
+
         mPrevDate.setOnClickListener {
             endDate = mCurrentDate
             startDate = getDay(mCurrentDate, -1)
             model.setDiaryDate(startDate + "/" + endDate)
             mCurrentDate = startDate
-            d("date", startDate + "/" + endDate)
             if(SimpleDateFormat("yyyy-MM-dd").format(Date()) == endDate) {
                 activity_main_txt_header.text = "Gisteren"
             } else {
@@ -94,7 +104,6 @@ class DiaryFragment: Fragment() {
                 endDate = getDay(mCurrentDate, 2)
                 model.setDiaryDate(startDate + "/" + endDate)
                 mCurrentDate = startDate
-                d("date", startDate + "/" + endDate)
                 if(SimpleDateFormat("yyyy-MM-dd").format(Date()) == startDate) {
                     activity_main_txt_header.text = "Vandaag"
                 } else if(SimpleDateFormat("yyyy-MM-dd").format(Date()) == endDate) {

@@ -370,21 +370,42 @@
             android:background="@android:color/darker_gray"
             android:layout_below="@+id/activity_main_txt_food"/>
 
-        <TextView
-            android:id="@+id/activity_add_food"
-            android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:text="@string/add_food"
-            android:paddingLeft="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:background="@color/white"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            />
+            android:weightSum="2"
+            android:layout_alignParentBottom="true">
+
+            <TextView
+                android:id="@+id/activity_add_food"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:text="@string/add_food"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:background="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+
+            <TextView
+                android:id="@+id/activity_add_meal"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:text="Maaltijd toevoegen"
+                android:paddingLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:background="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </RelativeLayout>

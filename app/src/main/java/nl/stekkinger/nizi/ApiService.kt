@@ -156,23 +156,24 @@ interface ApiService {
 
     //region Meal
     // Staat fout in swagger
-    @POST("/v1/meal/{patientId}")
+    @POST("v1/meal/{patientId}")
     fun addMeal(
         @Path("patientId") patientId: Int
     ) : Call<Unit>
 
-    @GET("/v1/meal/{patientId}")
+    @GET("v1/meal/{patientId}")
     fun getMeals(
+        @Header("Authorization") authHeader : String,
         @Path("patientId") patientId: Int
-    ) : Call<Unit>
+    ) : Call<ArrayList<Meal>>
 
-    @PUT("/v1/meal/{patientId}/{mealId}")
+    @PUT("v1/meal/{patientId}/{mealId}")
     fun updateMeal(
         @Path("patientId") patientId: Int,
         @Path("mealId") mealId: Int
     ) : Call<Unit>
 
-    @PUT("/v1/meal")
+    @PUT("v1/meal")
     fun deleteMeal(
         @Query("patientId") patientId: Int,
         @Query("mealId") mealId: Int
@@ -231,7 +232,7 @@ interface ApiService {
         @Path("dietId") dietId: Int
     ) : Call<Unit>
 
-    @DELETE("/v1/dietaryManagement/{dietId}")
+    @DELETE("v1/dietaryManagement/{dietId}")
     fun deleteDietary(
         @Path("dietId") dietId: Int
     ) : Call<Unit>

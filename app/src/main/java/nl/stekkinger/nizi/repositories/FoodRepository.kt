@@ -102,4 +102,9 @@ class FoodRepository : Repository() {
             }
         })
     }
+
+    fun getMeals(): ArrayList<Meal>? {
+        d("hi", service.getMeals(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().toString())
+        return service.getMeals(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().body()
+    }
 }
