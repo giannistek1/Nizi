@@ -45,7 +45,16 @@
             android:layout_height="wrap_content"
              />
 
-        <TextView
+        <LinearLayout
+            android:id="@+id/fragment_home_ll_guidelines_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_home_txt_guidelines"
+            android:orientation="vertical">
+
+
+        </LinearLayout>
+        <!--<TextView
             android:id="@+id/fragment_home_txt_guideline1"
             android:textColor="@color/black"
             android:textSize="@dimen/h2"
@@ -70,7 +79,7 @@
             android:layout_marginBottom="@dimen/marginNormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            />-->
     </RelativeLayout>
 
     <!-- Recent nutrition -->

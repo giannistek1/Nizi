@@ -165,8 +165,17 @@ class MainActivity : AppCompatActivity() {
             val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
             d("con", preferences.getInt("patient", 0).toString())
 
-            preferences.edit().putString("dietaryDescription", result!!.Dietarymanagement[0].Description).commit()
-            preferences.edit().putInt("dietaryAmount", result!!.Dietarymanagement[0].Amount).commit()
+            lateinit var descriptionKey: String
+            lateinit var amountKey: String
+
+            result!!.Dietarymanagement.forEachIndexed { index, element ->
+                descriptionKey = "dietaryDescription" + index.toString()
+                amountKey = "dietaryAmount" + index.toString()
+
+                preferences.edit().putString(descriptionKey, result!!.Dietarymanagement[index].Description).commit()
+                preferences.edit().putInt(amountKey, result!!.Dietarymanagement[index].Amount).commit()
+            }
+            preferences.edit().putInt("dietaryCount", result.Dietarymanagement.count()).commit()
 
             // Progressbar
             progressBar.visibility = View.GONE
