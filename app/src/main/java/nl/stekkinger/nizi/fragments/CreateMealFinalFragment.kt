@@ -79,7 +79,7 @@ class CreateMealFinalFragment: Fragment() {
                 createMeal()
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
-                    DiaryFragment()
+                    AddMealFragment()
                 ).commit()
                 true
             }
