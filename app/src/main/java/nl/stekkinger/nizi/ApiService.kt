@@ -58,9 +58,10 @@ interface ApiService {
 
     //region Food
     @POST("v1/food/favorite")
-    fun addFoodToFavorites(
-        @Field("patientId") patientId: Int,
-        @Field("foodId") foodId: Int
+    fun addFavoriteFood(
+        @Header("Authorization") authHeader : String,
+        @Query("patientId") patientId: Int,
+        @Query("foodId") foodId: Int
     ) : Call<Unit>
 
     @GET("v1/food/{foodId}")
@@ -76,13 +77,15 @@ interface ApiService {
     ) : Call<ArrayList<Food>>
 
     @GET("v1/food/favorite/{patientId}")
-    fun getFavoriteFoods(
+    fun getFavoriteFood(
+        @Header("Authorization") authHeader : String,
         @Path("patientId") patientId: Int
-    ) : Call<Unit>
+    ) : Call<ArrayList<Food>>
 
     // Staat hier ook een fout in bij swagger
     @DELETE("v1/food/favorite")
-    fun deleteFoodFromFavorites(
+    fun deleteFavoriteFood(
+        @Header("Authorization") authHeader : String,
         @Query("patientId") patientId: Int,
         @Query("foodId") foodId: Int
     ) : Call<Unit>

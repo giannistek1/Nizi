@@ -1,15 +1,18 @@
 package nl.stekkinger.nizi.adapters
 
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.food_item.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.Food
@@ -43,13 +46,12 @@ class FoodSearchAdapter(
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var food : Food = dataset[position]
+        var food: Food = dataset[position]
         Picasso.get().load(food.Picture).resize(40, 40).into(holder.image)
-//        holder.image.setImageURI(uri)
         holder.title.text = food.Name
         holder.summary.text = food.PortionSize.toString() + " " + food.WeightUnit
 
-        if(fragment == "food") {
+        if (fragment == "food") {
             holder.addBtn.setOnClickListener {
                 model.addFood(food)
                 notifyDataSetChanged()
@@ -60,16 +62,37 @@ class FoodSearchAdapter(
             }
             holder.favBtn.setOnClickListener {
                 // do somthing in model
-                // show toast of success
+                model.addFavorite(food.FoodId)
+                // show toast of success (there is no way to get visual representation of liked foods)
+                Toast.makeText(activity, "Toegevoegd aan favorieten", Toast.LENGTH_SHORT).show()
             }
-
-        } else if(fragment == "meal") {
+            // hide btns
+            holder.deleteBtn.isVisible = false
+        } else if (fragment == "meal") {
             holder.addBtn.setOnClickListener {
                 model.addMealProduct(food)
                 notifyDataSetChanged()
             }
-            // hide favorite btn
             holder.favBtn.isVisible = false
+            holder.deleteBtn.isVisible = false
+        } else if(fragment == "favorites") {
+            holder.addBtn.setOnClickListener {
+                model.addFood(food)
+                notifyDataSetChanged()
+                (activity).supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    DiaryFragment()
+                ).commit()
+            }
+            holder.deleteBtn.setOnClickListener {
+                // do something in model
+                model.deleteFavorite(food.FoodId)
+                d("t", "triggered")
+                notifyDataSetChanged()
+            }
+            // hide btns
+            holder.favBtn.isVisible = false
+            holder.deleteBtn.isVisible = true
         }
 
     }
@@ -78,11 +101,12 @@ class FoodSearchAdapter(
     override fun getItemCount() = dataset.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image: ImageView = itemView.findViewById(R.id.food_image)
-        val title: TextView = itemView.findViewById(R.id.title)
-        val summary: TextView = itemView.findViewById(R.id.summary)
-        val addBtn: ImageButton = itemView.findViewById(R.id.btn_add)
-        val favBtn: ImageButton = itemView.findViewById(R.id.fav_btn)
+        val image: ImageView = itemView.food_image
+        val title: TextView = itemView.title
+        val summary: TextView = itemView.summary
+        val addBtn: ImageButton = itemView.add_btn
+        val favBtn: ImageButton = itemView.fav_btn
+        val deleteBtn: ImageButton = itemView.delete_btn
     }
 
     fun setFoodList(foodList: ArrayList<Food>) {

@@ -1,39 +1,30 @@
 package nl.stekkinger.nizi.fragments
 
-import android.app.SearchManager
 import android.os.Bundle
 import android.view.*
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.content.Context.SEARCH_SERVICE
 import android.os.AsyncTask
-import android.util.Log
-import android.util.Log.d
-import android.widget.TextView
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_meals.view.*
+import kotlinx.android.synthetic.main.fragment_favorites.view.*
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
-import nl.stekkinger.nizi.adapters.MealAdapter
-import nl.stekkinger.nizi.classes.Meal
+import nl.stekkinger.nizi.classes.Food
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
-class AddMealFragment: Fragment() {
+class FavoritesFragment: Fragment() {
     private val mRepository: FoodRepository = FoodRepository()
     private lateinit var model: DiaryViewModel
-    private lateinit var adapter: MealAdapter
+    private lateinit var adapter: FoodSearchAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.fragment_meals, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_favorites, container, false)
         setHasOptionsMenu(true)
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.meal_recycler_view)
+        val recyclerView: RecyclerView = view.favorites_rv
         // TODO: change recycler view
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
@@ -41,40 +32,28 @@ class AddMealFragment: Fragment() {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-        adapter = MealAdapter(model)
+        adapter = FoodSearchAdapter(model, fragment = "favorites")
         recyclerView.adapter = adapter
 
-        getMealsAsyncTask().execute()
-
-        // listeners
-        view.create_meal.setOnClickListener {
-            fragmentManager!!
-                .beginTransaction()
-                .replace(
-                    R.id.activity_main_fragment_container,
-                    CreateMealFragment()
-                )
-                .commit()
-        }
+        getFavoritesAsyncTask().execute()
 
         return view
     }
 
-    inner class getMealsAsyncTask() : AsyncTask<Void, Void, ArrayList<Meal>>() {
-        override fun doInBackground(vararg params: Void?): ArrayList<Meal>? {
-            var jaap = mRepository.getMeals()
-            return jaap
+    inner class getFavoritesAsyncTask() : AsyncTask<Void, Void, ArrayList<Food>>() {
+        override fun doInBackground(vararg params: Void?): ArrayList<Food>? {
+            return mRepository.getFavorites()
         }
 
         override fun onPreExecute() {
             super.onPreExecute()
         }
 
-        override fun onPostExecute(result: ArrayList<Meal>?) {
+        override fun onPostExecute(result: ArrayList<Food>?) {
             super.onPostExecute(result)
             // update UI
             if(result != null) {
-                adapter.setMealList(result)
+                adapter.setFoodList(result)
             }
         }
     }

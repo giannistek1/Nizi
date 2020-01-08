@@ -5,14 +5,13 @@ import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_diary.*
+import kotlinx.android.synthetic.main.fragment_diary.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConsumptionAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
@@ -21,21 +20,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class DiaryFragment: Fragment() {
-    private lateinit var mAddFood: TextView
-    private lateinit var mAddMeal: TextView
-    private lateinit var mPrevDate: ImageButton
-    private lateinit var mNextDate: ImageButton
     private lateinit var mCurrentDate: String
     private lateinit var model: DiaryViewModel
     private lateinit var adapter: ConsumptionAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
-        mAddFood = view.findViewById(R.id.activity_add_food) as TextView
-        mAddMeal = view.findViewById(R.id.activity_add_meal) as TextView
-        mPrevDate = view.findViewById(R.id.diary_prev_date)
-        mNextDate = view.findViewById(R.id.diary_next_date)
-
 
         val recyclerView: RecyclerView = view.findViewById(R.id.diary_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -67,7 +57,7 @@ class DiaryFragment: Fragment() {
         })
 
         // click events
-        mAddFood.setOnClickListener {
+        view.activity_add_food.setOnClickListener {
             fragmentManager!!
                 .beginTransaction()
                 .replace(
@@ -77,7 +67,7 @@ class DiaryFragment: Fragment() {
                 .commit()
         }
 
-        mAddMeal.setOnClickListener {
+        view.activity_add_meal.setOnClickListener {
             fragmentManager!!
                 .beginTransaction()
                 .replace(
@@ -87,7 +77,17 @@ class DiaryFragment: Fragment() {
                 .commit()
         }
 
-        mPrevDate.setOnClickListener {
+        view.activity_favorites.setOnClickListener {
+            fragmentManager!!
+                .beginTransaction()
+                .replace(
+                    R.id.activity_main_fragment_container,
+                    FavoritesFragment()
+                )
+                .commit()
+        }
+
+        view.diary_prev_date.setOnClickListener {
             endDate = mCurrentDate
             startDate = getDay(mCurrentDate, -1)
             model.setDiaryDate(startDate + "/" + endDate)
@@ -98,7 +98,8 @@ class DiaryFragment: Fragment() {
                 activity_main_txt_header.text = startDate
             }
         }
-        mNextDate.setOnClickListener {
+
+        view.diary_next_date.setOnClickListener {
             if(SimpleDateFormat("yyyy-MM-dd").format(Date()) != mCurrentDate) {
                 startDate= getDay(mCurrentDate, 1)
                 endDate = getDay(mCurrentDate, 2)

@@ -90,12 +90,13 @@ class DiaryViewModel(
         selected.value = food
     }
 
-    fun selectEdit(activity: AppCompatActivity, consumption: Consumptions.Consumption) {
-        (activity).supportFragmentManager.beginTransaction().replace(
-            R.id.activity_main_fragment_container,
-            ConsumptionViewFragment()
-        ).commit()
-    }
+    // TODO: find fix for editing consumptions (impossible with current API)
+//    fun selectEdit(activity: AppCompatActivity, consumption: Consumptions.Consumption) {
+//        (activity).supportFragmentManager.beginTransaction().replace(
+//            R.id.activity_main_fragment_container,
+//            ConsumptionViewFragment()
+//        ).commit()
+//    }
 
     val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
     fun addFood(food: Food, portion: Double = 1.0) {
@@ -220,5 +221,13 @@ class DiaryViewModel(
 
     fun deleteMealProduct(mealProduct: MealProduct) {
         mealProducts.remove(mealProduct)
+    }
+
+    fun addFavorite(id: Int) {
+        mRepository.addFavorite(id)
+    }
+
+    fun deleteFavorite(id: Int) {
+        mRepository.deleteFavorite(id)
     }
 }

@@ -96,6 +96,35 @@ class FoodRepository : Repository() {
         return service.getMeals(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().body()
     }
 
+    fun getFavorites(): ArrayList<Food>? {
+        return service.getFavoriteFood(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().body()
+    }
+
+    fun addFavorite(id: Int) {
+        service.addFavoriteFood(authHeader = authHeader, patientId = preferences.getInt("patient", 0), foodId = id).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+
+            }
+        })
+    }
+
+    fun deleteFavorite(id: Int) {
+        service.deleteFavoriteFood(authHeader = authHeader, patientId = preferences.getInt("patient", 0), foodId = id).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                d("succ", response.toString())
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                d("fail", "onFailure")
+            }
+        })
+    }
+
+
     fun createMeal(meal: Meal) {
         service.createMeal(authHeader = authHeader, patientId = preferences.getInt("patient", 0), body = meal).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
