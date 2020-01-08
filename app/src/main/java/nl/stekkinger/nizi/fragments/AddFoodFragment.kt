@@ -41,7 +41,7 @@ class AddFoodFragment: Fragment() {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-        adapter = FoodSearchAdapter(model)
+        adapter = FoodSearchAdapter(model, fragment = "food")
         recyclerView.adapter = adapter
 
         if (searchView != null) {

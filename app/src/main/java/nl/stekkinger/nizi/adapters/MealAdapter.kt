@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.Food
 import nl.stekkinger.nizi.classes.Meal
 
 class MealAdapter(
@@ -27,7 +26,7 @@ class MealAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.food_item, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.meal_item, parent, false)
         return ViewHolder(view)
             .listen { pos, _ ->
 //                var food = dataset[pos]
@@ -39,7 +38,10 @@ class MealAdapter(
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var meal : Meal = dataset[position]
-        Picasso.get().load(meal.Picture).resize(40, 40).into(holder.image)
+        if (meal.Picture != "") {
+            Picasso.get().load(meal.Picture).resize(40, 40).into(holder.image)
+        }
+
 //        holder.image.setImageURI(uri)
         holder.title.text = meal.Name
         holder.summary.text = meal.PortionSize.toString() + " " + meal.WeightUnit

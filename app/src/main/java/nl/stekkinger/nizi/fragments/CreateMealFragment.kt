@@ -15,30 +15,38 @@ import androidx.recyclerview.widget.RecyclerView
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
+import nl.stekkinger.nizi.adapters.MealProductAdapter
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
 class CreateMealFragment: Fragment() {
-    private val mRepository: FoodRepository = FoodRepository()
     private lateinit var model: DiaryViewModel
     private lateinit var queryTextListener: SearchView.OnQueryTextListener
-    private lateinit var adapter: FoodSearchAdapter
+    private lateinit var searchAdapter: FoodSearchAdapter
+    private lateinit var mealProductAdapter: MealProductAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.fragment_add_food, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_create_meal, container, false)
+        setHasOptionsMenu(true)
 
         val searchView = view.findViewById(R.id.search_food) as SearchView
         val searchManager: SearchManager = activity!!.getSystemService(SEARCH_SERVICE) as SearchManager
-
-        val recyclerView: RecyclerView = view.findViewById(R.id.food_search_recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
 
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-        adapter = FoodSearchAdapter(model)
-        recyclerView.adapter = adapter
+        // rv's
+        val searchRV: RecyclerView = view.findViewById(R.id.food_search_recycler_view)
+        searchRV.layoutManager = LinearLayoutManager(activity)
+        val mealProductRV: RecyclerView = view.findViewById(R.id.meal_food_list_recycler_view)
+        mealProductRV.layoutManager = LinearLayoutManager(activity)
+
+        // adapters
+        searchAdapter = FoodSearchAdapter(model, fragment = "meal")
+        searchRV.adapter = searchAdapter
+        mealProductAdapter = MealProductAdapter(model)
+        mealProductRV.adapter = mealProductAdapter
 
         if (searchView != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
@@ -60,12 +68,32 @@ class CreateMealFragment: Fragment() {
             model.setFoodSearch("")
         }
 
+        mealProductAdapter.setMealProductList(model.getMealProducts())
+
         // get the results of food search
         model.getFoodSearch().observe(viewLifecycleOwner, Observer { foodList ->
-            d("LOGLIST", foodList.toString())
-            adapter.setFoodList(foodList)
+            d("LOGLIST", model.getMealProducts().toString())
+            searchAdapter.setFoodList(foodList)
         })
 
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.create_menu_confirm, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.confirm_create_meal -> {
+                d("t", "oorps")
+                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    CreateMealFinalFragment()
+                ).commit()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

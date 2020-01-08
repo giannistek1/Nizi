@@ -62,6 +62,9 @@
     <string name="scan_product">Scan product</string>
     <string name="servings">Portie: </string>
     <string name="nr_servings">Aantal porties: </string>
+    <string name="meal_name_empty">Maaltijd naam is leeg </string>
+    <string name="meal_name_too_long">Maaltijd naam mag max 30 tekens zijn</string>
+
 
     <!-- Dashboard -->
     <string name="statistics">Statistieken</string>

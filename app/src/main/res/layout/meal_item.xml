@@ -9,27 +9,34 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_margin="2dp">
 
+        <ImageView
+            android:id="@+id/food_image"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:padding="2dp"
+            tools:src="@drawable/ic_food"
+            android:contentDescription="food image" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/food_info"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
             android:layout_toEndOf="@+id/food_image"
             android:layout_toStartOf="@+id/btn_add"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
                 android:maxLines="1"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="Title" />
 
@@ -37,30 +44,20 @@
                 android:id="@+id/summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
                 android:maxLines="1"
                 android:textSize="16sp"
-                android:layout_marginEnd="70dp"
-                android:layout_alignParentRight="true"
                 tools:text="Summary" />
 
-        </RelativeLayout>
-
-<!--        <ImageButton-->
-<!--            android:id="@+id/btn_edit"-->
-<!--            style="?android:attr/borderlessButtonStyle"-->
-<!--            android:layout_width="25dp"-->
-<!--            android:layout_height="25dp"-->
-<!--            android:layout_row="4"-->
-<!--            android:layout_column="0"-->
-<!--            android:layout_toStartOf="@+id/btn_delete"-->
-<!--            android:src="@drawable/ic_edit"-->
-<!--            android:contentDescription="add button" />-->
+        </LinearLayout>
 
         <ImageButton
-            android:id="@+id/btn_delete"
+            android:id="@+id/delete_meal_btn"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
             android:layout_row="4"
             android:layout_column="0"
             android:layout_alignParentRight="true"

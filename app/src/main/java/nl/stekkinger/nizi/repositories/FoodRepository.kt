@@ -81,30 +81,30 @@ class FoodRepository : Repository() {
     }
 
     fun addConsumption(consumption: Consumption) {
-
-        val con = "{ \"FoodName\": \"brood (bruin)\", \"KCal\": 62, \"Protein\": 1, \"Fiber\": 1, \"Calium\": 1, \"Sodium\": 1, \"Amount\": 1, \"WeightUnitId\": 1, \"Date\": \"2020-01-04T00:00:00\", \"PatientId\": 56, \"Id\": 0 }"
-//        val body = RequestBody.create(MediaType.parse("text/plain"), consumption)
         service.addConsumption(authHeader = authHeader, body = consumption).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if (response.isSuccessful) {
-                    d("resp", response.code().toString())
-                    d("rene", consumption.toString())
-                    d("rene", con)
-                } else {
-                    d("resp", response.code().toString())
-                    d("rene", consumption.toString())
-                    d("rene", con)
-                }
+
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-                d("rene", "onFailure")
+
             }
         })
     }
 
     fun getMeals(): ArrayList<Meal>? {
-        d("hi", service.getMeals(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().toString())
         return service.getMeals(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().body()
+    }
+
+    fun createMeal(meal: Meal) {
+        service.createMeal(authHeader = authHeader, patientId = preferences.getInt("patient", 0), body = meal).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+
+            }
+        })
     }
 }

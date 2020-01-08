@@ -101,6 +101,12 @@ class MainActivity : AppCompatActivity() {
             R.id.confirm_add_food -> {
                 return false
             }
+            R.id.confirm_add_meal_product -> {
+                return false
+            }
+            R.id.confirm_create_meal -> {
+                return false
+            }
         }
         return true
     }

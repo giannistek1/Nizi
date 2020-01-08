@@ -14,11 +14,14 @@ import androidx.lifecycle.*
 import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.MainActivity
+import nl.stekkinger.nizi.adapters.MealAdapter
+import nl.stekkinger.nizi.adapters.MealProductAdapter
 import nl.stekkinger.nizi.fragments.FoodViewFragment
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.text.SimpleDateFormat
 import nl.stekkinger.nizi.classes.Consumption
 import nl.stekkinger.nizi.fragments.ConsumptionViewFragment
+import nl.stekkinger.nizi.fragments.MealFoodViewFragment
 import java.text.DateFormat.getDateInstance
 import java.util.*
 import kotlin.collections.ArrayList
@@ -91,6 +94,15 @@ class DiaryViewModel(
         selected.value = food
     }
 
+    // load the food view fragment with the selected food
+    fun selectMeal(activity: AppCompatActivity, food: Food) {
+        (activity).supportFragmentManager.beginTransaction().replace(
+            R.id.activity_main_fragment_container,
+            MealFoodViewFragment()
+        ).commit()
+        selected.value = food
+    }
+
     fun selectEdit(activity: AppCompatActivity, consumption: Consumptions.Consumption) {
         (activity).supportFragmentManager.beginTransaction().replace(
             R.id.activity_main_fragment_container,
@@ -98,9 +110,9 @@ class DiaryViewModel(
         ).commit()
     }
 
-
+    val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
     fun addFood(food: Food, portion: Double = 1.0) {
-        val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
+
 
         val consumption = Consumption(
             FoodName = food.Name,
@@ -115,45 +127,68 @@ class DiaryViewModel(
             PatientId = preferences.getInt("patient", 0),
             Id = 0
         )
-
-//        val consumption: String = "{ \"FoodName\": \"" + food.Name + "\", " +
-//                "\"KCal\": " + (food.KCal * portion).toInt() + ", " +
-//                "\"Protein\": " + (food.Protein * portion).toInt() + ", " +
-//                "\"Fiber\": " + (food.Fiber * portion).toInt() + ", " +
-//                "\"Calium\": " + (food.Calcium * portion).toInt() + ", " +
-//                "\"Sodium\": " + (food.Sodium * portion).toInt() + ", " +
-//                "\"Amount\": " + (food.PortionSize * portion).toInt() + ", " +
-//                "\"WeightUnitId\": " + 1 + ", " +
-//                "\"Date\": \"" + date + "\", " +
-//                "\"PatientId\": " + preferences.getInt("patient", 0) + ", " +
-//                "\"Id\": 0 }"
-
-
         mRepository.addConsumption(consumption)
-        d("AF", "---------")
-        d("AF", mCurrentDay)
-        d("AF", "---------")
-
     }
 
     // meals
-//    fun getMeals(): LiveData<ArrayList<Meal>> {
-//        return getMealsAsyncTask().execute()
-//    }
-//
-//    class getMealsAsyncTask() : AsyncTask<Void, Void, Meal>() {
-//        override fun doInBackground(vararg params: Void?): Meal? {
-//            return mRepository.getMeals()
-//        }
-//
-//        override fun onPreExecute() {
-//            super.onPreExecute()
-//            // ...
-//        }
-//
-//        override fun onPostExecute(result: String?) {
-//            super.onPostExecute(result)
-//            // ...
-//        }
-//    }
+    private var adapter: MealProductAdapter = MealProductAdapter(this)
+    private var mealProducts: ArrayList<MealProduct> = ArrayList()
+    fun addMealProduct(food: Food, portion: Double) {
+        val mealProduct = MealProduct (
+            Name = food.Name,
+            KCal = (food.KCal * portion).toFloat(),
+            Protein = (food.Protein * portion).toFloat(),
+            Fiber = (food.Fiber * portion).toFloat(),
+            Calcium = (food.Calcium * portion).toFloat(),
+            Sodium = (food.Sodium * portion).toFloat(),
+            PortionSize = (food.PortionSize * portion).toInt(),
+            WeightUnit = food.WeightUnit
+        )
+        mealProducts.add(mealProduct)
+        adapter.setMealProductList(mealProducts)
+    }
+
+    fun createMeal(name: String) {
+        // prep values for meal
+        var totalKCal: Double = 0.toDouble()
+        var totalProtein: Double = 0.toDouble()
+        var totalFiber: Double = 0.toDouble()
+        var totalCalcium: Double = 0.toDouble()
+        var totalSodium: Double = 0.toDouble()
+        var totalSize = 0
+        // fill in total values for meal
+        for (p in mealProducts) {
+            totalKCal += p.KCal
+            totalProtein += p.Protein
+            totalFiber += p.Fiber
+            totalCalcium += p.Calcium
+            totalSodium += p.Sodium
+            totalSize += p.PortionSize
+        }
+        // create meal object
+        val meal = Meal(
+            MealId = 0,
+            Name = name,
+            PatientId = preferences.getInt("patient", 0),
+            KCal = totalKCal,
+            Protein = totalProtein,
+            Fiber = totalFiber,
+            Calcium = totalCalcium,
+            Sodium = totalSodium,
+            PortionSize = totalSize,
+            WeightUnit = "g",
+            Picture = ""
+        )
+        // create meal
+        mRepository.createMeal(meal)
+    }
+
+    fun getMealProducts(): ArrayList<MealProduct> {
+        d("meal", mealProducts.count().toString())
+        return mealProducts
+    }
+
+    fun deleteMealProduct(mealProduct: MealProduct) {
+        mealProducts.remove(mealProduct)
+    }
 }

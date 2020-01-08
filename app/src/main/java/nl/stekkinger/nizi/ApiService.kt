@@ -157,8 +157,10 @@ interface ApiService {
     //region Meal
     // Staat fout in swagger
     @POST("v1/meal/{patientId}")
-    fun addMeal(
-        @Path("patientId") patientId: Int
+    fun createMeal(
+        @Header("Authorization") authHeader : String,
+        @Path("patientId") patientId: Int,
+        @Body body: Meal
     ) : Call<Unit>
 
     @GET("v1/meal/{patientId}")
