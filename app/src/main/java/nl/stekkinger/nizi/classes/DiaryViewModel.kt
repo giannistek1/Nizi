@@ -120,7 +120,7 @@ class DiaryViewModel(
     // meals
     private var adapter: MealProductAdapter = MealProductAdapter(this)
     private var mealProducts: ArrayList<MealProduct> = ArrayList()
-    fun addMealProduct(food: Food, portion: Double) {
+    fun addMealProduct(food: Food, portion: Double = 1.toDouble()) {
         val mealProduct = MealProduct (
             Name = food.Name,
             KCal = (food.KCal * portion).toFloat(),
@@ -168,6 +168,7 @@ class DiaryViewModel(
         )
         // create meal
         mRepository.createMeal(meal)
+        mealProducts = ArrayList()
     }
 
     // adding meal to diary
@@ -192,6 +193,16 @@ class DiaryViewModel(
 
     fun deleteMeal(id: Int){
         mRepository.deleteMeal(id)
+    }
+
+    fun selectMealProduct(activity: AppCompatActivity, food: Food) {
+        // TODO: combine with select
+//        addMeal(meal)
+        (activity).supportFragmentManager.beginTransaction().replace(
+            R.id.activity_main_fragment_container,
+            MealFoodViewFragment()
+        ).commit()
+        selected.value = food
     }
 
     fun selectMeal(activity: AppCompatActivity, meal: Meal) {

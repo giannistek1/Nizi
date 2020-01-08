@@ -57,7 +57,7 @@ class ConsumptionViewFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.confirm_add_food -> {
+            R.id.confirm_btn -> {
 
                 true
             }

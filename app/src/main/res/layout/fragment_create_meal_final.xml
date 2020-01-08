@@ -45,15 +45,4 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/create_meal_form_btn"
-        style="RoundButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_height="50dp"
-        android:elevation="10dp"
-        android:text="maaltijd aanmaken"
-        android:textColor="@color/white"
-        android:layout_below="@id/input_meal_name"/>
-
 </RelativeLayout>

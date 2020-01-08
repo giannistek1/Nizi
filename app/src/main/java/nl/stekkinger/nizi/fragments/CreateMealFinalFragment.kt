@@ -32,14 +32,13 @@ class CreateMealFinalFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_create_meal_final, container, false)
+        setHasOptionsMenu(true)
 
         mInputMealName = view.findViewById(R.id.input_meal_name)
 
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
-
-        view.create_meal_form_btn.setOnClickListener { createMeal() }
 
         return view
     }
@@ -66,5 +65,32 @@ class CreateMealFinalFragment: Fragment() {
             else -> { mInputMealName.error = null }
         }
         return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_back, menu)
+        inflater?.inflate(R.menu.menu_confirm, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.confirm_btn -> {
+                // TODO: Check if meal has atleast 2 items
+                createMeal()
+                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    DiaryFragment()
+                ).commit()
+                true
+            }
+            R.id.back_btn -> {
+                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    CreateMealFragment()
+                ).commit()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 }

@@ -57,18 +57,29 @@ class FoodViewFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_back, menu)
         inflater?.inflate(R.menu.menu_confirm, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.confirm_add_food -> {
-
-                Log.d("hi", "added override")
-                Toast.makeText(this.context, "added ovr", Toast.LENGTH_LONG).show()
+            R.id.confirm_btn -> {
+                Toast.makeText(this.context, "toegevoegd", Toast.LENGTH_LONG).show()
 
                 val portion = mServingInput.editText?.text.toString().trim().toDouble()
                 model.addFood(mFood, portion)
+
+                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    DiaryFragment()
+                ).commit()
+                true
+            }
+            R.id.back_btn -> {
+                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    AddFoodFragment()
+                ).commit()
                 true
             }
             else -> super.onOptionsItemSelected(item)

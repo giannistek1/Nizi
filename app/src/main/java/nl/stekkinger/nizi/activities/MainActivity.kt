@@ -98,13 +98,10 @@ class MainActivity : AppCompatActivity() {
             R.id.menu_toolbar_logout -> {
                 authRepository.logout(this, this)
             }
-            R.id.confirm_add_food -> {
+            R.id.confirm_btn -> {
                 return false
             }
-            R.id.confirm_add_meal_product -> {
-                return false
-            }
-            R.id.confirm_create_meal -> {
+            R.id.back_btn -> {
                 return false
             }
         }

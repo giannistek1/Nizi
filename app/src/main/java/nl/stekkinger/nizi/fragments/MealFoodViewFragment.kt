@@ -58,12 +58,12 @@ class MealFoodViewFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_add_meal_product, menu)
+        inflater?.inflate(R.menu.menu_confirm, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.confirm_add_meal_product -> {
+            R.id.confirm_btn -> {
                 d("t", "dertp")
                 val portion = mServingInput.editText?.text.toString().trim().toDouble()
                 model.addMealProduct(mFood, portion)

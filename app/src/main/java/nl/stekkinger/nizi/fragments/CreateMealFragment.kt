@@ -80,16 +80,23 @@ class CreateMealFragment: Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.create_menu_confirm, menu)
+        inflater?.inflate(R.menu.menu_back, menu)
+        inflater?.inflate(R.menu.menu_confirm, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.confirm_create_meal -> {
-                d("t", "oorps")
+            R.id.confirm_btn -> {
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     CreateMealFinalFragment()
+                ).commit()
+                true
+            }
+            R.id.back_btn -> {
+                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    AddMealFragment()
                 ).commit()
                 true
             }

@@ -31,6 +31,7 @@ class AddMealFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_meals, container, false)
+        setHasOptionsMenu(true)
         mCreateMeal = view.findViewById(R.id.create_meal) as TextView
 
         val recyclerView: RecyclerView = view.findViewById(R.id.meal_recycler_view)
@@ -77,6 +78,23 @@ class AddMealFragment: Fragment() {
             if(result != null) {
                 adapter.setMealList(result)
             }
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_back, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.back_btn -> {
+                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    DiaryFragment()
+                ).commit()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }
