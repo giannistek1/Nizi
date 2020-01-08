@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.AdapterView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,7 +24,7 @@ import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 
-class DoctorMainActivity : AppCompatActivity() {
+class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
 
     private var TAG = "DoctorMain"
 
@@ -35,6 +36,7 @@ class DoctorMainActivity : AppCompatActivity() {
     private lateinit var model: DoctorLogin
     private lateinit var patientListViewModel: PatientListViewModel
     var patientList = ArrayList<PatientItem>()
+    private var doctorId: Int = 3
 
     private lateinit var progressBar: View
 
@@ -56,7 +58,7 @@ class DoctorMainActivity : AppCompatActivity() {
         // Login as doctor for doctor data
         loginDoctorAsyncTask().execute()
 
-        patientListViewModel.setDoctorId(3)
+        patientListViewModel.setDoctorId(doctorId) 
         patientListViewModel.loadPatients().observe(this, Observer { patientList ->
             Log.d("log", patientList.toString())
         })
@@ -77,6 +79,17 @@ class DoctorMainActivity : AppCompatActivity() {
             }
         }
         return true
+    }
+    //endregion
+
+    //region Spinner
+    override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
+        // An item was selected. You can retrieve the selected item using
+         parent.getItemAtPosition(pos)
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>) {
+        // Another interface callback
     }
     //endregion
 
@@ -122,8 +135,12 @@ class DoctorMainActivity : AppCompatActivity() {
                 Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
                 // Save doctor model
                 model = result
+
+                // update doctorId
+                doctorId = model.doctor.doctorId
                 // Start get patients from doc
                 getPatientsFromDoctorAsyncTask().execute()
+
             } else {
                 Toast.makeText(baseContext, R.string.login_fail, Toast.LENGTH_SHORT).show()
             }

@@ -33,8 +33,6 @@ class LoginActivity : AppCompatActivity() {
     //Shared preferences/extras
     private val CODE_DEVICE_AUTHENTICATION = 22
     val EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS"
-    val EXTRA_ACCESS_TOKEN = "com.auth0.ACCESS_TOKEN"
-    val EXTRA_ID_TOKEN = "com.auth0.ID_TOKEN"
     val PREF_ISDOCTOR = "IS_DOCTOR"
 
     private var auth0: Auth0? = null

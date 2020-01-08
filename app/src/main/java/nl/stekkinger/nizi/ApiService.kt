@@ -222,16 +222,18 @@ interface ApiService {
     ) : Call<DoctorLogin>
     //endregion
 
-    //region DietaryManagement
+    //region DietaryManagement (needs patient token)
     @POST("v1/dietaryManagement")
     fun addDietary(
-
+        @Header("Authorization") authHeader : String,
+        @Body body: DietaryManagementModel
     ) : Call<Unit>
 
     @GET("v1/dietaryManagement/{patientId}")
     fun getDietary(
+        @Header("Authorization") authHeader : String,
         @Path("patientId") patientId: Int
-    ) : Call<Unit>
+    ) : Call<DietaryView>
 
     @PUT("v1/dietaryManagement/{dietId}")
     fun updateDietary(

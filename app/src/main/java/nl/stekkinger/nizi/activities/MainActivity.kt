@@ -20,15 +20,19 @@ import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.fragments.DashboardFragment
 import nl.stekkinger.nizi.fragments.HomeFragment
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.classes.DietaryView
 import nl.stekkinger.nizi.classes.PatientLogin
+import nl.stekkinger.nizi.classes.Restrictions
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository
+import nl.stekkinger.nizi.repositories.DietaryRepository
 
 class MainActivity : AppCompatActivity() {
 
     private var TAG = "Main"
 
     private val authRepository: AuthRepository = AuthRepository()
+    private val dietaryRepository: DietaryRepository = DietaryRepository()
 
     private var model: PatientLogin? = null
 
@@ -129,6 +133,8 @@ class MainActivity : AppCompatActivity() {
             preferences.edit().putInt("patient", result!!.patient.patientId).commit()
             d("con", preferences.getInt("patient", 0).toString())
             d("login", result.patient.patientId.toString())
+
+            getDietaryAsyncTask().execute()
             // Progressbar
             progressBar.visibility = View.GONE
             if (result != null) {
@@ -139,4 +145,36 @@ class MainActivity : AppCompatActivity() {
         }
     }
     //endregion
+
+    //region Get Dietary
+    inner class getDietaryAsyncTask() : AsyncTask<Void, Void, DietaryView>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+            // Progressbar
+            progressBar.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): DietaryView? {
+            return dietaryRepository.getDietary(56)
+        }
+
+        override fun onPostExecute(result: DietaryView?) {
+            super.onPostExecute(result)
+
+            val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
+            d("con", preferences.getInt("patient", 0).toString())
+
+            preferences.edit().putString("dietaryDescription", result!!.Dietarymanagement[0].Description).commit()
+            preferences.edit().putInt("dietaryAmount", result!!.Dietarymanagement[0].Amount).commit()
+
+            // Progressbar
+            progressBar.visibility = View.GONE
+            if (result != null) {
+                Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(baseContext, R.string.login_fail, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
  }

@@ -87,6 +87,7 @@
     <string name="date_of_birth">Geboortedatum</string>
     <string name="date_of_birth_format">DD/MM/YYYY</string>
     <string name="weight">Gewicht</string>
+    <string name="kilogram_short">Kg</string>
     <string name="save">Opslaan</string>
     <string name="patient_added">Patiënt toegevoegd</string>
     <string name="data_of">Gegevens van</string>
@@ -110,4 +111,15 @@
     <string name="december">December</string>
 
     <string name="header_background">Kop achtergrond</string>
+
+    <string-array name="guideline_array">
+        <item>Caloriebeperking</item>
+        <item>Calorieverrijking</item>
+        <item>Eiwitbeperking</item>
+        <item>Eiwitverrijking</item>
+        <item>Kaliumbeperking</item>
+        <item>Natriumbeperking</item>
+        <item>Vezelverrijking</item>
+        <item>Vochtbeperking</item>
+    </string-array>
 </resources>

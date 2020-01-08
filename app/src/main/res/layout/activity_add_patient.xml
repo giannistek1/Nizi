@@ -102,12 +102,11 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/h3"
                 android:fontFamily="@font/segoe_ui_semibold"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/activity_add_patient_et_lastName"
                 android:layout_marginTop="@dimen/marginNormal"
                 android:layout_marginStart="@dimen/marginNormal"/>
-
 
             <EditText
                 android:id="@+id/activity_add_patient_et_dob"
@@ -117,7 +116,7 @@
                 android:layout_marginTop="@dimen/marginSmall"
                 android:layout_marginStart="@dimen/marginNormal"
                 android:inputType="date"
-                android:hint="@string/date_of_birth"/>
+                android:hint="@string/date_of_birth_format"/>
 
             <!-- Weight -->
             <TextView

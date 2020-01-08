@@ -1,7 +1,5 @@
 package nl.stekkinger.nizi.classes
 
-import java.text.SimpleDateFormat
-
 data class Patient (
     val patientId: Int,
     val accountId: Int,
