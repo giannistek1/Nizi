@@ -20,7 +20,7 @@ import nl.stekkinger.nizi.fragments.DiaryFragment
 
 class FoodSearchAdapter(
     private var model: DiaryViewModel = DiaryViewModel(),
-    private var dataset: ArrayList<Food> = ArrayList(),
+    private var mDataset: ArrayList<Food> = ArrayList(),
     private var fragment: String
 ) : RecyclerView.Adapter<FoodSearchAdapter.ViewHolder>() {
 
@@ -38,7 +38,7 @@ class FoodSearchAdapter(
         activity = view.context as AppCompatActivity
         return ViewHolder(view)
             .listen { pos, _ ->
-                var food = dataset[pos]
+                var food = mDataset[pos]
                 if(fragment == "food") { model.select(activity, food) }
                 if(fragment == "meal") { model.selectMealProduct(activity, food) }
             }
@@ -46,7 +46,7 @@ class FoodSearchAdapter(
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var food: Food = dataset[position]
+        var food: Food = mDataset[position]
         Picasso.get().load(food.Picture).resize(40, 40).into(holder.image)
         holder.title.text = food.Name
         holder.summary.text = food.PortionSize.toString() + " " + food.WeightUnit
@@ -87,7 +87,7 @@ class FoodSearchAdapter(
             holder.deleteBtn.setOnClickListener {
                 // do something in model
                 model.deleteFavorite(food.FoodId)
-                d("t", "triggered")
+                mDataset.removeAt(holder.adapterPosition)
                 notifyDataSetChanged()
             }
             // hide btns
@@ -98,7 +98,7 @@ class FoodSearchAdapter(
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = dataset.size
+    override fun getItemCount() = mDataset.size
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.food_image
@@ -110,7 +110,7 @@ class FoodSearchAdapter(
     }
 
     fun setFoodList(foodList: ArrayList<Food>) {
-        this.dataset = foodList
+        this.mDataset = foodList
         notifyDataSetChanged()
     }
 }
