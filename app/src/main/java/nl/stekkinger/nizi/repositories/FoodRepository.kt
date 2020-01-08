@@ -107,4 +107,16 @@ class FoodRepository : Repository() {
             }
         })
     }
+
+    fun deleteMeal(id: Int) {
+        service.deleteMeal(authHeader = authHeader, patientId = preferences.getInt("patient", 0), mealId = id).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+
+            }
+        })
+    }
 }

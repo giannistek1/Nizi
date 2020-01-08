@@ -40,9 +40,6 @@ class ConsumptionAdapter(
         holder.title.text = consumption.FoodName
         holder.summary.text = consumption.Amount.toString() + " " + consumption.Weight.Unit
 
-        holder.itemView.btn_edit.setOnClickListener {
-
-        }
         holder.itemView.btn_delete.setOnClickListener {
             model.deleteConsumption(consumption.ConsumptionId)
             mDataset.removeAt(holder.adapterPosition)

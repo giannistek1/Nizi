@@ -21,6 +21,7 @@ import nl.stekkinger.nizi.repositories.FoodRepository
 import java.text.SimpleDateFormat
 import nl.stekkinger.nizi.classes.Consumption
 import nl.stekkinger.nizi.fragments.ConsumptionViewFragment
+import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.fragments.MealFoodViewFragment
 import java.text.DateFormat.getDateInstance
 import java.util.*
@@ -60,11 +61,6 @@ class DiaryViewModel(
         mRepository.deleteConsumption(id)
     }
 
-    fun updateConsumption(consumption: Consumptions.Consumption) {
-
-    }
-
-
     // foodSearch
     private var mFoodSearch: LiveData<ArrayList<Food>> = Transformations.switchMap<String, ArrayList<Food>>(
         mSearchText
@@ -90,15 +86,6 @@ class DiaryViewModel(
         (activity).supportFragmentManager.beginTransaction().replace(
             R.id.activity_main_fragment_container,
             FoodViewFragment()
-        ).commit()
-        selected.value = food
-    }
-
-    // load the food view fragment with the selected food
-    fun selectMeal(activity: AppCompatActivity, food: Food) {
-        (activity).supportFragmentManager.beginTransaction().replace(
-            R.id.activity_main_fragment_container,
-            MealFoodViewFragment()
         ).commit()
         selected.value = food
     }
@@ -181,6 +168,38 @@ class DiaryViewModel(
         )
         // create meal
         mRepository.createMeal(meal)
+    }
+
+    // adding meal to diary
+    fun addMeal(meal: Meal) {
+        // TODO: add overview for portions later
+        val portion = 1.toFloat()
+        val consumption = Consumption(
+            FoodName = meal.Name,
+            KCal = (meal.KCal * portion).toFloat(),
+            Protein = (meal.Protein * portion).toFloat(),
+            Fiber = (meal.Fiber * portion).toFloat(),
+            Calium = (meal.Calcium * portion).toFloat(),
+            Sodium = (meal.Sodium * portion).toFloat(),
+            Amount = (meal.PortionSize * portion).toInt(),
+            WeightUnitId = 1,
+            Date = mCurrentDay,
+            PatientId = preferences.getInt("patient", 0),
+            Id = 0
+        )
+        mRepository.addConsumption(consumption)
+    }
+
+    fun deleteMeal(id: Int){
+        mRepository.deleteMeal(id)
+    }
+
+    fun selectMeal(activity: AppCompatActivity, meal: Meal) {
+        addMeal(meal)
+        (activity).supportFragmentManager.beginTransaction().replace(
+            R.id.activity_main_fragment_container,
+            DiaryFragment()
+        ).commit()
     }
 
     fun getMealProducts(): ArrayList<MealProduct> {

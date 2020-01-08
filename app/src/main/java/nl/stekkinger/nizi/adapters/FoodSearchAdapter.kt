@@ -33,7 +33,6 @@ class FoodSearchAdapter(
                 var food = dataset[pos]
                 val activity = view.context as AppCompatActivity
                 if(fragment == "food") { model.select(activity, food) }
-                if(fragment == "meal") { model.selectMeal(activity, food) }
             }
     }
 

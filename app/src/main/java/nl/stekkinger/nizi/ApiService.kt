@@ -175,8 +175,9 @@ interface ApiService {
         @Path("mealId") mealId: Int
     ) : Call<Unit>
 
-    @PUT("v1/meal")
+    @DELETE("v1/meal")
     fun deleteMeal(
+        @Header("Authorization") authHeader : String,
         @Query("patientId") patientId: Int,
         @Query("mealId") mealId: Int
     ) : Call<Unit>

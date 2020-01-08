@@ -379,7 +379,7 @@
             <TextView
                 android:id="@+id/activity_add_food"
                 android:textColor="@color/black"
-                android:textSize="12sp"
+                android:textSize="14sp"
                 android:text="@string/add_food"
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
@@ -401,8 +401,7 @@
                 android:background="@color/white"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                />
+                android:layout_weight="1" />
 
         </LinearLayout>
 
