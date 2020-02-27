@@ -88,8 +88,6 @@ class AddPatientActivity : AppCompatActivity() {
             mLastName = activity_add_patient_et_lastName.text.toString().trim()
             mDateOfBirth = activity_add_patient_et_dob.text.toString().trim()
             mWeight = activity_add_patient_et_weight.text.toString().toFloat()
-
-
         }
 
         override fun doInBackground(vararg p0: Void?): Void? {

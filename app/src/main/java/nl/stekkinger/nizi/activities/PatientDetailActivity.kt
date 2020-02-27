@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_patient_detail.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelperClass
 
 class PatientDetailActivity : AppCompatActivity() {
 
@@ -15,6 +16,7 @@ class PatientDetailActivity : AppCompatActivity() {
 
         activity_patient_detail_dataOfPatient.text = "${getString(R.string.data_of)} ${intent.getStringExtra("NAME")}"
 
-
+        //val helperClass = GuidelinesHelperClass()
+        //helperClass.initializeGuidelines(this, ll_guidelines_content)
     }
 }

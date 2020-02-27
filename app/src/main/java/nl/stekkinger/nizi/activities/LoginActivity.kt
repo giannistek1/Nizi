@@ -39,8 +39,6 @@ class LoginActivity : AppCompatActivity() {
     private var credentialsManager: SecureCredentialsManager? = null
 
     private var isDoctor = false
-    private lateinit var patientLogin: PatientLogin
-    private lateinit var doctorLogin: DoctorLogin
     lateinit var prefs: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {

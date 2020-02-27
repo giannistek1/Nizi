@@ -10,7 +10,6 @@ class GuidelinesHelperClass {
 
     fun initializeGuidelines(cont: FragmentActivity?, layout: LinearLayout)
     {
-
         val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
 
         var count: Int = preferences.getInt("dietaryCount", 0)
@@ -20,6 +19,10 @@ class GuidelinesHelperClass {
 
         for (i in 0..count-1)
         {
+            // Description                  // Amount
+            // Min
+            // Max
+            // Feedback
             descriptionKey = "dietaryDescription" + i.toString()
             amountKey = "dietaryAmount" + i.toString()
 
@@ -28,9 +31,9 @@ class GuidelinesHelperClass {
             var descriptionTextView = TextView(cont)
             var amountTextView = TextView(cont)
 
-            descriptionTextView.setText(preferences.getString(descriptionKey, ""))
+            descriptionTextView.text = preferences.getString(descriptionKey, "")
             descriptionTextView.width = 400
-            amountTextView.setText(preferences.getInt(amountKey, 0).toString())
+            amountTextView.text = preferences.getInt(amountKey, 0).toString()
 
             horizontalLayout.addView(descriptionTextView)
             horizontalLayout.addView(amountTextView)

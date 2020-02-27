@@ -14,8 +14,8 @@
         />
 
     <item
-        android:id="@+id/nav_dashboard"
-        android:icon="@drawable/ic_dashboard"
-        android:title="@string/dashboard"
+        android:id="@+id/nav_conversation"
+        android:icon="@drawable/ic_conversation"
+        android:title="@string/conversations"
         />
 </menu>

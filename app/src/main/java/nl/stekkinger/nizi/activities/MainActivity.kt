@@ -34,8 +34,6 @@ class MainActivity : AppCompatActivity() {
     private val authRepository: AuthRepository = AuthRepository()
     private val dietaryRepository: DietaryRepository = DietaryRepository()
 
-    private var model: PatientLogin? = null
-
     private lateinit var diaryModel: DiaryViewModel
 
     private lateinit var progressBar: View
@@ -78,7 +76,7 @@ class MainActivity : AppCompatActivity() {
                 return@OnNavigationItemSelectedListener true
             }
 
-            R.id.nav_dashboard -> {
+            R.id.nav_conversation -> {
                 val fragment = DashboardFragment()
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
                     .commit()
@@ -129,18 +127,24 @@ class MainActivity : AppCompatActivity() {
         override fun onPostExecute(result: PatientLogin?) {
             super.onPostExecute(result)
 
-            val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-            preferences.edit().putInt("patient", result!!.patient.patientId).commit()
-            d("con", preferences.getInt("patient", 0).toString())
-            d("login", result.patient.patientId.toString())
+            try {
+                val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
+                preferences.edit().putInt("patient", result!!.patient.patientId).apply()
+                d("con", preferences.getInt("patient", 0).toString())
+                d("login", result.patient.patientId.toString())
 
-            getDietaryAsyncTask().execute()
-            // Progressbar
-            progressBar.visibility = View.GONE
-            if (result != null) {
-                Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(baseContext, R.string.login_fail, Toast.LENGTH_SHORT).show()
+                getDietaryAsyncTask().execute()
+                // Progressbar
+                progressBar.visibility = View.GONE
+                if (result != null) {
+                    Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(baseContext, R.string.login_fail, Toast.LENGTH_SHORT).show()
+                }
+            }
+            catch(e: Exception)
+            {
+                d(TAG, e.cause.toString())
             }
         }
     }
@@ -172,8 +176,11 @@ class MainActivity : AppCompatActivity() {
                 descriptionKey = "dietaryDescription" + index.toString()
                 amountKey = "dietaryAmount" + index.toString()
 
-                preferences.edit().putString(descriptionKey, result!!.Dietarymanagement[index].Description).commit()
-                preferences.edit().putInt(amountKey, result!!.Dietarymanagement[index].Amount).commit()
+                preferences.edit()
+                    .putString(descriptionKey, result!!.Dietarymanagement[index].Description)
+                    .commit()
+                preferences.edit().putInt(amountKey, result!!.Dietarymanagement[index].Amount)
+                    .commit()
             }
             preferences.edit().putInt("dietaryCount", result.Dietarymanagement.count()).commit()
 
@@ -186,4 +193,5 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    //endregion
  }

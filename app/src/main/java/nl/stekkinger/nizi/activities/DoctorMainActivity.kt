@@ -127,7 +127,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             return authRepository.loginAsDoctor()
         }
 
-        override fun onPostExecute(result: DoctorLogin?) {
+        override fun onPostExecute(result: DoctorLogin) {
             super.onPostExecute(result)
             // Progressbar
             progressBar.visibility = View.GONE
