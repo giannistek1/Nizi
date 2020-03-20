@@ -40,7 +40,8 @@
     <!-- food related -->
     <string name="today">Vandaag</string>
     <string name="guidelines">Richtlijnen</string>
-    <string name="nutricion_values">VOEDINGSWAARDEN</string>
+    <string name="nutrition_values">VOEDINGSWAARDEN</string>
+    <string name="other_nutrition_values">Overige voedingswaarden</string>
     <string name="calories">Calorieën</string>
     <string name="fibers">Vezels</string>
     <string name="sodium">Natrium</string>
@@ -49,22 +50,30 @@
     <string name="moisture">Vocht</string>
     <string name="proteins">Eiwitten</string>
     <string name="miligram_short">mg</string>
+    <string name="gram_short">g</string>
     <string name="recent_nutrition">Recente voeding</string>
     <string name="recent">Recent</string>
     <string name="nutrition">Voeding</string>
     <string name="breakfast">Ontbijt</string>
     <string name="lunch">Lunch</string>
     <string name="dinner">Avondeten</string>
+    <string name="snacks">Snacks</string>
+    <string name="snack">Snack</string>
     <string name="add_food">Voeding toevoegen</string>
+    <string name="food_added">Voeding toegevoegd</string>
     <string name="products">Producten</string>
     <string name="meals">Maaltijden</string>
     <string name="favorites">Favorieten</string>
     <string name="search_product">Product zoeken</string>
     <string name="scan_product">Scan product</string>
-    <string name="servings">Portie: </string>
+    <string name="servings">Portie</string>
     <string name="nr_servings">Aantal porties: </string>
     <string name="meal_name_empty">Maaltijd naam is leeg </string>
     <string name="meal_name_too_long">Maaltijd naam mag max 30 tekens zijn</string>
+    <string name="make_meal">Maaltijd maken</string>
+    <string name="meal_edited">Maaltijd bewerkt</string>
+    <string name="did_not_add_food">U heeft nog geen voeding toegevoegd</string>
+    <string name="import_food_diary">Importeren uit voedingsdagboek</string>
 
 
     <!-- Dashboard -->
@@ -88,14 +97,19 @@
     <string name="date_of_birth">Geboortedatum</string>
     <string name="date_of_birth_format">DD/MM/YYYY</string>
     <string name="weight">Gewicht</string>
+    <string name="gender">Geslacht</string>
+    <string name="male">Man</string>
+    <string name="female">Vrouw</string>
     <string name="kilogram_short">Kg</string>
     <string name="save">Opslaan</string>
     <string name="patient_added">Patiënt toegevoegd</string>
     <string name="data_of">Gegevens van</string>
     <string name="trends">Trends</string>
 
-
+    <!-- other -->
+    <string name="ready">Gereed</string>
     <string name="food_diary">Voedingsdagboek</string>
+    <string name="header_background">Kop achtergrond</string>
 
     <!-- months -->
     <string name="january">Januari</string>
@@ -111,7 +125,7 @@
     <string name="november">November</string>
     <string name="december">December</string>
 
-    <string name="header_background">Kop achtergrond</string>
+
 
     <string-array name="guideline_array">
         <item>Caloriebeperking</item>

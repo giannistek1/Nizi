@@ -18,7 +18,7 @@ class ConversationFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val helper = GuidelinesHelperClass()
-        helper.initializeGuidelines(activity, ll_guidelines_content)
+        //val helper = GuidelinesHelperClass()
+        //helper.initializeGuidelines(activity, ll_guidelines_content)
     }
 }

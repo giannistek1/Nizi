@@ -23,6 +23,7 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DietaryView
 import nl.stekkinger.nizi.classes.PatientLogin
 import nl.stekkinger.nizi.classes.Restrictions
+import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
@@ -77,7 +78,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.nav_conversation -> {
-                val fragment = DashboardFragment()
+                val fragment = ConversationFragment()
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -177,20 +178,15 @@ class MainActivity : AppCompatActivity() {
                 amountKey = "dietaryAmount" + index.toString()
 
                 preferences.edit()
-                    .putString(descriptionKey, result!!.Dietarymanagement[index].Description)
+                    .putString(descriptionKey, result.Dietarymanagement[index].Description)
                     .commit()
-                preferences.edit().putInt(amountKey, result!!.Dietarymanagement[index].Amount)
+                preferences.edit().putInt(amountKey, result.Dietarymanagement[index].Amount)
                     .commit()
             }
             preferences.edit().putInt("dietaryCount", result.Dietarymanagement.count()).commit()
 
             // Progressbar
             progressBar.visibility = View.GONE
-            if (result != null) {
-                Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(baseContext, R.string.login_fail, Toast.LENGTH_SHORT).show()
-            }
         }
     }
     //endregion

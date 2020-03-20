@@ -88,7 +88,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="@dimen/h1"
-        android:text="@string/nutricion_values"
+        android:text="@string/nutrition_values"
         android:textColor="@color/black"
         android:layout_marginTop="@dimen/marginNormal"
         android:layout_marginBottom="@dimen/marginNormal"

@@ -26,6 +26,7 @@ class GuidelinesHelperClass {
             descriptionKey = "dietaryDescription" + i.toString()
             amountKey = "dietaryAmount" + i.toString()
 
+            // Create elements
             var horizontalLayout = LinearLayout(cont)
             horizontalLayout.orientation = LinearLayout.HORIZONTAL
             var descriptionTextView = TextView(cont)
