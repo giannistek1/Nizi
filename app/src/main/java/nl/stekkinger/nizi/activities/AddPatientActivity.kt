@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi.activities
 
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.AsyncTask.execute
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +13,7 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DoctorLogin
 import nl.stekkinger.nizi.classes.Patient
 import nl.stekkinger.nizi.classes.PatientItem
+import nl.stekkinger.nizi.classes.PatientViewModel
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 
@@ -40,7 +42,7 @@ class AddPatientActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         progressBar = activity_add_patient_progressbar
 
-        activity_add_patient_btn_save.setOnClickListener {
+        activity_add_patient_btn_to_guidelines.setOnClickListener {
             // Checks
             if (activity_add_patient_et_firstName.text.toString() == "") {
                 return@setOnClickListener
@@ -57,54 +59,24 @@ class AddPatientActivity : AppCompatActivity() {
             if (activity_add_patient_et_weight.text.toString() == "") {
                 return@setOnClickListener
             }
+            val intent = Intent(this@AddPatientActivity, AddPatientDietaryActivity::class.java)
+            // Give patientdata with intent
+            val newPatient = PatientViewModel(
+                activity_add_patient_et_firstName.text.toString().trim(),
+                activity_add_patient_et_lastName.text.toString().trim(),
+                activity_add_patient_et_dob.text.toString().trim(),
+                activity_add_patient_et_weight.text.toString().toFloat(),
+                "Man"
+            )
 
-            registerPatientAsyncTask().execute()  }
+            intent.putExtra("PATIENT", newPatient)
+            intent.putExtra(EXTRA_DOCTOR_ID, doctorId)
+            // Start intent
+            startActivity(intent)
+            //registerPatientAsyncTask().execute()
+            }
 
         // Get doctorId
         doctorId = intent.getIntExtra(EXTRA_DOCTOR_ID, 0)
-
-        // Spinner array adapter
-        ArrayAdapter.createFromResource(
-            this,
-            R.array.guideline_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            // Layout to use when the list of choices appears
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            // Spinner adapter
-            activity_add_patient_spr_guidelines.adapter = adapter
-        }
-    }
-
-
-    inner class registerPatientAsyncTask() : AsyncTask<Void, Void, Void>()
-    {
-        override fun onPreExecute() {
-            super.onPreExecute()
-            // Progressbar
-            progressBar.visibility = View.VISIBLE
-
-            mFirstName = activity_add_patient_et_firstName.text.toString().trim()
-            mLastName = activity_add_patient_et_lastName.text.toString().trim()
-            mDateOfBirth = activity_add_patient_et_dob.text.toString().trim()
-            mWeight = activity_add_patient_et_weight.text.toString().toFloat()
-        }
-
-        override fun doInBackground(vararg p0: Void?): Void? {
-            doctorId?.let {
-                patientRepository.registerPatient(mFirstName, mLastName, mDateOfBirth, mWeight, it)
-            }
-            return null
-        }
-
-        override fun onPostExecute(result: Void?) {
-            super.onPostExecute(result)
-            // Progressbar
-            progressBar.visibility = View.GONE
-            // Feedback
-            Toast.makeText(baseContext, R.string.patient_added, Toast.LENGTH_SHORT).show()
-            finish()
-        }
-
     }
 }

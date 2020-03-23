@@ -8,4 +8,7 @@
     <color name="gray">#E1E2E1</color>
     <color name="darkGray">#707070</color>
     <color name="red">#FF0000</color>
+    <color name="lime">#86CD96</color>
+    <color name="blue">#0259EC</color>
+    <color name="yellow">#EEB51A</color>
 </resources>

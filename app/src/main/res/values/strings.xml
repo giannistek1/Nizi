@@ -45,12 +45,13 @@
     <string name="calories">Calorieën</string>
     <string name="fibers">Vezels</string>
     <string name="sodium">Natrium</string>
-    <string name="calcium">Kalium</string>
+    <string name="potassium">Kalium</string>
     <string name="water">Vocht</string>
     <string name="moisture">Vocht</string>
     <string name="proteins">Eiwitten</string>
     <string name="miligram_short">mg</string>
     <string name="gram_short">g</string>
+    <string name="kcal">kcal</string>
     <string name="recent_nutrition">Recente voeding</string>
     <string name="recent">Recent</string>
     <string name="nutrition">Voeding</string>
@@ -92,24 +93,36 @@
 
     <string name="profile">Profiel</string>
     <string name="profile_patient">Profiel patiënt</string>
+    <string name="step_1">Stap 1</string>
+    <string name="step_2">Stap 2</string>
+    <string name="personal_info">Persoonlijke informatie</string>
+    <string name="first_name_req">Voornaam*</string>
     <string name="first_name">Voornaam</string>
+    <string name="last_name_req">Achternaam*</string>
     <string name="last_name">Achternaam</string>
-    <string name="date_of_birth">Geboortedatum</string>
+    <string name="date_of_birth_req">Geboortedatum*</string>
+    <string name="date_of_birth">Geboortedatum*</string>
     <string name="date_of_birth_format">DD/MM/YYYY</string>
+    <string name="weight_req">Gewicht*</string>
     <string name="weight">Gewicht</string>
-    <string name="gender">Geslacht</string>
+    <string name="gender">Geslacht*</string>
     <string name="male">Man</string>
     <string name="female">Vrouw</string>
     <string name="kilogram_short">Kg</string>
+    <string name="to_guidelines">Naar richtlijnen</string>
     <string name="save">Opslaan</string>
+    <string name="save_patient">Patiënt opslaan</string>
     <string name="patient_added">Patiënt toegevoegd</string>
     <string name="data_of">Gegevens van</string>
     <string name="trends">Trends</string>
 
-    <!-- other -->
+    <!-- other (image content description, and other stuff that cant be placed) -->
+    <string name="advice_from">Advies van</string>
     <string name="ready">Gereed</string>
     <string name="food_diary">Voedingsdagboek</string>
     <string name="header_background">Kop achtergrond</string>
+    <string name="user">Gebruiker</string>
+    <string name="arrow_right">Pijl rechts</string>
 
     <!-- months -->
     <string name="january">Januari</string>
@@ -124,7 +137,6 @@
     <string name="october">Oktober</string>
     <string name="november">November</string>
     <string name="december">December</string>
-
 
 
     <string-array name="guideline_array">

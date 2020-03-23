@@ -13,15 +13,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.AddPatientDietaryActivity"></activity>
         <activity
             android:name=".activities.AddPatientActivity"
-            android:parentActivityName=".activities.DoctorMainActivity">
-
-        </activity>
+            android:parentActivityName=".activities.DoctorMainActivity"></activity>
         <activity
             android:name=".activities.PatientDetailActivity"
-            android:parentActivityName=".activities.DoctorMainActivity"
-            />
+            android:parentActivityName=".activities.DoctorMainActivity" />
         <activity android:name=".activities.DoctorMainActivity" />
         <activity
             android:name=".activities.LoginActivity"

@@ -44,7 +44,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         super.onCreate(savedInstanceState)
         // setup UI
         setContentView(R.layout.activity_doctor_main)
-        progressBar = activity_doctor_main_progressbar
+        progressBar = activity_doctor_main_loader
 
         activity_doctor_main_btn_addPatient.setOnClickListener {
             val intent: Intent = Intent(this@DoctorMainActivity, AddPatientActivity::class.java)
@@ -100,7 +100,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         {
             override fun onItemClick(position: Int) {
                 // Open detail page when clicked
-                val intent: Intent = Intent(this@DoctorMainActivity, PatientDetailActivity::class.java)
+                val intent = Intent(this@DoctorMainActivity, PatientDetailActivity::class.java)
 
                 intent.putExtra("NAME", "${patientList[position].name}")
                 startActivity(intent)
@@ -119,7 +119,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     {
         override fun onPreExecute() {
             super.onPreExecute()
-            // Progressbar
+            // Loader
             progressBar.visibility = View.VISIBLE
         }
 
@@ -129,8 +129,8 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
         override fun onPostExecute(result: DoctorLogin) {
             super.onPostExecute(result)
-            // Progressbar
-            progressBar.visibility = View.GONE
+            // Loader
+            //progressBar.visibility = View.GONE
             if (result != null) {
                 Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
                 // Save doctor model
@@ -152,7 +152,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     {
         override fun onPreExecute() {
             super.onPreExecute()
-            // Progressbar
+            // Loader
             progressBar.visibility = View.VISIBLE
         }
 
@@ -162,7 +162,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
         override fun onPostExecute(result: List<Patient>?) {
             super.onPostExecute(result)
-            // Progressbar
+            // Loader
             progressBar.visibility = View.GONE
             if (result != null) {
                 Toast.makeText(baseContext, R.string.get_patients_success, Toast.LENGTH_SHORT).show()

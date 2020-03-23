@@ -66,8 +66,8 @@
                     android:id="@+id/diary_guidelines_kcal_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="kcal"
-                    android:layout_marginLeft="5dp"
+                    android:text="@string/kcal"
+                    android:layout_marginStart="5dp"
                     android:layout_below="@+id/diary_guidelines_kcal_img"
                     android:layout_toEndOf="@+id/diary_guidelines_kcal_val"
                     />
@@ -232,7 +232,7 @@
                     android:id="@+id/diary_guidelines_calcium_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/calcium"
+                    android:text="@string/potassium"
                     android:layout_toEndOf="@+id/diary_guidelines_calcium_img"
                     />
 
@@ -249,7 +249,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="mg"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_below="@+id/diary_guidelines_calcium_img"
                     android:layout_toEndOf="@+id/diary_guidelines_calcium_val"
                     />
