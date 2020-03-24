@@ -72,16 +72,6 @@
             android:contentDescription="@string/edit_patient"/>
 
     </LinearLayout>
-    <ProgressBar
-    android:id="@+id/progressBar"
-    android:layout_width="200dp"
-    android:layout_height="200dp"
-    android:indeterminate="false"
-    android:progressDrawable="@drawable/circular_progress_bar"
-    android:background="@drawable/circle_shape"
-    style="?android:attr/progressBarStyleHorizontal"
-    android:max="100"
-    android:progress="65" />
 
     <LinearLayout
         android:id="@+id/activity_patient_detail_ll_guidelines"

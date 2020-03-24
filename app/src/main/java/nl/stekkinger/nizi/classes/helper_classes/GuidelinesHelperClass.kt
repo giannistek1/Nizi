@@ -2,7 +2,9 @@ package nl.stekkinger.nizi.classes.helper_classes
 
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.marginBottom
 import androidx.fragment.app.FragmentActivity
@@ -29,15 +31,12 @@ class GuidelinesHelperClass {
             // Max
             // Feedback
 
-            //descriptionKey = "dietaryDescription" + i.toString()
-            //amountKey = "dietaryAmount" + i.toString()
-
             // Create elements
             // Layouts
             var horizontalLayout = LinearLayout(cont)
             horizontalLayout.orientation = LinearLayout.HORIZONTAL
             horizontalLayout.setBackgroundColor(getColor(cont!!.baseContext, R.color.gray))
-            val params = LinearLayout.LayoutParams(
+            var params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
@@ -54,12 +53,24 @@ class GuidelinesHelperClass {
             var maximumTextView = TextView(cont)
             var feedbackTextView = TextView(cont)
             var amountTextView = TextView(cont)
+            var progressBar = ProgressBar(cont, null, R.style.Widget_AppCompat_ProgressBar_Horizontal)
+
 
             descriptionTextView.text = dietaryGuidelineList[index].description
             descriptionTextView.width = 400
             minimumTextView.text = dietaryGuidelineList[index].minimum.toString()
             maximumTextView.text = dietaryGuidelineList[index].maximum.toString()
-            feedbackTextView.text = "Goedzo!"
+            feedbackTextView.text = "Feedback"
+
+
+            // Needs style attribute somehow
+            params = LinearLayout.LayoutParams(200, 200)
+            progressBar.layoutParams = params
+            progressBar.isIndeterminate = false
+            progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar)
+            progressBar.background = ContextCompat.getDrawable(cont, R.drawable.circle_shape)
+            progressBar.max = 100
+            progressBar.progress = 50
 
             verticalLayout1.addView(descriptionTextView)
             verticalLayout1.addView(minimumTextView)
@@ -67,6 +78,7 @@ class GuidelinesHelperClass {
             verticalLayout1.addView(feedbackTextView)
 
             verticalLayout2.addView(amountTextView)
+            verticalLayout2.addView(progressBar)
 
             horizontalLayout.addView(verticalLayout1)
             horizontalLayout.addView(verticalLayout2)
