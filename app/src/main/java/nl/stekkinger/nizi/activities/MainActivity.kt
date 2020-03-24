@@ -10,6 +10,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -46,6 +48,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         diaryModel = ViewModelProviders.of(this)[DiaryViewModel::class.java]
+
+        diaryModel.getDiary().observe(this, Observer { result ->
+
+        })
 
         // Checks if  fragment state is null, else start with homeFragment
         if (savedInstanceState == null) {
@@ -175,7 +181,8 @@ class MainActivity : AppCompatActivity() {
 
                 lateinit var dietaryGuideline: DietaryGuideline
 
-                dietaryGuideline = DietaryGuideline(resultDietary.Description,
+                val restriction = resultDietary.Description.replace("beperking", "").replace("verrijking","")
+                dietaryGuideline = DietaryGuideline(resultDietary.Description, restriction,
                     0, 0, 0)
 
                 var alreadyExists = false
@@ -190,6 +197,19 @@ class MainActivity : AppCompatActivity() {
                    }
                 }
 
+                /*if (resultDietary.Description.contains("Calorie"))
+                    dietaryGuideline.amount = diaryModel.getDiary().value!!.KCalTotal.toInt()
+                else if (resultDietary.Description.contains("Vocht"))
+                    dietaryGuideline.amount = diaryModel.getDiary().value!!.WaterTotal.toInt()
+                else if (resultDietary.Description.contains("Natrium"))
+                    dietaryGuideline.amount = diaryModel.getDiary().value!!.SodiumTotal.toInt()
+                else if (resultDietary.Description.contains("Kalium"))
+                    dietaryGuideline.amount = diaryModel.getDiary().value!!.CaliumTotal.toInt()
+                else if (resultDietary.Description.contains("Eiwit"))
+                    dietaryGuideline.amount = diaryModel.getDiary().value!!.ProteinTotal.toInt()
+                else if (resultDietary.Description.contains("Vezel"))
+                    dietaryGuideline.amount = diaryModel.getDiary().value!!.FiberTotal.toInt()*/
+
                 if (resultDietary.Description.contains("beperking"))
                 {
                     dietaryGuideline.minimum = resultDietary.Amount
@@ -199,6 +219,9 @@ class MainActivity : AppCompatActivity() {
                     dietaryGuideline.description = dietaryGuideline.description.replace("beperking", "")
                     dietaryGuideline.maximum = resultDietary.Amount
                 }
+
+
+
 
                 if (!alreadyExists) // create new
                     dietaryGuidelines.add(dietaryGuideline)

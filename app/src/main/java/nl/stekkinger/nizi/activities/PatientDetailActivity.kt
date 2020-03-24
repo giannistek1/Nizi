@@ -45,6 +45,7 @@ class PatientDetailActivity : AppCompatActivity() {
         getDietaryAsyncTask().execute()
     }
 
+    // Double in Main but this one is for the week and is an average
     //region Get Dietary
     inner class getDietaryAsyncTask() : AsyncTask<Void, Void, DietaryView>()
     {
@@ -68,8 +69,9 @@ class PatientDetailActivity : AppCompatActivity() {
 
                     lateinit var dietaryGuideline: DietaryGuideline
 
+                    val restriction = resultDietary.Description.replace("beperking", "").replace("verrijking","")
                     dietaryGuideline = DietaryGuideline(
-                        resultDietary.Description,
+                        resultDietary.Description, restriction,
                         0, 0, 0
                     )
 

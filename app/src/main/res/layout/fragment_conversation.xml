@@ -26,7 +26,7 @@
 
     </LinearLayout>
 
-    <!-- Statistics -->
+    <!-- Advice from -->
     <RelativeLayout
         android:id="@+id/fragment_conversation_rl_statistics"
         android:layout_width="match_parent"
@@ -34,16 +34,15 @@
         android:layout_below="@+id/activity_main_header_background">
 
         <TextView
-            android:id="@+id/fragment_conversation_txt_statistics"
+            android:id="@+id/fragment_conversation_txt_advice_from"
             android:textColor="@color/black"
             android:textSize="@dimen/h2"
-            android:text="@string/statistics"
-            android:layout_marginLeft="@dimen/marginLeft"
+            android:text="@string/advice_from"
+            android:layout_marginStart="@dimen/marginLeft"
             android:layout_marginTop="@dimen/marginNormal"
             android:layout_marginBottom="@dimen/marginNormal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content"/>
 
     </RelativeLayout>
 </RelativeLayout>

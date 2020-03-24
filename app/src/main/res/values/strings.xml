@@ -77,11 +77,16 @@
     <string name="did_not_add_food">U heeft nog geen voeding toegevoegd</string>
     <string name="import_food_diary">Importeren uit voedingsdagboek</string>
 
+    <string name="feedback_positive">Goed gedaan</string>
+    <string name="feedback_negative">Minder %1$s innemen</string>
+    <string name="feedback_encouraging">Meer %1$s innemen</string>
 
     <!-- Dashboard -->
     <string name="statistics">Statistieken</string>
     <string name="minimum">Minimaal</string>
     <string name="maximum">Maximaal</string>
+    <string name="min">Min</string>
+    <string name="max">Max</string>
 
     <!-- doctor -->
     <string name="patients">Patiënten</string>

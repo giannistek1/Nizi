@@ -9,7 +9,8 @@ class Consumptions {
         val ProteinTotal: Float,
         val FiberTotal: Float,
         val CaliumTotal: Float,
-        val SodiumTotal: Float
+        val SodiumTotal: Float,
+        val WaterTotal: Float
     )
 
     data class Consumption (

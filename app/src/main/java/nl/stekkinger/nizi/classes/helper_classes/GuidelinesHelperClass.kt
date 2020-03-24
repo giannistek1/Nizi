@@ -1,6 +1,9 @@
 package nl.stekkinger.nizi.classes.helper_classes
 
+import android.content.res.ColorStateList
 import android.graphics.Color
+import android.view.Gravity
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -9,9 +12,13 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.marginBottom
+import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.FragmentActivity
+import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DietaryGuideline
+import java.net.ConnectException
+import kotlin.random.Random
 
 class GuidelinesHelperClass {
 
@@ -44,6 +51,9 @@ class GuidelinesHelperClass {
             verticalLayout1.orientation = LinearLayout.VERTICAL
             val verticalLayout2 = LinearLayout(cont)
             verticalLayout2.orientation = LinearLayout.VERTICAL
+            verticalLayout2.gravity = Gravity.CENTER_HORIZONTAL
+            verticalLayout2.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT)
 
             val icon = ImageView(cont)
             val descriptionTextView = TextView(cont)
@@ -54,14 +64,14 @@ class GuidelinesHelperClass {
             val progressBar = ProgressBar(cont, null, R.style.Widget_AppCompat_ProgressBar_Horizontal)
 
             if (dietaryGuideline.description.contains("calorie")) {
+                ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(getColor(cont, R.color.red)))
                 icon.setImageResource(R.drawable.ic_calories)
-                icon.setColorFilter(Color.argb(255, 255, 0, 0))
             }
             else if (dietaryGuideline.description.contains("vocht")) {
                 icon.setImageResource(R.drawable.ic_water)
                 icon.setColorFilter(getColor(cont, R.color.blue))
             }
-                else if (dietaryGuideline.description.contains("natrium")) {
+            else if (dietaryGuideline.description.contains("natrium")) {
                 icon.setImageResource(R.drawable.ic_salt)
                 icon.setColorFilter(getColor(cont, R.color.darkGray))
             }
@@ -79,19 +89,42 @@ class GuidelinesHelperClass {
                 icon.setColorFilter(getColor(cont, R.color.yellow))
             }
 
-            icon.layoutParams = LinearLayout.LayoutParams(50, 50)
-            descriptionTextView.text = dietaryGuideline.description
+            icon.layoutParams = LinearLayout.LayoutParams(100, 100)
+            descriptionTextView.text = dietaryGuideline.restriction
             descriptionTextView.width = 400
-            minimumTextView.text = dietaryGuideline.minimum.toString()
-            maximumTextView.text = dietaryGuideline.maximum.toString()
-            feedbackTextView.text = "Feedback"
+            minimumTextView.text = "${cont.getString(R.string.min)} ${dietaryGuideline.minimum.toString()}"
+            if (dietaryGuideline.minimum == 0)
+                minimumTextView.visibility = View.GONE
 
+            maximumTextView.text = "${cont.getString(R.string.max)} ${dietaryGuideline.maximum.toString()}"
+            if (dietaryGuideline.maximum == 0)
+                maximumTextView.visibility = View.GONE
+
+            val randomProgress = Random.nextInt(100)
+
+            amountTextView.gravity = Gravity.CENTER
+            amountTextView.text = (randomProgress*dietaryGuideline.maximum/100).toString()
+
+            // Progressbar
             progressBar.layoutParams = LinearLayout.LayoutParams(200, 200)
             progressBar.isIndeterminate = false
             progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar)
             progressBar.background = ContextCompat.getDrawable(cont, R.drawable.circle_shape)
             progressBar.max = 100
-            progressBar.progress = 50
+            progressBar.progress = randomProgress // Amount / maximum * 100 if minimum = 0
+            if (progressBar.progress >= 100 && dietaryGuideline.maximum != 0) {
+                feedbackTextView.text = cont.getString(R.string.feedback_positive)
+                feedbackTextView.setTextColor(getColor(cont, R.color.lime))
+            }
+            else if (progressBar.progress >= 100 && dietaryGuideline.maximum > 0) {
+                feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.restriction)
+                feedbackTextView.setTextColor(getColor(cont, R.color.red))
+            }
+            else if (progressBar.progress <= 100 && dietaryGuideline.minimum != 0) {
+                feedbackTextView.text = cont.getString(R.string.feedback_encouraging, dietaryGuideline.restriction)
+                feedbackTextView.setTextColor(getColor(cont, R.color.yellow))
+            }
+
 
             headerLayout.addView(icon)
             headerLayout.addView(descriptionTextView)
