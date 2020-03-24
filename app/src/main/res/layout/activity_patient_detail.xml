@@ -30,8 +30,8 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/activity_patient_detail_dataOfPatient"
-        android:text="@string/data_of"
+        android:id="@+id/activity_patient_detail_average_of_patient"
+        android:text="@string/average_of"
         android:textColor="@color/black"
         android:textSize="@dimen/h2"
         android:layout_width="match_parent"
@@ -41,51 +41,12 @@
         android:layout_marginTop="@dimen/marginNormal"
         android:layout_marginBottom="@dimen/marginNormal"/>
 
-    <!-- Guidelines -->
-    <RelativeLayout
-        android:id="@+id/activity_patient_detail_rl_guidelines"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/activity_patient_detail_dataOfPatient">
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:tint="@color/colorAccent"
+        android:src="@drawable/ic_edit"
+        android:contentDescription="@string/edit_patient"/>
 
-        <TextView
-            android:id="@+id/activity_patient_detail_guidelines"
-            android:text="@string/guidelines"
-            android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:layout_marginStart="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </RelativeLayout>
-
-    <!-- Guidelines -->
-    <RelativeLayout
-        android:id="@+id/activity_patient_detail_rl_trends"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/activity_patient_detail_rl_guidelines">
-
-        <TextView
-            android:id="@+id/activity_patient_detail_trends"
-            android:text="@string/trends"
-            android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:layout_marginStart="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <LinearLayout
-            android:id="@+id/ll_guidelines_content"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/activity_patient_detail_trends"
-            android:orientation="vertical">
-
-        </LinearLayout>
-
-    </RelativeLayout>
 </RelativeLayout>

@@ -16,6 +16,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.random.Random
 
 // 1e API TEST = Patiënt
 // 3e API TEST = Dcotor
@@ -29,17 +30,19 @@ class PatientRepository : Repository(){
     var accessToken = preferences.getString("TOKEN", null)
     var authHeader = "Bearer " + accessToken
 
-    fun registerPatient(firstName: String, lastName: String, dateOfBirth: String, weight: Float, doctorId: Int)
+    fun registerPatient(firstName: String, lastName: String, dateOfBirth: String, weight: Float, doctorId: Int) : PatientRegisterResponse?
     {
-        val account = Account(20, "Patient")
-        val patient = Patient(57, 57, doctorId = doctorId, firstName = firstName, lastName = lastName, dateOfBirth = dateOfBirth, weightInKilograms = weight, guid = " ")
+        val randomGuid = Random.nextInt(1000000).toString()
+
+        val account = Account(0, "Patient")
+        val patient = Patient(0, 0, doctorId = doctorId, firstName = firstName, lastName = lastName, dateOfBirth = "1990-03-23T00:00:00", weightInKilograms = weight, guid = randomGuid)
         val doctor = Doctor(doctorId, "Dr", "Pepper", "Maastricht")
-        val authLogin = AuthLogin(" ", Token(" "," "))
+        val authLogin = AuthLogin(randomGuid, Token("string","string"))
 
         val newPatientLogin = PatientLogin(account, patient, doctor, authLogin)
 
-        // DoB = "YYYY-MM-DDT10:55:38.738Z"
-        service.registerPatient(authHeader, newPatientLogin).execute()//.enqueue(loginAsPatientCallback)
+        // DoB = "YYYY-MM-DDT10:55:38:00"
+        return service.registerPatient(authHeader, newPatientLogin).execute().body()
     }
 
     fun getPatientsFromDoctor(doctorId: Int) : List<Patient>?

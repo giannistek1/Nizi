@@ -10,11 +10,11 @@ class PatientDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // setup UI
+        // Setup UI
         setContentView(R.layout.activity_patient_detail)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        activity_patient_detail_dataOfPatient.text = "${getString(R.string.data_of)} ${intent.getStringExtra("NAME")}"
+        activity_patient_detail_average_of_patient.text = "${getString(R.string.average_of)} ${intent.getStringExtra("NAME")}"
 
         //val helperClass = GuidelinesHelperClass()
         //helperClass.initializeGuidelines(this, ll_guidelines_content)

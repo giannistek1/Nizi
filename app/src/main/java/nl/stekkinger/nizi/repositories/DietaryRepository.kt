@@ -44,4 +44,8 @@ class DietaryRepository : Repository() {
         })
         return result*/
     }
+
+    fun addDietary(dietaryManamgementModel: DietaryManagementModel) {
+        service.addDietary(authHeader, dietaryManamgementModel).execute()
+    }
 }

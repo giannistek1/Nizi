@@ -101,20 +101,46 @@
     <string name="last_name_req">Achternaam*</string>
     <string name="last_name">Achternaam</string>
     <string name="date_of_birth_req">Geboortedatum*</string>
-    <string name="date_of_birth">Geboortedatum*</string>
-    <string name="date_of_birth_format">DD/MM/YYYY</string>
+    <string name="date_of_birth">Geboortedatum</string>
+    <string name="date_of_birth_format">DD-MM-YYYY</string>
     <string name="weight_req">Gewicht*</string>
     <string name="weight">Gewicht</string>
     <string name="gender">Geslacht*</string>
     <string name="male">Man</string>
     <string name="female">Vrouw</string>
+    <string name="email_req">E-mail*</string>
+    <string name="email">E-Mail</string>
+    <string name="password_req">Wachtwoord*</string>
+    <string name="password_confirm_req">Wachtwoord bevestigen*</string>
+    <string name="password_confirm">Wachtwoord bevestigen*</string>
     <string name="kilogram_short">Kg</string>
     <string name="to_guidelines">Naar richtlijnen</string>
+    <string name="calories_in_kcal">Calorieën in kcal</string>
+    <string name="water_in_ml">Vocht in ml</string>
+    <string name="sodium_in_mg">Natrium in mg</string>
+    <string name="potassium_in_mg">Kalium in mg</string>
+    <string name="protein_in_g">Eiwitten in gram</string>
+    <string name="fibers_in_g">Vezels in gram</string>
     <string name="save">Opslaan</string>
     <string name="save_patient">Patiënt opslaan</string>
     <string name="patient_added">Patiënt toegevoegd</string>
+    <string name="dietary_added">Richtlijn toegevoegd</string>
+
     <string name="data_of">Gegevens van</string>
+    <string name="average_of">Gemiddelde van</string>
     <string name="trends">Trends</string>
+
+    <!-- Messages adding patient -->
+    <string name="empty_first_name">Vul een voornaam in</string>
+    <string name="empty_last_name">Vul een achternaam in</string>
+    <string name="empty_date_of_birth">Vul een geboortedatum in</string>
+    <string name="empty_weight">Vul een gewicht in</string>
+    <string name="empty_gender">Vink een geslacht aan</string>
+    <string name="empty_email">Vul een e-mailadres in</string>
+    <string name="empty_password">Vul een wachtwoord in</string>
+    <string name="empty_password_confirm">Vul een bevestigend wachtwoord in</string>
+    <string name="passwords_dont_match">Wachtwoorden komen niet overeen</string>
+
 
     <!-- other (image content description, and other stuff that cant be placed) -->
     <string name="advice_from">Advies van</string>
@@ -142,11 +168,15 @@
     <string-array name="guideline_array">
         <item>Caloriebeperking</item>
         <item>Calorieverrijking</item>
+        <item>Vochtbeperking</item>
+        <item>Vochtverrijking</item> <!-- new -->
+        <item>Natriumbeperking</item>
+        <item>Natriumverrijking</item> <!-- new -->
+        <item>Kaliumbeperking</item>
+        <item>Kaliumverrijking</item> <!-- new -->
         <item>Eiwitbeperking</item>
         <item>Eiwitverrijking</item>
-        <item>Kaliumbeperking</item>
-        <item>Natriumbeperking</item>
+        <item>Vezelbeperking</item> <!-- new -->
         <item>Vezelverrijking</item>
-        <item>Vochtbeperking</item>
     </string-array>
 </resources>

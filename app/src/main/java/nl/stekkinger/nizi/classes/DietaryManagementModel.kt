@@ -5,5 +5,5 @@ data class DietaryManagementModel (
     val Description: String,
     val Amount: Int,
     val IsActive: Boolean,
-    val Patient: Int
+    val PatientId: Int
 )

@@ -14,8 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.auth0.android.provider.WebAuthProvider.logout
-import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_doctor_main.*
 import nl.stekkinger.nizi.adapters.PatientAdapter
 import nl.stekkinger.nizi.adapters.PatientAdapterListener
@@ -29,6 +27,8 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     private var TAG = "DoctorMain"
 
     val EXTRA_DOCTOR_ID = "DOCTOR_ID"
+    // for activity result
+    private val REQUEST_CODE = 0
 
     private val authRepository: AuthRepository = AuthRepository()
     private val patientRepository: PatientRepository = PatientRepository()
@@ -48,20 +48,22 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
         activity_doctor_main_btn_addPatient.setOnClickListener {
             val intent: Intent = Intent(this@DoctorMainActivity, AddPatientActivity::class.java)
+            // Prevents multiple activities
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             intent.putExtra(EXTRA_DOCTOR_ID, model.doctor.doctorId)
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_CODE)
         }
 
         // Get viewmodel
-        patientListViewModel = ViewModelProviders.of(this).get(PatientListViewModel::class.java)
+        //patientListViewModel = ViewModelProviders.of(this).get(PatientListViewModel::class.java)
 
         // Login as doctor for doctor data
         loginDoctorAsyncTask().execute()
 
-        patientListViewModel.setDoctorId(doctorId) 
+        /*patientListViewModel.setDoctorId(doctorId)
         patientListViewModel.loadPatients().observe(this, Observer { patientList ->
             Log.d("log", patientList.toString())
-        })
+        })*/
     }
 
     //region Toolbar
@@ -82,7 +84,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     }
     //endregion
 
-    //region Spinner
+    //region Spinner?
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
         // An item was selected. You can retrieve the selected item using
          parent.getItemAtPosition(pos)
@@ -102,7 +104,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 // Open detail page when clicked
                 val intent = Intent(this@DoctorMainActivity, PatientDetailActivity::class.java)
 
-                intent.putExtra("NAME", "${patientList[position].name}")
+                intent.putExtra("NAME", patientList[position].name)
                 startActivity(intent)
             }
         }
@@ -180,6 +182,14 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             } else {
                 Toast.makeText(baseContext, R.string.get_patients_fail, Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            // refresh activity (recyclerview)
+            recreate()
         }
     }
 }

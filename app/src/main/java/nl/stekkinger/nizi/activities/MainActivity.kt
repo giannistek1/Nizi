@@ -1,8 +1,6 @@
 package nl.stekkinger.nizi.activities
 
 import android.content.Context
-import android.content.Intent
-import android.drm.DrmStore
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,17 +10,14 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
-import com.auth0.android.provider.WebAuthProvider.logout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.fragments.DashboardFragment
 import nl.stekkinger.nizi.fragments.HomeFragment
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DietaryView
 import nl.stekkinger.nizi.classes.PatientLogin
-import nl.stekkinger.nizi.classes.Restrictions
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository

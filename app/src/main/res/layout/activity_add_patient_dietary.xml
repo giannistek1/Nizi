@@ -136,7 +136,7 @@
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_calories"
-                    android:text="@string/calories"
+                    android:text="@string/calories_in_kcal"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"/>
@@ -166,6 +166,7 @@
                         android:id="@+id/activity_add_patient_dietary_et_cal_min"
                         android:inputType="number"
                         android:hint="@string/minimum"
+                        android:maxLength="7"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/marginSmall"/>
@@ -186,6 +187,7 @@
                         android:id="@+id/activity_add_patient_dietary_et_cal_max"
                         android:inputType="number"
                         android:hint="@string/maximum"
+                        android:maxLength="7"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -215,7 +217,7 @@
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_water"
-                    android:text="@string/water"
+                    android:text="@string/water_in_ml"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"/>
@@ -245,6 +247,7 @@
                         android:id="@+id/activity_add_patient_dietary_et_water_min"
                         android:inputType="number"
                         android:hint="@string/minimum"
+                        android:maxLength="7"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/marginSmall"/>
@@ -265,6 +268,7 @@
                         android:id="@+id/activity_add_patient_dietary_et_water_max"
                         android:inputType="number"
                         android:hint="@string/maximum"
+                        android:maxLength="7"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -293,7 +297,7 @@
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_sodium"
-                    android:text="@string/sodium"
+                    android:text="@string/sodium_in_mg"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"/>
@@ -323,6 +327,7 @@
                         android:id="@+id/activity_add_patient_dietary_et_sodium_min"
                         android:inputType="number"
                         android:hint="@string/minimum"
+                        android:maxLength="7"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/marginSmall"/>
@@ -343,6 +348,7 @@
                         android:id="@+id/activity_add_patient_dietary_et_sodium_max"
                         android:inputType="number"
                         android:hint="@string/maximum"
+                        android:maxLength="7"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -371,7 +377,7 @@
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_potassium"
-                    android:text="@string/potassium"
+                    android:text="@string/potassium_in_mg"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"/>
@@ -401,6 +407,7 @@
                         android:id="@+id/activity_add_patient_dietary_et_potassium_min"
                         android:inputType="number"
                         android:hint="@string/minimum"
+                        android:maxLength="7"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/marginSmall"/>
@@ -421,6 +428,7 @@
                         android:id="@+id/activity_add_patient_dietary_et_potassium_max"
                         android:inputType="number"
                         android:hint="@string/maximum"
+                        android:maxLength="7"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -449,7 +457,7 @@
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_protein"
-                    android:text="@string/proteins"
+                    android:text="@string/protein_in_g"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"/>
@@ -479,6 +487,7 @@
                         android:id="@+id/activity_add_patient_dietary_et_protein_min"
                         android:inputType="number"
                         android:hint="@string/minimum"
+                        android:maxLength="7"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/marginSmall"/>
@@ -499,6 +508,7 @@
                         android:id="@+id/activity_add_patient_dietary_et_protein_max"
                         android:inputType="number"
                         android:hint="@string/maximum"
+                        android:maxLength="7"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -527,7 +537,7 @@
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_fiber"
-                    android:text="@string/fibers"
+                    android:text="@string/fibers_in_g"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"/>
@@ -557,6 +567,7 @@
                         android:id="@+id/activity_add_patient_dietary_et_fiber_min"
                         android:inputType="number"
                         android:hint="@string/minimum"
+                        android:maxLength="7"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/marginSmall"/>
@@ -577,6 +588,7 @@
                         android:id="@+id/activity_add_patient_dietary_et_fiber_max"
                         android:inputType="number"
                         android:hint="@string/maximum"
+                        android:maxLength="7"
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>

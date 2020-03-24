@@ -22,21 +22,19 @@ class AddPatientActivity : AppCompatActivity() {
     private var TAG = "AddPatient"
 
     val EXTRA_DOCTOR_ID = "DOCTOR_ID"
+    // for activity result
+    private val REQUEST_CODE = 0
 
     private val patientRepository: PatientRepository = PatientRepository()
 
     private lateinit var progressBar: View
-
-    private lateinit var mFirstName: String
-    private lateinit var mLastName: String
-    private lateinit var mDateOfBirth: String
-
 
     private var mWeight: Float = 0f
     private var doctorId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Setup UI
         setContentView(R.layout.activity_add_patient)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -45,22 +43,49 @@ class AddPatientActivity : AppCompatActivity() {
         activity_add_patient_btn_to_guidelines.setOnClickListener {
             // Checks
             if (activity_add_patient_et_firstName.text.toString() == "") {
+                Toast.makeText(baseContext, R.string.empty_first_name, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (activity_add_patient_et_lastName.text.toString() == "") {
+            else if (activity_add_patient_et_lastName.text.toString() == "") {
+                Toast.makeText(baseContext, R.string.empty_last_name, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (activity_add_patient_et_dob.text.toString() == "") {
+            else if (activity_add_patient_et_dob.text.toString() == "") {
+                Toast.makeText(baseContext, R.string.empty_date_of_birth, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (activity_add_patient_et_weight.text.toString() == "") {
+            else if (activity_add_patient_et_weight.text.toString() == "") {
+                Toast.makeText(baseContext, R.string.empty_weight, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            else if (activity_add_patient_et_email.text.toString() == "") {
+                Toast.makeText(baseContext, R.string.empty_email, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            else if (activity_add_patient_et_password.text.toString() == "") {
+                Toast.makeText(baseContext, R.string.empty_password, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            else if (activity_add_patient_et_password_confirm.text.toString() == "") {
+                Toast.makeText(baseContext, R.string.empty_password_confirm, Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            else if (activity_add_patient_et_password.text.toString() != activity_add_patient_et_password_confirm.text.toString())
+            {
+                Toast.makeText(baseContext, R.string.passwords_dont_match, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             val intent = Intent(this@AddPatientActivity, AddPatientDietaryActivity::class.java)
-            // Give patientdata with intent
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+
+            // Patientdata
             val newPatient = PatientViewModel(
                 activity_add_patient_et_firstName.text.toString().trim(),
                 activity_add_patient_et_lastName.text.toString().trim(),
@@ -69,14 +94,28 @@ class AddPatientActivity : AppCompatActivity() {
                 "Man"
             )
 
+            // Give patient and doctor ID
             intent.putExtra("PATIENT", newPatient)
             intent.putExtra(EXTRA_DOCTOR_ID, doctorId)
             // Start intent
-            startActivity(intent)
-            //registerPatientAsyncTask().execute()
-            }
+            startActivityForResult(intent, REQUEST_CODE)
+        }
 
         // Get doctorId
         doctorId = intent.getIntExtra(EXTRA_DOCTOR_ID, 0)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            finish()
+        }
+    }
+
+    override fun finish() {
+        // In case we wanna return something
+        val returnIntent = Intent()
+        setResult(RESULT_OK, returnIntent)
+        super.finish()
     }
 }

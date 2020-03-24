@@ -137,7 +137,7 @@ interface ApiService {
     fun registerPatient(
         @Header("Authorization") authHeader : String,
         @Body body: PatientLogin
-    ) : Call<Unit>
+    ) : Call<PatientRegisterResponse>
 
     @GET("v1/patient/{patientId}")
     fun getPatient(
@@ -222,7 +222,7 @@ interface ApiService {
     ) : Call<DoctorLogin>
     //endregion
 
-    //region DietaryManagement (needs patient token)
+    //region DietaryManagement
     @POST("v1/dietaryManagement")
     fun addDietary(
         @Header("Authorization") authHeader : String,
