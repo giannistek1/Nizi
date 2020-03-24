@@ -195,8 +195,8 @@
                     android:layout_width="55dp"
                     android:layout_height="55dp"
                     android:layout_marginStart="10dp"
-                    android:contentDescription="@string/content_sun"
-                    android:src="@drawable/ic_sun" />
+                    android:contentDescription="@string/content_sunset"
+                    android:src="@drawable/ic_sunset" />
 
                 <TextView
                     android:id="@+id/diary_dinner"
@@ -206,7 +206,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:layout_toEndOf="@+id/sunset"
-                    android:text="@string/lunch"
+                    android:text="@string/dinner"
                     android:textColor="@color/black"
                     android:textSize="@dimen/h2" />
 

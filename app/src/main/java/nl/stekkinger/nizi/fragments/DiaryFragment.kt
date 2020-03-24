@@ -166,26 +166,6 @@ class DiaryFragment: Fragment() {
             }
         }
 
-//        view.activity_add_meal.setOnClickListener {
-//            fragmentManager!!
-//                .beginTransaction()
-//                .replace(
-//                    R.id.activity_main_fragment_container,
-//                    AddMealFragment()
-//                )
-//                .commit()
-//        }
-//
-//        view.activity_favorites.setOnClickListener {
-//            fragmentManager!!
-//                .beginTransaction()
-//                .replace(
-//                    R.id.activity_main_fragment_container,
-//                    FavoritesFragment()
-//                )
-//                .commit()
-//        }
-
         view.diary_prev_date.setOnClickListener {
             endDate = mCurrentDate
             startDate = getDay(mCurrentDate, -1)

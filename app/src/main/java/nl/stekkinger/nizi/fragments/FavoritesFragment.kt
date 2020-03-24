@@ -37,6 +37,26 @@ class FavoritesFragment: Fragment() {
 
         getFavoritesAsyncTask().execute()
 
+        view.activity_add_food.setOnClickListener {
+            fragmentManager!!
+                .beginTransaction()
+                .replace(
+                    R.id.activity_main_fragment_container,
+                    AddFoodFragment()
+                )
+                .commit()
+        }
+
+        view.activity_add_meal.setOnClickListener {
+            fragmentManager!!
+                .beginTransaction()
+                .replace(
+                    R.id.activity_main_fragment_container,
+                    AddMealFragment()
+                )
+                .commit()
+        }
+
         return view
     }
 
