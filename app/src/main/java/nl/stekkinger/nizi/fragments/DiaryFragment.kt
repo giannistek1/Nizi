@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_diary.*
 import kotlinx.android.synthetic.main.fragment_diary.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConsumptionAdapter
+import nl.stekkinger.nizi.classes.Consumptions
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import java.lang.Math.round
 import java.text.SimpleDateFormat
@@ -22,20 +25,37 @@ import java.util.*
 class DiaryFragment: Fragment() {
     private lateinit var mCurrentDate: String
     private lateinit var model: DiaryViewModel
-    private lateinit var adapter: ConsumptionAdapter
+    private lateinit var breakfastAdapter: ConsumptionAdapter
+    private lateinit var lunchAdapter: ConsumptionAdapter
+    private lateinit var dinnerAdapter: ConsumptionAdapter
+    private lateinit var snackAdapter: ConsumptionAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.diary_recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+//        val recyclerView: RecyclerView = view.findViewById(R.id.diary_recycler_view)
+//        recyclerView.layoutManager = LinearLayoutManager(activity)
+        val breakfastRv: RecyclerView = view.findViewById(R.id.diary_breakfast_rv)
+        breakfastRv.layoutManager = LinearLayoutManager(activity)
+        val lunchRv: RecyclerView = view.findViewById(R.id.diary_lunch_rv)
+        lunchRv.layoutManager = LinearLayoutManager(activity)
+        val dinnerRv: RecyclerView = view.findViewById(R.id.diary_dinner_rv)
+        dinnerRv.layoutManager = LinearLayoutManager(activity)
+        val snackRv: RecyclerView = view.findViewById(R.id.diary_snack_rv)
+        snackRv.layoutManager = LinearLayoutManager(activity)
 
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-        adapter = ConsumptionAdapter(model)
-        recyclerView.adapter = adapter
+        breakfastAdapter = ConsumptionAdapter(model)
+        lunchAdapter = ConsumptionAdapter(model)
+        dinnerAdapter = ConsumptionAdapter(model)
+        snackAdapter = ConsumptionAdapter(model)
+        breakfastRv.adapter = breakfastAdapter
+        lunchRv.adapter = lunchAdapter
+        dinnerRv.adapter = dinnerAdapter
+        snackRv.adapter = snackAdapter
 
         // setting date for diary
         mCurrentDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
@@ -45,19 +65,33 @@ class DiaryFragment: Fragment() {
 
         // get the results of food search
         model.getDiary().observe(viewLifecycleOwner, Observer { result ->
-            // update total intake values of the day (guidelines)
-            diary_guidelines_kcal_val.text = (round(result.KCalTotal * 100) / 100).toString()
-            diary_guidelines_fiber_val.text = (round(result.FiberTotal * 100.0) / 100.0).toString()
-            diary_guidelines_protein_val.text = (round(result.ProteinTotal * 100.0) / 100.0).toString()
-            //diary_guidelines_water_val.text = (round(result.WaterTotal * 100.0) / 100.0).toString()    // TODO: water needs to be added to food
-            diary_guidelines_calcium_val.text = (round(result.CaliumTotal * 100.0) / 100.0).toString()
-            diary_guidelines_sodium_val.text = (round(result.SodiumTotal * 100.0) / 100.0).toString()
-            // pass a list of consumptions to the adapter
-            adapter.setConsumptionList(result.Consumptions)
+
+            val breakfastList = ArrayList<Consumptions.Consumption>()
+            val lunchList = ArrayList<Consumptions.Consumption>()
+            val dinnerList = ArrayList<Consumptions.Consumption>()
+            val snackList = ArrayList<Consumptions.Consumption>()
+
+            //sorting consumptions
+            for (c in result.Consumptions) {
+                when (c.MealTime) {
+                    "Ontbijt" -> breakfastList.add(c)
+                    "Lunch" -> lunchList.add(c)
+                    "Avondeten" -> dinnerList.add(c)
+                    "Snack" -> snackList.add(c)
+                    else -> breakfastList.add(c)
+                }
+            }
+
+            // pass list of consumptions to adapter
+            breakfastAdapter.setConsumptionList(breakfastList)
+            lunchAdapter.setConsumptionList(lunchList)
+            dinnerAdapter.setConsumptionList(dinnerList)
+            snackAdapter.setConsumptionList(snackList)
         })
 
         // click events
-        view.activity_add_food.setOnClickListener {
+        view.diary_add_breakfast_btn.setOnClickListener {
+            model.setMealTime("Ontbijt")
             fragmentManager!!
                 .beginTransaction()
                 .replace(
@@ -67,25 +101,90 @@ class DiaryFragment: Fragment() {
                 .commit()
         }
 
-        view.activity_add_meal.setOnClickListener {
+        view.diary_add_lunch_btn.setOnClickListener {
+            model.setMealTime("Lunch")
             fragmentManager!!
                 .beginTransaction()
                 .replace(
                     R.id.activity_main_fragment_container,
-                    AddMealFragment()
+                    AddFoodFragment()
                 )
                 .commit()
         }
 
-        view.activity_favorites.setOnClickListener {
+        view.diary_add_dinner_btn.setOnClickListener {
+            model.setMealTime("Avondeten")
             fragmentManager!!
                 .beginTransaction()
                 .replace(
                     R.id.activity_main_fragment_container,
-                    FavoritesFragment()
+                    AddFoodFragment()
                 )
                 .commit()
         }
+
+        view.diary_add_snack_btn.setOnClickListener {
+            model.setMealTime("Snack")
+            fragmentManager!!
+                .beginTransaction()
+                .replace(
+                    R.id.activity_main_fragment_container,
+                    AddFoodFragment()
+                )
+                .commit()
+        }
+
+        view.fragment_diary_breakfast.setOnClickListener {
+            if (view.diary_breakfast_rv.visibility == GONE){
+                view.diary_breakfast_rv.visibility = VISIBLE
+            } else {
+                view.diary_breakfast_rv.visibility = GONE
+            }
+        }
+
+        view.fragment_diary_lunch.setOnClickListener {
+            if (view.diary_lunch_rv.visibility == GONE){
+                view.diary_lunch_rv.visibility = VISIBLE
+            } else {
+                view.diary_lunch_rv.visibility = GONE
+            }
+        }
+
+        view.fragment_diary_dinner.setOnClickListener {
+            if (view.diary_dinner_rv.visibility == GONE){
+                view.diary_dinner_rv.visibility = VISIBLE
+            } else {
+                view.diary_dinner_rv.visibility = GONE
+            }
+        }
+
+        view.fragment_diary_snack.setOnClickListener {
+            if (view.diary_snack_rv.visibility == GONE){
+                view.diary_snack_rv.visibility = VISIBLE
+            } else {
+                view.diary_snack_rv.visibility = GONE
+            }
+        }
+
+//        view.activity_add_meal.setOnClickListener {
+//            fragmentManager!!
+//                .beginTransaction()
+//                .replace(
+//                    R.id.activity_main_fragment_container,
+//                    AddMealFragment()
+//                )
+//                .commit()
+//        }
+//
+//        view.activity_favorites.setOnClickListener {
+//            fragmentManager!!
+//                .beginTransaction()
+//                .replace(
+//                    R.id.activity_main_fragment_container,
+//                    FavoritesFragment()
+//                )
+//                .commit()
+//        }
 
         view.diary_prev_date.setOnClickListener {
             endDate = mCurrentDate
