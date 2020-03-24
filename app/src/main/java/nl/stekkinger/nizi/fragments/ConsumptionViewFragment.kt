@@ -40,7 +40,7 @@ class ConsumptionViewFragment : Fragment() {
 
         // Update the UI
         title_food_view.text = mConsumption.FoodName
-        serving_size_value.text = mConsumption.Amount.toString() + " " + mConsumption.Weight.Unit
+        serving_size_value.text = mConsumption.Amount.toString() + " " + mConsumption.WeightUnitId
         calories_value_food_view.text = mConsumption.KCal.toString() + " Kcal"
         fiber_value_food_view.text = mConsumption.Fiber.toString() + " g"
         protein_value_food_view.text = mConsumption.Protein.toString() + " g"

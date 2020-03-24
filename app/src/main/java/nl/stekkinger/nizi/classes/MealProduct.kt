@@ -7,6 +7,7 @@ data class MealProduct (
     val Fiber: Float,
     val Calcium: Float,
     val Sodium: Float,
+    val Water: Float,
     val PortionSize: Int,
     val WeightUnit: String
 )

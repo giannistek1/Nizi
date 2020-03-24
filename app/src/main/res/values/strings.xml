@@ -60,6 +60,7 @@
     <string name="dinner">Avondeten</string>
     <string name="snacks">Snacks</string>
     <string name="snack">Snack</string>
+    <string name="add">Toevoegen</string>
     <string name="add_food">Voeding toevoegen</string>
     <string name="food_added">Voeding toegevoegd</string>
     <string name="products">Producten</string>
@@ -163,6 +164,16 @@
     <string name="october">Oktober</string>
     <string name="november">November</string>
     <string name="december">December</string>
+
+    <!-- content description -->
+    <string name="content_sunrise">Sunrise image</string>
+    <string name="content_sun">Sun image</string>
+    <string name="content_sunset">Sunset image</string>
+    <string name="content_snack">Snack image</string>
+    <string name="content_add_breakfast">Ontbijt toevoegen knop</string>
+    <string name="content_add_lunch">Lunch toevoegen knop</string>
+    <string name="content_add_dinner">Avondeten toevoegen knop</string>
+    <string name="content_add_snack">Snack toevoegen knop</string>
 
 
     <string-array name="guideline_array">

@@ -13,17 +13,19 @@ class Consumptions {
     )
 
     data class Consumption (
-        val ConsumptionId: Int,
         val FoodName: String,
         val KCal: Float,
         val Protein: Float,
         val Fiber: Float,
         val Calium: Float,
         val Sodium: Float,
+        val Water: Double,
         val Amount: Int,
-        val Weight: WeightUnit,
+        val MealTime: String,
+        val WeightUnitId: Int,
         val Date: String,
-        val Valid: Boolean
+        val PatientId: Int,
+        val Id: Int
     )
     data class WeightUnit (
         val Id: Int,

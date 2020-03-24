@@ -8,6 +8,7 @@ data class Food (
     val Fiber: Double,
     val Calcium: Double,
     val Sodium: Double,
+    val Water: Double,
     val PortionSize: Double,
     val WeightUnit: String,
     val Picture: String
