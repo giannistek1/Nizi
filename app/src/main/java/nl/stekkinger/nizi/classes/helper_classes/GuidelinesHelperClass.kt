@@ -68,33 +68,34 @@ class GuidelinesHelperClass {
             val amountTextView = TextView(cont)
             val progressBar = ProgressBar(cont, null, R.style.Widget_AppCompat_ProgressBar_Horizontal)
 
-            if (dietaryGuideline.description.contains("calorie")) {
+            if (dietaryGuideline.description.contains("Calorie")) {
                 ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(getColor(cont, R.color.red)))
                 icon.setImageResource(R.drawable.ic_calories)
             }
-            else if (dietaryGuideline.description.contains("vocht")) {
+
+            else if (dietaryGuideline.description.contains("Vocht")) {
                 icon.setImageResource(R.drawable.ic_water)
                 icon.setColorFilter(getColor(cont, R.color.blue))
             }
-            else if (dietaryGuideline.description.contains("natrium")) {
+            else if (dietaryGuideline.description.contains("Natrium")) {
                 icon.setImageResource(R.drawable.ic_salt)
                 icon.setColorFilter(getColor(cont, R.color.darkGray))
             }
-            else if (dietaryGuideline.description.contains("kalium")) {
+            else if (dietaryGuideline.description.contains("Kalium")) {
                 icon.setImageResource(R.drawable.ic_salt)
                 icon.setColorFilter(getColor(cont, R.color.blue))
             }
-            else if (dietaryGuideline.description.contains("eiwit")) {
+            else if (dietaryGuideline.description.contains("Eiwit")) {
                 icon.setImageResource(R.drawable.ic_protein)
                 icon.setColorFilter(getColor(cont, R.color.black))
             }
-            else if (dietaryGuideline.description.contains("vezel"))
+            else if (dietaryGuideline.description.contains("Vezel"))
             {
                 icon.setImageResource(R.drawable.ic_grain)
                 icon.setColorFilter(getColor(cont, R.color.yellow))
             }
 
-            icon.layoutParams = LinearLayout.LayoutParams(100, 100)
+            icon.layoutParams = LinearLayout.LayoutParams(60, 60)
             descriptionTextView.text = dietaryGuideline.restriction
             descriptionTextView.width = 400
             minimumTextView.text = "${cont.getString(R.string.min)} ${dietaryGuideline.minimum} ${dietaryGuideline.weightUnit}"
@@ -103,7 +104,7 @@ class GuidelinesHelperClass {
 
             maximumTextView.text = "${cont.getString(R.string.max)} ${dietaryGuideline.maximum} ${dietaryGuideline.weightUnit}"
             if (dietaryGuideline.maximum == 0)
-                maximumTextView.visibility = View.GONE
+                maximumTextView.visibility = View.INVISIBLE
 
             val randomProgress = Random.nextInt(100)
 
