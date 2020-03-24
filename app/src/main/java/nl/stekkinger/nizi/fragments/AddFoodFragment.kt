@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_add_food.view.*
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
@@ -71,6 +72,26 @@ class AddFoodFragment: Fragment() {
             d("LOGLIST", foodList.toString())
             adapter.setFoodList(foodList)
         })
+
+        view.activity_add_meal.setOnClickListener {
+            fragmentManager!!
+                .beginTransaction()
+                .replace(
+                    R.id.activity_main_fragment_container,
+                    AddMealFragment()
+                )
+                .commit()
+        }
+
+        view.activity_favorites.setOnClickListener {
+            fragmentManager!!
+                .beginTransaction()
+                .replace(
+                    R.id.activity_main_fragment_container,
+                    FavoritesFragment()
+                )
+                .commit()
+        }
 
         return view
     }
