@@ -103,7 +103,10 @@ class GuidelinesHelperClass {
             val randomProgress = Random.nextInt(100)
 
             amountTextView.gravity = Gravity.CENTER
-            amountTextView.text = (randomProgress*dietaryGuideline.maximum/100).toString()
+            if (dietaryGuideline.maximum != 0)
+                amountTextView.text = (randomProgress*dietaryGuideline.maximum/100).toString()
+            else
+                amountTextView.text = (randomProgress*dietaryGuideline.minimum/100).toString()
 
             // Progressbar
             progressBar.layoutParams = LinearLayout.LayoutParams(200, 200)
