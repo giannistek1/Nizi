@@ -83,7 +83,7 @@ class FoodRepository : Repository() {
     fun addConsumption(consumption: Consumption) {
         service.addConsumption(authHeader = authHeader, body = consumption).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-
+                d("con", response.toString())
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {

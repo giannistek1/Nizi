@@ -38,10 +38,10 @@ class ConsumptionAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var consumption : Consumptions.Consumption = mDataset[position]
         holder.title.text = consumption.FoodName
-        holder.summary.text = consumption.Amount.toString() + " " + consumption.Weight.Unit
+        holder.summary.text = consumption.Amount.toString() + " " + consumption.WeightUnitId
 
         holder.itemView.btn_delete.setOnClickListener {
-            model.deleteConsumption(consumption.ConsumptionId)
+            model.deleteConsumption(consumption.Id)
             mDataset.removeAt(holder.adapterPosition)
             notifyDataSetChanged()
         }

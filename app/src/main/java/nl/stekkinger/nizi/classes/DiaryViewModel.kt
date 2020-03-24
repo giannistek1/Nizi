@@ -33,8 +33,13 @@ class DiaryViewModel(
     private val mRepository: FoodRepository = FoodRepository(),
     private var mDate: MutableLiveData<String> = MutableLiveData(),
     private var mCurrentDay: String = SimpleDateFormat("yyyy-MM-dd").format(Date()),
+    private var mMealTime: String = "Ontbijt",
     private var mSearchText: MutableLiveData<String> = MutableLiveData()
 ) : ViewModel() {
+
+    fun setMealTime(time: String){
+        mMealTime = time
+    }
 
     // diary/consumption area
     private var mDiary: LiveData<Consumptions.Result> = Transformations.switchMap<String, Consumptions.Result>(
@@ -109,12 +114,15 @@ class DiaryViewModel(
             Fiber = (food.Fiber * portion).toFloat(),
             Calium = (food.Calcium * portion).toFloat(),
             Sodium = (food.Sodium * portion).toFloat(),
+            Water = (food.Water * portion).toFloat(),
             Amount = (food.PortionSize * portion).toInt(),
+            MealTime = mMealTime,
             WeightUnitId = 1,
             Date = mCurrentDay,
             PatientId = preferences.getInt("patient", 0),
             Id = 0
         )
+        d("conmod", consumption.toString())
         mRepository.addConsumption(consumption)
     }
 
@@ -129,6 +137,7 @@ class DiaryViewModel(
             Fiber = (food.Fiber * portion).toFloat(),
             Calcium = (food.Calcium * portion).toFloat(),
             Sodium = (food.Sodium * portion).toFloat(),
+            Water = (food.Water * portion).toFloat(),
             PortionSize = (food.PortionSize * portion).toInt(),
             WeightUnit = food.WeightUnit
         )
@@ -143,6 +152,7 @@ class DiaryViewModel(
         var totalFiber: Double = 0.toDouble()
         var totalCalcium: Double = 0.toDouble()
         var totalSodium: Double = 0.toDouble()
+        var totalWater: Double = 0.toDouble()
         var totalSize = 0
         // fill in total values for meal
         for (p in mealProducts) {
@@ -151,6 +161,7 @@ class DiaryViewModel(
             totalFiber += p.Fiber
             totalCalcium += p.Calcium
             totalSodium += p.Sodium
+            totalWater += p.Water
             totalSize += p.PortionSize
         }
         // create meal object
@@ -163,6 +174,7 @@ class DiaryViewModel(
             Fiber = totalFiber,
             Calcium = totalCalcium,
             Sodium = totalSodium,
+            Water = totalWater,
             PortionSize = totalSize,
             WeightUnit = "g",
             Picture = ""
@@ -184,6 +196,8 @@ class DiaryViewModel(
             Calium = (meal.Calcium * portion).toFloat(),
             Sodium = (meal.Sodium * portion).toFloat(),
             Amount = (meal.PortionSize * portion).toInt(),
+            MealTime = mMealTime,
+            Water = (meal.Water * portion).toFloat(),
             WeightUnitId = 1,
             Date = mCurrentDay,
             PatientId = preferences.getInt("patient", 0),
