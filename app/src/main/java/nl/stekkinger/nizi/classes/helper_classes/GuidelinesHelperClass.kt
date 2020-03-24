@@ -1,6 +1,8 @@
 package nl.stekkinger.nizi.classes.helper_classes
 
+import android.graphics.Color
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
@@ -18,13 +20,6 @@ class GuidelinesHelperClass {
 
     fun initializeGuidelines(cont: FragmentActivity?, layout: LinearLayout, dietaryGuidelineList: ArrayList<DietaryGuideline>?)
     {
-        //val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-
-        //var count: Int = preferences.getInt("dietaryCount", 0)
-
-        lateinit var descriptionKey: String
-        lateinit var amountKey: String
-
         dietaryGuidelineList!!.forEachIndexed { index, dietaryGuideline ->
             // Description                  // Amount
             // Min
@@ -33,7 +28,7 @@ class GuidelinesHelperClass {
 
             // Create elements
             // Layouts
-            var horizontalLayout = LinearLayout(cont)
+            val horizontalLayout = LinearLayout(cont)
             horizontalLayout.orientation = LinearLayout.HORIZONTAL
             horizontalLayout.setBackgroundColor(getColor(cont!!.baseContext, R.color.gray))
             var params = LinearLayout.LayoutParams(
@@ -43,36 +38,65 @@ class GuidelinesHelperClass {
             params.setMargins(20,0,20,20)
             horizontalLayout.layoutParams = params
 
-            var verticalLayout1 = LinearLayout(cont)
+            val headerLayout = LinearLayout(cont)
+            headerLayout.orientation = LinearLayout.HORIZONTAL
+            val verticalLayout1 = LinearLayout(cont)
             verticalLayout1.orientation = LinearLayout.VERTICAL
-            var verticalLayout2 = LinearLayout(cont)
+            val verticalLayout2 = LinearLayout(cont)
             verticalLayout2.orientation = LinearLayout.VERTICAL
 
-            var descriptionTextView = TextView(cont)
-            var minimumTextView = TextView(cont)
-            var maximumTextView = TextView(cont)
-            var feedbackTextView = TextView(cont)
-            var amountTextView = TextView(cont)
-            var progressBar = ProgressBar(cont, null, R.style.Widget_AppCompat_ProgressBar_Horizontal)
+            val icon = ImageView(cont)
+            val descriptionTextView = TextView(cont)
+            val minimumTextView = TextView(cont)
+            val maximumTextView = TextView(cont)
+            val feedbackTextView = TextView(cont)
+            val amountTextView = TextView(cont)
+            val progressBar = ProgressBar(cont, null, R.style.Widget_AppCompat_ProgressBar_Horizontal)
 
+            if (dietaryGuideline.description.contains("calorie")) {
+                icon.setImageResource(R.drawable.ic_calories)
+                icon.setColorFilter(Color.argb(255, 255, 0, 0))
+            }
+            else if (dietaryGuideline.description.contains("vocht")) {
+                icon.setImageResource(R.drawable.ic_water)
+                icon.setColorFilter(getColor(cont, R.color.blue))
+            }
+                else if (dietaryGuideline.description.contains("natrium")) {
+                icon.setImageResource(R.drawable.ic_salt)
+                icon.setColorFilter(getColor(cont, R.color.darkGray))
+            }
+            else if (dietaryGuideline.description.contains("kalium")) {
+                icon.setImageResource(R.drawable.ic_salt)
+                icon.setColorFilter(getColor(cont, R.color.blue))
+            }
+            else if (dietaryGuideline.description.contains("eiwit")) {
+                icon.setImageResource(R.drawable.ic_protein)
+                icon.setColorFilter(getColor(cont, R.color.black))
+            }
+            else if (dietaryGuideline.description.contains("vezel"))
+            {
+                icon.setImageResource(R.drawable.ic_grain)
+                icon.setColorFilter(getColor(cont, R.color.yellow))
+            }
 
-            descriptionTextView.text = dietaryGuidelineList[index].description
+            icon.layoutParams = LinearLayout.LayoutParams(50, 50)
+            descriptionTextView.text = dietaryGuideline.description
             descriptionTextView.width = 400
-            minimumTextView.text = dietaryGuidelineList[index].minimum.toString()
-            maximumTextView.text = dietaryGuidelineList[index].maximum.toString()
+            minimumTextView.text = dietaryGuideline.minimum.toString()
+            maximumTextView.text = dietaryGuideline.maximum.toString()
             feedbackTextView.text = "Feedback"
 
-
-            // Needs style attribute somehow
-            params = LinearLayout.LayoutParams(200, 200)
-            progressBar.layoutParams = params
+            progressBar.layoutParams = LinearLayout.LayoutParams(200, 200)
             progressBar.isIndeterminate = false
             progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar)
             progressBar.background = ContextCompat.getDrawable(cont, R.drawable.circle_shape)
             progressBar.max = 100
             progressBar.progress = 50
 
-            verticalLayout1.addView(descriptionTextView)
+            headerLayout.addView(icon)
+            headerLayout.addView(descriptionTextView)
+
+            verticalLayout1.addView(headerLayout)
             verticalLayout1.addView(minimumTextView)
             verticalLayout1.addView(maximumTextView)
             verticalLayout1.addView(feedbackTextView)

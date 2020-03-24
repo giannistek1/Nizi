@@ -55,7 +55,7 @@ class PatientDetailActivity : AppCompatActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): DietaryView? {
-            return dietaryRepository.getDietary(intent.getIntExtra("PATIENT_ID", 56))
+            return dietaryRepository.getDietary(patient.patientId)
         }
 
         override fun onPostExecute(result: DietaryView?) {
