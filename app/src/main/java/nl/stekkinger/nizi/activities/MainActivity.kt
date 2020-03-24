@@ -183,7 +183,7 @@ class MainActivity : AppCompatActivity() {
 
                 val restriction = resultDietary.Description.replace("beperking", "").replace("verrijking","")
                 dietaryGuideline = DietaryGuideline(resultDietary.Description, restriction,
-                    0, 0, 0)
+                    0, 0, 0, "")
 
                 var alreadyExists = false
 
@@ -220,9 +220,17 @@ class MainActivity : AppCompatActivity() {
                     dietaryGuideline.maximum = resultDietary.Amount
                 }
 
+                // Fill in weight unit
+                if (resultDietary.Description.contains("Calorie"))
+                    dietaryGuideline.weightUnit = getString(R.string.kcal)
+                else if (resultDietary.Description.contains("Natrium") || resultDietary.Description.contains("Kalium"))
+                    dietaryGuideline.weightUnit = getString(R.string.milligram_short)
+                else if (resultDietary.Description.contains("Eiwit") || resultDietary.Description.contains("Vezel"))
+                    dietaryGuideline.weightUnit = getString(R.string.gram)
+                else if (resultDietary.Description.contains("Vocht"))
+                    dietaryGuideline.weightUnit = getString(R.string.milliliter_short)
 
-
-
+                // Add to dietary list or update list
                 if (!alreadyExists) // create new
                     dietaryGuidelines.add(dietaryGuideline)
                 else // update

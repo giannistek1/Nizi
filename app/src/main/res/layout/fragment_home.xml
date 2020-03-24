@@ -4,25 +4,43 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- Header (REUSEABLE BUT NOT IMPLEMENTED YET) -->
+    <!-- Day -->
     <LinearLayout
-        android:id="@+id/activity_main_header_background"
-        android:background="@color/colorPrimary"
+        android:id="@+id/fragment_home_ll_day"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/fragment_home_btn_yesterday"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:tint="@color/black"
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/yesterday"/>
 
         <TextView
-            android:id="@+id/activity_main_txt_header"
-            android:textSize="@dimen/h1"
-            android:fontFamily="@font/segoe_ui_semibold"
-            android:gravity="center"
-            android:textColor="@color/white"
+            android:id="@+id/fragment_home_txt_day"
             android:text="@string/today"
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginSmall"
+            android:layout_marginEnd="@dimen/marginSmall"
             android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_marginBottom="@dimen/marginNormal"/>
+
+        <ImageView
+            android:id="@+id/fragment_home_btn_tomorrow"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:tint="@color/black"
+            android:src="@drawable/ic_next"
+            android:contentDescription="@string/tomorrow"/>
 
     </LinearLayout>
 
@@ -31,25 +49,12 @@
         android:id="@+id/fragment_home_rl_guidelines"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/activity_main_header_background">
-
-        <TextView
-            android:id="@+id/fragment_home_txt_guidelines"
-            android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:text="@string/guidelines"
-            android:layout_marginStart="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-             />
+        android:layout_below="@+id/fragment_home_ll_day">
 
         <LinearLayout
             android:id="@+id/fragment_home_ll_guidelines"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_home_txt_guidelines"
             android:orientation="vertical">
 
         </LinearLayout>

@@ -5,5 +5,6 @@ data class DietaryGuideline(
     var restriction: String,
     var minimum: Int,
     var maximum: Int,
-    var amount: Int
+    var amount: Int,
+    var weightUnit: String
 )

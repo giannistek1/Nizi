@@ -49,7 +49,7 @@
             android:layout_gravity="center_vertical"
             android:tint="@color/black"
             android:src="@drawable/ic_back"
-            android:contentDescription="@string/edit_patient"/>
+            android:contentDescription="@string/previous_week"/>
 
         <TextView
             android:id="@+id/activity_patient_detail_week"
@@ -69,7 +69,7 @@
             android:layout_gravity="center_vertical"
             android:tint="@color/black"
             android:src="@drawable/ic_next"
-            android:contentDescription="@string/edit_patient"/>
+            android:contentDescription="@string/next_week"/>
 
     </LinearLayout>
 

@@ -39,6 +39,8 @@
 
     <!-- food related -->
     <string name="today">Vandaag</string>
+    <string name="yesterday">Gisteren</string>
+    <string name="tomorrow">Morgen</string>
     <string name="guidelines">Richtlijnen</string>
     <string name="nutrition_values">VOEDINGSWAARDEN</string>
     <string name="other_nutrition_values">Overige voedingswaarden</string>
@@ -49,7 +51,9 @@
     <string name="water">Vocht</string>
     <string name="moisture">Vocht</string>
     <string name="proteins">Eiwitten</string>
-    <string name="miligram_short">mg</string>
+    <string name="milligram_short">mg</string>
+    <string name="milliliter_short">ml</string>
+    <string name="gram">gram</string>
     <string name="gram_short">g</string>
     <string name="kcal">kcal</string>
     <string name="recent_nutrition">Recente voeding</string>
@@ -159,6 +163,8 @@
     <string name="header_background">Kop achtergrond</string>
     <string name="user">Gebruiker</string>
     <string name="arrow_right">Pijl rechts</string>
+    <string name="next_week">Vorige week</string>
+    <string name="previous_week">Volgende week</string>
 
     <!-- months -->
     <string name="january">Januari</string>

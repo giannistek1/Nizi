@@ -47,13 +47,18 @@ class GuidelinesHelperClass {
 
             val headerLayout = LinearLayout(cont)
             headerLayout.orientation = LinearLayout.HORIZONTAL
+
             val verticalLayout1 = LinearLayout(cont)
             verticalLayout1.orientation = LinearLayout.VERTICAL
+            params = LinearLayout.LayoutParams(0 ,LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f)
+            params.setMargins(20, 10,0,10)
+            verticalLayout1.layoutParams = params
+
             val verticalLayout2 = LinearLayout(cont)
             verticalLayout2.orientation = LinearLayout.VERTICAL
             verticalLayout2.gravity = Gravity.CENTER_HORIZONTAL
-            verticalLayout2.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT)
+            verticalLayout2.layoutParams = LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f)
 
             val icon = ImageView(cont)
             val descriptionTextView = TextView(cont)
@@ -92,11 +97,11 @@ class GuidelinesHelperClass {
             icon.layoutParams = LinearLayout.LayoutParams(100, 100)
             descriptionTextView.text = dietaryGuideline.restriction
             descriptionTextView.width = 400
-            minimumTextView.text = "${cont.getString(R.string.min)} ${dietaryGuideline.minimum.toString()}"
+            minimumTextView.text = "${cont.getString(R.string.min)} ${dietaryGuideline.minimum} ${dietaryGuideline.weightUnit}"
             if (dietaryGuideline.minimum == 0)
                 minimumTextView.visibility = View.GONE
 
-            maximumTextView.text = "${cont.getString(R.string.max)} ${dietaryGuideline.maximum.toString()}"
+            maximumTextView.text = "${cont.getString(R.string.max)} ${dietaryGuideline.maximum} ${dietaryGuideline.weightUnit}"
             if (dietaryGuideline.maximum == 0)
                 maximumTextView.visibility = View.GONE
 
@@ -104,9 +109,9 @@ class GuidelinesHelperClass {
 
             amountTextView.gravity = Gravity.CENTER
             if (dietaryGuideline.maximum != 0)
-                amountTextView.text = (randomProgress*dietaryGuideline.maximum/100).toString()
+                amountTextView.text = (randomProgress*dietaryGuideline.maximum/100).toString() + " " + dietaryGuideline.weightUnit
             else
-                amountTextView.text = (randomProgress*dietaryGuideline.minimum/100).toString()
+                amountTextView.text = (randomProgress*dietaryGuideline.minimum/100).toString() + " " + dietaryGuideline.weightUnit
 
             // Progressbar
             progressBar.layoutParams = LinearLayout.LayoutParams(200, 200)
