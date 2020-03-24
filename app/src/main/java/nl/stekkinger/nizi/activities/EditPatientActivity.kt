@@ -7,11 +7,12 @@ import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.classes.PatientItem
 import nl.stekkinger.nizi.classes.AddPatientViewModel
 
-class AddPatientActivity : AppCompatActivity() {
+class EditPatientActivity : AppCompatActivity() {
 
-    private var TAG = "AddPatient"
+    private var TAG = "EditPatient"
 
     val EXTRA_DOCTOR_ID = "DOCTOR_ID"
     // for activity result
@@ -19,8 +20,8 @@ class AddPatientActivity : AppCompatActivity() {
 
     private lateinit var progressBar: View
 
-    private var mWeight: Float = 0f
     private var doctorId: Int? = null
+    private lateinit var patient: PatientItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +30,17 @@ class AddPatientActivity : AppCompatActivity() {
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         progressBar = activity_add_patient_progressbar
+
+        // Fill patient
+        patient = intent.extras?.get("PATIENT") as PatientItem
+
+        activity_add_patient_et_firstName.setText(patient.firstName)
+        activity_add_patient_et_lastName.setText(patient.lastName)
+        activity_add_patient_et_dob.setText(patient.dateOfBirth)
+        activity_add_patient_et_weight.setText(patient.weight.toString())
+        activity_add_patient_et_email.setText("***@***.**")
+        activity_add_patient_et_password.setText("******")
+        activity_add_patient_et_password_confirm.setText("******")
 
         activity_add_patient_btn_to_guidelines.setOnClickListener {
             // Checks
@@ -72,7 +84,7 @@ class AddPatientActivity : AppCompatActivity() {
                 Toast.makeText(baseContext, R.string.passwords_dont_match, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val intent = Intent(this@AddPatientActivity, AddPatientDietaryActivity::class.java)
+            val intent = Intent(this@EditPatientActivity, AddPatientDietaryActivity::class.java)
             // Prevents duplicating activivity
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
 

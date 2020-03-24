@@ -139,6 +139,12 @@ interface ApiService {
         @Body body: PatientLogin
     ) : Call<PatientRegisterResponse>
 
+    @PUT("v1/patient")
+    fun updatePatient(
+        @Header("Authorization") authHeader : String,
+        @Body body: PatientUpdateModel
+    ) : Call<Unit>
+
     @GET("v1/patient/{patientId}")
     fun getPatient(
         @Path("patientId") patientId: Int

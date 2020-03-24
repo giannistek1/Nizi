@@ -10,14 +10,13 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DietaryManagementModel
-import nl.stekkinger.nizi.classes.PatientRegisterResponse
 import nl.stekkinger.nizi.classes.AddPatientViewModel
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 
-class AddPatientDietaryActivity : AppCompatActivity() {
+class EditPatientDietaryActivity : AppCompatActivity() {
 
-    private var TAG = "AddPatientDietary"
+    private var TAG = "EditPatientDietary"
 
     val EXTRA_DOCTOR_ID = "DOCTOR_ID"
 
@@ -50,7 +49,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
         progressBar = activity_add_patient_dietary_loader
 
         activity_add_patient_dietary_btn_save.setOnClickListener {
-            registerPatientAsyncTask().execute()
+            updatePatientAsyncTask().execute()
         }
 
         // Fill in Patient
@@ -61,7 +60,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
     }
 
     //region RegisterPatient
-    inner class registerPatientAsyncTask() : AsyncTask<Void, Void, PatientRegisterResponse>()
+    inner class updatePatientAsyncTask() : AsyncTask<Void, Void, Void>()
     {
         override fun onPreExecute() {
             super.onPreExecute()
@@ -69,16 +68,17 @@ class AddPatientDietaryActivity : AppCompatActivity() {
             progressBar.visibility = View.VISIBLE
         }
 
-        override fun doInBackground(vararg p0: Void?): PatientRegisterResponse? {
-            return patientRepository.registerPatient(patient.firstName, patient.lastName, patient.dateOfBirth, patient.weight, doctorId!!)
+        override fun doInBackground(vararg p0: Void?): Void? {
+            patientRepository.updatePatient(patientId, doctorId, patient.firstName, patient.lastName, patient.dateOfBirth, patient.weight)
+            return null
         }
 
-        override fun onPostExecute(result: PatientRegisterResponse?) {
+        override fun onPostExecute(result: Void?) {
             super.onPostExecute(result)
             // Progressbar
             progressBar.visibility = View.GONE
             // Feedback
-            Toast.makeText(baseContext, R.string.patient_added, Toast.LENGTH_SHORT).show()
+            Toast.makeText(baseContext, R.string.patient_edited, Toast.LENGTH_SHORT).show()
 
             //val restrictionsList = arrayOf(R.array.guideline_array)
             val restrictionsList = arrayOf("Caloriebeperking", "Calorieverrijking",
@@ -99,7 +99,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
                             restrictionsList[index],
                             textViewList[index].text.toString().toInt(),
                             true,
-                            result!!.Patient.PatientId
+                            patientId!!
                         )
                     )
                 }

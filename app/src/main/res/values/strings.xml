@@ -125,10 +125,14 @@
     <string name="save">Opslaan</string>
     <string name="save_patient">Patiënt opslaan</string>
     <string name="patient_added">Patiënt toegevoegd</string>
+    <string name="patient_edited">Patiënt bewerkt</string>
+    <string name="patient_deleted">Patiënt verwijderd</string>
     <string name="dietary_added">Richtlijn toegevoegd</string>
+    <string name="dietary_changed">Richtlijn veranderd</string>
 
     <string name="data_of">Gegevens van</string>
     <string name="average_of">Gemiddelde van</string>
+    <string name="week">Week</string>
     <string name="trends">Trends</string>
 
     <!-- Messages adding patient -->

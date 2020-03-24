@@ -1,52 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/gray"
     tools:context=".activities.PatientDetailActivity">
 
-    <!-- Header (REUSEABLE BUT NOT IMPLEMENTED YET) -->
+    <!-- Top part -->
     <LinearLayout
-        android:id="@+id/activity_main_header_background"
-        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/activity_main_txt_header"
-            android:text="@string/today"
-            android:textSize="@dimen/h1"
-            android:textColor="@color/white"
-            android:fontFamily="@font/segoe_ui_semibold"
-            android:gravity="center"
+            android:id="@+id/activity_patient_detail_average_of_patient"
+            android:text="@string/average_of"
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.6"
+            android:layout_marginStart="@dimen/marginLeft"
             android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_marginBottom="@dimen/marginNormal"/>
 
+        <ImageView
+            android:id="@+id/activity_patient_detail_btn_edit"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:tint="@color/colorAccent"
+            android:src="@drawable/ic_edit"
+            android:contentDescription="@string/edit_patient"/>
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/activity_patient_detail_average_of_patient"
-        android:text="@string/average_of"
-        android:textColor="@color/black"
-        android:textSize="@dimen/h2"
+    <!-- Week -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:tint="@color/black"
+            android:src="@drawable/ic_back"
+            android:contentDescription="@string/edit_patient"/>
+
+        <TextView
+            android:id="@+id/activity_patient_detail_week"
+            android:text="@string/week"
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginSmall"
+            android:layout_marginEnd="@dimen/marginSmall"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:tint="@color/black"
+            android:src="@drawable/ic_next"
+            android:contentDescription="@string/edit_patient"/>
+
+    </LinearLayout>
+    <ProgressBar
+    android:id="@+id/progressBar"
+    android:layout_width="200dp"
+    android:layout_height="200dp"
+    android:indeterminate="false"
+    android:progressDrawable="@drawable/circular_progress_bar"
+    android:background="@drawable/circle_shape"
+    style="?android:attr/progressBarStyleHorizontal"
+    android:max="100"
+    android:progress="65" />
+
+    <LinearLayout
+        android:id="@+id/activity_patient_detail_ll_guidelines"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/activity_main_header_background"
-        android:layout_marginStart="@dimen/marginLeft"
-        android:layout_marginTop="@dimen/marginNormal"
-        android:layout_marginBottom="@dimen/marginNormal"/>
+        android:orientation="vertical">
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
-        android:tint="@color/colorAccent"
-        android:src="@drawable/ic_edit"
-        android:contentDescription="@string/edit_patient"/>
 
-</RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

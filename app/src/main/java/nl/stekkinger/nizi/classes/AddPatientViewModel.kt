@@ -2,7 +2,7 @@ package nl.stekkinger.nizi.classes
 
 import java.io.Serializable
 
-data class PatientViewModel (
+data class AddPatientViewModel (
     val firstName: String,
     val lastName: String,
     val dateOfBirth: String,

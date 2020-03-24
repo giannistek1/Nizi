@@ -104,7 +104,8 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 // Open detail page when clicked
                 val intent = Intent(this@DoctorMainActivity, PatientDetailActivity::class.java)
 
-                intent.putExtra("NAME", patientList[position].name)
+                intent.putExtra("PATIENT", patientList[position])
+                intent.putExtra(EXTRA_DOCTOR_ID, doctorId)
                 startActivity(intent)
             }
         }
@@ -174,7 +175,14 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
                 // Fill
                 (0..result.count()-1).forEach {
-                    val pi = PatientItem(it+1, "${result[it].firstName} ${result[it].lastName}")
+                    val pi = PatientItem(it+1,
+                        result[it].firstName + " " + result[it].lastName,
+                        result[it].firstName,
+                        result[it].lastName,
+                        result[it].dateOfBirth,
+                        result[it].weightInKilograms,
+                        result[it].patientId,
+                        result[it].doctorId)
                     patientList.add(pi)
                 }
 

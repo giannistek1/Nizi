@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,8 +17,10 @@ import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.fragments.HomeFragment
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.classes.DietaryGuideline
 import nl.stekkinger.nizi.classes.DietaryView
 import nl.stekkinger.nizi.classes.PatientLogin
+import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelperClass
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository
@@ -31,8 +34,11 @@ class MainActivity : AppCompatActivity() {
     private val dietaryRepository: DietaryRepository = DietaryRepository()
 
     private lateinit var diaryModel: DiaryViewModel
+    private var patientId: Int = 0
 
     private lateinit var progressBar: View
+
+    val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
         // Checks if  fragment state is null, else start with homeFragment
         if (savedInstanceState == null) {
-            val fragment = HomeFragment()
+            val fragment = HomeFragment(this, null)
             supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, fragment, fragment.javaClass.getSimpleName())
                 .commit()
         }
@@ -59,7 +65,8 @@ class MainActivity : AppCompatActivity() {
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener {  menuItem ->
         when (menuItem.itemId) {
             R.id.nav_home -> {
-                val fragment = HomeFragment()
+                //getDietaryAsyncTask().execute()
+                val fragment = HomeFragment(this, null)
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -124,6 +131,8 @@ class MainActivity : AppCompatActivity() {
             super.onPostExecute(result)
 
             try {
+                patientId = result!!.patient.patientId
+
                 val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
                 preferences.edit().putInt("patient", result!!.patient.patientId).apply()
                 d("con", preferences.getInt("patient", 0).toString())
@@ -156,32 +165,53 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): DietaryView? {
-            return dietaryRepository.getDietary(56)
+            return dietaryRepository.getDietary(patientId)
         }
 
         override fun onPostExecute(result: DietaryView?) {
             super.onPostExecute(result)
 
-            val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-            d("con", preferences.getInt("patient", 0).toString())
+            result!!.Dietarymanagement.forEachIndexed { index, resultDietary ->
 
-            lateinit var descriptionKey: String
-            lateinit var amountKey: String
+                lateinit var dietaryGuideline: DietaryGuideline
 
-            result!!.Dietarymanagement.forEachIndexed { index, element ->
-                descriptionKey = "dietaryDescription" + index.toString()
-                amountKey = "dietaryAmount" + index.toString()
+                dietaryGuideline = DietaryGuideline(resultDietary.Description,
+                    0, 0, 0)
 
-                preferences.edit()
-                    .putString(descriptionKey, result.Dietarymanagement[index].Description)
-                    .commit()
-                preferences.edit().putInt(amountKey, result.Dietarymanagement[index].Amount)
-                    .commit()
+                var alreadyExists = false
+
+                // Check if dietaryGuideLines already has the food supplement type (e.g. calories)
+                dietaryGuidelines.forEachIndexed loop@ {i, dietary ->
+                   if (dietary.description.contains(resultDietary.Description.take(3)))
+                   {
+                       dietaryGuideline = dietary
+                       alreadyExists = true
+                       return@loop
+                   }
+                }
+
+                if (resultDietary.Description.contains("beperking"))
+                {
+                    dietaryGuideline.minimum = resultDietary.Amount
+                }
+                else if (resultDietary.Description.contains("verrijking"))
+                {
+                    dietaryGuideline.description = dietaryGuideline.description.replace("beperking", "")
+                    dietaryGuideline.maximum = resultDietary.Amount
+                }
+
+                if (!alreadyExists) // create new
+                    dietaryGuidelines.add(dietaryGuideline)
+                else // update
+                    dietaryGuidelines[index-1] = dietaryGuideline
             }
-            preferences.edit().putInt("dietaryCount", result.Dietarymanagement.count()).commit()
 
             // Progressbar
             progressBar.visibility = View.GONE
+
+            val fragment = HomeFragment(this@MainActivity, dietaryGuidelines)
+            supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
+                .commit()
         }
     }
     //endregion

@@ -35,7 +35,7 @@ class PatientRepository : Repository(){
         val randomGuid = Random.nextInt(1000000).toString()
 
         val account = Account(0, "Patient")
-        val patient = Patient(0, 0, doctorId = doctorId, firstName = firstName, lastName = lastName, dateOfBirth = "1990-03-23T00:00:00", weightInKilograms = weight, guid = randomGuid)
+        val patient = Patient(0, 0, doctorId = doctorId, firstName = firstName, lastName = lastName, dateOfBirth = dateOfBirth, weightInKilograms = weight, guid = randomGuid)
         val doctor = Doctor(doctorId, "Dr", "Pepper", "Maastricht")
         val authLogin = AuthLogin(randomGuid, Token("string","string"))
 
@@ -43,6 +43,16 @@ class PatientRepository : Repository(){
 
         // DoB = "YYYY-MM-DDT10:55:38:00"
         return service.registerPatient(authHeader, newPatientLogin).execute().body()
+    }
+
+    fun updatePatient(patientId: Int?, doctorId: Int?, firstName: String, lastName: String, dateOfBirth: String, weight: Float)
+    {
+        val randomGuid = Random.nextInt(1000000).toString()
+
+        val patientToUpdate = PatientUpdateModel(patientId, doctorId, firstName, lastName, dateOfBirth, weight)
+
+        // DoB = "YYYY-MM-DDT10:55:38:00"
+        service.updatePatient(authHeader, patientToUpdate).execute()
     }
 
     fun getPatientsFromDoctor(doctorId: Int) : List<Patient>?

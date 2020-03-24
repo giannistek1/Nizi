@@ -38,7 +38,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/h2"
             android:text="@string/guidelines"
-            android:layout_marginLeft="@dimen/marginLeft"
+            android:layout_marginStart="@dimen/marginLeft"
             android:layout_marginTop="@dimen/marginNormal"
             android:layout_marginBottom="@dimen/marginNormal"
             android:layout_width="match_parent"
@@ -46,33 +46,12 @@
              />
 
         <LinearLayout
-            android:id="@+id/ll_guidelines_content"
-            android:layout_width="wrap_content"
+            android:id="@+id/fragment_home_ll_guidelines"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_home_txt_guidelines"
             android:orientation="vertical">
 
         </LinearLayout>
-    </RelativeLayout>
-
-    <!-- Recent nutrition -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/gray"
-        android:layout_alignParentBottom="true">
-
-        <TextView
-            android:id="@+id/fragment_home_txt_recent_nutrition"
-            android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:text="@string/recent_nutrition"
-            android:layout_marginLeft="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
     </RelativeLayout>
 </RelativeLayout>
