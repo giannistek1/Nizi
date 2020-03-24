@@ -1,13 +1,18 @@
 package nl.stekkinger.nizi.fragments
 
+import android.app.Activity
 import android.app.SearchManager
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import android.content.Context.SEARCH_SERVICE
+import android.content.Intent
+import android.graphics.Bitmap
+import android.provider.MediaStore
 import android.util.Log
 import android.util.Log.d
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +34,7 @@ class CreateMealFinalFragment: Fragment() {
     private lateinit var mealProductAdapter: MealProductAdapter
     private lateinit var mInputMealName: TextInputLayout
     private var mMealName: String = ""
+    val CAMERA_REQUEST_CODE = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_create_meal_final, container, false)
@@ -39,6 +45,14 @@ class CreateMealFinalFragment: Fragment() {
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
+
+        view.meal_camera_btn.setOnClickListener {
+            val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            val packageManager = activity!!.packageManager
+            if(callCameraIntent.resolveActivity(packageManager) != null) {
+                startActivityForResult(callCameraIntent, CAMERA_REQUEST_CODE)
+            }
+        }
 
         return view
     }
@@ -67,6 +81,8 @@ class CreateMealFinalFragment: Fragment() {
         return true
     }
 
+
+
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_back, menu)
         inflater?.inflate(R.menu.menu_confirm, menu)
@@ -91,6 +107,21 @@ class CreateMealFinalFragment: Fragment() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when(requestCode) {
+            CAMERA_REQUEST_CODE -> {
+                if(resultCode == Activity.RESULT_OK && data != null) {
+                    image_food_view.setImageBitmap(data.extras?.get("data") as Bitmap)
+                }
+            }
+            else -> {
+                Toast.makeText(this.activity, "Foto mislukt", Toast.LENGTH_SHORT)
+            }
         }
     }
 }

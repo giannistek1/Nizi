@@ -189,6 +189,12 @@
     <string name="content_add_lunch">Lunch toevoegen knop</string>
     <string name="content_add_dinner">Avondeten toevoegen knop</string>
     <string name="content_add_snack">Snack toevoegen knop</string>
+    <string name="content_meal_photo_display">Maaltijd foto display</string>
+
+
+    <!-- buttons -->
+    <string name="add_picture_btn">Voeg foto toe</string>
+
 
 
     <string-array name="guideline_array">
