@@ -1,7 +1,6 @@
 package nl.stekkinger.nizi.classes.helper_classes
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,8 @@ import androidx.core.content.ContextCompat.getColor
 import androidx.core.view.marginBottom
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.FragmentActivity
-import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DietaryGuideline
-import java.net.ConnectException
 import kotlin.random.Random
 
 class GuidelinesHelperClass {
@@ -41,7 +38,7 @@ class GuidelinesHelperClass {
             // Layouts
             val horizontalLayout = LinearLayout(cont)
             horizontalLayout.orientation = LinearLayout.HORIZONTAL
-            horizontalLayout.setBackgroundColor(getColor(cont!!.baseContext, R.color.gray))
+            horizontalLayout.setBackgroundColor(getColor(cont!!.baseContext, R.color.lightGray))
             var params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -87,7 +84,7 @@ class GuidelinesHelperClass {
                 icon.setColorFilter(getColor(cont, R.color.darkGray))
             }
             else if (dietaryGuideline.description.contains("Kalium")) {
-                icon.setImageResource(R.drawable.ic_salt)
+                icon.setImageResource(R.drawable.ic_k)
                 icon.setColorFilter(getColor(cont, R.color.blue))
             }
             else if (dietaryGuideline.description.contains("Eiwit")) {
@@ -101,8 +98,17 @@ class GuidelinesHelperClass {
             }
 
             icon.layoutParams = LinearLayout.LayoutParams(60, 60)
-            descriptionTextView.text = dietaryGuideline.restriction
-            descriptionTextView.width = 400
+
+            descriptionTextView.textSize = 16f
+            descriptionTextView.text = dietaryGuideline.plural.capitalize()
+            params = LinearLayout.LayoutParams(400, LinearLayout.LayoutParams.WRAP_CONTENT)
+            params.setMargins(0,0,0,20)
+            descriptionTextView.layoutParams = params
+
+            params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+            params.setMargins(0,0,0,20)
+            maximumTextView.layoutParams = params
+
             minimumTextView.text = "${cont.getString(R.string.min)} ${dietaryGuideline.minimum} ${dietaryGuideline.weightUnit}"
             if (dietaryGuideline.minimum == 0)
                 minimumTextView.visibility = View.GONE
@@ -134,7 +140,10 @@ class GuidelinesHelperClass {
                 progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar_red)
             else
                 progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar)
-            progressBar.background = ContextCompat.getDrawable(cont, R.drawable.circle_shape)
+            if (dietaryGuideline.minimum != 0)
+                progressBar.background = ContextCompat.getDrawable(cont, R.drawable.circle_shape_yellow)
+            else
+                progressBar.background = ContextCompat.getDrawable(cont, R.drawable.circle_shape)
             progressBar.max = 100
             progressBar.progress = progress
 
