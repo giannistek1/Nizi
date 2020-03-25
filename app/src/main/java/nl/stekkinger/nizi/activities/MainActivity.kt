@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private val dietaryRepository: DietaryRepository = DietaryRepository()
 
     private lateinit var diaryModel: DiaryViewModel
+    private var list: ArrayList<DietaryGuideline>? = null
     private var patientId: Int = 0
 
     private lateinit var progressBar: View
@@ -55,7 +56,7 @@ class MainActivity : AppCompatActivity() {
 
         // Checks if  fragment state is null, else start with homeFragment
         if (savedInstanceState == null) {
-            val fragment = HomeFragment(this, null)
+            val fragment = HomeFragment(this, dietaryGuidelines)
             supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, fragment, fragment.javaClass.getSimpleName())
                 .commit()
         }
@@ -71,8 +72,7 @@ class MainActivity : AppCompatActivity() {
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener {  menuItem ->
         when (menuItem.itemId) {
             R.id.nav_home -> {
-                //getDietaryAsyncTask().execute()
-                val fragment = HomeFragment(this, null)
+                val fragment = HomeFragment(this, list)
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -197,19 +197,6 @@ class MainActivity : AppCompatActivity() {
                    }
                 }
 
-                /*if (resultDietary.Description.contains("Calorie"))
-                    dietaryGuideline.amount = diaryModel.getDiary().value!!.KCalTotal.toInt()
-                else if (resultDietary.Description.contains("Vocht"))
-                    dietaryGuideline.amount = diaryModel.getDiary().value!!.WaterTotal.toInt()
-                else if (resultDietary.Description.contains("Natrium"))
-                    dietaryGuideline.amount = diaryModel.getDiary().value!!.SodiumTotal.toInt()
-                else if (resultDietary.Description.contains("Kalium"))
-                    dietaryGuideline.amount = diaryModel.getDiary().value!!.CaliumTotal.toInt()
-                else if (resultDietary.Description.contains("Eiwit"))
-                    dietaryGuideline.amount = diaryModel.getDiary().value!!.ProteinTotal.toInt()
-                else if (resultDietary.Description.contains("Vezel"))
-                    dietaryGuideline.amount = diaryModel.getDiary().value!!.FiberTotal.toInt()*/
-
                 if (resultDietary.Description.contains("beperking"))
                 {
                     dietaryGuideline.minimum = resultDietary.Amount
@@ -239,6 +226,8 @@ class MainActivity : AppCompatActivity() {
 
             // Progressbar
             progressBar.visibility = View.GONE
+
+            list = dietaryGuidelines
 
             val fragment = HomeFragment(this@MainActivity, dietaryGuidelines)
             supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())

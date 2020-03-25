@@ -12,8 +12,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import kotlinx.android.synthetic.main.fragment_diary.*
-import kotlinx.android.synthetic.main.fragment_diary.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import nl.stekkinger.nizi.NiziApplication
 import java.lang.Math.round
@@ -21,13 +19,11 @@ import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelperClass
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.DietaryGuideline
-import nl.stekkinger.nizi.classes.DietaryView
-import nl.stekkinger.nizi.repositories.DietaryRepository
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class HomeFragment(var cont: AppCompatActivity, var dietaryGuidelines: ArrayList<DietaryGuideline>?): Fragment() {
+class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: ArrayList<DietaryGuideline>?): Fragment() {
     private lateinit var mCurrentDate: String
     private lateinit var model: DiaryViewModel
 
@@ -44,20 +40,6 @@ class HomeFragment(var cont: AppCompatActivity, var dietaryGuidelines: ArrayList
         var endDate: String = getDay(mCurrentDate, 1)
         model.setDiaryDate(startDate + "/" + endDate)
 
-        model.getDiary().observe(viewLifecycleOwner, Observer { result ->
-            // update total intake values of the day (guidelines)
-            diary_guidelines_kcal_val.text = (round(result.KCalTotal * 100) / 100).toString()
-            diary_guidelines_fiber_val.text = (round(result.FiberTotal * 100.0) / 100.0).toString()
-            diary_guidelines_protein_val.text =
-                (round(result.ProteinTotal * 100.0) / 100.0).toString()
-            diary_guidelines_water_val.text =
-                (round(result.WaterTotal * 100.0) / 100.0).toString()    // TODO: water needs to be added to food
-            diary_guidelines_calcium_val.text =
-                (round(result.CaliumTotal * 100.0) / 100.0).toString()
-            diary_guidelines_sodium_val.text =
-                (round(result.SodiumTotal * 100.0) / 100.0).toString()
-            d("res", result.toString())
-        })
 
 
 //        view?.diary_prev_date.setOnClickListener {
@@ -91,9 +73,45 @@ class HomeFragment(var cont: AppCompatActivity, var dietaryGuidelines: ArrayList
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    override fun onStart() {
+        super.onStart()
+        /*model.getDiary().observe(viewLifecycleOwner, Observer { result ->
+            // update total intake values of the day (guidelines)
+            dietaryGuidelines?.forEachIndexed { index, element ->
+                if (element.description.contains("Calorie"))
+                    dietaryGuidelines[index].amount = result.KCalTotal.toInt()
+                else if (element.description.contains("Vocht"))
+                    dietaryGuidelines[index].amount = (round(result.WaterTotal * 100) / 100)
+                else if (element.description.contains("Natrium"))
+                    dietaryGuidelines[index].amount = (round(result.SodiumTotal * 100) / 100)
+                else if (element.description.contains("Kalium"))
+                    dietaryGuidelines[index].amount = (round(result.CaliumTotal * 100) / 100)
+                else if (element.description.contains("Eiwit"))
+                    dietaryGuidelines[index].amount = (round(result.ProteinTotal * 100) / 100)
+                else if (element.description.contains("Vezel"))
+                    dietaryGuidelines[index].amount = (round(result.FiberTotal * 100) / 100)
+            }
 
+
+        })*/
+        if (fragment_home_btn_yesterday != null)
+            fragment_home_btn_yesterday.setOnClickListener {
+                refreshGuidelines()
+            }
+
+        if (fragment_home_btn_tomorrow != null)
+            fragment_home_btn_tomorrow.setOnClickListener {
+                refreshGuidelines()
+            }
+
+        if (fragment_home_txt_day != null)
+            fragment_home_txt_day.text = mCurrentDate
+
+        refreshGuidelines()
+    }
+
+    fun refreshGuidelines()
+    {
         if (dietaryGuidelines != null) {
             val helperClass = GuidelinesHelperClass()
             helperClass.initializeGuidelines(cont, fragment_home_ll_guidelines, dietaryGuidelines)

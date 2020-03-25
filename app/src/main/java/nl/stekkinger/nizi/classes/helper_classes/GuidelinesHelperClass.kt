@@ -106,13 +106,22 @@ class GuidelinesHelperClass {
             if (dietaryGuideline.maximum == 0)
                 maximumTextView.visibility = View.INVISIBLE
 
-            val randomProgress = Random.nextInt(100)
-
             amountTextView.gravity = Gravity.CENTER
+
+            val randomProgress = Random.nextInt(100)
+            var progress = randomProgress
+            var amount = 0
+
             if (dietaryGuideline.maximum != 0)
-                amountTextView.text = (randomProgress*dietaryGuideline.maximum/100).toString() + " " + dietaryGuideline.weightUnit
+                //progress = dietaryGuideline.amount/dietaryGuideline.maximum * 100
+                amount = (progress*dietaryGuideline.maximum/100)
             else
-                amountTextView.text = (randomProgress*dietaryGuideline.minimum/100).toString() + " " + dietaryGuideline.weightUnit
+                //progress = dietaryGuideline.amount/dietaryGuideline.minimum * 100
+                amount = (progress*dietaryGuideline.minimum/100)
+
+
+
+            amountTextView.text = amount.toString() + " " + dietaryGuideline.weightUnit
 
             // Progressbar
             progressBar.layoutParams = LinearLayout.LayoutParams(200, 200)
@@ -120,7 +129,8 @@ class GuidelinesHelperClass {
             progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar)
             progressBar.background = ContextCompat.getDrawable(cont, R.drawable.circle_shape)
             progressBar.max = 100
-            progressBar.progress = randomProgress // Amount / maximum * 100 if minimum = 0
+            progressBar.progress = progress
+
             if (progressBar.progress >= 100 && dietaryGuideline.maximum != 0) {
                 feedbackTextView.text = cont.getString(R.string.feedback_positive)
                 feedbackTextView.setTextColor(getColor(cont, R.color.lime))
