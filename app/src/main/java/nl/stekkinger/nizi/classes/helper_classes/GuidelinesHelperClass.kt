@@ -27,11 +27,15 @@ class GuidelinesHelperClass {
 
     fun initializeGuidelines(cont: FragmentActivity?, layout: LinearLayout, dietaryGuidelineList: ArrayList<DietaryGuideline>?)
     {
+        layout.removeAllViews()
+
+        // Description                  // Amount
+        // Min
+        // Max
+        // Feedback
+
+        // Loop for every dietary restriction/guideline
         dietaryGuidelineList!!.forEachIndexed { index, dietaryGuideline ->
-            // Description                  // Amount
-            // Min
-            // Max
-            // Feedback
 
             // Create elements
             // Layouts
@@ -60,6 +64,7 @@ class GuidelinesHelperClass {
             verticalLayout2.layoutParams = LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f)
 
+            // Views
             val icon = ImageView(cont)
             val descriptionTextView = TextView(cont)
             val minimumTextView = TextView(cont)
@@ -108,7 +113,7 @@ class GuidelinesHelperClass {
 
             amountTextView.gravity = Gravity.CENTER
 
-            val randomProgress = Random.nextInt(100)
+            val randomProgress = Random.nextInt(150)
             var progress = randomProgress
             var amount = 0
 
@@ -119,28 +124,32 @@ class GuidelinesHelperClass {
                 //progress = dietaryGuideline.amount/dietaryGuideline.minimum * 100
                 amount = (progress*dietaryGuideline.minimum/100)
 
-
-
             amountTextView.text = amount.toString() + " " + dietaryGuideline.weightUnit
 
             // Progressbar
             progressBar.layoutParams = LinearLayout.LayoutParams(200, 200)
             progressBar.isIndeterminate = false
-            progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar)
+            // if ate too much
+            if (progress > 100 && dietaryGuideline.maximum != 0)
+                progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar_red)
+            else
+                progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar)
             progressBar.background = ContextCompat.getDrawable(cont, R.drawable.circle_shape)
             progressBar.max = 100
             progressBar.progress = progress
 
-            if (progressBar.progress >= 100 && dietaryGuideline.maximum != 0) {
+            // FEEDBACK
+            // if filled && maximum not set
+            if (progressBar.progress >= 100 && dietaryGuideline.maximum == 0) {
                 feedbackTextView.text = cont.getString(R.string.feedback_positive)
                 feedbackTextView.setTextColor(getColor(cont, R.color.lime))
             }
-            else if (progressBar.progress >= 100 && dietaryGuideline.maximum > 0) {
-                feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.restriction)
+            else if (progressBar.progress > 100 && dietaryGuideline.maximum > 0) {
+                feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.plural)
                 feedbackTextView.setTextColor(getColor(cont, R.color.red))
             }
             else if (progressBar.progress <= 100 && dietaryGuideline.minimum != 0) {
-                feedbackTextView.text = cont.getString(R.string.feedback_encouraging, dietaryGuideline.restriction)
+                feedbackTextView.text = cont.getString(R.string.feedback_encouraging, dietaryGuideline.plural)
                 feedbackTextView.setTextColor(getColor(cont, R.color.yellow))
             }
 
