@@ -122,8 +122,8 @@ interface ApiService {
     fun fetchConversations(
         @Header("Authorization") authHeader : String,
         @Path("patientId") patientId: Int,
-        @Query("beginDate") beginDate: SimpleDateFormat,
-        @Query("endDate") endDate: SimpleDateFormat
+        @Query("beginDate") beginDate: String,
+        @Query("endDate") endDate: String
     ) : Call<ArrayList<Conversation>>
     //endregion
 
