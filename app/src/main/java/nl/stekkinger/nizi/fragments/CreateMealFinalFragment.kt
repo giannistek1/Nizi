@@ -10,6 +10,7 @@ import android.content.Context.SEARCH_SERVICE
 import android.content.Intent
 import android.graphics.Bitmap
 import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.util.Log.d
 import android.widget.Toast
@@ -25,6 +26,7 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.adapters.MealProductAdapter
 import nl.stekkinger.nizi.repositories.FoodRepository
+import java.io.ByteArrayOutputStream
 
 
 class CreateMealFinalFragment: Fragment() {
@@ -34,6 +36,7 @@ class CreateMealFinalFragment: Fragment() {
     private lateinit var mealProductAdapter: MealProductAdapter
     private lateinit var mInputMealName: TextInputLayout
     private var mMealName: String = ""
+    private var mPhoto: String? = null
     val CAMERA_REQUEST_CODE = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,7 +66,7 @@ class CreateMealFinalFragment: Fragment() {
             return
         }
         // validate success
-        model.createMeal(mMealName)
+        model.createMeal(mMealName, mPhoto)
         (activity)!!.supportFragmentManager.beginTransaction().replace(
             R.id.activity_main_fragment_container,
             AddMealFragment()
@@ -117,6 +120,14 @@ class CreateMealFinalFragment: Fragment() {
             CAMERA_REQUEST_CODE -> {
                 if(resultCode == Activity.RESULT_OK && data != null) {
                     image_food_view.setImageBitmap(data.extras?.get("data") as Bitmap)
+                    val bm: Bitmap = data.extras?.get("data") as Bitmap
+                    val baos = ByteArrayOutputStream()
+                    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos) //bm is the bitmap object
+                    val b: ByteArray = baos.toByteArray()
+
+                    val encodedImage: String = Base64.encodeToString(b, Base64.DEFAULT)
+                    mPhoto = encodedImage
+                    d("foto", encodedImage)
                 }
             }
             else -> {

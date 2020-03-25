@@ -128,11 +128,13 @@ class FoodRepository : Repository() {
     fun createMeal(meal: Meal) {
         service.createMeal(authHeader = authHeader, patientId = preferences.getInt("patient", 0), body = meal).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-
+                d("SMEAL", response.toString())
+                d("SMEAL", response.message())
+                d("SMEAL", response.isSuccessful.toString())
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-
+                d("SMEAL", "fail")
             }
         })
     }
