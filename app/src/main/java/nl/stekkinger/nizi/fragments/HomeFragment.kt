@@ -115,8 +115,6 @@ class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: A
 
     fun refreshGuidelines()
     {
-
-
         if (dietaryGuidelines != null) {
             val helperClass = GuidelinesHelperClass()
             helperClass.initializeGuidelines(cont, fragment_home_ll_guidelines, dietaryGuidelines)
