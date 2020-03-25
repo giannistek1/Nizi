@@ -1,27 +1,20 @@
 package nl.stekkinger.nizi.fragments
 
-import android.content.Context
-import android.os.AsyncTask
 import android.os.Bundle
 import android.util.Log
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_home.*
-import nl.stekkinger.nizi.NiziApplication
-import java.lang.Math.round
-import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelperClass
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.DietaryGuideline
+import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelperClass
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: ArrayList<DietaryGuideline>?): Fragment() {
     private lateinit var mCurrentDate: String
@@ -94,24 +87,36 @@ class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: A
 
 
         })*/
-        if (fragment_home_btn_yesterday != null)
-            fragment_home_btn_yesterday.setOnClickListener {
-                refreshGuidelines()
-            }
+        fragment_home_btn_yesterday.setOnClickListener {
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            val newDate = sdf.parse(getDay(mCurrentDate, -1))
+            mCurrentDate = sdf.format(newDate)
 
-        if (fragment_home_btn_tomorrow != null)
-            fragment_home_btn_tomorrow.setOnClickListener {
-                refreshGuidelines()
-            }
-
-        if (fragment_home_txt_day != null)
             fragment_home_txt_day.text = mCurrentDate
+            refreshGuidelines()
+        }
+
+        fragment_home_btn_tomorrow.setOnClickListener {
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            val newDate = sdf.parse(getDay(mCurrentDate, 1))
+            // if new date is NOT after Today
+            if (!newDate.after(Date())) {
+                mCurrentDate = sdf.format(newDate)
+                
+                fragment_home_txt_day.text = mCurrentDate
+                refreshGuidelines()
+            }
+        }
+
+        fragment_home_txt_day.text = mCurrentDate
 
         refreshGuidelines()
     }
 
     fun refreshGuidelines()
     {
+
+
         if (dietaryGuidelines != null) {
             val helperClass = GuidelinesHelperClass()
             helperClass.initializeGuidelines(cont, fragment_home_ll_guidelines, dietaryGuidelines)

@@ -27,11 +27,15 @@ class GuidelinesHelperClass {
 
     fun initializeGuidelines(cont: FragmentActivity?, layout: LinearLayout, dietaryGuidelineList: ArrayList<DietaryGuideline>?)
     {
+        layout.removeAllViews()
+
+        // Description                  // Amount
+        // Min
+        // Max
+        // Feedback
+
+        // Loop for every dietary restriction/guideline
         dietaryGuidelineList!!.forEachIndexed { index, dietaryGuideline ->
-            // Description                  // Amount
-            // Min
-            // Max
-            // Feedback
 
             // Create elements
             // Layouts
