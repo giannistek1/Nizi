@@ -140,15 +140,15 @@ class GuidelinesHelperClass {
 
             // FEEDBACK
             // if filled && maximum not set
-            if (progressBar.progress >= 100 && dietaryGuideline.maximum == 0) {
+            if (progress >= 100 && dietaryGuideline.maximum == 0) {
                 feedbackTextView.text = cont.getString(R.string.feedback_positive)
                 feedbackTextView.setTextColor(getColor(cont, R.color.lime))
             }
-            else if (progressBar.progress > 100 && dietaryGuideline.maximum > 0) {
+            else if (progress > 100 && dietaryGuideline.maximum > 0) {
                 feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.plural)
                 feedbackTextView.setTextColor(getColor(cont, R.color.red))
             }
-            else if (progressBar.progress <= 100 && dietaryGuideline.minimum != 0) {
+            else if (progress <= 100 && dietaryGuideline.minimum != 0) {
                 feedbackTextView.text = cont.getString(R.string.feedback_encouraging, dietaryGuideline.plural)
                 feedbackTextView.setTextColor(getColor(cont, R.color.yellow))
             }
