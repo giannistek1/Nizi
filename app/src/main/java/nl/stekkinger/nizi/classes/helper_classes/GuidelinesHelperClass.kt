@@ -144,7 +144,7 @@ class GuidelinesHelperClass {
                 feedbackTextView.text = cont.getString(R.string.feedback_positive)
                 feedbackTextView.setTextColor(getColor(cont, R.color.lime))
             }
-            else if (progressBar.progress >= 100 && dietaryGuideline.maximum > 0) {
+            else if (progressBar.progress > 100 && dietaryGuideline.maximum > 0) {
                 feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.plural)
                 feedbackTextView.setTextColor(getColor(cont, R.color.red))
             }
