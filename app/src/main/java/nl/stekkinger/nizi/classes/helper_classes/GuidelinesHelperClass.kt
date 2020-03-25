@@ -64,6 +64,7 @@ class GuidelinesHelperClass {
             verticalLayout2.layoutParams = LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f)
 
+            // Views
             val icon = ImageView(cont)
             val descriptionTextView = TextView(cont)
             val minimumTextView = TextView(cont)
@@ -112,7 +113,7 @@ class GuidelinesHelperClass {
 
             amountTextView.gravity = Gravity.CENTER
 
-            val randomProgress = Random.nextInt(100)
+            val randomProgress = Random.nextInt(150)
             var progress = randomProgress
             var amount = 0
 
@@ -135,7 +136,8 @@ class GuidelinesHelperClass {
             progressBar.max = 100
             progressBar.progress = progress
 
-            if (progressBar.progress >= 100 && dietaryGuideline.maximum != 0) {
+            // if filled && maximum not set
+            if (progressBar.progress >= 100 && dietaryGuideline.maximum == 0) {
                 feedbackTextView.text = cont.getString(R.string.feedback_positive)
                 feedbackTextView.setTextColor(getColor(cont, R.color.lime))
             }

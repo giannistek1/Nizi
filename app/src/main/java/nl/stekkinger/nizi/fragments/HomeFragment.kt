@@ -102,7 +102,7 @@ class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: A
             // if new date is NOT after Today
             if (!newDate.after(Date())) {
                 mCurrentDate = sdf.format(newDate)
-                
+
                 fragment_home_txt_day.text = mCurrentDate
                 refreshGuidelines()
             }
