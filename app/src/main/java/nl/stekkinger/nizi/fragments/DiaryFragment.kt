@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_diary.*
 import kotlinx.android.synthetic.main.fragment_diary.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConsumptionAdapter
+import nl.stekkinger.nizi.classes.Consumption
 import nl.stekkinger.nizi.classes.Consumptions
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import java.lang.Math.round
@@ -66,10 +67,10 @@ class DiaryFragment: Fragment() {
         // get the results of food search
         model.getDiary().observe(viewLifecycleOwner, Observer { result ->
 
-            val breakfastList = ArrayList<Consumptions.Consumption>()
-            val lunchList = ArrayList<Consumptions.Consumption>()
-            val dinnerList = ArrayList<Consumptions.Consumption>()
-            val snackList = ArrayList<Consumptions.Consumption>()
+            val breakfastList = ArrayList<Consumption>()
+            val lunchList = ArrayList<Consumption>()
+            val dinnerList = ArrayList<Consumption>()
+            val snackList = ArrayList<Consumption>()
 
             //sorting consumptions
             for (c in result.Consumptions) {

@@ -8,12 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.diary_food_item.view.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.classes.Consumption
 import nl.stekkinger.nizi.classes.Consumptions
 import nl.stekkinger.nizi.classes.DiaryViewModel
 
 class ConsumptionAdapter(
     private var model: DiaryViewModel = DiaryViewModel(),
-    private var mDataset: ArrayList<Consumptions.Consumption> = ArrayList()
+    private var mDataset: ArrayList<Consumption> = ArrayList()
 ) : RecyclerView.Adapter<ConsumptionAdapter.ViewHolder>() {
 
 
@@ -27,21 +28,21 @@ class ConsumptionAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.diary_food_item, parent, false)
         return ViewHolder(view)
-            .listen { pos, _ ->
-//                var consumption = mDataset[pos]
-//                val activity = view.context as AppCompatActivity
-//                model.selectEdit(activity, consumption)
-            }
+//            .listen { pos, _ ->
+////                var consumption = mDataset[pos]
+////                val activity = view.context as AppCompatActivity
+////                model.selectEdit(activity, consumption)
+//            }
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var consumption : Consumptions.Consumption = mDataset[position]
+        var consumption : Consumption = mDataset[position]
         holder.title.text = consumption.FoodName
         holder.summary.text = consumption.Amount.toString() + " " + consumption.WeightUnitId
 
         holder.itemView.btn_delete.setOnClickListener {
-            model.deleteConsumption(consumption.Id)
+            model.deleteConsumption(consumption.ConsumptionId)
             mDataset.removeAt(holder.adapterPosition)
             notifyDataSetChanged()
         }
@@ -55,7 +56,7 @@ class ConsumptionAdapter(
         val summary: TextView = itemView.findViewById(R.id.summary)
     }
 
-    fun setConsumptionList(consumptionList: ArrayList<Consumptions.Consumption>) {
+    fun setConsumptionList(consumptionList: ArrayList<Consumption>) {
         this.mDataset = consumptionList
         notifyDataSetChanged()
     }
