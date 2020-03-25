@@ -87,8 +87,8 @@ class GuidelinesHelperClass {
                 icon.setColorFilter(getColor(cont, R.color.darkGray))
             }
             else if (dietaryGuideline.description.contains("Kalium")) {
-                icon.setImageResource(R.drawable.ic_salt)
-                icon.setColorFilter(getColor(cont, R.color.blue))
+                icon.setImageResource(R.drawable.ic_k2)
+                //icon.setColorFilter(getColor(cont, R.color.blue))
             }
             else if (dietaryGuideline.description.contains("Eiwit")) {
                 icon.setImageResource(R.drawable.ic_protein)
