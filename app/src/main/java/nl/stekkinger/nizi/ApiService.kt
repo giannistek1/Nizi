@@ -125,6 +125,14 @@ interface ApiService {
         @Query("beginDate") beginDate: String,
         @Query("endDate") endDate: String
     ) : Call<ArrayList<Conversation>>
+
+//    @GET("v1/waterconsumption/period/{patientId}")
+//    fun fetchConversations(
+//        @Header("Authorization") authHeader : String,
+//        @Path("patientId") patientId: Int,
+//        @Query("beginDate") beginDate: String,
+//        @Query("endDate") endDate: String
+//    ) : Call<ArrayList<String>>
     //endregion
 
     //region Patient
