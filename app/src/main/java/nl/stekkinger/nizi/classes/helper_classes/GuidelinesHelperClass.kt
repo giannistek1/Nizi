@@ -1,23 +1,18 @@
 package nl.stekkinger.nizi.classes.helper_classes
 
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
-import androidx.core.view.marginBottom
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.FragmentActivity
-import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DietaryGuideline
-import java.net.ConnectException
 import kotlin.random.Random
 
 class GuidelinesHelperClass {
@@ -87,8 +82,8 @@ class GuidelinesHelperClass {
                 icon.setColorFilter(getColor(cont, R.color.darkGray))
             }
             else if (dietaryGuideline.description.contains("Kalium")) {
-                icon.setImageResource(R.drawable.ic_k2)
-                //icon.setColorFilter(getColor(cont, R.color.blue))
+                icon.setImageResource(R.drawable.ic_k)
+                icon.setColorFilter(getColor(cont, R.color.blue))
             }
             else if (dietaryGuideline.description.contains("Eiwit")) {
                 icon.setImageResource(R.drawable.ic_protein)

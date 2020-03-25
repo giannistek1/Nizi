@@ -369,7 +369,7 @@
 
                 <ImageView
                     android:id="@+id/activity_add_patient_dietary_img_potassium"
-                    android:src="@drawable/ic_k2"
+                    android:src="@drawable/ic_k"
                     android:contentDescription="@string/potassium"
                     android:tint="@color/blue"
                     android:layout_width="30dp"
