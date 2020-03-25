@@ -120,7 +120,7 @@ class DiaryViewModel(
             WeightUnitId = 1,
             Date = mCurrentDay,
             PatientId = preferences.getInt("patient", 0),
-            Id = 0
+            ConsumptionId = 0
         )
         d("conmod", consumption.toString())
         mRepository.addConsumption(consumption)
@@ -213,7 +213,7 @@ class DiaryViewModel(
             WeightUnitId = 1,
             Date = mCurrentDay,
             PatientId = preferences.getInt("patient", 0),
-            Id = 0
+            ConsumptionId = 0
         )
         mRepository.addConsumption(consumption)
     }

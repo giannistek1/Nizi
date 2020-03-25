@@ -15,5 +15,5 @@ data class Consumption (
     val WeightUnitId: Int,
     val Date: String,
     val PatientId: Int,
-    val Id: Int
+    val ConsumptionId: Int
 )

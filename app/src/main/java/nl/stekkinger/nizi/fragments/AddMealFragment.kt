@@ -84,7 +84,6 @@ class AddMealFragment: Fragment() {
     inner class getMealsAsyncTask() : AsyncTask<Void, Void, ArrayList<Meal>>() {
         override fun doInBackground(vararg params: Void?): ArrayList<Meal>? {
             var meals = mRepository.getMeals()
-//            d("mealList", meals.toString())
             return meals
         }
 

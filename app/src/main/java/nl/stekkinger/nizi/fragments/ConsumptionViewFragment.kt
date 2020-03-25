@@ -20,7 +20,7 @@ import nl.stekkinger.nizi.classes.Food
 
 class ConsumptionViewFragment : Fragment() {
     private lateinit var model: DiaryViewModel
-    private lateinit var mConsumption: Consumptions.Consumption
+    private lateinit var mConsumption: Consumption
     private lateinit var mServingInput: TextInputLayout
 
     override fun onCreateView(

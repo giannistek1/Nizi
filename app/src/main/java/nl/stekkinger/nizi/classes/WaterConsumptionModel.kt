@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi.classes.wont_use
+package nl.stekkinger.nizi.classes
 
 import java.text.SimpleDateFormat
 

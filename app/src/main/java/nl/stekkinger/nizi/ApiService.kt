@@ -119,11 +119,12 @@ interface ApiService {
     ) : Call<Unit>
 
     @GET("v1/waterconsumption/period/{patientId}")
-    fun getWaterConsumptionByPeriod(
+    fun fetchConversations(
+        @Header("Authorization") authHeader : String,
         @Path("patientId") patientId: Int,
         @Query("beginDate") beginDate: SimpleDateFormat,
         @Query("endDate") endDate: SimpleDateFormat
-    ) : Call<Unit>
+    ) : Call<ArrayList<Conversation>>
     //endregion
 
     //region Patient
