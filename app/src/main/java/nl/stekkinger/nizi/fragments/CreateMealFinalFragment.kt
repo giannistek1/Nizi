@@ -61,27 +61,34 @@ class CreateMealFinalFragment: Fragment() {
     }
 
     private fun createMeal(){
-        if (!validateMealName()) {
+        if (validateMealName() == false) {
             // failed
             return
+        } else {
+            // validate success
+            model.createMeal(mMealName, mPhoto)
+            (activity)!!.supportFragmentManager.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                AddMealFragment()
+            ).commit()
         }
-        // validate success
-        model.createMeal(mMealName, mPhoto)
-        (activity)!!.supportFragmentManager.beginTransaction().replace(
-            R.id.activity_main_fragment_container,
-            AddMealFragment()
-        ).commit()
+
     }
 
     private fun validateMealName(): Boolean {
         mMealName = mInputMealName.editText?.text.toString().trim()
         // validate input for errors
+        var succes = true
         when {
-            mMealName.isEmpty() -> { mInputMealName.error = getString(R.string.meal_name_empty)}
-            mMealName.length > 30 -> { mInputMealName.error = getString(R.string.meal_name_too_long) }
+            mMealName.isEmpty() -> {
+                mInputMealName.error = getString(R.string.meal_name_empty)
+                succes = false }
+            mMealName.length > 30 -> {
+                mInputMealName.error = getString(R.string.meal_name_too_long)
+                succes = false }
             else -> { mInputMealName.error = null }
         }
-        return true
+        return succes
     }
 
 
@@ -94,12 +101,7 @@ class CreateMealFinalFragment: Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.confirm_btn -> {
-                // TODO: Check if meal has atleast 2 items
                 createMeal()
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
-                    R.id.activity_main_fragment_container,
-                    AddMealFragment()
-                ).commit()
                 true
             }
             R.id.back_btn -> {
@@ -122,7 +124,7 @@ class CreateMealFinalFragment: Fragment() {
                     image_food_view.setImageBitmap(data.extras?.get("data") as Bitmap)
                     val bm: Bitmap = data.extras?.get("data") as Bitmap
                     val baos = ByteArrayOutputStream()
-                    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos) //bm is the bitmap object
+                    bm.compress(Bitmap.CompressFormat.JPEG, 50, baos) //bm is the bitmap object
                     val b: ByteArray = baos.toByteArray()
 
                     val encodedImage: String = Base64.encodeToString(b, Base64.DEFAULT)

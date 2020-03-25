@@ -1,5 +1,8 @@
 package nl.stekkinger.nizi.adapters
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,8 +42,15 @@ class MealAdapter(
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var meal : Meal = mDataset[position]
-        if (meal.Picture != "") {
-            Picasso.get().load(meal.Picture).resize(40, 40).into(holder.image)
+        if (meal.Picture != "" && meal.Picture != null) {
+            val decodedString: ByteArray = Base64.decode(meal.Picture, Base64.DEFAULT)
+            val decodedByte: Bitmap? = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+            if(decodedByte != null) {
+                holder.image.setImageBitmap(decodedByte)
+            }
+        } else {
+            holder.image.setImageResource(R.drawable.ic_culinary)
+//            Picasso.get().load(meal.Picture).resize(40, 40).into(holder.image)
         }
         holder.title.text = meal.Name
         holder.summary.text = meal.PortionSize.toString() + " " + meal.WeightUnit
