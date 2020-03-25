@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_meals.*
 import kotlinx.android.synthetic.main.fragment_meals.view.*
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
@@ -33,7 +34,7 @@ class AddMealFragment: Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_meals, container, false)
         setHasOptionsMenu(true)
 
-        val recyclerView: RecyclerView = view.findViewById(R.id.meal_recycler_view)
+        val recyclerView: RecyclerView = view.meal_recycler_view
         // TODO: change recycler view
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
@@ -82,8 +83,9 @@ class AddMealFragment: Fragment() {
 
     inner class getMealsAsyncTask() : AsyncTask<Void, Void, ArrayList<Meal>>() {
         override fun doInBackground(vararg params: Void?): ArrayList<Meal>? {
-            var jaap = mRepository.getMeals()
-            return jaap
+            var meals = mRepository.getMeals()
+//            d("mealList", meals.toString())
+            return meals
         }
 
         override fun onPreExecute() {

@@ -1,13 +1,19 @@
 package nl.stekkinger.nizi.fragments
 
+import android.app.Activity
 import android.app.SearchManager
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import android.content.Context.SEARCH_SERVICE
+import android.content.Intent
+import android.graphics.Bitmap
+import android.provider.MediaStore
+import android.util.Base64
 import android.util.Log
 import android.util.Log.d
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,6 +26,7 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.adapters.MealProductAdapter
 import nl.stekkinger.nizi.repositories.FoodRepository
+import java.io.ByteArrayOutputStream
 
 
 class CreateMealFinalFragment: Fragment() {
@@ -29,6 +36,8 @@ class CreateMealFinalFragment: Fragment() {
     private lateinit var mealProductAdapter: MealProductAdapter
     private lateinit var mInputMealName: TextInputLayout
     private var mMealName: String = ""
+    private var mPhoto: String? = null
+    val CAMERA_REQUEST_CODE = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_create_meal_final, container, false)
@@ -40,6 +49,14 @@ class CreateMealFinalFragment: Fragment() {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
+        view.meal_camera_btn.setOnClickListener {
+            val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            val packageManager = activity!!.packageManager
+            if(callCameraIntent.resolveActivity(packageManager) != null) {
+                startActivityForResult(callCameraIntent, CAMERA_REQUEST_CODE)
+            }
+        }
+
         return view
     }
 
@@ -49,7 +66,7 @@ class CreateMealFinalFragment: Fragment() {
             return
         }
         // validate success
-        model.createMeal(mMealName)
+        model.createMeal(mMealName, mPhoto)
         (activity)!!.supportFragmentManager.beginTransaction().replace(
             R.id.activity_main_fragment_container,
             AddMealFragment()
@@ -66,6 +83,8 @@ class CreateMealFinalFragment: Fragment() {
         }
         return true
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_back, menu)
@@ -91,6 +110,29 @@ class CreateMealFinalFragment: Fragment() {
                 true
             }
             else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        when(requestCode) {
+            CAMERA_REQUEST_CODE -> {
+                if(resultCode == Activity.RESULT_OK && data != null) {
+                    image_food_view.setImageBitmap(data.extras?.get("data") as Bitmap)
+                    val bm: Bitmap = data.extras?.get("data") as Bitmap
+                    val baos = ByteArrayOutputStream()
+                    bm.compress(Bitmap.CompressFormat.JPEG, 100, baos) //bm is the bitmap object
+                    val b: ByteArray = baos.toByteArray()
+
+                    val encodedImage: String = Base64.encodeToString(b, Base64.DEFAULT)
+                    mPhoto = encodedImage
+                    d("foto", encodedImage)
+                }
+            }
+            else -> {
+                Toast.makeText(this.activity, "Foto mislukt", Toast.LENGTH_SHORT)
+            }
         }
     }
 }
