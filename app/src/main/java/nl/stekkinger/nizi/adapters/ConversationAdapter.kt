@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -32,11 +34,13 @@ class ConversationAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.conversation_item, parent, false)
         return ViewHolder(view)
-//            .listen { pos, _ ->
-//                var conversation = mDataset[pos]
-//                val activity = view.context as AppCompatActivity
-//                model.selectMeal(activity, conversation)
-//            }
+            .listen { pos, _ ->
+                if (view.convo_comment.visibility == GONE ) {
+                    view.convo_comment.visibility = VISIBLE
+                } else {
+                    view.convo_comment.visibility = GONE
+                }
+            }
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -45,14 +49,6 @@ class ConversationAdapter(
 
         holder.date.text = conversation.Date
         holder.comment.text = conversation.Comment
-//        holder.title.text = meal.Name
-//        holder.summary.text = meal.PortionSize.toString() + " " + meal.WeightUnit
-
-//        holder.itemView.delete_meal_btn.setOnClickListener {
-//            model.deleteMeal(meal.MealId)
-//            mDataset.removeAt(holder.adapterPosition)
-//            notifyDataSetChanged()
-//        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
