@@ -62,9 +62,7 @@
         <SearchView
             android:id="@+id/search_food"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </SearchView>
+            android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/food_search_recycler_view"
