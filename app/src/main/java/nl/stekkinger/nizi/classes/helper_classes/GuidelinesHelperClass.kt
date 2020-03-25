@@ -124,29 +124,32 @@ class GuidelinesHelperClass {
                 //progress = dietaryGuideline.amount/dietaryGuideline.minimum * 100
                 amount = (progress*dietaryGuideline.minimum/100)
 
-
-
             amountTextView.text = amount.toString() + " " + dietaryGuideline.weightUnit
 
             // Progressbar
             progressBar.layoutParams = LinearLayout.LayoutParams(200, 200)
             progressBar.isIndeterminate = false
-            progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar)
+            // if ate too much
+            if (progress > 100 && dietaryGuideline.maximum != 0)
+                progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar_red)
+            else
+                progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar)
             progressBar.background = ContextCompat.getDrawable(cont, R.drawable.circle_shape)
             progressBar.max = 100
             progressBar.progress = progress
 
+            // FEEDBACK
             // if filled && maximum not set
             if (progressBar.progress >= 100 && dietaryGuideline.maximum == 0) {
                 feedbackTextView.text = cont.getString(R.string.feedback_positive)
                 feedbackTextView.setTextColor(getColor(cont, R.color.lime))
             }
             else if (progressBar.progress >= 100 && dietaryGuideline.maximum > 0) {
-                feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.restriction)
+                feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.plural)
                 feedbackTextView.setTextColor(getColor(cont, R.color.red))
             }
             else if (progressBar.progress <= 100 && dietaryGuideline.minimum != 0) {
-                feedbackTextView.text = cont.getString(R.string.feedback_encouraging, dietaryGuideline.restriction)
+                feedbackTextView.text = cont.getString(R.string.feedback_encouraging, dietaryGuideline.plural)
                 feedbackTextView.setTextColor(getColor(cont, R.color.yellow))
             }
 

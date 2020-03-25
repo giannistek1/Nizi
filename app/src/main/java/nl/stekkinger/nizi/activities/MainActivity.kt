@@ -182,7 +182,7 @@ class MainActivity : AppCompatActivity() {
                 lateinit var dietaryGuideline: DietaryGuideline
 
                 val restriction = resultDietary.Description.replace("beperking", "").replace("verrijking","")
-                dietaryGuideline = DietaryGuideline(resultDietary.Description, restriction,
+                dietaryGuideline = DietaryGuideline(resultDietary.Description, restriction, restriction.toLowerCase(),
                     0, 0, 0, "")
 
                 var alreadyExists = false
@@ -197,6 +197,15 @@ class MainActivity : AppCompatActivity() {
                    }
                 }
 
+                // Plurals
+                if (resultDietary.Description.contains("Calorie"))
+                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase() + "en"
+                else if (resultDietary.Description.contains("Eiwit"))
+                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase() + "ten"
+                else if (resultDietary.Description.contains("Vezel"))
+                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase() + "s"
+
+                // minimum/maximum
                 if (resultDietary.Description.contains("beperking"))
                 {
                     dietaryGuideline.minimum = resultDietary.Amount

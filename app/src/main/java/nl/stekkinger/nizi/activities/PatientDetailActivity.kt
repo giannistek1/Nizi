@@ -69,16 +69,17 @@ class PatientDetailActivity : AppCompatActivity() {
 
                     lateinit var dietaryGuideline: DietaryGuideline
 
+                    // fill in restriction and make dietaryGuideline
                     val restriction = resultDietary.Description.replace("beperking", "").replace("verrijking","")
                     dietaryGuideline = DietaryGuideline(
-                        resultDietary.Description, restriction,
+                        resultDietary.Description, restriction, restriction.toLowerCase(),
                         0, 0, 0, ""
                     )
 
                     var alreadyExists = false
 
                     // Check if dietaryGuideLines already has the food supplement type (e.g. calories)
-                    dietaryGuidelines.forEachIndexed loop@{ i, dietary ->
+                    dietaryGuidelines.forEachIndexed loop@{ _, dietary ->
                         if (dietary.description.contains(resultDietary.Description.take(3))) {
                             dietaryGuideline = dietary
                             alreadyExists = true
@@ -86,13 +87,21 @@ class PatientDetailActivity : AppCompatActivity() {
                         }
                     }
 
-                    // Fill in minimum/maximum
-                    if (resultDietary.Description.contains("beperking")) {
-                        dietaryGuideline.minimum = resultDietary.Amount
-                    } else if (resultDietary.Description.contains("verrijking")) {
-                        dietaryGuideline.maximum = resultDietary.Amount
-                    }
+                    // Plurals
+                    if (resultDietary.Description.contains("Calorie"))
+                        dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase() + "en"
+                    else if (resultDietary.Description.contains("Eiwit"))
+                        dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase() + "ten"
+                    else if (resultDietary.Description.contains("Vezel"))
+                        dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase() + "s"
 
+                    // Fill in minimum/maximum
+                    if (resultDietary.Description.contains("beperking"))
+                        dietaryGuideline.minimum = resultDietary.Amount
+                    else if (resultDietary.Description.contains("verrijking"))
+                        dietaryGuideline.maximum = resultDietary.Amount
+
+                    // fill in Weight unit & plural
                     if (resultDietary.Description.contains("Calorie"))
                         dietaryGuideline.weightUnit = getString(R.string.kcal)
                     else if (resultDietary.Description.contains("Natrium") || resultDietary.Description.contains("Kalium"))
