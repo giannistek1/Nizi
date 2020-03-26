@@ -7,9 +7,7 @@ import android.os.Bundle
 import android.view.View
 import kotlinx.android.synthetic.main.activity_patient_detail.*
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.DietaryGuideline
-import nl.stekkinger.nizi.classes.DietaryView
-import nl.stekkinger.nizi.classes.PatientItem
+import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelperClass
 import nl.stekkinger.nizi.repositories.DietaryRepository
 
@@ -21,7 +19,7 @@ class PatientDetailActivity : AppCompatActivity() {
     // for activity result
     private val REQUEST_CODE = 0
 
-    private lateinit var patient: PatientItem
+    private lateinit var model: UpdatePatientViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,15 +27,17 @@ class PatientDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_patient_detail)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        patient = intent.extras?.get("PATIENT") as PatientItem
+        model = UpdatePatientViewModel(intent.extras?.get("PATIENT") as PatientItem, arrayListOf())
 
-        activity_patient_detail_average_of_patient.text = "${getString(R.string.average_of)} ${patient.name}"
+        activity_patient_detail_average_of_patient.text = "${getString(R.string.average_of)} ${model.patient.name}"
+
 
         activity_patient_detail_btn_edit.setOnClickListener {
             val intent = Intent(this@PatientDetailActivity, EditPatientActivity::class.java)
             // Prevents multiple activities
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-            intent.putExtra("PATIENT", patient)
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+
+            intent.putExtra("PATIENT", model)
             intent.putExtra(EXTRA_DOCTOR_ID, intent.getIntExtra("DOCTOR_ID", 3))
             startActivityForResult(intent, REQUEST_CODE)
         }
@@ -56,7 +56,7 @@ class PatientDetailActivity : AppCompatActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): DietaryView? {
-            return dietaryRepository.getDietary(patient.patientId)
+            return dietaryRepository.getDietary(model.patient.patientId)
         }
 
         override fun onPostExecute(result: DietaryView?) {
@@ -80,7 +80,7 @@ class PatientDetailActivity : AppCompatActivity() {
 
                     // Check if dietaryGuideLines already has the food supplement type (e.g. calories)
                     dietaryGuidelines.forEachIndexed loop@{ _, dietary ->
-                        if (dietary.description.contains(resultDietary.Description.take(3))) {
+                        if (dietary.description.contains(resultDietary.Description.take(4))) {
                             dietaryGuideline = dietary
                             alreadyExists = true
                             return@loop
@@ -118,6 +118,9 @@ class PatientDetailActivity : AppCompatActivity() {
                         dietaryGuidelines[index - 1] = dietaryGuideline
                 }
 
+                // Save dietaries for editPage
+                model.diets = dietaryGuidelines
+
                 val helperClass = GuidelinesHelperClass()
                 helperClass.initializeGuidelines(
                     this@PatientDetailActivity,
@@ -130,5 +133,12 @@ class PatientDetailActivity : AppCompatActivity() {
             }
         }
     }
-    //endregion
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            // refresh activity
+            recreate()
+        }
+    }
 }

@@ -48,7 +48,8 @@ class AddFoodFragment: Fragment() {
         recyclerView.adapter = adapter
 
         if (searchView != null) {
-            searchView.setOnClickListener() {
+            // Fixes that only the icon is clickable
+            searchView.setOnClickListener {
                 searchView.isIconified = false
             }
             searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))

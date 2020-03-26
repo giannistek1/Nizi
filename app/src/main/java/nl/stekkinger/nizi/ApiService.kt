@@ -252,6 +252,7 @@ interface ApiService {
 
     @PUT("v1/dietaryManagement/{dietId}")
     fun updateDietary(
+        @Header("Authorization") authHeader : String,
         @Path("dietId") dietId: Int
     ) : Call<Unit>
 

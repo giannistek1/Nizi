@@ -1,5 +1,7 @@
 package nl.stekkinger.nizi.classes
 
+import java.io.Serializable
+
 data class DietaryGuideline(
     var description: String,
     var restriction: String, // unneeded?
@@ -8,4 +10,4 @@ data class DietaryGuideline(
     var maximum: Int,
     var amount: Int,
     var weightUnit: String
-)
+) : Serializable

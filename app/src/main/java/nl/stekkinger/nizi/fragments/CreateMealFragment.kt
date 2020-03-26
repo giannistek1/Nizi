@@ -49,6 +49,9 @@ class CreateMealFragment: Fragment() {
         mealProductRV.adapter = mealProductAdapter
 
         if (searchView != null) {
+            searchView.setOnClickListener {
+                searchView.isIconified = false
+            }
             searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
 
             queryTextListener = object : SearchView.OnQueryTextListener {

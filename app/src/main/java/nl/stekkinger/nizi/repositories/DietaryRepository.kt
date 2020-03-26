@@ -48,4 +48,7 @@ class DietaryRepository : Repository() {
     fun addDietary(dietaryManamgementModel: DietaryManagementModel) {
         service.addDietary(authHeader, dietaryManamgementModel).execute()
     }
+    fun updateDietary(dietaryManamgementModel: DietaryManagementModel) {
+        //service.updateDietary(authHeader, dietaryManamgementModel).execute()
+    }
 }

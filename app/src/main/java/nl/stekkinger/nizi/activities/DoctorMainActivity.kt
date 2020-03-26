@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_add_patient.*
 import kotlinx.android.synthetic.main.activity_doctor_main.*
 import nl.stekkinger.nizi.adapters.PatientAdapter
 import nl.stekkinger.nizi.adapters.PatientAdapterListener
