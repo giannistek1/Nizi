@@ -137,7 +137,7 @@ interface ApiService {
 
     //region Patient
     // Staat twee fouten in Swagger
-    @GET("v1/patients")
+    @GET("v1/patients") // werkt niet met doctor token
     fun getPatients(
         @Header("Authorization") authHeader : String
     ) : Call<List<Patient>>
@@ -258,6 +258,7 @@ interface ApiService {
 
     @DELETE("v1/dietaryManagement/{dietId}")
     fun deleteDietary(
+        @Header("Authorization") authHeader : String,
         @Path("dietId") dietId: Int
     ) : Call<Unit>
     //endregion

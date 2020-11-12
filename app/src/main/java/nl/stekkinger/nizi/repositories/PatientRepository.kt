@@ -57,7 +57,7 @@ class PatientRepository : Repository(){
 
     fun getPatientsFromDoctor(doctorId: Int) : List<Patient>?
     {
-        return service.getPatientsFromDoctor(authHeader, doctorId).execute().body()//.enqueue(loginAsPatientCallback)
+        return service.getPatientsFromDoctor(authHeader, doctorId).execute().body()
     }
 
     fun getPatientsFromDoctor2(doctorId: Int) : MutableLiveData<ArrayList<Patient>?> {
