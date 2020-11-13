@@ -50,7 +50,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
         progressBar = activity_add_patient_dietary_loader
 
         activity_add_patient_dietary_btn_save.setOnClickListener {
-            registerPatientAsyncTask().execute()
+            //registerPatientAsyncTask().execute()
         }
 
         // Fill in Patient
@@ -61,7 +61,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
     }
 
     //region RegisterPatient
-    inner class registerPatientAsyncTask() : AsyncTask<Void, Void, PatientRegisterResponse>()
+    /*inner class registerPatientAsyncTask() : AsyncTask<Void, Void, PatientRegisterResponse>()
     {
         override fun onPreExecute() {
             super.onPreExecute()
@@ -110,7 +110,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
                 addDietaryToPatientAsyncTask(element).execute()
             }
         }
-    }
+    }*/
     //endregion
 
     //region AddDietaryToPatient

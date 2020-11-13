@@ -1,10 +1,12 @@
 package nl.stekkinger.nizi
 
-import nl.stekkinger.nizi.classes.DoctorLogin
 import nl.stekkinger.nizi.classes.*
-import nl.stekkinger.nizi.classes.PatientLogin
+import nl.stekkinger.nizi.classes.old.PatientLogin
 import nl.stekkinger.nizi.classes.login.LoginRequest
 import nl.stekkinger.nizi.classes.login.LoginResponse
+import nl.stekkinger.nizi.classes.DietaryManagementModel
+import nl.stekkinger.nizi.classes.old.Conversation
+import nl.stekkinger.nizi.classes.patient.Patient
 import retrofit2.Call
 import retrofit2.http.*
 import java.text.SimpleDateFormat
@@ -16,6 +18,36 @@ interface ApiService {
     fun login(
         @Body body: LoginRequest
     ) : Call<LoginResponse>
+    //endregion
+
+    //region Patient
+    @GET("patients")
+    fun getPatients(
+        @Header("Authorization") authHeader : String,
+        @Query("doctor.id") doctorId: Int
+    ) : Call<List<Patient>>
+
+    @POST("v1/patient")
+    fun registerPatient(
+        @Header("Authorization") authHeader : String,
+        @Body body: PatientLogin
+    ) : Call<PatientRegisterResponse>
+
+    @PUT("v1/patient")
+    fun updatePatient(
+        @Header("Authorization") authHeader : String,
+        @Body body: PatientUpdateModel
+    ) : Call<Unit>
+
+    @GET("v1/patient/{patientId}")
+    fun getPatient(
+        @Path("patientId") patientId: Int
+    ) : Call<Unit>
+
+    @DELETE("v1/patient/{patientId}")
+    fun deletePatient(
+        @Path("patientId") patientId: Int
+    ) : Call<Unit>
     //endregion
 
     //region Consumption
@@ -129,35 +161,6 @@ interface ApiService {
 //    ) : Call<ArrayList<String>>
     //endregion
 
-    //region Patient
-    // Staat twee fouten in Swagger
-    @GET("v1/patients") // werkt niet met doctor token
-    fun getPatients(
-        @Header("Authorization") authHeader : String
-    ) : Call<List<Patient>>
-
-    @POST("v1/patient")
-    fun registerPatient(
-        @Header("Authorization") authHeader : String,
-        @Body body: PatientLogin
-    ) : Call<PatientRegisterResponse>
-
-    @PUT("v1/patient")
-    fun updatePatient(
-        @Header("Authorization") authHeader : String,
-        @Body body: PatientUpdateModel
-    ) : Call<Unit>
-
-    @GET("v1/patient/{patientId}")
-    fun getPatient(
-        @Path("patientId") patientId: Int
-    ) : Call<Unit>
-
-    @DELETE("v1/patient/{patientId}")
-    fun deletePatient(
-        @Path("patientId") patientId: Int
-    ) : Call<Unit>
-
     //region Meal
     // Staat fout in swagger
     @POST("v1/meal/{patientId}")
@@ -215,6 +218,7 @@ interface ApiService {
         @Header("Authorization") authHeader : String,
         @Path("doctorId") doctorId: Int
     ) : Call<ArrayList<Patient>>
+    //endregion
 
     //region DietaryManagement
     @POST("v1/dietaryManagement")

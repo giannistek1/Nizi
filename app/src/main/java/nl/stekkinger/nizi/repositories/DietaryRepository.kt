@@ -1,22 +1,10 @@
 package nl.stekkinger.nizi.repositories
 
 import android.content.Context
-import android.content.Intent
-import android.util.Log
-import android.util.Log.d
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat.startActivity
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import nl.stekkinger.nizi.ApiService
 import nl.stekkinger.nizi.NiziApplication
-import nl.stekkinger.nizi.activities.LoginActivity
 import nl.stekkinger.nizi.classes.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import nl.stekkinger.nizi.classes.DietaryManagementModel
+
 class DietaryRepository : Repository() {
 
     private val TAG = "DietaryRepository"

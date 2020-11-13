@@ -4,9 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import nl.stekkinger.nizi.repositories.FoodRepository
+import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.repositories.PatientRepository
-import java.text.SimpleDateFormat
 
 data class PatientListViewModel (
     private val mRepository: PatientRepository = PatientRepository(),

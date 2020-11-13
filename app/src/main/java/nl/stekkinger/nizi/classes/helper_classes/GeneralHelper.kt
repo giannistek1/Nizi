@@ -20,7 +20,7 @@ object GeneralHelper {
             true -> {val json: String = prefs.getString("USER", "")!!
                     gson.fromJson(json, User::class.java)}
             false -> User(
-                id = 0, username = "", email = "", provider = "",
+                id = 0, username = "", email = "", first_name = "",last_name = "", provider = "",
                 confirmed = false, blocked = false,
                 role = Role(0, "", "", ""),
                 created_at = "", updated_at = ""

@@ -16,6 +16,8 @@ import nl.stekkinger.nizi.adapters.PatientAdapter
 import nl.stekkinger.nizi.adapters.PatientAdapterListener
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.classes.old.DoctorLogin
+import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.user.User
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
@@ -53,7 +55,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         activity_doctor_main_btn_addPatient.setOnClickListener {
             val intent = Intent(this@DoctorMainActivity, AddPatientActivity::class.java)
             // Prevents multiple activities
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             intent.putExtra(EXTRA_DOCTOR_ID, model.doctor.doctorId)
             startActivityForResult(intent, REQUEST_CODE)
         }
@@ -146,13 +148,13 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 // Fill
                 (0..result.count()-1).forEach {
                     val pi = PatientItem(it+1,
-                        result[it].firstName + " " + result[it].lastName,
-                        result[it].firstName,
-                        result[it].lastName,
+                        result[it].user.first_name + " " + result[it].user.last_name,
+                        result[it].user.first_name,
+                        result[it].user.last_name,
                         result[it].dateOfBirth,
-                        result[it].weightInKilograms,
-                        result[it].patientId,
-                        result[it].doctorId)
+                        //result[it].weightInKilograms,
+                        result[it].id,
+                        result[it].doctor.doctorId)
                     patientList.add(pi)
                 }
 

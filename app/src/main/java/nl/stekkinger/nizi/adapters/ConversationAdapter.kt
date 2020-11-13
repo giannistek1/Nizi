@@ -1,23 +1,15 @@
 package nl.stekkinger.nizi.adapters
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.conversation_item.view.*
-import kotlinx.android.synthetic.main.meal_item.view.*
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.Conversation
-import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.Meal
+import nl.stekkinger.nizi.classes.old.Conversation
 
 class ConversationAdapter(
     private var mDataset: ArrayList<Conversation> = ArrayList()
@@ -34,7 +26,7 @@ class ConversationAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.conversation_item, parent, false)
         return ViewHolder(view)
-            .listen { pos, _ ->
+            .listen { _, _ ->
                 if (view.convo_comment.visibility == GONE ) {
                     view.convo_comment.visibility = VISIBLE
                 } else {

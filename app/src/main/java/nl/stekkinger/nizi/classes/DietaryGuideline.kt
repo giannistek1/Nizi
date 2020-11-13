@@ -2,10 +2,11 @@ package nl.stekkinger.nizi.classes
 
 import java.io.Serializable
 
+// Easy compact version
 data class DietaryGuideline(
-    var description: String,
-    var restriction: String, // unneeded?
-    var plural: String,
+    var description: String, // caloriebeperking
+    var restriction: String, // unneeded? calorie/eiwit etc
+    var plural: String, // calorieën
     var minimum: Int,
     var maximum: Int,
     var amount: Int,

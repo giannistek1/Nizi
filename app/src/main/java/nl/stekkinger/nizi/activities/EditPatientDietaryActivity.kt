@@ -10,6 +10,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.*
+import nl.stekkinger.nizi.classes.DietaryManagementModel
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 
@@ -48,7 +49,7 @@ class EditPatientDietaryActivity : AppCompatActivity() {
 
         model = intent.extras?.get("PATIENT") as UpdatePatientViewModel
 
-            model.diets.forEachIndexed { index, element ->
+            model.diets.forEachIndexed { _, element ->
                 if (element.description.contains("Calorie")) {
                     activity_add_patient_dietary_et_cal_min.setText(element.minimum.toString())
                     activity_add_patient_dietary_et_cal_max.setText(element.maximum.toString())
@@ -93,7 +94,7 @@ class EditPatientDietaryActivity : AppCompatActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): Void? {
-            patientRepository.updatePatient(model.patient.patientId, doctorId, model.patient.firstName, model.patient.lastName, model.patient.dateOfBirth, model.patient.weight)
+            patientRepository.updatePatient(model.patient.patientId, doctorId, model.patient.firstName, model.patient.lastName, model.patient.dateOfBirth)
             return null
         }
 
@@ -115,7 +116,7 @@ class EditPatientDietaryActivity : AppCompatActivity() {
             dietaryList = arrayListOf()
 
             // Add dietaries by looping through each editText View
-            restrictionsList.forEachIndexed { index, element ->
+            restrictionsList.forEachIndexed { index, _ ->
                 if (textViewList[index].text.toString() != "") {
                     dietaryList.add(
                         DietaryManagementModel(
@@ -131,13 +132,13 @@ class EditPatientDietaryActivity : AppCompatActivity() {
 
             // Add the dietaries that were added (filled in)
             if (model.diets.count() == 0) {
-                dietaryList.forEachIndexed { index, element ->
+                dietaryList.forEachIndexed { _, element ->
                     addDietaryToPatientAsyncTask(element).execute()
                 }
             }
             else
             {
-                dietaryList.forEachIndexed { index, element ->
+                dietaryList.forEachIndexed { _, element ->
                     updateDietaryAsyncTask(element).execute()
                 }
             }

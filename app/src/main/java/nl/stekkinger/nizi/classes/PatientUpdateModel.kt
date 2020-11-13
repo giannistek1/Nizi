@@ -5,6 +5,5 @@ data class PatientUpdateModel (
     val DoctorId: Int?,
     val FirstName: String,
     val LastName: String,
-    val DateOfBirth: String,
-    val WeightInKilograms: Float
+    val DateOfBirth: String
 )

@@ -4,10 +4,7 @@ import android.content.Context
 import android.util.Log.d
 
 import nl.stekkinger.nizi.NiziApplication
-import nl.stekkinger.nizi.classes.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import nl.stekkinger.nizi.classes.old.Conversation
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList

@@ -37,7 +37,7 @@ class EditPatientActivity : AppCompatActivity() {
         activity_add_patient_et_firstName.setText(model.patient.firstName)
         activity_add_patient_et_lastName.setText(model.patient.lastName)
         activity_add_patient_et_dob.setText(model.patient.dateOfBirth)
-        activity_add_patient_et_weight.setText(model.patient.weight.toString())
+        //activity_add_patient_et_weight.setText(model.patient.weight.toString())
         activity_add_patient_et_email.setText("***@***.**")
         activity_add_patient_et_password.setText("******")
         activity_add_patient_et_password_confirm.setText("******")
@@ -100,7 +100,7 @@ class EditPatientActivity : AppCompatActivity() {
             model.patient.firstName = activity_add_patient_et_firstName.text.toString().trim()
             model.patient.lastName = activity_add_patient_et_lastName.text.toString().trim()
             model.patient.dateOfBirth = activity_add_patient_et_dob.text.toString().trim()
-            model.patient.weight = activity_add_patient_et_weight.text.toString().toFloat()
+            //model.patient.weight = activity_add_patient_et_weight.text.toString().toFloat()
 
             // Give patient and doctor ID
             intent.putExtra("PATIENT", model)

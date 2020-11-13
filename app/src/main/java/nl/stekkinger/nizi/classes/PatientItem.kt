@@ -8,7 +8,7 @@ data class PatientItem(
     var firstName: String,
     var lastName: String,
     var dateOfBirth: String,
-    var weight: Float,
+    //var weight: Float,
     var patientId: Int,
     var doctorId: Int
 ): Serializable

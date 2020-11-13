@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi.classes
+package nl.stekkinger.nizi.classes.register
 
 data class PatientR (
     val PatientId: Int,
