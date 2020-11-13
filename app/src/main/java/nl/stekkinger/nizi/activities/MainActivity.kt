@@ -1,28 +1,20 @@
 package nl.stekkinger.nizi.activities
 
-import android.content.Context
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log.d
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-import nl.stekkinger.nizi.NiziApplication
-import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.fragments.HomeFragment
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.DietaryGuideline
-import nl.stekkinger.nizi.classes.DietaryView
-import nl.stekkinger.nizi.classes.PatientLogin
-import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelperClass
+import nl.stekkinger.nizi.classes.*
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.classes.user.User
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository
@@ -38,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var diaryModel: DiaryViewModel
     private var list: ArrayList<DietaryGuideline>? = null
     private var patientId: Int = 0
+    private lateinit var user: User
 
     private lateinit var progressBar: View
 
@@ -62,8 +55,8 @@ class MainActivity : AppCompatActivity() {
         }
         progressBar = activity_main_progressbar
 
-        // Login
-        loginPatientAsyncTask().execute()
+        // Get User
+        user = GeneralHelper.getUser()
 
         activity_main_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
     }
@@ -117,47 +110,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return true
-    }
-    //endregion
-
-    //region Patient Login
-    inner class loginPatientAsyncTask() : AsyncTask<Void, Void, PatientLogin>()
-    {
-        override fun onPreExecute() {
-            super.onPreExecute()
-            // Progressbar
-            progressBar.visibility = View.VISIBLE
-        }
-
-        override fun doInBackground(vararg p0: Void?): PatientLogin? {
-            return authRepository.loginAsPatient()
-        }
-
-        override fun onPostExecute(result: PatientLogin?) {
-            super.onPostExecute(result)
-
-            try {
-                patientId = result!!.patient.patientId
-
-                val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-                preferences.edit().putInt("patient", result!!.patient.patientId).apply()
-                d("con", preferences.getInt("patient", 0).toString())
-                d("login", result.patient.patientId.toString())
-
-                getDietaryAsyncTask().execute()
-                // Progressbar
-                progressBar.visibility = View.GONE
-                if (result != null) {
-                    Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(baseContext, R.string.login_fail, Toast.LENGTH_SHORT).show()
-                }
-            }
-            catch(e: Exception)
-            {
-                d(TAG, e.cause.toString())
-            }
-        }
     }
     //endregion
 

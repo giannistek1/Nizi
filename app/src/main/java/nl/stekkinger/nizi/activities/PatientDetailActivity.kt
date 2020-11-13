@@ -4,11 +4,10 @@ import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import kotlinx.android.synthetic.main.activity_patient_detail.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.*
-import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelperClass
+import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import nl.stekkinger.nizi.repositories.DietaryRepository
 
 class PatientDetailActivity : AppCompatActivity() {
@@ -121,8 +120,7 @@ class PatientDetailActivity : AppCompatActivity() {
                 // Save dietaries for editPage
                 model.diets = dietaryGuidelines
 
-                val helperClass = GuidelinesHelperClass()
-                helperClass.initializeGuidelines(
+                GuidelinesHelper.initializeGuidelines(
                     this@PatientDetailActivity,
                     activity_patient_detail_ll_guidelines,
                     dietaryGuidelines

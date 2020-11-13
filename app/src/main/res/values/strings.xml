@@ -28,6 +28,9 @@
     <string name="username">Gebruikersnaam</string>
     <string name="password">Wachtwoord</string>
     <string name="password_forgotten">Wachtwoord vergeten?</string>
+    <string name="username_cant_be_empty">Gebruikersnaam mag niet leeg zijn</string>
+    <string name="password_cant_be_empty">Wachtwoord mag niet leeg zijn</string>
+    <string name="credentials_wrong">Gebruikersnaam of wachtwoord klopt niet</string>
 
     <!-- contact -->
     <string name="help">Hulp nodig?</string>
@@ -161,6 +164,9 @@
     <string name="ready">Gereed</string>
     <string name="food_diary">Voedingsdagboek</string>
     <string name="header_background">Kop achtergrond</string>
+    <string name="ic_website">Website icoon</string>
+    <string name="ic_phone">Telefoon icoon</string>
+    <string name="ic_mail">Mail icoon</string>
     <string name="user">Gebruiker</string>
     <string name="arrow_right">Pijl rechts</string>
     <string name="next_week">Vorige week</string>

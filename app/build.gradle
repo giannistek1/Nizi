@@ -45,10 +45,10 @@ dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     // Picasso
     implementation 'com.squareup.picasso:picasso:2.71828'
-    // Auth0
-    implementation 'com.auth0.android:auth0:1.19.0'
     // layouts
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    // gson (for objects in sharedprefs)
+    implementation 'com.google.code.gson:gson:2.8.5'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'

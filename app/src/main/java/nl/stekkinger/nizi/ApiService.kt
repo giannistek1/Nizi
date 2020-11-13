@@ -1,27 +1,21 @@
 package nl.stekkinger.nizi
 
-import nl.stekkinger.nizi.classes.wont_use.AccessTokenResult
 import nl.stekkinger.nizi.classes.DoctorLogin
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.PatientLogin
+import nl.stekkinger.nizi.classes.login.LoginRequest
+import nl.stekkinger.nizi.classes.login.LoginResponse
 import retrofit2.Call
 import retrofit2.http.*
 import java.text.SimpleDateFormat
 
-// Swagger: https://appnizi-api.azurewebsites.net/api/swagger/ui#/
-
 interface ApiService {
 
-    //region TEST AccessToken
-    @POST("https://appnizi.eu.auth0.com/oauth/token")
-    fun getAccessToken(
-        @Header("content-type:application/json")
-        @Field("client_id") client_id: String,
-        @Field("client_secret") client_secret: String,
-        @Field("audience") audience: String,
-        @Field("grant_type") grant_type: String
-    ) : Call<AccessTokenResult>
-
+    //region Login
+    @POST("auth/local")
+    fun login(
+        @Body body: LoginRequest
+    ) : Call<LoginResponse>
     //endregion
 
     //region Consumption
@@ -164,14 +158,6 @@ interface ApiService {
         @Path("patientId") patientId: Int
     ) : Call<Unit>
 
-
-    // Get User As Patient from Access Token
-    @GET("v1/login/patient")
-    fun loginAsPatient(
-        @Header("Authorization") authHeader : String
-    ) : Call<PatientLogin>
-    //endregion
-
     //region Meal
     // Staat fout in swagger
     @POST("v1/meal/{patientId}")
@@ -229,13 +215,6 @@ interface ApiService {
         @Header("Authorization") authHeader : String,
         @Path("doctorId") doctorId: Int
     ) : Call<ArrayList<Patient>>
-
-    // Descriptie fout
-    @GET("v1/login/doctor")
-    fun loginAsDoctor(
-        @Header("Authorization") authHeader : String
-    ) : Call<DoctorLogin>
-    //endregion
 
     //region DietaryManagement
     @POST("v1/dietaryManagement")

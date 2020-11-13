@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.DietaryGuideline
-import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelperClass
+import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -116,8 +116,7 @@ class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: A
     fun refreshGuidelines()
     {
         if (dietaryGuidelines != null) {
-            val helperClass = GuidelinesHelperClass()
-            helperClass.initializeGuidelines(cont, fragment_home_ll_guidelines, dietaryGuidelines)
+            GuidelinesHelper.initializeGuidelines(cont, fragment_home_ll_guidelines, dietaryGuidelines)
         }
     }
 

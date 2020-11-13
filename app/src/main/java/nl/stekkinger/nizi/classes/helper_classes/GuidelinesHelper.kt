@@ -17,7 +17,7 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DietaryGuideline
 import kotlin.random.Random
 
-class GuidelinesHelperClass {
+object GuidelinesHelper {
 
     // This Class is for displaying the guidelines
     //lateinit var dietaryGuidelineList: ArrayList<DietaryGuideline>

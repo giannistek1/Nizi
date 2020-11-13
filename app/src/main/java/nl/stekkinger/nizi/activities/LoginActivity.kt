@@ -1,178 +1,151 @@
 package nl.stekkinger.nizi.activities
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
-import android.util.Log.d
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
-import com.auth0.android.Auth0
-import com.auth0.android.Auth0Exception
-import com.auth0.android.authentication.AuthenticationAPIClient
-import com.auth0.android.authentication.AuthenticationException
-import com.auth0.android.authentication.storage.CredentialsManagerException
-import com.auth0.android.authentication.storage.SecureCredentialsManager
-import com.auth0.android.authentication.storage.SharedPreferencesStorage
-import com.auth0.android.callback.BaseCallback
-import com.auth0.android.provider.AuthCallback
-import com.auth0.android.provider.VoidCallback
-import com.auth0.android.provider.WebAuthProvider
-import com.auth0.android.result.Credentials
+import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.DoctorLogin
-import nl.stekkinger.nizi.classes.PatientLogin
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.classes.helper_classes.InputHelper
+import nl.stekkinger.nizi.classes.login.LoginRequest
+import nl.stekkinger.nizi.classes.login.LoginResponse
+import nl.stekkinger.nizi.repositories.AuthRepository
+
 
 class LoginActivity : AppCompatActivity() {
 
     private var TAG = "Login"
 
-    //Shared preferences/extras
-    private val CODE_DEVICE_AUTHENTICATION = 22
-    val EXTRA_CLEAR_CREDENTIALS = "com.auth0.CLEAR_CREDENTIALS"
-    val PREF_ISDOCTOR = "IS_DOCTOR"
-
-    private var auth0: Auth0? = null
-    private var credentialsManager: SecureCredentialsManager? = null
+    //region Repositories
+    private val authRepository: AuthRepository = AuthRepository()
+    //endregion
 
     private var isDoctor = false
-    lateinit var prefs: SharedPreferences
+
+    private lateinit var progressBar: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        prefs = getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
-
-        //Setup the UI
+        // Setup the UI
         setContentView(R.layout.activity_login)
-        activity_login_btn_loginAsPatient.setOnClickListener {
-            isDoctor = false
-            prefs.edit().putBoolean(PREF_ISDOCTOR, isDoctor).commit()
-            doLogin()
-        }
-        activity_login_btn_loginAsDoctor.setOnClickListener {
-            isDoctor = true
-            prefs.edit().putBoolean(PREF_ISDOCTOR, isDoctor).commit()
-            doLogin()
-        }
+        progressBar = activity_login_loader
 
-        //Setup CredentialsManager
-        auth0 = Auth0(getString(R.string.auth0_client_id), getString(R.string.auth0_domain))
-        auth0?.let {
-            // needed for universal login
-            it.isOIDCConformant = true
+        activity_login_et_username.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
 
-            credentialsManager = SecureCredentialsManager(this,
-                AuthenticationAPIClient(it),
-                SharedPreferencesStorage(this)
-            )
-        }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-        //Check if the activity was launched to log the user out
-        if (intent.getBooleanExtra(EXTRA_CLEAR_CREDENTIALS, false)) {
-            doLogout()
-            return
-        }
-
-        // if already logged in
-        credentialsManager?.let {
-            if (it.hasValidCredentials()) {
-                // Obtain the existing credentials and move to the next activity
-                isDoctor = prefs.getBoolean(PREF_ISDOCTOR, false)
-                showNextActivity()
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                toggleLoginButtonIfNotEmpty(activity_login_et_username, activity_login_et_password,
+                    activity_login_btn_login)
             }
+        })
+
+        activity_login_et_password.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                toggleLoginButtonIfNotEmpty(activity_login_et_username, activity_login_et_password,
+                    activity_login_btn_login)
+            }
+        })
+
+        activity_login_btn_login.setOnClickListener {
+            // Give EditTexts so you can change them
+            doLogin(activity_login_et_username, activity_login_et_password)
         }
+
+        // if logged in, get isDoctor and go to next activity
+        if (GeneralHelper.prefs.contains(GeneralHelper.PREF_TOKEN)) {
+            isDoctor = GeneralHelper.prefs.getBoolean(GeneralHelper.PREF_IS_DOCTOR, false)
+            showNextActivity()
+        }
+
+        // Testing
+        activity_login_et_username.setText("BramWenting") // Patient
+        //activity_login_et_username.setText("HugoBrand") // Doctor
+        activity_login_et_password.setText("Welkom123")
 
     }
 
     private fun showNextActivity() {
-        credentialsManager?.let {
-            it.getCredentials(object :
-                BaseCallback<Credentials, CredentialsManagerException> {
-                override fun onSuccess(credentials: Credentials) {
-                    var intent: Intent
-
-                    if (isDoctor)
-                        intent = Intent(this@LoginActivity, DoctorMainActivity::class.java)
-                    else
-                        intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    // Save token in sharedPrefs
-                    val preferences = getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-                    preferences.edit().putString("TOKEN", credentials.accessToken).apply()
-                    startActivity(intent)
-                    finish()
-                }
-
-                override fun onFailure(error: CredentialsManagerException) {
-                    //Authentication cancelled by the user. Exit the app
-                    finish()
-                }
-            })
+        val intent: Intent = when(isDoctor) {
+            true -> Intent(this@LoginActivity, DoctorMainActivity::class.java)
+            false ->  Intent(this@LoginActivity, MainActivity::class.java)
         }
+
+        startActivity(intent)
+        finish()
     }
 
-    private fun doLogin() {
-        auth0?.let {
-            WebAuthProvider.login(it)
-                .withScheme(getString(R.string.auth0_scheme))
-                .withAudience(getString(R.string.auth0_audience))
-                .withScope("openid offline_access")
-                .start(this, loginCallback)
-        }
+    private fun toggleLoginButtonIfNotEmpty(usernameET: EditText, passwordET: EditText, loginButton: Button) {
+        loginButton.isEnabled = (usernameET.text.toString().length > 3 && passwordET.text.toString().length > 3)
     }
 
-    private fun doLogout() {
-        auth0?.let {
-            WebAuthProvider.logout(it)
-                .withScheme(getString(R.string.auth0_scheme))
-                .start(this, logoutCallback)
-        }
+    private fun doLogin(usernameET: EditText, passwordET: EditText) {
+        usernameET.setBackgroundColor(Color.TRANSPARENT)
+        passwordET.setBackgroundColor(Color.TRANSPARENT)
+
+        // Checks (Guards)
+        if (InputHelper.inputIsEmpty(this, usernameET, R.string.username_cant_be_empty)) return
+        if (InputHelper.inputIsEmpty(this, passwordET, R.string.password_cant_be_empty)) return
+
+        loginAsyncTask(LoginRequest(usernameET.text.toString(), passwordET.text.toString())).execute()
     }
 
-    private val loginCallback = object : AuthCallback {
-        override fun onFailure(dialog: Dialog) {
-            runOnUiThread { dialog.show() }
+    //region Login
+    inner class loginAsyncTask(private val loginRequest: LoginRequest) : AsyncTask<Void, Void, LoginResponse>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+            // Loader
+            progressBar.visibility = View.VISIBLE
         }
 
-        override fun onFailure(exception: AuthenticationException?) {
-            runOnUiThread {
-                Toast.makeText(
-                    this@LoginActivity,
-                    "Log In - Error Occurred",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+        override fun doInBackground(vararg p0: Void?): LoginResponse? {
+            return authRepository.login(loginRequest)
         }
 
-        override fun onSuccess(credentials: Credentials) {
-            d("cr", credentials.accessToken)
+        // Result must be nullable
+        override fun onPostExecute(result: LoginResponse?) {
+            super.onPostExecute(result)
+            // Loader
+            progressBar.visibility = View.GONE
 
-            credentialsManager?.let {
-                it.saveCredentials(credentials)
-                showNextActivity()
+            // Guard
+            if (result == null) { Toast.makeText(baseContext, R.string.credentials_wrong, Toast.LENGTH_SHORT).show(); return }
 
-                Log.d(TAG, "Succesfully logged in!")
-            }
-        }
-    }
+            // Result either gives the (token and user) OR null
+            Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
 
-    private val logoutCallback = object : VoidCallback {
-        override fun onSuccess(payload: Void?) {
-            credentialsManager?.let {
-                it.clearCredentials()
-                prefs.edit().remove("TOKEN").apply()
-                prefs.edit().remove(PREF_ISDOCTOR).apply()
-                Log.d(TAG, "Succesfully logged out!")
-            }
-        }
+            // Save token
+            GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_TOKEN, result.jwt).apply()
 
-        override fun onFailure(error: Auth0Exception?) {
-            //Log out canceled, keep the user logged in
+            // Save isDoctor
+            isDoctor = (result.user!!.role.name == "Doctor")
+            GeneralHelper.prefs.edit().putBoolean(GeneralHelper.PREF_IS_DOCTOR, isDoctor).apply()
+
+            // Save user
+            val gson = Gson()
+            val json = gson.toJson(result.user)
+            GeneralHelper.prefs.edit().putString("USER", json).apply()
+
             showNextActivity()
         }
-
     }
+    //endregion
 }

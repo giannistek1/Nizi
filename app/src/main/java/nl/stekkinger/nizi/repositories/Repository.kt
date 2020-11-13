@@ -10,7 +10,7 @@ open class Repository
 
     private fun getApiService(): ApiService {
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://appniziapi.azurewebsites.net/api/")
+            .baseUrl("http://104.45.16.76:1337/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

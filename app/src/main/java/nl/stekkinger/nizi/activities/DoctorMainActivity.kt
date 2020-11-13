@@ -2,37 +2,40 @@ package nl.stekkinger.nizi.activities
 
 import android.content.Intent
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.Toast
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_add_patient.*
 import kotlinx.android.synthetic.main.activity_doctor_main.*
+import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.PatientAdapter
 import nl.stekkinger.nizi.adapters.PatientAdapterListener
-import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.*
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.classes.user.User
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
+
 
 class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
 
     private var TAG = "DoctorMain"
 
     val EXTRA_DOCTOR_ID = "DOCTOR_ID"
+
     // for activity result
     private val REQUEST_CODE = 0
 
+    //region Repositories
     private val authRepository: AuthRepository = AuthRepository()
     private val patientRepository: PatientRepository = PatientRepository()
+    //endregion
+
+    private lateinit var user: User
 
     private lateinit var model: DoctorLogin
     private lateinit var patientListViewModel: PatientListViewModel
@@ -48,18 +51,18 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         progressBar = activity_doctor_main_loader
 
         activity_doctor_main_btn_addPatient.setOnClickListener {
-            val intent: Intent = Intent(this@DoctorMainActivity, AddPatientActivity::class.java)
+            val intent = Intent(this@DoctorMainActivity, AddPatientActivity::class.java)
             // Prevents multiple activities
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
             intent.putExtra(EXTRA_DOCTOR_ID, model.doctor.doctorId)
             startActivityForResult(intent, REQUEST_CODE)
         }
 
+        // Get User
+        user = GeneralHelper.getUser()
+
         // Get viewmodel
         //patientListViewModel = ViewModelProviders.of(this).get(PatientListViewModel::class.java)
-
-        // Login as doctor for doctor data
-        loginDoctorAsyncTask().execute()
 
         /*patientListViewModel.setDoctorId(doctorId)
         patientListViewModel.loadPatients().observe(this, Observer { patientList ->
@@ -117,40 +120,6 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         // Create Linear Layout Manager
         activity_doctor_main_rv.layoutManager = LinearLayoutManager(this)
     }
-
-    //region Doctor Login
-    inner class loginDoctorAsyncTask() : AsyncTask<Void, Void, DoctorLogin>()
-    {
-        override fun onPreExecute() {
-            super.onPreExecute()
-            // Loader
-            progressBar.visibility = View.VISIBLE
-        }
-
-        override fun doInBackground(vararg p0: Void?): DoctorLogin? {
-            return authRepository.loginAsDoctor()
-        }
-
-        override fun onPostExecute(result: DoctorLogin) {
-            super.onPostExecute(result)
-            // Loader
-            //progressBar.visibility = View.GONE
-            if (result != null) {
-                Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
-                // Save doctor model
-                model = result
-
-                // update doctorId
-                doctorId = model.doctor.doctorId
-                // Start get patients from doc
-                getPatientsFromDoctorAsyncTask().execute()
-
-            } else {
-                Toast.makeText(baseContext, R.string.login_fail, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-    //endregion
 
     inner class getPatientsFromDoctorAsyncTask() : AsyncTask<Void, Void, List<Patient>>()
     {

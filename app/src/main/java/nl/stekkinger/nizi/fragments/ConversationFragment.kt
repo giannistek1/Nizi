@@ -10,14 +10,9 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_conversation.view.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_meals.view.*
-import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelperClass
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConversationAdapter
 import nl.stekkinger.nizi.classes.Conversation
-import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.Meal
 import nl.stekkinger.nizi.repositories.ConversationRepository
 
 class ConversationFragment: Fragment() {
