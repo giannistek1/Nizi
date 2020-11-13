@@ -1,8 +1,7 @@
-package nl.stekkinger.nizi.classes
+package nl.stekkinger.nizi.classes.old
 
 import androidx.lifecycle.ViewModel
-import nl.stekkinger.nizi.classes.old.Account
-import nl.stekkinger.nizi.classes.old.AuthLogin
+import nl.stekkinger.nizi.classes.Doctor
 import nl.stekkinger.nizi.classes.patient.Patient
 
 // PatientLogin has authLogin, DoctorLogin has auth = inconsistency

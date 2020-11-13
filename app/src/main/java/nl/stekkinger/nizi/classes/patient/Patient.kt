@@ -1,5 +1,10 @@
-package nl.stekkinger.nizi.classes
+package nl.stekkinger.nizi.classes.patient
 
+import nl.stekkinger.nizi.classes.Consumption
+import nl.stekkinger.nizi.classes.Doctor
+import nl.stekkinger.nizi.classes.Feedback
+import nl.stekkinger.nizi.classes.MyFood
+import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.user.User
 
 data class Patient (

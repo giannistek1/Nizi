@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi.classes
+package nl.stekkinger.nizi.classes.dietary
 
 import java.io.Serializable
 
@@ -6,7 +6,7 @@ data class DietaryManagement(
     var description: String,
     var amount: Int,
     var is_active: Boolean,
-    var weightUnit: String, // ontbreekt
+    var patient: Int,
 
     // Unimportant stuff
     val created_at: String,

@@ -1,6 +1,6 @@
-package nl.stekkinger.nizi.classes
+package nl.stekkinger.nizi.classes.old
 
-import java.text.SimpleDateFormat
+import nl.stekkinger.nizi.classes.Consumptions
 
 data class Conversation (
     val WeightUnit: Consumptions.WeightUnit,

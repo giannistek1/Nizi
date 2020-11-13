@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi.classes.register
+package nl.stekkinger.nizi.classes.old
 
 // Misspelling here..
 data class TokenR (
