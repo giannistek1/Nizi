@@ -2,21 +2,11 @@ package nl.stekkinger.nizi.repositories
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
-import android.util.Log.d
-import androidx.lifecycle.MutableLiveData
 import nl.stekkinger.nizi.NiziApplication
-import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
-import nl.stekkinger.nizi.classes.old.Account
-import nl.stekkinger.nizi.classes.old.AuthLogin
-import nl.stekkinger.nizi.classes.old.PatientLogin
-import nl.stekkinger.nizi.classes.old.Token
 import nl.stekkinger.nizi.classes.patient.Patient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import kotlin.random.Random
+import nl.stekkinger.nizi.classes.patient.PatientLogin
+import nl.stekkinger.nizi.classes.PatientUpdateModel
 
 // 1e API TEST = Patiënt
 // 3e API TEST = Dcotor
@@ -30,41 +20,24 @@ class PatientRepository : Repository(){
     var accessToken = preferences.getString(GeneralHelper.PREF_TOKEN, null)
     var authHeader = "Bearer " + accessToken
 
-    /*fun registerPatient(firstName: String, lastName: String, dateOfBirth: String, weight: Float, doctorId: Int) : PatientRegisterResponse?
+    fun registerPatient(patient: PatientLogin) : Patient?
     {
-        val randomGuid = Random.nextInt(1000000).toString()
-
-        val account = Account(0, "Patient")
-        val patient = Patient(
-            0,
-            0,
-            doctorId = doctorId,
-            firstName = firstName,
-            lastName = lastName,
-            dateOfBirth = dateOfBirth,
-        )
-        val doctor = Doctor(doctorId, "Dr", "Pepper", "Maastricht")
-        val authLogin = AuthLogin(
-            randomGuid,
-            Token("string", "string")
-        )
-
-        val newPatientLogin = PatientLogin(
-            account,
-            patient,
-            doctor,
-            authLogin
-        )
-
         // DoB = "YYYY-MM-DDT10:55:38:00"
-        return service.registerPatient(authHeader, newPatientLogin).execute().body()
-    }*/
+        return service.registerPatient(authHeader, patient).execute().body()
+    }
 
     fun updatePatient(patientId: Int?, doctorId: Int?, firstName: String, lastName: String, dateOfBirth: String)
     {
         //val randomGuid = Random.nextInt(1000000).toString()
 
-        val patientToUpdate = PatientUpdateModel(patientId, doctorId, firstName, lastName, dateOfBirth)
+        val patientToUpdate =
+            PatientUpdateModel(
+                patientId,
+                doctorId,
+                firstName,
+                lastName,
+                dateOfBirth
+            )
 
         // DoB = "YYYY-MM-DDT10:55:38:00"
         service.updatePatient(authHeader, patientToUpdate).execute()
@@ -72,7 +45,7 @@ class PatientRepository : Repository(){
 
     fun getPatientsForDoctor(doctorId: Int) : ArrayList<Patient>?
     {
-        return service.getPatientsFromDoctor(authHeader, doctorId).execute().body()
+        return service.getPatientsForDoctor(authHeader, doctorId).execute().body()
     }
 
     /*fun getPatientsFromDoctor2(doctorId: Int) : MutableLiveData<ArrayList<Patient>?> {

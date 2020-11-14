@@ -1,7 +1,6 @@
-package nl.stekkinger.nizi.classes.user
+package nl.stekkinger.nizi.classes.login
 
-import nl.stekkinger.nizi.classes.Doctor
-import nl.stekkinger.nizi.classes.patient.Patient
+import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.patient.PatientLogin
 import java.io.Serializable
 
@@ -16,9 +15,9 @@ data class UserLogin(
     val doctor: Doctor?,
 
     // Unimportant stuff
-    val created_at: String,
-    val updated_at: String,
-    val provider: String,
-    val confirmed: Boolean,
-    val blocked: Boolean
+    val created_at: String?,
+    val updated_at: String?,
+    val provider: String?,
+    val confirmed: Boolean?,
+    val blocked: Boolean?
 ) : Serializable

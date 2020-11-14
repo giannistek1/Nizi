@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi.classes
+package nl.stekkinger.nizi.classes.patient
 
 import java.io.Serializable
 

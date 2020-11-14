@@ -1,5 +1,6 @@
-package nl.stekkinger.nizi.classes
+package nl.stekkinger.nizi.classes.patient
 
+import nl.stekkinger.nizi.classes.DietaryGuideline
 import java.io.Serializable
 
 data class UpdatePatientViewModel (

@@ -8,6 +8,8 @@ import kotlinx.android.synthetic.main.activity_patient_detail.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
+import nl.stekkinger.nizi.classes.patient.PatientItem
+import nl.stekkinger.nizi.classes.patient.UpdatePatientViewModel
 import nl.stekkinger.nizi.repositories.DietaryRepository
 
 class PatientDetailActivity : AppCompatActivity() {
@@ -26,7 +28,9 @@ class PatientDetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_patient_detail)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        model = UpdatePatientViewModel(intent.extras?.get("PATIENT") as PatientItem, arrayListOf())
+        model = UpdatePatientViewModel(
+            intent.extras?.get("PATIENT") as PatientItem, arrayListOf()
+        )
 
         activity_patient_detail_average_of_patient.text = "${getString(R.string.average_of)} ${model.patient.name}"
 

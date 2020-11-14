@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi.classes.user
+package nl.stekkinger.nizi.classes.login
 
 data class Role(
     val id: Int,

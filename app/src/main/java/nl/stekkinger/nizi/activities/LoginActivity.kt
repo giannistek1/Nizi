@@ -128,7 +128,7 @@ class LoginActivity : AppCompatActivity() {
             // Guard result either gives the (token, user, patient/doctor) OR null
             if (result == null) { Toast.makeText(baseContext, R.string.credentials_wrong, Toast.LENGTH_SHORT).show(); return }
 
-            //
+            // Feedback
             Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
 
             // Save token
@@ -147,7 +147,7 @@ class LoginActivity : AppCompatActivity() {
             // Save user
             val gson = Gson()
             val json = gson.toJson(result.user)
-            GeneralHelper.prefs.edit().putString("USER", json).apply()
+            GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_USER, json).apply()
 
             showNextActivity()
         }

@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient.*
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.*
+import nl.stekkinger.nizi.classes.patient.UpdatePatientViewModel
 
 class EditPatientActivity : AppCompatActivity() {
 
@@ -56,11 +56,6 @@ class EditPatientActivity : AppCompatActivity() {
 
             else if (activity_add_patient_et_dob.text.toString() == "") {
                 Toast.makeText(baseContext, R.string.empty_date_of_birth, Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            else if (activity_add_patient_et_weight.text.toString() == "") {
-                Toast.makeText(baseContext, R.string.empty_weight, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 

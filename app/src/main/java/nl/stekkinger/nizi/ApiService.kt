@@ -1,28 +1,37 @@
 package nl.stekkinger.nizi
 
 import nl.stekkinger.nizi.classes.*
-import nl.stekkinger.nizi.classes.old.PatientLogin
 import nl.stekkinger.nizi.classes.login.LoginRequest
 import nl.stekkinger.nizi.classes.login.LoginResponse
-import nl.stekkinger.nizi.classes.DietaryManagementModel
+import nl.stekkinger.nizi.classes.dietary.DietaryManagement
+import nl.stekkinger.nizi.classes.dietary.DietaryRestriction
 import nl.stekkinger.nizi.classes.old.Conversation
-import nl.stekkinger.nizi.classes.patient.Patient
+import nl.stekkinger.nizi.classes.patient.*
+import nl.stekkinger.nizi.classes.login.User
+import nl.stekkinger.nizi.classes.login.UserLogin
+import nl.stekkinger.nizi.classes.PatientUpdateModel
 import retrofit2.Call
 import retrofit2.http.*
 import java.text.SimpleDateFormat
 
 interface ApiService {
 
-    //region Login
+    //region auth/users
     @POST("auth/local")
     fun login(
         @Body body: LoginRequest
     ) : Call<LoginResponse>
+
+    @POST("users")
+    fun registerUser(
+        @Header("Authorization") authHeader : String,
+        @Body body: User
+    ) : Call<UserLogin>
     //endregion
 
-    //region Patient
+    //region patients
     @GET("patients")
-    fun getPatientsFromDoctor(
+    fun getPatientsForDoctor(
         @Header("Authorization") authHeader : String,
         @Query("doctor.id") doctorId: Int
     ) : Call<ArrayList<Patient>>
@@ -31,7 +40,7 @@ interface ApiService {
     fun registerPatient(
         @Header("Authorization") authHeader : String,
         @Body body: PatientLogin
-    ) : Call<PatientRegisterResponse>
+    ) : Call<Patient>
 
     @PUT("v1/patient")
     fun updatePatient(
@@ -50,7 +59,7 @@ interface ApiService {
     ) : Call<Unit>
     //endregion
 
-    //region Consumption
+    //region consumptions
     @POST("v1/consumptions")
     fun addConsumption(
         @Header("Authorization") authHeader : String,
@@ -82,7 +91,7 @@ interface ApiService {
     ) : Call<Unit>
     //endregion
 
-    //region Food
+    //region foods
     @POST("v1/food/favorite")
     fun addFavoriteFood(
         @Header("Authorization") authHeader : String,
@@ -117,33 +126,7 @@ interface ApiService {
     ) : Call<Unit>
     //endregion
 
-    //region WaterConsumption
-    @POST("v1/waterconsumption")
-    fun addWaterConsumption(
-
-    ) : Call<Unit>
-
-    @GET("v1/waterconsumption/{waterId}")
-    fun getWaterConsumption(
-        @Path("waterId") waterId: Int
-    ) : Call<Unit>
-
-    @PUT("v1/waterconsumption/{waterId}")
-    fun updateWaterConsumption(
-        @Path("waterId") waterId: Int
-    ) : Call<Unit>
-
-    @DELETE("v1/waterconsumption/{waterId}")
-    fun deleteWaterConsumption(
-        @Path("waterId") waterId: Int
-    ) : Call<Unit>
-
-    @GET("v1/waterconsumption/daily/{patientId}")
-    fun getWaterConsumptionByDate(
-        @Path("patientId") patientId: Int,
-        @Query("date") date: SimpleDateFormat
-    ) : Call<Unit>
-
+    //region feedbacks
     @GET("v1/waterconsumption/period/{patientId}")
     fun fetchConversations(
         @Header("Authorization") authHeader : String,
@@ -161,8 +144,7 @@ interface ApiService {
 //    ) : Call<ArrayList<String>>
     //endregion
 
-    //region Meal
-    // Staat fout in swagger
+    //region meals
     @POST("v1/meal/{patientId}")
     fun createMeal(
         @Header("Authorization") authHeader : String,
@@ -191,8 +173,41 @@ interface ApiService {
 
     //endregion
 
-    //region Doctor
-    // /v1/doctor? niet /v1/doctors?
+    //region dietary-restrictions
+    @GET("dietary-restrictions")
+    fun getDietaryRestrictions(
+        @Header("Authorization") authHeader : String
+    ) : Call<ArrayList<DietaryRestriction>>
+    //endregion
+
+    //region dietary-managements
+    @POST("dietary-managements")
+    fun addDietary(
+        @Header("Authorization") authHeader : String,
+        @Body body: DietaryManagement
+    ) : Call<DietaryManagement>
+
+    @GET("v1/dietaryManagement/{patientId}")
+    fun getDietary(
+        @Header("Authorization") authHeader : String,
+        @Path("patientId") patientId: Int
+    ) : Call<DietaryView>
+
+    @PUT("dietaryManagements")
+    fun updateDietary(
+        @Header("Authorization") authHeader : String,
+        @Query("id") id: Int
+    ) : Call<DietaryManagement>
+
+    @DELETE("v1/dietaryManagement/{dietId}")
+    fun deleteDietary(
+        @Header("Authorization") authHeader : String,
+        @Path("dietId") dietId: Int
+    ) : Call<Unit>
+    //endregion
+
+    // Never used
+    //region doctors
     @GET("v1/doctor")
     fun getDoctors(
 
@@ -211,32 +226,6 @@ interface ApiService {
     @DELETE("v1/doctor/{doctorId}")
     fun deleteDoctor(
         @Path("doctorId") doctorId: Int
-    ) : Call<Unit>
-    //endregion
-
-    //region DietaryManagement
-    @POST("v1/dietaryManagement")
-    fun addDietary(
-        @Header("Authorization") authHeader : String,
-        @Body body: DietaryManagementModel
-    ) : Call<Unit>
-
-    @GET("v1/dietaryManagement/{patientId}")
-    fun getDietary(
-        @Header("Authorization") authHeader : String,
-        @Path("patientId") patientId: Int
-    ) : Call<DietaryView>
-
-    @PUT("v1/dietaryManagement/{dietId}")
-    fun updateDietary(
-        @Header("Authorization") authHeader : String,
-        @Path("dietId") dietId: Int
-    ) : Call<Unit>
-
-    @DELETE("v1/dietaryManagement/{dietId}")
-    fun deleteDietary(
-        @Header("Authorization") authHeader : String,
-        @Path("dietId") dietId: Int
     ) : Call<Unit>
     //endregion
 }

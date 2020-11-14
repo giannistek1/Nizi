@@ -110,6 +110,8 @@
     <string name="step_2">Stap 2</string>
     <string name="personal_info">Persoonlijke informatie</string>
     <string name="first_name_req">Voornaam*</string>
+    <string name="name_req">Naam*</string>
+    <string name="patient_name">Patientnaam</string>
     <string name="first_name">Voornaam</string>
     <string name="last_name_req">Achternaam*</string>
     <string name="last_name">Achternaam</string>
@@ -125,7 +127,7 @@
     <string name="email">E-Mail</string>
     <string name="password_req">Wachtwoord*</string>
     <string name="password_confirm_req">Wachtwoord bevestigen*</string>
-    <string name="password_confirm">Wachtwoord bevestigen*</string>
+    <string name="password_confirm">Wachtwoord bevestigen</string>
     <string name="kilogram_short">Kg</string>
     <string name="to_guidelines">Naar richtlijnen</string>
     <string name="calories_in_kcal">Calorieën in kcal</string>
@@ -137,8 +139,11 @@
     <string name="save">Opslaan</string>
     <string name="save_patient">Patiënt opslaan</string>
     <string name="patient_added">Patiënt toegevoegd</string>
+    <string name="patient_add_failed">Patiënt toevoegen mislukt</string>
     <string name="patient_edited">Patiënt bewerkt</string>
     <string name="patient_deleted">Patiënt verwijderd</string>
+    <string name="fetched_dietary_restrictions">Richtlijnnamen opgehaald</string>
+    <string name="fetch_dietary_restrictions_fail">Richtlijnnamen ophalen mislukt</string>
     <string name="dietary_added">Richtlijn toegevoegd</string>
     <string name="dietary_changed">Richtlijn veranderd</string>
 
@@ -167,6 +172,8 @@
     <string name="ic_website">Website icoon</string>
     <string name="ic_phone">Telefoon icoon</string>
     <string name="ic_mail">Mail icoon</string>
+    <string name="ic_user">Gebruiker icoon</string>
+    <string name="ic_culinary">Etensgerei icoon</string>
     <string name="user">Gebruiker</string>
     <string name="arrow_right">Pijl rechts</string>
     <string name="next_week">Vorige week</string>

@@ -14,11 +14,10 @@ import kotlinx.android.synthetic.main.activity_doctor_main.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.PatientAdapter
 import nl.stekkinger.nizi.adapters.PatientAdapterListener
-import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.patient.Patient
-import nl.stekkinger.nizi.classes.user.User
-import nl.stekkinger.nizi.classes.user.UserLogin
+import nl.stekkinger.nizi.classes.patient.PatientItem
+import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 
@@ -152,14 +151,16 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
                 // Fill
                 (0 until result.count()).forEach {
-                    val pi = PatientItem(it+1,
+                    val pi = PatientItem(
+                        it + 1,
                         result[it].user.first_name + " " + result[it].user.last_name,
                         result[it].user.first_name,
                         result[it].user.last_name,
                         result[it].date_of_birth,
                         //result[it].weightInKilograms,
-                        result[it].id,
-                        result[it].doctor.id)
+                        result[it].id!!,
+                        result[it].doctor.id
+                    )
                     patientList.add(pi)
                 }
 

@@ -2,18 +2,13 @@ package nl.stekkinger.nizi.repositories
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log.d
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.activities.LoginActivity
-import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.LoginRequest
 import nl.stekkinger.nizi.classes.login.LoginResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import nl.stekkinger.nizi.classes.login.User
 
 class AuthRepository : Repository() {
 
@@ -23,6 +18,9 @@ class AuthRepository : Repository() {
     private val accessToken = prefs.getString("TOKEN", null)
     private val authHeader = "Bearer " + accessToken
 
+    fun registerUser(registerUser: User) {
+        service.registerUser(authHeader, registerUser).execute().body()
+    }
 
     // Code 400 gives body = null back
     fun login(loginRequest: LoginRequest) : LoginResponse? {
