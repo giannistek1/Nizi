@@ -1,11 +1,13 @@
 package nl.stekkinger.nizi.repositories
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.util.Log.d
 import androidx.lifecycle.MutableLiveData
 import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.classes.*
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.old.Account
 import nl.stekkinger.nizi.classes.old.AuthLogin
 import nl.stekkinger.nizi.classes.old.PatientLogin
@@ -24,8 +26,8 @@ class PatientRepository : Repository(){
 
     private val TAG = "PatientRepository"
 
-    var preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-    var accessToken = preferences.getString("TOKEN", null)
+    var preferences: SharedPreferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
+    var accessToken = preferences.getString(GeneralHelper.PREF_TOKEN, null)
     var authHeader = "Bearer " + accessToken
 
     /*fun registerPatient(firstName: String, lastName: String, dateOfBirth: String, weight: Float, doctorId: Int) : PatientRegisterResponse?
@@ -60,7 +62,7 @@ class PatientRepository : Repository(){
 
     fun updatePatient(patientId: Int?, doctorId: Int?, firstName: String, lastName: String, dateOfBirth: String)
     {
-        val randomGuid = Random.nextInt(1000000).toString()
+        //val randomGuid = Random.nextInt(1000000).toString()
 
         val patientToUpdate = PatientUpdateModel(patientId, doctorId, firstName, lastName, dateOfBirth)
 
@@ -68,13 +70,13 @@ class PatientRepository : Repository(){
         service.updatePatient(authHeader, patientToUpdate).execute()
     }
 
-    fun getPatientsFromDoctor(doctorId: Int) : List<Patient>?
+    fun getPatientsForDoctor(doctorId: Int) : ArrayList<Patient>?
     {
         return service.getPatientsFromDoctor(authHeader, doctorId).execute().body()
     }
 
-    fun getPatientsFromDoctor2(doctorId: Int) : MutableLiveData<ArrayList<Patient>?> {
-        var patientList: ArrayList<Patient> = arrayListOf()
+    /*fun getPatientsFromDoctor2(doctorId: Int) : MutableLiveData<ArrayList<Patient>?> {
+        val patientList: ArrayList<Patient> = arrayListOf()
         val result = MutableLiveData<ArrayList<Patient>?>()
 
         service.getPatientsFromDoctor(authHeader = authHeader, doctorId = doctorId).enqueue(object: Callback<ArrayList<Patient>> {
@@ -94,5 +96,5 @@ class PatientRepository : Repository(){
             }
         })
         return result
-    }
+    }*/
 }

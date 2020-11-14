@@ -19,22 +19,22 @@
         android:networkSecurityConfig="@xml/network_security_config">
 
         <activity
-            android:name=".activities.AddPatientDietaryActivity"
-            android:parentActivityName=".activities.AddPatientActivity" />
+            android:name=".activities.doctor.AddPatientDietaryActivity"
+            android:parentActivityName=".activities.doctor.AddPatientActivity" />
         <activity
-            android:name=".activities.AddPatientActivity"
-            android:parentActivityName=".activities.DoctorMainActivity" />
+            android:name=".activities.doctor.AddPatientActivity"
+            android:parentActivityName=".activities.doctor.DoctorMainActivity" />
         <activity
-            android:name=".activities.PatientDetailActivity"
-            android:parentActivityName=".activities.DoctorMainActivity" />
+            android:name=".activities.doctor.PatientDetailActivity"
+            android:parentActivityName=".activities.doctor.DoctorMainActivity" />
         <activity
-            android:name=".activities.EditPatientActivity"
-            android:parentActivityName=".activities.PatientDetailActivity" />
+            android:name=".activities.doctor.EditPatientActivity"
+            android:parentActivityName=".activities.doctor.PatientDetailActivity" />
         <activity
-            android:name=".activities.EditPatientDietaryActivity"
-            android:parentActivityName=".activities.EditPatientActivity" />
+            android:name=".activities.doctor.EditPatientDietaryActivity"
+            android:parentActivityName=".activities.doctor.EditPatientActivity" />
         <activity android:name=".activities.MainActivity" />
-        <activity android:name=".activities.DoctorMainActivity" />
+        <activity android:name=".activities.doctor.DoctorMainActivity" />
         <activity
             android:name=".activities.LoginActivity"
             android:launchMode="singleTask">

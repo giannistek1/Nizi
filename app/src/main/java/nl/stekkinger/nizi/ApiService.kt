@@ -22,10 +22,10 @@ interface ApiService {
 
     //region Patient
     @GET("patients")
-    fun getPatients(
+    fun getPatientsFromDoctor(
         @Header("Authorization") authHeader : String,
         @Query("doctor.id") doctorId: Int
-    ) : Call<List<Patient>>
+    ) : Call<ArrayList<Patient>>
 
     @POST("v1/patient")
     fun registerPatient(
@@ -212,12 +212,6 @@ interface ApiService {
     fun deleteDoctor(
         @Path("doctorId") doctorId: Int
     ) : Call<Unit>
-
-    @GET("v1/doctor/{doctorId}/patients")
-    fun getPatientsFromDoctor(
-        @Header("Authorization") authHeader : String,
-        @Path("doctorId") doctorId: Int
-    ) : Call<ArrayList<Patient>>
     //endregion
 
     //region DietaryManagement

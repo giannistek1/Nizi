@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.repositories.PatientRepository
 
-data class PatientListViewModel (
+/*data class PatientListViewModel (
     private val mRepository: PatientRepository = PatientRepository(),
     private var doctorId: MutableLiveData<Int> = MutableLiveData()
 ) : ViewModel() {
@@ -16,9 +16,9 @@ data class PatientListViewModel (
             doctorId
         ) { id ->  getPatients(id) }
 
-        private fun getPatients(did: Int): MutableLiveData<ArrayList<Patient>?> {
+        /*private fun getPatients(did: Int): MutableLiveData<ArrayList<Patient>?> {
             return mRepository.getPatientsFromDoctor2(did)
-        }
+        }*/
 
         fun setDoctorId(id: Int) {
             doctorId.value = id
@@ -27,4 +27,4 @@ data class PatientListViewModel (
         fun loadPatients(): LiveData<ArrayList<Patient>> {
             return mPatientList
         }
-}
+}*/

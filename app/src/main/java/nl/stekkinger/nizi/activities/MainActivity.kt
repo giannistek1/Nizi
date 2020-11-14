@@ -15,6 +15,7 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.user.User
+import nl.stekkinger.nizi.classes.user.UserLogin
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository
@@ -30,7 +31,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var diaryModel: DiaryViewModel
     private var list: ArrayList<DietaryGuideline>? = null
     private var patientId: Int = 0
-    private lateinit var user: User
+    private lateinit var user: UserLogin
 
     private lateinit var progressBar: View
 

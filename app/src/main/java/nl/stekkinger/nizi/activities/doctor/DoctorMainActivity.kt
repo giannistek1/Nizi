@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi.activities
+package nl.stekkinger.nizi.activities.doctor
 
 import android.content.Intent
 import android.os.AsyncTask
@@ -16,9 +16,9 @@ import nl.stekkinger.nizi.adapters.PatientAdapter
 import nl.stekkinger.nizi.adapters.PatientAdapterListener
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
-import nl.stekkinger.nizi.classes.old.DoctorLogin
 import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.user.User
+import nl.stekkinger.nizi.classes.user.UserLogin
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 
@@ -37,12 +37,12 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     private val patientRepository: PatientRepository = PatientRepository()
     //endregion
 
-    private lateinit var user: User
+    private lateinit var user: UserLogin
 
-    private lateinit var model: DoctorLogin
-    private lateinit var patientListViewModel: PatientListViewModel
+    //private lateinit var model: DoctorLogin
+    //private lateinit var patientListViewModel: PatientListViewModel
     var patientList = ArrayList<PatientItem>()
-    private var doctorId: Int = 3
+    private var doctorId: Int = 1
 
     private lateinit var progressBar: View
 
@@ -52,16 +52,21 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         setContentView(R.layout.activity_doctor_main)
         progressBar = activity_doctor_main_loader
 
+        // Get User and doctorId
+        user = GeneralHelper.getUser()
+        doctorId = GeneralHelper.getDoctorId()
+
+        // Add patient button
         activity_doctor_main_btn_addPatient.setOnClickListener {
             val intent = Intent(this@DoctorMainActivity, AddPatientActivity::class.java)
             // Prevents multiple activities
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            intent.putExtra(EXTRA_DOCTOR_ID, model.doctor.doctorId)
+            intent.putExtra(EXTRA_DOCTOR_ID, doctorId)
             startActivityForResult(intent, REQUEST_CODE)
         }
 
-        // Get User
-        user = GeneralHelper.getUser()
+        // Get patients
+        getPatientsForDoctorAsyncTask().execute()
 
         // Get viewmodel
         //patientListViewModel = ViewModelProviders.of(this).get(PatientListViewModel::class.java)
@@ -123,7 +128,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         activity_doctor_main_rv.layoutManager = LinearLayoutManager(this)
     }
 
-    inner class getPatientsFromDoctorAsyncTask() : AsyncTask<Void, Void, List<Patient>>()
+    inner class getPatientsForDoctorAsyncTask() : AsyncTask<Void, Void, ArrayList<Patient>>()
     {
         override fun onPreExecute() {
             super.onPreExecute()
@@ -131,11 +136,11 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             progressBar.visibility = View.VISIBLE
         }
 
-        override fun doInBackground(vararg p0: Void?): List<Patient>? {
-                return patientRepository.getPatientsFromDoctor(model.doctor.doctorId)
+        override fun doInBackground(vararg p0: Void?): ArrayList<Patient>? {
+                return patientRepository.getPatientsForDoctor(doctorId)
         }
 
-        override fun onPostExecute(result: List<Patient>?) {
+        override fun onPostExecute(result: ArrayList<Patient>?) {
             super.onPostExecute(result)
             // Loader
             progressBar.visibility = View.GONE
@@ -146,15 +151,15 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 patientList.clear()
 
                 // Fill
-                (0..result.count()-1).forEach {
+                (0 until result.count()).forEach {
                     val pi = PatientItem(it+1,
                         result[it].user.first_name + " " + result[it].user.last_name,
                         result[it].user.first_name,
                         result[it].user.last_name,
-                        result[it].dateOfBirth,
+                        result[it].date_of_birth,
                         //result[it].weightInKilograms,
                         result[it].id,
-                        result[it].doctor.doctorId)
+                        result[it].doctor.id)
                     patientList.add(pi)
                 }
 

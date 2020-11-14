@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/gray"
-    tools:context=".activities.PatientDetailActivity">
+    tools:context=".activities.doctor.PatientDetailActivity">
 
     <!-- Top part -->
     <LinearLayout

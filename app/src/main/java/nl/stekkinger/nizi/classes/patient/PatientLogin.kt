@@ -7,14 +7,14 @@ import nl.stekkinger.nizi.classes.MyFood
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.user.User
 
-data class Patient (
+data class PatientLogin (
     val id: Int,
     val gender: String,
-    val date_of_birth: String,
-    val doctor: Doctor,
-    val user: User,
+    val dateOfBirth: String,
+    val doctor: Int,
+    val user: Int,
     val feedbacks: ArrayList<Feedback>,
-    val dietary_managements: ArrayList<DietaryManagement>,
+    val dietaryManagements: ArrayList<DietaryManagement>,
     val my_food: ArrayList<MyFood>,
     val consumptions: ArrayList<Consumption>,
 

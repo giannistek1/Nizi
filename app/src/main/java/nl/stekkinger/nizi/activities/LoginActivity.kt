@@ -1,8 +1,6 @@
 package nl.stekkinger.nizi.activities
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Bundle
@@ -16,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.activities.doctor.DoctorMainActivity
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.LoginRequest
@@ -126,18 +125,24 @@ class LoginActivity : AppCompatActivity() {
             // Loader
             progressBar.visibility = View.GONE
 
-            // Guard
+            // Guard result either gives the (token, user, patient/doctor) OR null
             if (result == null) { Toast.makeText(baseContext, R.string.credentials_wrong, Toast.LENGTH_SHORT).show(); return }
 
-            // Result either gives the (token and user) OR null
+            //
             Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
 
             // Save token
             GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_TOKEN, result.jwt).apply()
 
-            // Save isDoctor
+            // Save isDoctor for future reference
             isDoctor = (result.user!!.role.name == "Doctor")
             GeneralHelper.prefs.edit().putBoolean(GeneralHelper.PREF_IS_DOCTOR, isDoctor).apply()
+
+            // Save Patient/Doctor Id
+            if (isDoctor)
+                GeneralHelper.prefs.edit().putInt(GeneralHelper.PREF_DOCTOR_ID, result.user.doctor!!.id).apply()
+            else
+                GeneralHelper.prefs.edit().putInt(GeneralHelper.PREF_DOCTOR_ID, result.user.patient!!.id).apply()
 
             // Save user
             val gson = Gson()

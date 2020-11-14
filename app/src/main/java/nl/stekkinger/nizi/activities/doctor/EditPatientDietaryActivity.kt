@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi.activities
+package nl.stekkinger.nizi.activities.doctor
 
 import android.content.Intent
 import android.os.AsyncTask

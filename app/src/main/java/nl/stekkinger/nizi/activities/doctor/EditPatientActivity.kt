@@ -1,4 +1,4 @@
-package nl.stekkinger.nizi.activities
+package nl.stekkinger.nizi.activities.doctor
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -7,11 +7,11 @@ import android.view.View
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient.*
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.AddPatientViewModel
+import nl.stekkinger.nizi.classes.*
 
-class AddPatientActivity : AppCompatActivity() {
+class EditPatientActivity : AppCompatActivity() {
 
-    private var TAG = "AddPatient"
+    private var TAG = "EditPatient"
 
     val EXTRA_DOCTOR_ID = "DOCTOR_ID"
     // for activity result
@@ -19,8 +19,8 @@ class AddPatientActivity : AppCompatActivity() {
 
     private lateinit var progressBar: View
 
-    private var mWeight: Float = 0f
     private var doctorId: Int? = null
+    private lateinit var model: UpdatePatientViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +29,18 @@ class AddPatientActivity : AppCompatActivity() {
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         progressBar = activity_add_patient_progressbar
+
+        // Fill patient
+
+        model = intent.extras?.get("PATIENT") as UpdatePatientViewModel
+
+        activity_add_patient_et_firstName.setText(model.patient.firstName)
+        activity_add_patient_et_lastName.setText(model.patient.lastName)
+        activity_add_patient_et_dob.setText(model.patient.dateOfBirth)
+        //activity_add_patient_et_weight.setText(model.patient.weight.toString())
+        activity_add_patient_et_email.setText("***@***.**")
+        activity_add_patient_et_password.setText("******")
+        activity_add_patient_et_password_confirm.setText("******")
 
         activity_add_patient_btn_to_guidelines.setOnClickListener {
             // Checks
@@ -72,21 +84,26 @@ class AddPatientActivity : AppCompatActivity() {
                 Toast.makeText(baseContext, R.string.passwords_dont_match, Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            val intent = Intent(this@AddPatientActivity, AddPatientDietaryActivity::class.java)
+            val intent = Intent(this@EditPatientActivity, EditPatientDietaryActivity::class.java)
             // Prevents duplicating activivity
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
 
             // Patientdata
-            val newPatient = AddPatientViewModel(
+            /*val newPatient = AddPatientViewModel(
                 activity_add_patient_et_firstName.text.toString().trim(),
                 activity_add_patient_et_lastName.text.toString().trim(),
                 activity_add_patient_et_dob.text.toString().trim(),
                 activity_add_patient_et_weight.text.toString().toFloat(),
                 "Man"
-            )
+            )*/
+            // Update fields with new inputs once you click btn
+            model.patient.firstName = activity_add_patient_et_firstName.text.toString().trim()
+            model.patient.lastName = activity_add_patient_et_lastName.text.toString().trim()
+            model.patient.dateOfBirth = activity_add_patient_et_dob.text.toString().trim()
+            //model.patient.weight = activity_add_patient_et_weight.text.toString().toFloat()
 
             // Give patient and doctor ID
-            intent.putExtra("PATIENT", newPatient)
+            intent.putExtra("PATIENT", model)
             intent.putExtra(EXTRA_DOCTOR_ID, doctorId)
             // Start intent
             startActivityForResult(intent, REQUEST_CODE)
