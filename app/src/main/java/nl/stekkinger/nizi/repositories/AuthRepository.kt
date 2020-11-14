@@ -29,8 +29,10 @@ class AuthRepository : Repository() {
 
     fun logout(context: Context, activity: AppCompatActivity) {
         val newIntent = Intent(context, LoginActivity::class.java)
-        prefs.edit().remove(GeneralHelper.PREF_IS_DOCTOR).apply()
         prefs.edit().remove(GeneralHelper.PREF_TOKEN).apply()
+        prefs.edit().remove(GeneralHelper.PREF_USER).apply()
+        prefs.edit().remove(GeneralHelper.PREF_IS_DOCTOR).apply()
+        prefs.edit().remove(GeneralHelper.PREF_DOCTOR_ID).apply()
 
         activity.startActivity(newIntent)
         activity.finish()
