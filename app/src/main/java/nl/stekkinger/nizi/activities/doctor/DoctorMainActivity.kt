@@ -3,6 +3,7 @@ package nl.stekkinger.nizi.activities.doctor
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -20,6 +21,7 @@ import nl.stekkinger.nizi.classes.patient.PatientItem
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
+import java.lang.Exception
 
 
 class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
@@ -129,7 +131,12 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         }
 
         override fun doInBackground(vararg p0: Void?): ArrayList<Patient>? {
+            try {
                 return patientRepository.getPatientsForDoctor(doctorId)
+            }  catch(e: Exception) {
+                // Failed to connect to API
+                return null
+            }
         }
 
         override fun onPostExecute(result: ArrayList<Patient>?) {

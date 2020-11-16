@@ -181,8 +181,6 @@ class AddPatientDietaryActivity : AppCompatActivity() {
             dietaryManagementList.forEachIndexed { _, dietaryManagement ->
                 addDietaryToPatientAsyncTask(dietaryManagement).execute()
             }
-            // Register user
-            registerUserAsyncTask().execute()
         }
     }
     //endregion
@@ -214,6 +212,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
 
             // Remove from list
             dietaryManagementList.removeAt(0)
+
             if (dietaryManagementList.isEmpty())
                 registerUserAsyncTask().execute()
         }

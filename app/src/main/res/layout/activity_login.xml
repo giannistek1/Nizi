@@ -113,7 +113,7 @@
             android:id="@+id/activity_login_txt_help"
             android:textColor="@android:color/black"
             android:textSize="@dimen/h1"
-            android:text="@string/help"
+            android:text="@string/contact"
             android:layout_marginStart="@dimen/marginLeft"
             android:layout_marginTop="@dimen/marginNormal"
             android:layout_marginBottom="@dimen/marginNormal"
@@ -124,7 +124,7 @@
         <TextView
             android:id="@+id/activity_login_txt_help_desc"
             android:textColor="@android:color/black"
-            android:text="@string/help_desc"
+            android:text="@string/password_tip"
             android:layout_marginStart="@dimen/marginLeft"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -133,6 +133,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="@dimen/marginNormal"
+            android:paddingTop="@dimen/marginNormal"
             android:orientation="horizontal">
 
             <ImageView
@@ -140,8 +143,8 @@
                 android:scaleType="fitCenter"
                 android:tint="@color/colorPrimary"
                 android:layout_marginStart="@dimen/marginLeft"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/iconSize"
+                android:layout_height="@dimen/iconSize"
                 android:contentDescription="@string/ic_website"
                 android:src="@drawable/ic_website"/>
 
@@ -150,8 +153,6 @@
                 android:textColor="@color/colorPrimary"
                 android:text="@string/nierstichting_url"
                 android:layout_marginStart="@dimen/marginLeft"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginBottom="@dimen/marginNormal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
@@ -160,6 +161,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="@dimen/marginNormal"
+            android:paddingTop="@dimen/marginNormal"
             android:orientation="horizontal">
 
             <ImageView
@@ -167,36 +171,41 @@
                 android:scaleType="fitCenter"
                 android:tint="@color/colorPrimary"
                 android:layout_marginStart="@dimen/marginLeft"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/iconSize"
+                android:layout_height="@dimen/iconSize"
                 android:contentDescription="@string/ic_phone"
                 android:src="@drawable/ic_telephone"/>
 
-            <TextView
-                android:id="@+id/activity_login_txt_nierstichtingPhonenumber"
-                android:textColor="@color/colorPrimary"
-                android:text="@string/nierstichting_phonenumber"
-                android:layout_marginStart="@dimen/marginLeft"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/activity_login_txt_nierstichtingPhonenumber"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/nierstichting_phonenumber"
+                    android:layout_marginStart="@dimen/marginLeft"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
 
+                <TextView
+                    android:id="@+id/activity_login_txt_nierstichtingPhonenumberDesc"
+                    android:textColor="@android:color/black"
+                    android:text="@string/nierstichting_phonenumber_desc"
+                    android:layout_marginStart="@dimen/marginLeft"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/activity_login_txt_nierstichtingPhonenumberDesc"
-            android:textColor="@android:color/black"
-            android:text="@string/nierstichting_phonenumber_desc"
-            android:layout_marginStart="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
         <!-- EMAIL INFO INFO -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:paddingBottom="@dimen/marginNormal"
+            android:paddingTop="@dimen/marginNormal"
             android:orientation="horizontal">
 
             <ImageView
@@ -204,8 +213,8 @@
                 android:scaleType="fitCenter"
                 android:tint="@color/colorPrimary"
                 android:layout_marginStart="@dimen/marginLeft"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/iconSize"
+                android:layout_height="@dimen/iconSize"
                 android:contentDescription="@string/ic_phone"
                 android:src="@drawable/ic_mail"/>
 
@@ -214,8 +223,6 @@
                 android:textColor="@color/colorPrimary"
                 android:text="@string/nierstichting_email"
                 android:layout_marginStart="@dimen/marginLeft"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginBottom="@dimen/marginNormal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

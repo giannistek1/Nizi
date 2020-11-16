@@ -27,12 +27,15 @@
     <string name="credentials_wrong">Gebruikersnaam of wachtwoord klopt niet</string>
 
     <!-- contact -->
-    <string name="help">Hulp nodig?</string>
-    <string name="help_desc">Neem contact op met Nierstichting of uw diëtist</string>
+    <string name="contact">Contact</string>
+    <string name="password_tip">Wachtwoorden worden verstrekt door de diëtist</string>
     <string name="nierstichting_url">https://www.nierstichting.nl</string>
     <string name="nierstichting_phonenumber">035 697 80 00</string>
     <string name="nierstichting_phonenumber_desc">Op werkdagen tussen 09.00 en 17.00 uur</string>
     <string name="nierstichting_email">info@nierstichting.nl</string>
+
+    <string name="help_old">Hulp nodig?</string>
+    <string name="help_desc_old">Neem contact op met Nierstichting of uw diëtist</string>
 
     <!-- food related -->
     <string name="today">Vandaag</string>
