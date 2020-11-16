@@ -11,11 +11,10 @@ import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
+import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.dietary.DietaryRestriction
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
-import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.login.UserLogin
-import nl.stekkinger.nizi.classes.patient.AddPatientRequest
 import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
@@ -35,7 +34,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
     private lateinit var addPatientViewModel: AddPatientViewModel
 
     private lateinit var dietaryRestrictionList: ArrayList<DietaryRestriction>
-    private lateinit var dietaryManagementList: ArrayList<DietaryManagement>
+    private lateinit var dietaryManagementList: ArrayList<DietaryManagementShort>
     private lateinit var textViewList: ArrayList<EditText>
     private lateinit var loader: View
 
@@ -164,11 +163,11 @@ class AddPatientDietaryActivity : AppCompatActivity() {
             dietaryManagementList = arrayListOf()
 
             // Add dietaries by looping through each editText View
-            restrictionsList.forEachIndexed { index, element ->
+            restrictionsList.forEachIndexed { index, _ ->
                 if (textViewList[index].text.isNotEmpty()) {
                     dietaryManagementList.add(
-                        DietaryManagement(
-                            dietary_restriction = index+1,
+                        DietaryManagementShort(
+                            dietary_restriction = index + 1,
                             amount = textViewList[index].text.toString().toInt(),
                             is_active = true,
                             patient = addPatientViewModel.patient.id
@@ -186,7 +185,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
     //endregion
 
     //region Step 3. AddDietaryToPatient
-    inner class addDietaryToPatientAsyncTask(val dietary: DietaryManagement) : AsyncTask<Void, Void, DietaryManagement>()
+    inner class addDietaryToPatientAsyncTask(val dietary: DietaryManagementShort) : AsyncTask<Void, Void, DietaryManagement>()
     {
         override fun onPreExecute() {
             super.onPreExecute()

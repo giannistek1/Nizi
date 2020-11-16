@@ -10,9 +10,9 @@ import nl.stekkinger.nizi.classes.patient.*
 import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.PatientUpdateModel
+import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import retrofit2.Call
 import retrofit2.http.*
-import java.text.SimpleDateFormat
 
 interface ApiService {
 
@@ -42,7 +42,7 @@ interface ApiService {
         @Body body: PatientLogin
     ) : Call<Patient>
 
-    @PUT("patients")
+    @PUT("patients/{patientId}")
     fun updatePatientUserId(
         @Header("Authorization") authHeader : String,
         @Path("patientId") patientId: Int,
@@ -191,7 +191,7 @@ interface ApiService {
     @POST("dietary-managements")
     fun addDietary(
         @Header("Authorization") authHeader : String,
-        @Body body: DietaryManagement
+        @Body body: DietaryManagementShort
     ) : Call<DietaryManagement>
 
     @GET("v1/dietaryManagement/{patientId}")

@@ -161,7 +161,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                         result[it].date_of_birth,
                         //result[it].weightInKilograms,
                         result[it].id!!,
-                        result[it].doctor.id
+                        result[it].doctor.id!!
                     )
                     patientList.add(pi)
                 }

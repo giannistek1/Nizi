@@ -1,16 +1,14 @@
 package nl.stekkinger.nizi.classes.dietary
 
-import nl.stekkinger.nizi.classes.patient.Patient
-import nl.stekkinger.nizi.classes.patient.PatientLogin
 import java.io.Serializable
 
-// Used as result
-data class DietaryManagement(
+// Used for POST, PUT or as child from another object
+data class DietaryManagementShort(
     val id: Int? = null,
-    val dietary_restriction: DietaryRestriction,
+    val dietary_restriction: Int,
     var amount: Int,
     var is_active: Boolean,
-    val patient: PatientLogin,
+    val patient: Int,
 
     // Unimportant stuff
     val created_at: String? = null,

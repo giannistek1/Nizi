@@ -10,6 +10,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
+import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
 import nl.stekkinger.nizi.classes.patient.UpdatePatientViewModel
 import nl.stekkinger.nizi.repositories.DietaryRepository
@@ -30,7 +31,7 @@ class EditPatientDietaryActivity : AppCompatActivity() {
     private lateinit var updatePatientViewMode: UpdatePatientViewModel
     private lateinit var addPatientViewModel: AddPatientViewModel
 
-    private lateinit var dietaryList: ArrayList<DietaryManagement>
+    private lateinit var dietaryList: ArrayList<DietaryManagementShort>
     private lateinit var textViewList: ArrayList<EditText>
 
     private var hasNoDietary = true
@@ -121,7 +122,7 @@ class EditPatientDietaryActivity : AppCompatActivity() {
             restrictionsList.forEachIndexed { index, _ ->
                 if (textViewList[index].text.toString() != "") {
                     dietaryList.add(
-                        DietaryManagement(
+                        DietaryManagementShort(
                             dietary_restriction = index+1,
                             amount = textViewList[index].text.toString().toInt(),
                             is_active =  true,
@@ -148,7 +149,7 @@ class EditPatientDietaryActivity : AppCompatActivity() {
     //endregion
 
     //region AddDietaryToPatient
-    inner class addDietaryToPatientAsyncTask(val dietary: DietaryManagement) : AsyncTask<Void, Void, DietaryManagement>()
+    inner class addDietaryToPatientAsyncTask(val dietary: DietaryManagementShort) : AsyncTask<Void, Void, DietaryManagement>()
     {
         override fun onPreExecute() {
             super.onPreExecute()
