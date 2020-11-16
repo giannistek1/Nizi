@@ -39,8 +39,8 @@ class DietaryRepository : Repository() {
         return result*/
     }
 
-    fun addDietary(dietaryManamgement: DietaryManagement) : DietaryManagement? {
-        return service.addDietary(authHeader, dietaryManamgement).execute().body()
+    fun addDietary(dietaryManagement: DietaryManagement) : DietaryManagement? {
+        return service.addDietary(authHeader, dietaryManagement).execute().body()
     }
     fun updateDietary(dietaryManagementId: Int) : DietaryManagement? {
         return service.updateDietary(authHeader, dietaryManagementId).execute().body()

@@ -36,10 +36,17 @@ interface ApiService {
         @Query("doctor.id") doctorId: Int
     ) : Call<ArrayList<Patient>>
 
-    @POST("v1/patient")
+    @POST("patients")
     fun registerPatient(
         @Header("Authorization") authHeader : String,
         @Body body: PatientLogin
+    ) : Call<Patient>
+
+    @PUT("patients")
+    fun updatePatientUserId(
+        @Header("Authorization") authHeader : String,
+        @Path("patientId") patientId: Int,
+        @Body body: PatientUpdateUserIdRequest
     ) : Call<Patient>
 
     @PUT("v1/patient")

@@ -2,8 +2,11 @@ package nl.stekkinger.nizi.classes.helper_classes
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.widget.Toast
 import com.google.gson.Gson
 import nl.stekkinger.nizi.NiziApplication
+import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.login.Role
 import nl.stekkinger.nizi.classes.login.UserLogin
 
@@ -38,4 +41,16 @@ object GeneralHelper {
     {
         return prefs.getInt(PREF_DOCTOR_ID, 0)
     }
+
+    fun hasInternetConnection(context: Context) : Boolean
+    {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        val hasConnection = connectivityManager?.activeNetworkInfo?.isConnectedOrConnecting() ?: false
+
+        if (!hasConnection)
+            Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
+
+        return hasConnection
+    }
+
 }

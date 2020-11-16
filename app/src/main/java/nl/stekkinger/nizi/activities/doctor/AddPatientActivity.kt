@@ -1,17 +1,18 @@
 package nl.stekkinger.nizi.activities.doctor
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
+import android.widget.RadioButton
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add_patient.*
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
-import nl.stekkinger.nizi.classes.patient.PatientLogin
 import nl.stekkinger.nizi.classes.login.User
+import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
+import nl.stekkinger.nizi.classes.patient.PatientLogin
 
 class AddPatientActivity : AppCompatActivity() {
 
@@ -45,28 +46,29 @@ class AddPatientActivity : AppCompatActivity() {
         // Testing
         activity_add_patient_et_firstName.setText("Jaap")
         activity_add_patient_et_lastName.setText("van Steen")
-        activity_add_patient_et_dob.setText("01/01/1984")
+        activity_add_patient_et_dob.setText("1995-01-01")
         activity_add_patient_et_email.setText("jaapvansteen@hotmail.com")
         activity_add_patient_et_password.setText("Welkom123")
         activity_add_patient_et_password_confirm.setText("Welkom123")
+        activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
     }
 
     private fun tryCreatePatient(firstNameET: EditText, lastNameET: EditText, dobET: EditText, emailET:
     EditText, passwordET: EditText, passwordConfirmET: EditText) {
-        // Checks
+        // Guards/Checks
         if (InputHelper.inputIsEmpty(this, firstNameET, R.string.empty_first_name)) return
-        else if (InputHelper.inputIsEmpty(this, lastNameET, R.string.empty_last_name)) return
-        else if (InputHelper.inputIsEmpty(this, dobET, R.string.empty_date_of_birth)) return
-        else if (InputHelper.inputIsEmpty(this, emailET, R.string.empty_email)) return
-        else if (InputHelper.inputIsEmpty(this, passwordET, R.string.empty_password)) return
-        else if (InputHelper.inputIsEmpty(this, passwordConfirmET, R.string.empty_password_confirm)) return
+        if (InputHelper.inputIsEmpty(this, lastNameET, R.string.empty_last_name)) return
+        if (InputHelper.inputIsEmpty(this, dobET, R.string.empty_date_of_birth)) return
+        if (InputHelper.inputIsEmpty(this, emailET, R.string.empty_email)) return
+        if (InputHelper.inputIsEmpty(this, passwordET, R.string.empty_password)) return
+        if (InputHelper.inputIsEmpty(this, passwordConfirmET, R.string.empty_password_confirm)) return
+
+        val checkedGenderRadioButtonId: Int = activity_add_patient_rg_gender.checkedRadioButtonId
+        if (checkedGenderRadioButtonId == -1) { return }
 
         // Check if not matching passwords
-        else if (passwordET.text.toString() != passwordConfirmET.text.toString())
-        {
-            Toast.makeText(baseContext, R.string.passwords_dont_match, Toast.LENGTH_SHORT).show()
-            return
-        }
+        else if (passwordET.text.toString() != passwordConfirmET.text.toString()) {
+            Toast.makeText(baseContext, R.string.passwords_dont_match, Toast.LENGTH_SHORT).show(); return }
 
         val intent = Intent(this@AddPatientActivity, AddPatientDietaryActivity::class.java)
         // Prevents duplicating activivity
@@ -75,6 +77,8 @@ class AddPatientActivity : AppCompatActivity() {
         // Patientdata
         var lastNameWithoutSpaces = lastNameET.text.toString().trim()
         lastNameWithoutSpaces = lastNameWithoutSpaces.replace("\\s".toRegex(), "")
+
+        val radioButton: RadioButton = activity_add_patient_rg_gender.findViewById(checkedGenderRadioButtonId)
 
         val newPatient = AddPatientViewModel(
             user = User(
@@ -87,7 +91,7 @@ class AddPatientActivity : AppCompatActivity() {
             ),
             // Update corresponding user later when its made
             patient = PatientLogin(
-                gender = "Man",
+                gender = radioButton.text.toString(),
                 date_of_birth = dobET.text.toString().trim(),
                 doctor = doctorId!!
             )

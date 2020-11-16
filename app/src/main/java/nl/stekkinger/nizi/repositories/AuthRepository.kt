@@ -9,6 +9,7 @@ import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.LoginRequest
 import nl.stekkinger.nizi.classes.login.LoginResponse
 import nl.stekkinger.nizi.classes.login.User
+import nl.stekkinger.nizi.classes.login.UserLogin
 
 class AuthRepository : Repository() {
 
@@ -18,8 +19,8 @@ class AuthRepository : Repository() {
     private val accessToken = prefs.getString("TOKEN", null)
     private val authHeader = "Bearer " + accessToken
 
-    fun registerUser(registerUser: User) {
-        service.registerUser(authHeader, registerUser).execute().body()
+    fun registerUser(registerUser: User) : UserLogin? {
+        return service.registerUser(authHeader, registerUser).execute().body()
     }
 
     // Code 400 gives body = null back

@@ -100,10 +100,14 @@ class LoginActivity : AppCompatActivity() {
         passwordET.setBackgroundColor(Color.TRANSPARENT)
 
         // Checks (Guards)
+        if (!GeneralHelper.hasInternetConnection(this)) return
         if (InputHelper.inputIsEmpty(this, usernameET, R.string.username_cant_be_empty)) return
         if (InputHelper.inputIsEmpty(this, passwordET, R.string.password_cant_be_empty)) return
 
-        loginAsyncTask(LoginRequest(usernameET.text.toString(), passwordET.text.toString())).execute()
+        val loginRequest = LoginRequest(usernameET.text.toString(), passwordET.text.toString())
+
+        if (loginAsyncTask(loginRequest).status != AsyncTask.Status.RUNNING)
+            loginAsyncTask(loginRequest).execute()
     }
 
     //region Login

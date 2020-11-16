@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi.classes.feedback
 
+import java.io.Serializable
 import java.util.*
 
 data class Feedback(
@@ -14,4 +15,4 @@ data class Feedback(
     // Unimportant stuff
     val created_at: String,
     val updated_at: String
-)
+) : Serializable

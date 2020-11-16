@@ -303,19 +303,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@+id/activity_add_patient_txt_gender">
+                android:layout_below="@+id/activity_add_patient_txt_gender"
+                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_marginStart="@dimen/marginNormal">
 
                 <RadioButton
                     android:id="@+id/activity_add_patient_rb_male"
                     android:text="@string/male"
+                    android:button="@null"
+                    android:drawableBottom="@android:drawable/btn_radio"
+                    android:gravity="center"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"/>
 
                 <RadioButton
                     android:id="@+id/activity_add_patient_rb_female"
                     android:text="@string/female"
+                    android:button="@null"
+                    android:drawableBottom="@android:drawable/btn_radio"
+                    android:gravity="center"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/marginNormal"/>
             </RadioGroup>
 
             <androidx.core.widget.ContentLoadingProgressBar

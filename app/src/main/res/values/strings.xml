@@ -1,15 +1,9 @@
 <resources>
-    <!-- IMPORTANT -->
-    <!-- Nizi api --><!-- 5da30bf7475bc007512f2752 --> <!-- appnizi.nl/api -->
-    <!-- auth0 (not used) --><!-- 5da30a8ef151ae071ea92ca0 --> <!-- https://appnizi.eu.auth0.com/api/v2/ -->
-    <!-- Nizi App auth0 --> <!-- u937ofw0BYPGUHPgNUrfBpspIa0VSC86 --> <!-- appnizi.eu.auth0.com -->
-    <string name="auth0_client_id">u937ofw0BYPGUHPgNUrfBpspIa0VSC86</string>
-    <string name="auth0_domain">appnizi.eu.auth0.com</string>
-    <string name="auth0_scheme">nizi</string>
-    <string name="auth0_audience">appnizi.nl/api</string>
-
     <!-- Texts -->
     <string name="app_name">Nizi</string>
+
+    <!--- General -->
+    <string name="no_internet_connection">Geen internetverbinding</string>
 
     <!-- Navigatie -->
     <string name="home">Home</string>
@@ -141,11 +135,17 @@
     <string name="patient_added">Patiënt toegevoegd</string>
     <string name="patient_add_failed">Patiënt toevoegen mislukt</string>
     <string name="patient_edited">Patiënt bewerkt</string>
+    <string name="patient_updated">Patiënt updatet</string>
+    <string name="patient_update_fail">Patiënt updaten mislukt</string>
     <string name="patient_deleted">Patiënt verwijderd</string>
     <string name="fetched_dietary_restrictions">Richtlijnnamen opgehaald</string>
     <string name="fetch_dietary_restrictions_fail">Richtlijnnamen ophalen mislukt</string>
+    <string name="dietaries_empty">Richtlijn(en) niet ingevuld</string>
     <string name="dietary_added">Richtlijn toegevoegd</string>
+    <string name="dietary_add_fail">Richtlijn toevoegen mislukt</string>
     <string name="dietary_changed">Richtlijn veranderd</string>
+    <string name="user_added">Gebruiker  toegevoegd</string>
+    <string name="user_add_fail">Gebruiker toevoegen mislukt</string>
 
     <string name="data_of">Gegevens van</string>
     <string name="average_of">Gemiddelde van</string>
@@ -168,12 +168,6 @@
     <string name="advice_from">Advies van</string>
     <string name="ready">Gereed</string>
     <string name="food_diary">Voedingsdagboek</string>
-    <string name="header_background">Kop achtergrond</string>
-    <string name="ic_website">Website icoon</string>
-    <string name="ic_phone">Telefoon icoon</string>
-    <string name="ic_mail">Mail icoon</string>
-    <string name="ic_user">Gebruiker icoon</string>
-    <string name="ic_culinary">Etensgerei icoon</string>
     <string name="user">Gebruiker</string>
     <string name="arrow_right">Pijl rechts</string>
     <string name="next_week">Vorige week</string>
@@ -203,6 +197,13 @@
     <string name="content_add_dinner">Avondeten toevoegen knop</string>
     <string name="content_add_snack">Snack toevoegen knop</string>
     <string name="content_meal_photo_display">Maaltijd foto display</string>
+
+    <string name="header_background">Kop achtergrond</string>
+    <string name="ic_website">Website icoon</string>
+    <string name="ic_phone">Telefoon icoon</string>
+    <string name="ic_mail">Mail icoon</string>
+    <string name="ic_user">Gebruiker icoon</string>
+    <string name="ic_culinary">Etensgerei icoon</string>
 
 
     <!-- buttons -->

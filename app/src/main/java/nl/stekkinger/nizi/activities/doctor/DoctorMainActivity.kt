@@ -38,8 +38,6 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
     private lateinit var user: UserLogin
 
-    //private lateinit var model: DoctorLogin
-    //private lateinit var patientListViewModel: PatientListViewModel
     var patientList = ArrayList<PatientItem>()
     private var doctorId: Int = 1
 
@@ -64,16 +62,11 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             startActivityForResult(intent, REQUEST_CODE)
         }
 
+        // Check connection
+        if (!GeneralHelper.hasInternetConnection(this)) return
+
         // Get patients
         getPatientsForDoctorAsyncTask().execute()
-
-        // Get viewmodel
-        //patientListViewModel = ViewModelProviders.of(this).get(PatientListViewModel::class.java)
-
-        /*patientListViewModel.setDoctorId(doctorId)
-        patientListViewModel.loadPatients().observe(this, Observer { patientList ->
-            Log.d("log", patientList.toString())
-        })*/
     }
 
     //region Toolbar
@@ -151,11 +144,13 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
                 // Fill
                 (0 until result.count()).forEach {
+                    if (result[it].user == null) return@forEach
+
                     val pi = PatientItem(
                         it + 1,
-                        result[it].user.first_name + " " + result[it].user.last_name,
-                        result[it].user.first_name,
-                        result[it].user.last_name,
+                        result[it].user!!.first_name + " " + result[it].user!!.last_name,
+                        result[it].user!!.first_name,
+                        result[it].user!!.last_name,
                         result[it].date_of_birth,
                         //result[it].weightInKilograms,
                         result[it].id!!,

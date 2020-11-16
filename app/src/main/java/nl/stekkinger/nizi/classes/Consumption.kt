@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi.classes
 
+import java.io.Serializable
 import java.text.SimpleDateFormat
 
 data class Consumption (
@@ -16,4 +17,4 @@ data class Consumption (
     val Date: String,
     val PatientId: Int,
     val ConsumptionId: Int
-)
+) : Serializable

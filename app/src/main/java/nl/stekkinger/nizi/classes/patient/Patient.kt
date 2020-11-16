@@ -12,10 +12,10 @@ data class Patient (
     val gender: String,
     val date_of_birth: String,
     val doctor: Doctor,
-    val user: User,
+    val user: User? = null,
     val feedbacks: ArrayList<Feedback>? = arrayListOf(),
     val dietary_managements: ArrayList<DietaryManagement>? = arrayListOf(),
-    val my_food: ArrayList<MyFood>? = arrayListOf(),
+    val my_foods: ArrayList<MyFood>? = arrayListOf(),
     val consumptions: ArrayList<Consumption>? = arrayListOf(),
 
     // Unimportant stuff

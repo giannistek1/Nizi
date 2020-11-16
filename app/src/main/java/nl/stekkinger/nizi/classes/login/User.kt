@@ -3,7 +3,7 @@ package nl.stekkinger.nizi.classes.login
 import java.io.Serializable
 
 data class User(
-    val id: Int = 0,
+    var id: Int = 0,
     val username: String,
     val password: String? = null, // Only when registering users
     val email: String,
@@ -12,8 +12,8 @@ data class User(
     val role: Int,
 
     // Which patient OR doctor does this user belong to?
-    val patient: Int? = null,
-    val doctor: Int? = null,
+    var patient: Int? = null,
+    var doctor: Int? = null,
 
     // Unimportant stuff
     val created_at: String? = null,
