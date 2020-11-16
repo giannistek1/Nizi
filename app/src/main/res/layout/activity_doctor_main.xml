@@ -83,12 +83,12 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
-            <androidx.core.widget.ContentLoadingProgressBar
+            <ProgressBar
                 android:id="@+id/activity_doctor_main_loader"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/activity_doctor_main_et_searchPatients"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
 </FrameLayout>
