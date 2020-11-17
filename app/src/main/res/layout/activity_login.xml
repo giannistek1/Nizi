@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray">
@@ -68,6 +68,9 @@
                 <EditText
                     android:id="@+id/activity_login_et_username"
                     android:hint="@string/username"
+                    android:autofillHints="@string/username"
+                    tools:targetApi="o"
+                    android:inputType="text"
                     android:layout_marginStart="@dimen/marginLeft"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -86,6 +89,8 @@
                 <EditText
                     android:id="@+id/activity_login_et_password"
                     android:hint="@string/password"
+                    android:autofillHints="@string/password"
+                    tools:targetApi="o"
                     android:layout_marginStart="@dimen/marginLeft"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
