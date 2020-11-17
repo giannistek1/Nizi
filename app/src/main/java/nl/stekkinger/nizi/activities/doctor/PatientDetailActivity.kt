@@ -144,7 +144,7 @@ class PatientDetailActivity : AppCompatActivity() {
                     DietaryGuideline(
                         resultDietary.dietary_restriction.description,
                         restriction,
-                        restriction.toLowerCase(),
+                        restriction.toLowerCase(Locale.ROOT),
                         0,
                         0,
                         0,
@@ -165,11 +165,11 @@ class PatientDetailActivity : AppCompatActivity() {
 
                 // Plurals
                 if (resultDietary.dietary_restriction.description.contains("Calorie"))
-                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase() + "en"
+                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase(Locale.ROOT) + "en"
                 else if (resultDietary.dietary_restriction.description.contains("Eiwit"))
-                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase() + "ten"
+                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase(Locale.ROOT) + "ten"
                 else if (resultDietary.dietary_restriction.description.contains("Vezel"))
-                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase() + "s"
+                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase(Locale.ROOT) + "s"
 
                 // Fill in minimum/maximum
                 if (resultDietary.dietary_restriction.description.contains("beperking"))

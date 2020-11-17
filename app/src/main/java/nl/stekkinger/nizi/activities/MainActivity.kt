@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -14,6 +15,7 @@ import nl.stekkinger.nizi.fragments.HomeFragment
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
+import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.old.DietaryView
@@ -21,6 +23,8 @@ import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,10 +35,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var diaryModel: DiaryViewModel
     private var list: ArrayList<DietaryGuideline>? = null
-    private var patientId: Int = 0
     private lateinit var user: UserLogin
 
-    private lateinit var progressBar: View
+    private lateinit var loader: View
 
     val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
 
@@ -55,14 +58,15 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, fragment, fragment.javaClass.getSimpleName())
                 .commit()
         }
-        progressBar = activity_main_loader
+
+        loader = activity_main_loader
 
         // Get User
         user = GeneralHelper.getUser()
 
         activity_main_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
 
-        //getDietaryAsyncTask().execute()
+        getDietaryAsyncTask().execute()
     }
 
     //region Bottom Nav
@@ -118,29 +122,39 @@ class MainActivity : AppCompatActivity() {
     //endregion
 
     //region Get Dietary
-    inner class getDietaryAsyncTask() : AsyncTask<Void, Void, DietaryView>()
+    inner class getDietaryAsyncTask() : AsyncTask<Void, Void, ArrayList<DietaryManagement>>()
     {
         override fun onPreExecute() {
             super.onPreExecute()
-            // Progressbar
-            progressBar.visibility = View.VISIBLE
+
+            // Loader
+            loader.visibility = View.VISIBLE
         }
 
-        override fun doInBackground(vararg p0: Void?): DietaryView? {
-            return dietaryRepository.getDietary(patientId)
+        override fun doInBackground(vararg p0: Void?): ArrayList<DietaryManagement>? {
+            return dietaryRepository.getDietaryManagements(user.patient!!.id)
         }
 
-        override fun onPostExecute(result: DietaryView?) {
+        override fun onPostExecute(result: ArrayList<DietaryManagement>?) {
             super.onPostExecute(result)
 
-            result!!.Dietarymanagement.forEachIndexed { index, resultDietary ->
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guard
+            if (result == null) { Toast.makeText(baseContext, R.string.get_dietary_fail, Toast.LENGTH_SHORT).show()
+                return }
+
+            Toast.makeText(baseContext, R.string.fetched_dietary, Toast.LENGTH_SHORT).show()
+
+            result.forEachIndexed { index, resultDietary ->
 
                 lateinit var dietaryGuideline: DietaryGuideline
 
-                val restriction = resultDietary.Description.replace("beperking", "").replace("verrijking","")
+                val restriction = resultDietary.dietary_restriction.description.replace("beperking", "").replace("verrijking","")
                 dietaryGuideline =
                     DietaryGuideline(
-                        resultDietary.Description, restriction, restriction.toLowerCase(),
+                        resultDietary.dietary_restriction.description, restriction, restriction.toLowerCase(Locale.ROOT),
                         0, 0, 0, ""
                     )
 
@@ -148,7 +162,7 @@ class MainActivity : AppCompatActivity() {
 
                 // Check if dietaryGuideLines already has the food supplement type (e.g. calories)
                 dietaryGuidelines.forEachIndexed loop@ {i, dietary ->
-                   if (dietary.description.contains(resultDietary.Description.take(3)))
+                   if (dietary.description.contains(resultDietary.dietary_restriction.description.take(3)))
                    {
                        dietaryGuideline = dietary
                        alreadyExists = true
@@ -157,32 +171,32 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 // Plurals
-                if (resultDietary.Description.contains("Calorie"))
-                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase() + "en"
-                else if (resultDietary.Description.contains("Eiwit"))
-                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase() + "ten"
-                else if (resultDietary.Description.contains("Vezel"))
-                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase() + "s"
+                if (resultDietary.dietary_restriction.description.contains("Calorie"))
+                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase(Locale.ROOT) + "en"
+                else if (resultDietary.dietary_restriction.description.contains("Eiwit"))
+                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase(Locale.ROOT) + "ten"
+                else if (resultDietary.dietary_restriction.description.contains("Vezel"))
+                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase(Locale.ROOT) + "s"
 
                 // minimum/maximum
-                if (resultDietary.Description.contains("beperking"))
+                if (resultDietary.dietary_restriction.description.contains("beperking"))
                 {
-                    dietaryGuideline.minimum = resultDietary.Amount
+                    dietaryGuideline.minimum = resultDietary.amount
                 }
-                else if (resultDietary.Description.contains("verrijking"))
+                else if (resultDietary.dietary_restriction.description.contains("verrijking"))
                 {
                     dietaryGuideline.description = dietaryGuideline.description.replace("beperking", "")
-                    dietaryGuideline.maximum = resultDietary.Amount
+                    dietaryGuideline.maximum = resultDietary.amount
                 }
 
                 // Fill in weight unit
-                if (resultDietary.Description.contains("Calorie"))
+                if (resultDietary.dietary_restriction.description.contains("Calorie"))
                     dietaryGuideline.weightUnit = getString(R.string.kcal)
-                else if (resultDietary.Description.contains("Natrium") || resultDietary.Description.contains("Kalium"))
+                else if (resultDietary.dietary_restriction.description.contains("Natrium") || resultDietary.dietary_restriction.description.contains("Kalium"))
                     dietaryGuideline.weightUnit = getString(R.string.milligram_short)
-                else if (resultDietary.Description.contains("Eiwit") || resultDietary.Description.contains("Vezel"))
+                else if (resultDietary.dietary_restriction.description.contains("Eiwit") || resultDietary.dietary_restriction.description.contains("Vezel"))
                     dietaryGuideline.weightUnit = getString(R.string.gram)
-                else if (resultDietary.Description.contains("Vocht"))
+                else if (resultDietary.dietary_restriction.description.contains("Vocht"))
                     dietaryGuideline.weightUnit = getString(R.string.milliliter_short)
 
                 // Add to dietary list or update list
@@ -192,8 +206,6 @@ class MainActivity : AppCompatActivity() {
                     dietaryGuidelines[index-1] = dietaryGuideline
             }
 
-            // Progressbar
-            progressBar.visibility = View.GONE
 
             list = dietaryGuidelines
 
