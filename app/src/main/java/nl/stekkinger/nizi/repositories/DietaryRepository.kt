@@ -5,7 +5,6 @@ import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.dietary.DietaryRestriction
-import nl.stekkinger.nizi.classes.old.DietaryView
 
 class DietaryRepository : Repository() {
 
@@ -16,7 +15,7 @@ class DietaryRepository : Repository() {
     private val authHeader = "Bearer " + accessToken
 
     fun addDietary(dietaryManagement: DietaryManagementShort) : DietaryManagement? {
-        return service.addDietary(authHeader, dietaryManagement).execute().body()
+        return service.addDietaryManagement(authHeader, dietaryManagement).execute().body()
     }
 
     fun getDietaryRestrictions() : ArrayList<DietaryRestriction>? {
@@ -27,12 +26,7 @@ class DietaryRepository : Repository() {
         return service.getDietaryManagements(authHeader, patientId).execute().body()
     }
 
-    fun getDietary(patientId: Int) : DietaryView? {
-        //return service.getDietary(authHeader, patientId).execute().body()
-        return null
-    }
-
     fun updateDietary(dietaryManagement: DietaryManagementShort) : DietaryManagement? {
-        return service.updateDietary(authHeader, dietaryManagement, dietaryManagement.id!!).execute().body()
+        return service.updateDietaryManagement(authHeader, dietaryManagement, dietaryManagement.id!!).execute().body()
     }
 }

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    tools:context=".fragments.HomeFragment">
 
     <!-- Day -->
     <LinearLayout
@@ -19,7 +21,7 @@
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/yesterday"
             android:src="@drawable/ic_back"
-            android:tint="@color/black" />
+            android:tint="@color/black"/>
 
         <TextView
             android:id="@+id/fragment_home_txt_day"
@@ -31,7 +33,7 @@
             android:layout_marginBottom="@dimen/marginNormal"
             android:text="@string/today"
             android:textColor="@color/black"
-            android:textSize="@dimen/h2" />
+            android:textSize="@dimen/h2"/>
 
         <ImageView
             android:id="@+id/fragment_home_btn_tomorrow"
@@ -40,7 +42,7 @@
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/tomorrow"
             android:src="@drawable/ic_next"
-            android:tint="@color/black" />
+            android:tint="@color/black"/>
 
     </LinearLayout>
 

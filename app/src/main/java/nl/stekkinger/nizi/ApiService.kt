@@ -196,7 +196,7 @@ interface ApiService {
 
     //region dietary-managements
     @POST("dietary-managements")
-    fun addDietary(
+    fun addDietaryManagement(
         @Header("Authorization") authHeader : String,
         @Body body: DietaryManagementShort
     ) : Call<DietaryManagement>
@@ -208,17 +208,17 @@ interface ApiService {
     ) : Call<ArrayList<DietaryManagement>>
 
     @PUT("dietary-managements/{dietaryManagementId}")
-    fun updateDietary(
+    fun updateDietaryManagement(
         @Header("Authorization") authHeader : String,
         @Body body: DietaryManagementShort,
         @Path("dietaryManagementId") dietaryManagementId: Int
     ) : Call<DietaryManagement>
 
-    @DELETE("v1/dietaryManagement/{dietId}")
+    @DELETE("dietary-managements/{dietaryManagementId}")
     fun deleteDietary(
         @Header("Authorization") authHeader : String,
-        @Path("dietId") dietId: Int
-    ) : Call<Unit>
+        @Path("dietaryManagementId") dietaryManagementId: Int
+    ) : Call<DietaryManagement>
     //endregion
 
     // Never used

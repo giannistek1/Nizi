@@ -44,12 +44,14 @@
         </LinearLayout>
 
         <ScrollView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingStart="0dp"
+                android:paddingEnd="@dimen/marginNormal"
                 android:orientation="vertical">
 
                 <TextView
@@ -67,7 +69,6 @@
                     android:id="@+id/activity_login_et_username"
                     android:hint="@string/username"
                     android:layout_marginStart="@dimen/marginLeft"
-                    android:layout_marginEnd="@dimen/marginRight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
@@ -86,10 +87,20 @@
                     android:id="@+id/activity_login_et_password"
                     android:hint="@string/password"
                     android:layout_marginStart="@dimen/marginLeft"
-                    android:layout_marginEnd="@dimen/marginRight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="textPassword"/>
+
+                <TextView
+                    android:id="@+id/activity_login_txt_password_forgotten"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/password_forgotten"
+                    android:gravity="end"
+                    android:layout_marginStart="@dimen/marginLeft"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"/>
 
                 <Button
                     android:id="@+id/activity_login_btn_login"
@@ -97,19 +108,11 @@
                     android:enabled="false"
                     android:background="@color/colorAccent"
                     android:textColor="@android:color/white"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/marginNormal"
                     android:layout_marginStart="@dimen/marginLeft"
-                    android:layout_marginEnd="@dimen/marginRight"
-                    android:layout_width="match_parent"
+                    android:layout_width="150dp"
                     android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/activity_login_txt_password_forgotten"
-                    android:text="@string/password_forgotten"
-                    android:layout_marginStart="@dimen/marginLeft"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="true"
-                    android:focusable="true"/>
 
                 <ProgressBar
                     android:id="@+id/activity_login_loader"
@@ -142,8 +145,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:paddingTop="@dimen/marginDouble"
                     android:paddingBottom="@dimen/marginNormal"
-                    android:paddingTop="@dimen/marginNormal"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -170,8 +173,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:paddingTop="@dimen/marginDouble"
                     android:paddingBottom="@dimen/marginNormal"
-                    android:paddingTop="@dimen/marginNormal"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -212,8 +215,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:paddingTop="@dimen/marginDouble"
                     android:paddingBottom="@dimen/marginNormal"
-                    android:paddingTop="@dimen/marginNormal"
                     android:orientation="horizontal">
 
                     <ImageView

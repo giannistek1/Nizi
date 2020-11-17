@@ -27,10 +27,10 @@ class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: A
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-        // setting date for diary
+        // Setting date for diary
         mCurrentDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
-        var startDate: String = getDay(mCurrentDate, 0)
-        var endDate: String = getDay(mCurrentDate, 1)
+        val startDate: String = getDay(mCurrentDate, 0)
+        val endDate: String = getDay(mCurrentDate, 1)
         model.setDiaryDate(startDate + "/" + endDate)
 
 
@@ -87,6 +87,7 @@ class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: A
 
 
         })*/
+
         fragment_home_btn_yesterday.setOnClickListener {
             val sdf = SimpleDateFormat("yyyy-MM-dd")
             val newDate = sdf.parse(getDay(mCurrentDate, -1))
@@ -115,17 +116,18 @@ class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: A
 
     fun refreshGuidelines()
     {
-        if (dietaryGuidelines != null) {
-            GuidelinesHelper.initializeGuidelines(cont, fragment_home_ll_guidelines, dietaryGuidelines)
-        }
+        // Guard
+        if (dietaryGuidelines == null) { return }
+
+        GuidelinesHelper.initializeGuidelines(cont, fragment_home_ll_guidelines, dietaryGuidelines)
     }
 
     fun getDay(date: String, daysAdded: Int): String {
         Log.d("AAAAAA", "BBBBB")
         var newDate = date
-        var sdf = SimpleDateFormat("yyyy-MM-dd")
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
         val c = Calendar.getInstance()
-        c.time = sdf.parse(newDate)
+        c.time = sdf.parse(newDate)!!
         c.add(Calendar.DATE, daysAdded)
         val resultdate = Date(c.timeInMillis)
         newDate = sdf.format(resultdate)
