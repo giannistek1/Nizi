@@ -3,7 +3,6 @@ package nl.stekkinger.nizi.activities.doctor
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -30,7 +29,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
     val EXTRA_DOCTOR_ID = "DOCTOR_ID"
 
-    // for activity result
+    // For activity result
     private val REQUEST_CODE = 0
 
     //region Repositories
@@ -43,13 +42,13 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     var patientList = ArrayList<PatientItem>()
     private var doctorId: Int = 1
 
-    private lateinit var progressBar: View
+    private lateinit var loader: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // setup UI
         setContentView(R.layout.activity_doctor_main)
-        progressBar = activity_doctor_main_loader
+        loader = activity_doctor_main_loader
 
         // Get User and doctorId
         user = GeneralHelper.getUser()
@@ -58,6 +57,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         // Add patient button
         activity_doctor_main_btn_addPatient.setOnClickListener {
             val intent = Intent(this@DoctorMainActivity, AddPatientActivity::class.java)
+
             // Prevents multiple activities
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             intent.putExtra(EXTRA_DOCTOR_ID, doctorId)
@@ -109,7 +109,9 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 // Open detail page when clicked
                 val intent = Intent(this@DoctorMainActivity, PatientDetailActivity::class.java)
 
-                intent.putExtra("PATIENT", patientList[position])
+                // Prevents duplicating activity
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                intent.putExtra(GeneralHelper.EXTRA_PATIENT, patientList[position])
                 intent.putExtra(EXTRA_DOCTOR_ID, doctorId)
                 startActivity(intent)
             }
@@ -126,8 +128,9 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     {
         override fun onPreExecute() {
             super.onPreExecute()
+
             // Loader
-            progressBar.visibility = View.VISIBLE
+            loader.visibility = View.VISIBLE
         }
 
         override fun doInBackground(vararg p0: Void?): ArrayList<Patient>? {
@@ -141,35 +144,40 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
         override fun onPostExecute(result: ArrayList<Patient>?) {
             super.onPostExecute(result)
+
             // Loader
-            progressBar.visibility = View.GONE
-            if (result != null) {
-                Toast.makeText(baseContext, R.string.get_patients_success, Toast.LENGTH_SHORT).show()
+            loader.visibility = View.GONE
 
-                // Clear
-                patientList.clear()
+            // Guard
+            if (result == null) { Toast.makeText(baseContext, R.string.get_patients_fail, Toast.LENGTH_SHORT).show()
+                return }
 
-                // Fill
-                (0 until result.count()).forEach {
-                    if (result[it].user == null) return@forEach
+            Toast.makeText(baseContext, R.string.get_patients_success, Toast.LENGTH_SHORT).show()
 
-                    val pi = PatientItem(
-                        it + 1,
-                        result[it].user!!.first_name + " " + result[it].user!!.last_name,
-                        result[it].user!!.first_name,
-                        result[it].user!!.last_name,
-                        result[it].date_of_birth,
-                        //result[it].weightInKilograms,
-                        result[it].id!!,
-                        result[it].doctor.id!!
-                    )
-                    patientList.add(pi)
-                }
+            // Clear
+            patientList.clear()
 
-                setupRecyclerView()
-            } else {
-                Toast.makeText(baseContext, R.string.get_patients_fail, Toast.LENGTH_SHORT).show()
+            // Fill
+            (0 until result.count()).forEach {
+                if (result[it].user == null) return@forEach
+
+                val pi = PatientItem(
+                    it + 1,
+                    result[it].user!!.first_name + " " + result[it].user!!.last_name,
+                    result[it].user!!.first_name,
+                    result[it].user!!.last_name,
+                    result[it].date_of_birth,
+                    result[it].gender,
+                    result[it].user!!.username,
+                    result[it].user!!.email,
+                    result[it].user!!.role,
+                    result[it].id!!,
+                    result[it].doctor.id!!
+                )
+                patientList.add(pi)
             }
+
+            setupRecyclerView()
         }
     }
 

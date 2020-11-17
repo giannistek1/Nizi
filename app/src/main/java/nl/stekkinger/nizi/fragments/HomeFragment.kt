@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_home.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.DietaryGuideline
+import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import java.text.SimpleDateFormat
 import java.util.*

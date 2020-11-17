@@ -8,8 +8,8 @@ import java.io.Serializable
 
 data class PatientLogin (
     var id: Int = 0,
-    val gender: String,
-    val date_of_birth: String,
+    var gender: String,
+    var date_of_birth: String,
     val doctor: Int,
 
     val user: Int? = null,

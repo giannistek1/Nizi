@@ -93,6 +93,8 @@
     <string name="max">Max</string>
 
     <!-- doctor -->
+
+    <!-- doctor dashboard -->
     <string name="patients">Patiënten</string>
     <string name="get_patients_success">Patiënten opgehaald!</string>
     <string name="get_patients_fail">Patiënten ophalen mislukt!</string>
@@ -101,6 +103,16 @@
     <string name="edit_patient">Patiënt bewerken</string>
     <string name="delete_patient">Patiënt verwijderen</string>
 
+    <!-- detail page -->
+    <string name="data_of">Gegevens van</string>
+    <string name="average_of">Gemiddelde van</string>
+    <string name="week">Week</string>
+    <string name="trends">Trends</string>
+    <string name="fetched_patient">Patiënt ophalen mislukt</string>
+    <string name="get_patient_fail">Patiënt ophalen mislukt</string>
+    <string name="fetched_dietary">Richtlijnen opgehaald</string>
+    <string name="get_dietary_fail">Richtlijnen ophalen mislukt</string>
+    <!-- patient profiel -->
     <string name="profile">Profiel</string>
     <string name="profile_patient">Profiel patiënt</string>
     <string name="step_1">Stap 1</string>
@@ -135,25 +147,6 @@
     <string name="fibers_in_g">Vezels in gram</string>
     <string name="save">Opslaan</string>
     <string name="save_patient">Patiënt opslaan</string>
-    <string name="patient_added">Patiënt toegevoegd</string>
-    <string name="patient_add_failed">Patiënt toevoegen mislukt</string>
-    <string name="patient_edited">Patiënt bewerkt</string>
-    <string name="patient_updated">Patiënt updatet</string>
-    <string name="patient_update_fail">Patiënt updaten mislukt</string>
-    <string name="patient_deleted">Patiënt verwijderd</string>
-    <string name="fetched_dietary_restrictions">Richtlijnnamen opgehaald</string>
-    <string name="fetch_dietary_restrictions_fail">Richtlijnnamen ophalen mislukt</string>
-    <string name="dietaries_empty">Richtlijn(en) niet ingevuld</string>
-    <string name="dietary_added">Richtlijn toegevoegd</string>
-    <string name="dietary_add_fail">Richtlijn toevoegen mislukt</string>
-    <string name="dietary_changed">Richtlijn veranderd</string>
-    <string name="user_added">Gebruiker  toegevoegd</string>
-    <string name="user_add_fail">Gebruiker toevoegen mislukt</string>
-
-    <string name="data_of">Gegevens van</string>
-    <string name="average_of">Gemiddelde van</string>
-    <string name="week">Week</string>
-    <string name="trends">Trends</string>
 
     <!-- Messages adding patient -->
     <string name="empty_first_name">Vul een voornaam in</string>
@@ -166,15 +159,28 @@
     <string name="empty_password_confirm">Vul een bevestigend wachtwoord in</string>
     <string name="passwords_dont_match">Wachtwoorden komen niet overeen</string>
 
+    <string name="patient_added">Patiënt is toegevoegd</string>
+    <string name="patient_add_failed">Patiënt toevoegen mislukt</string>
+    <string name="patient_edited">Patiënt gewijzigd</string>
+    <string name="patient_edit_fail">Patiënt wijzigen mislukt</string>
+    <string name="patient_updated">Patiënt updatet</string>
+    <string name="patient_update_fail">Patiënt updaten mislukt</string>
+    <string name="patient_deleted">Patiënt verwijderd</string>
+    <string name="fetched_dietary_restrictions">Richtlijnnamen opgehaald</string>
+    <string name="fetch_dietary_restrictions_fail">Richtlijnnamen ophalen mislukt</string>
+    <string name="dietaries_empty">Richtlijn(en) niet ingevuld</string>
+    <string name="dietary_added">Richtlijn toegevoegd</string>
+    <string name="dietary_add_fail">Richtlijn toevoegen mislukt</string>
+    <string name="dietary_changed">Richtlijn gewijzigd</string>
+    <string name="dietary_change_fail">Richtlijn veranderend mislukt</string>
+    <string name="user_added">Gebruiker  toegevoegd</string>
+    <string name="user_add_fail">Gebruiker toevoegen mislukt</string>
+    <string name="user_edited">Gebruiker gewijzigd</string>
+    <string name="used_edit_fail">Gebruiker wijzigen mislukt</string>
 
     <!-- other (image content description, and other stuff that cant be placed) -->
     <string name="advice_from">Advies van</string>
     <string name="ready">Gereed</string>
-    <string name="food_diary">Voedingsdagboek</string>
-    <string name="user">Gebruiker</string>
-    <string name="arrow_right">Pijl rechts</string>
-    <string name="next_week">Vorige week</string>
-    <string name="previous_week">Volgende week</string>
 
     <!-- months -->
     <string name="january">Januari</string>
@@ -208,11 +214,14 @@
     <string name="ic_user">Gebruiker icoon</string>
     <string name="ic_culinary">Etensgerei icoon</string>
 
+    <string name="food_diary">Voedingsdagboek</string>
+    <string name="user">Gebruiker</string>
+    <string name="arrow_right">Pijl rechts</string>
+    <string name="previous_week">Vorige week knop</string>
+    <string name="next_week">Volgende week knop</string>
 
     <!-- buttons -->
     <string name="add_picture_btn">Voeg foto toe</string>
-
-
 
     <string-array name="guideline_array">
         <item>Caloriebeperking</item>

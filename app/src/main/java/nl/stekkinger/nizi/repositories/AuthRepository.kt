@@ -19,10 +19,6 @@ class AuthRepository : Repository() {
     private val accessToken = prefs.getString("TOKEN", null)
     private val authHeader = "Bearer " + accessToken
 
-    fun registerUser(registerUser: User) : UserLogin? {
-        return service.registerUser(authHeader, registerUser).execute().body()
-    }
-
     // Code 400 gives body = null back
     fun login(loginRequest: LoginRequest) : LoginResponse? {
         return service.login(loginRequest).execute().body()
@@ -37,5 +33,13 @@ class AuthRepository : Repository() {
 
         activity.startActivity(newIntent)
         activity.finish()
+    }
+
+    fun registerUser(user: User) : UserLogin? {
+        return service.registerUser(authHeader, user).execute().body()
+    }
+
+    fun updateUser(user: User) : UserLogin? {
+        return service.updateUser(authHeader, user).execute().body()
     }
 }

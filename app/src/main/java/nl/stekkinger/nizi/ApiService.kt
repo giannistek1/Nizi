@@ -9,14 +9,13 @@ import nl.stekkinger.nizi.classes.old.Conversation
 import nl.stekkinger.nizi.classes.patient.*
 import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.login.UserLogin
-import nl.stekkinger.nizi.classes.PatientUpdateModel
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
 
-    //region auth/users
+    //region auth && users
     @POST("auth/local")
     fun login(
         @Body body: LoginRequest
@@ -27,19 +26,31 @@ interface ApiService {
         @Header("Authorization") authHeader : String,
         @Body body: User
     ) : Call<UserLogin>
+
+    @PUT("users")
+    fun updateUser(
+        @Header("Authorization") authHeader : String,
+        @Body body: User
+    ) : Call<UserLogin>
     //endregion
 
     //region patients
+    @POST("patients")
+    fun registerPatient(
+        @Header("Authorization") authHeader : String,
+        @Body body: PatientLogin
+    ) : Call<Patient>
+
     @GET("patients")
     fun getPatientsForDoctor(
         @Header("Authorization") authHeader : String,
         @Query("doctor.id") doctorId: Int
     ) : Call<ArrayList<Patient>>
 
-    @POST("patients")
-    fun registerPatient(
+    @GET("patients/{patientId}")
+    fun getPatient(
         @Header("Authorization") authHeader : String,
-        @Body body: PatientLogin
+        @Path("patientId") patientId: Int
     ) : Call<Patient>
 
     @PUT("patients/{patientId}")
@@ -49,16 +60,12 @@ interface ApiService {
         @Body body: PatientUpdateUserIdRequest
     ) : Call<Patient>
 
-    @PUT("v1/patient")
+    @PUT("patients/{patientId}")
     fun updatePatient(
         @Header("Authorization") authHeader : String,
-        @Body body: PatientUpdateModel
-    ) : Call<Unit>
-
-    @GET("v1/patient/{patientId}")
-    fun getPatient(
-        @Path("patientId") patientId: Int
-    ) : Call<Unit>
+        @Path("patientId") patientId: Int,
+        @Body body: PatientLogin
+    ) : Call<Patient>
 
     @DELETE("v1/patient/{patientId}")
     fun deletePatient(
@@ -194,16 +201,17 @@ interface ApiService {
         @Body body: DietaryManagementShort
     ) : Call<DietaryManagement>
 
-    @GET("v1/dietaryManagement/{patientId}")
-    fun getDietary(
+    @GET("dietary-managements")
+    fun getDietaryManagements(
         @Header("Authorization") authHeader : String,
-        @Path("patientId") patientId: Int
-    ) : Call<DietaryView>
+        @Query("patient.id") patientId: Int
+    ) : Call<ArrayList<DietaryManagement>>
 
-    @PUT("dietaryManagements")
+    @PUT("dietary-managements/{dietaryManagementId}")
     fun updateDietary(
         @Header("Authorization") authHeader : String,
-        @Query("id") id: Int
+        @Body body: DietaryManagementShort,
+        @Path("dietaryManagementId") dietaryManagementId: Int
     ) : Call<DietaryManagement>
 
     @DELETE("v1/dietaryManagement/{dietId}")

@@ -6,8 +6,6 @@ import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.patient.PatientLogin
-import nl.stekkinger.nizi.classes.PatientUpdateModel
-import nl.stekkinger.nizi.classes.patient.AddPatientRequest
 import nl.stekkinger.nizi.classes.patient.PatientUpdateUserIdRequest
 
 // 1e API TEST = Patiënt
@@ -22,36 +20,31 @@ class PatientRepository : Repository(){
     var accessToken = preferences.getString(GeneralHelper.PREF_TOKEN, null)
     var authHeader = "Bearer " + accessToken
 
+    fun registerPatient(patient: PatientLogin) : Patient?
+    {
+        return service.registerPatient(authHeader, patient).execute().body()
+    }
+
     fun getPatientsForDoctor(doctorId: Int) : ArrayList<Patient>?
     {
         return service.getPatientsForDoctor(authHeader, doctorId).execute().body()
     }
 
-    // DoB = "YYYY-MM-DDT10:55:38:00"
-
-    fun registerPatient(patient: PatientLogin) : Patient?
+    fun getPatient(patientId: Int) : Patient?
     {
-        return service.registerPatient(authHeader, patient).execute().body()
+        return service.getPatient(authHeader, patientId).execute().body()
     }
+
+    // DoB = "YYYY-MM-DDT10:55:38:00"
 
     fun updatePatientUserId(patientId: Int, userId: Int) : Patient? {
 
         return service.updatePatientUserId(authHeader, patientId, PatientUpdateUserIdRequest(userId)).execute().body()
     }
 
-    fun updatePatient(patientId: Int?, doctorId: Int?, firstName: String, lastName: String, dateOfBirth: String)
+    fun updatePatient(patient: PatientLogin) : Patient?
     {
-        val patientToUpdate =
-            PatientUpdateModel(
-                patientId,
-                doctorId,
-                firstName,
-                lastName,
-                dateOfBirth
-            )
-
-        // DoB = "YYYY-MM-DDT10:55:38:00"
-        service.updatePatient(authHeader, patientToUpdate).execute()
+        return service.updatePatient(authHeader, patient.id, patient).execute().body()
     }
 
 

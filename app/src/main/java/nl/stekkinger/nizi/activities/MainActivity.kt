@@ -13,8 +13,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import nl.stekkinger.nizi.fragments.HomeFragment
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.*
+import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
+import nl.stekkinger.nizi.classes.old.DietaryView
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository
@@ -134,8 +136,11 @@ class MainActivity : AppCompatActivity() {
                 lateinit var dietaryGuideline: DietaryGuideline
 
                 val restriction = resultDietary.Description.replace("beperking", "").replace("verrijking","")
-                dietaryGuideline = DietaryGuideline(resultDietary.Description, restriction, restriction.toLowerCase(),
-                    0, 0, 0, "")
+                dietaryGuideline =
+                    DietaryGuideline(
+                        resultDietary.Description, restriction, restriction.toLowerCase(),
+                        0, 0, 0, ""
+                    )
 
                 var alreadyExists = false
 

@@ -5,6 +5,6 @@ import nl.stekkinger.nizi.classes.login.User
 import java.io.Serializable
 
 data class AddPatientViewModel (
-    val user: User,
-    val patient: PatientLogin
+    val patient: PatientLogin,
+    val user: User
 ) : Serializable

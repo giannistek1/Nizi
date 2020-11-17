@@ -1,6 +1,6 @@
-package nl.stekkinger.nizi.classes
+package nl.stekkinger.nizi.classes.old
 
-import nl.stekkinger.nizi.classes.dietary.DietaryManagementModel
+import nl.stekkinger.nizi.classes.old.DietaryManagementModel
 import nl.stekkinger.nizi.classes.old.Restrictions
 
 // Response from getting Dietary

@@ -3,18 +3,16 @@ package nl.stekkinger.nizi.classes.helper_classes
 import android.content.res.ColorStateList
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
-import androidx.core.view.marginBottom
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.FragmentActivity
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.DietaryGuideline
+import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import kotlin.random.Random
 
 object GuidelinesHelper {

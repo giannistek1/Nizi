@@ -11,8 +11,11 @@ import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
-import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
-import nl.stekkinger.nizi.classes.patient.UpdatePatientViewModel
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.classes.login.UserLogin
+import nl.stekkinger.nizi.classes.patient.Patient
+import nl.stekkinger.nizi.classes.patient.PatientData
+import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 
@@ -22,19 +25,17 @@ class EditPatientDietaryActivity : AppCompatActivity() {
 
     val EXTRA_DOCTOR_ID = "DOCTOR_ID"
 
+    private val authRepository: AuthRepository = AuthRepository()
     private val patientRepository: PatientRepository = PatientRepository()
     private val dietaryRepository: DietaryRepository = DietaryRepository()
 
-    private lateinit var progressBar: View
+    private lateinit var loader: View
 
     private var doctorId: Int? = null
-    private lateinit var updatePatientViewMode: UpdatePatientViewModel
-    private lateinit var addPatientViewModel: AddPatientViewModel
+    private lateinit var patientData: PatientData
 
     private lateinit var dietaryList: ArrayList<DietaryManagementShort>
     private lateinit var textViewList: ArrayList<EditText>
-
-    private var hasNoDietary = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,34 +51,31 @@ class EditPatientDietaryActivity : AppCompatActivity() {
             activity_add_patient_dietary_et_fiber_min, activity_add_patient_dietary_et_fiber_max
         )
 
-        updatePatientViewMode = intent.extras?.get("PATIENT") as UpdatePatientViewModel
+        patientData = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientData
 
-            updatePatientViewMode.diets.forEachIndexed { _, element ->
-                if (element.description.contains("Calorie")) {
-                    activity_add_patient_dietary_et_cal_min.setText(element.minimum.toString())
-                    activity_add_patient_dietary_et_cal_max.setText(element.maximum.toString())
-                } else if (element.description.contains("Vocht")) {
-                    activity_add_patient_dietary_et_water_min.setText(element.minimum.toString())
-                    activity_add_patient_dietary_et_water_max.setText(element.maximum.toString())
-                } else if (element.description.contains("Natrium")) {
-                    activity_add_patient_dietary_et_sodium_min.setText(element.minimum.toString())
-                    activity_add_patient_dietary_et_sodium_max.setText(element.maximum.toString())
-                } else if (element.description.contains("Kalium")) {
-                    activity_add_patient_dietary_et_potassium_min.setText(element.minimum.toString())
-                    activity_add_patient_dietary_et_potassium_max.setText(element.maximum.toString())
-                } else if (element.description.contains("Eiwit")) {
-                    activity_add_patient_dietary_et_protein_min.setText(element.minimum.toString())
-                    activity_add_patient_dietary_et_protein_max.setText(element.maximum.toString())
-                } else if (element.description.contains("Vezel")) {
-                    activity_add_patient_dietary_et_protein_min.setText(element.minimum.toString())
-                    activity_add_patient_dietary_et_protein_max.setText(element.maximum.toString())
-                }
+        patientData.diets.forEachIndexed { _, diet ->
+            if (diet.description.contains("Calorie")) {
+                activity_add_patient_dietary_et_cal_min.setText(diet.minimum.toString())
+                activity_add_patient_dietary_et_cal_max.setText(diet.maximum.toString())
+            } else if (diet.description.contains("Vocht")) {
+                activity_add_patient_dietary_et_water_min.setText(diet.minimum.toString())
+                activity_add_patient_dietary_et_water_max.setText(diet.maximum.toString())
+            } else if (diet.description.contains("Natrium")) {
+                activity_add_patient_dietary_et_sodium_min.setText(diet.minimum.toString())
+                activity_add_patient_dietary_et_sodium_max.setText(diet.maximum.toString())
+            } else if (diet.description.contains("Kalium")) {
+                activity_add_patient_dietary_et_potassium_min.setText(diet.minimum.toString())
+                activity_add_patient_dietary_et_potassium_max.setText(diet.maximum.toString())
+            } else if (diet.description.contains("Eiwit")) {
+                activity_add_patient_dietary_et_protein_min.setText(diet.minimum.toString())
+                activity_add_patient_dietary_et_protein_max.setText(diet.maximum.toString())
+            } else if (diet.description.contains("Vezel")) {
+                activity_add_patient_dietary_et_protein_min.setText(diet.minimum.toString())
+                activity_add_patient_dietary_et_protein_max.setText(diet.maximum.toString())
             }
+        }
 
-
-
-
-        progressBar = activity_add_patient_dietary_loader
+        loader = activity_add_patient_dietary_loader
 
         activity_add_patient_dietary_btn_save.setOnClickListener {
                 updatePatientAsyncTask().execute()
@@ -87,34 +85,68 @@ class EditPatientDietaryActivity : AppCompatActivity() {
         doctorId = intent.getIntExtra(EXTRA_DOCTOR_ID, 0)
     }
 
-    //region RegisterPatient
-    inner class updatePatientAsyncTask() : AsyncTask<Void, Void, Void>()
+    //region step 1. updatePatient
+    inner class updatePatientAsyncTask() : AsyncTask<Void, Void, Patient>()
     {
         override fun onPreExecute() {
             super.onPreExecute()
-            // Progressbar
-            progressBar.visibility = View.VISIBLE
+
+            // Loader
+            loader.visibility = View.VISIBLE
         }
 
-        override fun doInBackground(vararg p0: Void?): Void? {
-            patientRepository.updatePatient(updatePatientViewMode.patient.patientId, doctorId, updatePatientViewMode.patient.firstName, updatePatientViewMode.patient.lastName, updatePatientViewMode.patient.dateOfBirth)
-            return null
+        override fun doInBackground(vararg p0: Void?): Patient? {
+            return patientRepository.updatePatient(patientData.patient)
         }
 
-        override fun onPostExecute(result: Void?) {
+        override fun onPostExecute(result: Patient?) {
             super.onPostExecute(result)
-            // Progressbar
-            progressBar.visibility = View.GONE
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guard
+            if (result == null) { Toast.makeText(baseContext, R.string.patient_edit_fail, Toast.LENGTH_SHORT).show()
+                return }
+
+            // Feedback
+            Toast.makeText(baseContext, R.string.patient_edited, Toast.LENGTH_SHORT).show()
+
+            updateUserAsyncTask().execute()
+        }
+    }
+    //endregion
+
+    //region step 2. updateUser
+    inner class updateUserAsyncTask() : AsyncTask<Void, Void, UserLogin>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            // Loader
+            loader.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): UserLogin? {
+            return authRepository.updateUser(patientData.user)
+        }
+
+        override fun onPostExecute(result: UserLogin?) {
+            super.onPostExecute(result)
+
+            // Loader
+            loader.visibility = View.GONE
+
             // Feedback
             Toast.makeText(baseContext, R.string.patient_edited, Toast.LENGTH_SHORT).show()
 
             //val restrictionsList = arrayOf(R.array.guideline_array)
             val restrictionsList = arrayOf("Caloriebeperking", "Calorieverrijking",
-            "Vochtbeperking", "Vochtverrijking",
-            "Natriumbeperking", "Natriumverrijking",
-            "Kaliumbeperking", "Kaliumverrijking",
-            "Eiwitbeperking", "Eiwitverrijking",
-            "Vezelbeperking", "Vezelverrijking")
+                "Vochtbeperking", "Vochtverrijking",
+                "Natriumbeperking", "Natriumverrijking",
+                "Kaliumbeperking", "Kaliumverrijking",
+                "Eiwitbeperking", "Eiwitverrijking",
+                "Vezelbeperking", "Vezelverrijking")
 
             dietaryList = arrayListOf()
 
@@ -126,46 +158,52 @@ class EditPatientDietaryActivity : AppCompatActivity() {
                             dietary_restriction = index+1,
                             amount = textViewList[index].text.toString().toInt(),
                             is_active =  true,
-                            patient = updatePatientViewMode.patient.id
+                            patient = patientData.patient.id
                         )
                     )
                 }
             }
 
             // Add the dietaries that were added (filled in)
-            if (updatePatientViewMode.diets.count() == 0) {
-                dietaryList.forEachIndexed { _, element ->
-                    addDietaryToPatientAsyncTask(element).execute()
+            if (patientData.diets.count() == 0) {
+                dietaryList.forEachIndexed { _, dietary ->
+                    addDietaryToPatientAsyncTask(dietary).execute()
                 }
             }
             else
             {
-                dietaryList.forEachIndexed { _, element ->
-                    updateDietaryAsyncTask(element.id!!).execute()
+                dietaryList.forEachIndexed { _, dietary ->
+                    updateDietaryAsyncTask(dietary).execute()
                 }
             }
         }
     }
     //endregion
 
-    //region AddDietaryToPatient
+    //region 4. addDietaryToPatient
     inner class addDietaryToPatientAsyncTask(val dietary: DietaryManagementShort) : AsyncTask<Void, Void, DietaryManagement>()
     {
         override fun onPreExecute() {
             super.onPreExecute()
-            // Progressbar
-            progressBar.visibility = View.VISIBLE
+
+            // Loader
+            loader.visibility = View.VISIBLE
         }
 
         override fun doInBackground(vararg p0: Void?): DietaryManagement? {
-            dietaryRepository.addDietary(dietary)
-            return null
+            return dietaryRepository.addDietary(dietary)
         }
 
         override fun onPostExecute(result: DietaryManagement?) {
             super.onPostExecute(result)
-            // Progressbar
-            progressBar.visibility = View.GONE
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guard
+            if (result == null) { Toast.makeText(baseContext, R.string.dietary_add_fail, Toast.LENGTH_SHORT).show()
+                return }
+
             // Feedback
             Toast.makeText(baseContext, R.string.dietary_added, Toast.LENGTH_SHORT).show()
 
@@ -177,25 +215,32 @@ class EditPatientDietaryActivity : AppCompatActivity() {
     }
     //endregion
 
-    //region AddDietaryToPatient
-    inner class updateDietaryAsyncTask(val dietaryManagementId: Int) : AsyncTask<Void, Void, DietaryManagement>()
+    //region 3. updateDietaryToPatient
+    inner class updateDietaryAsyncTask(val dietaryManagement: DietaryManagementShort) : AsyncTask<Void, Void, DietaryManagement>()
     {
         override fun onPreExecute() {
             super.onPreExecute()
-            // Progressbar
-            progressBar.visibility = View.VISIBLE
+
+            // Loader
+            loader.visibility = View.VISIBLE
         }
 
         override fun doInBackground(vararg p0: Void?): DietaryManagement? {
-            return dietaryRepository.updateDietary(dietaryManagementId)
+            return dietaryRepository.updateDietary(dietaryManagement)
         }
 
         override fun onPostExecute(result: DietaryManagement?) {
             super.onPostExecute(result)
-            // Progressbar
-            progressBar.visibility = View.GONE
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guard
+            if (result == null) { Toast.makeText(baseContext, R.string.dietary_change_fail, Toast.LENGTH_SHORT).show()
+                return }
+
             // Feedback
-            Toast.makeText(baseContext, R.string.dietary_added, Toast.LENGTH_SHORT).show()
+            Toast.makeText(baseContext, R.string.dietary_changed, Toast.LENGTH_SHORT).show()
 
             // Remove from list
             dietaryList.removeAt(0)

@@ -44,6 +44,7 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/activity_patient_detail_btn_previousWeek"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
@@ -64,6 +65,7 @@
             android:layout_marginBottom="@dimen/marginNormal"/>
 
         <ImageView
+            android:id="@+id/activity_patient_detail_btn_nextWeek"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
@@ -79,6 +81,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/activity_patient_detail_loader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 </LinearLayout>

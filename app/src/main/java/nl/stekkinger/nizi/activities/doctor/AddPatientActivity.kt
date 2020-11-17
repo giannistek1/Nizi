@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add_patient.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
@@ -18,8 +19,7 @@ class AddPatientActivity : AppCompatActivity() {
 
     private var TAG = "AddPatient"
 
-    val EXTRA_DOCTOR_ID = "DOCTOR_ID"
-    // for activity result
+    // For activity result
     private val REQUEST_CODE = 0
 
     private lateinit var progressBar: View
@@ -41,7 +41,7 @@ class AddPatientActivity : AppCompatActivity() {
         }
 
         // Get doctorId
-        doctorId = intent.getIntExtra(EXTRA_DOCTOR_ID, 0)
+        doctorId = intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 0)
 
         // Testing
         activity_add_patient_et_firstName.setText("Jaap")
@@ -71,14 +71,14 @@ class AddPatientActivity : AppCompatActivity() {
             Toast.makeText(baseContext, R.string.passwords_dont_match, Toast.LENGTH_SHORT).show(); return }
 
         val intent = Intent(this@AddPatientActivity, AddPatientDietaryActivity::class.java)
-        // Prevents duplicating activivity
+        // Prevents duplicating activity
         intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
 
         // Patientdata
         var lastNameWithoutSpaces = lastNameET.text.toString().trim()
         lastNameWithoutSpaces = lastNameWithoutSpaces.replace("\\s".toRegex(), "")
 
-        val radioButton: RadioButton = activity_add_patient_rg_gender.findViewById(checkedGenderRadioButtonId)
+        val selectedRadioButton: RadioButton = activity_add_patient_rg_gender.findViewById(checkedGenderRadioButtonId)
 
         val newPatient = AddPatientViewModel(
             user = User(
@@ -91,15 +91,15 @@ class AddPatientActivity : AppCompatActivity() {
             ),
             // Update corresponding user later when its made
             patient = PatientLogin(
-                gender = radioButton.text.toString(),
+                gender = selectedRadioButton.text.toString(),
                 date_of_birth = dobET.text.toString().trim(),
                 doctor = doctorId!!
             )
         )
 
         // Give patient and doctor ID
-        intent.putExtra("PATIENT", newPatient)
-        intent.putExtra(EXTRA_DOCTOR_ID, doctorId!!)
+        intent.putExtra(GeneralHelper.EXTRA_PATIENT, newPatient)
+        intent.putExtra(GeneralHelper.EXTRA_DOCTOR_ID, doctorId!!)
         // Start intent
         startActivityForResult(intent, REQUEST_CODE)
     }

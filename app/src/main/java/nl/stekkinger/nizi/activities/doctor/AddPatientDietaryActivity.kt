@@ -102,7 +102,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): ArrayList<DietaryRestriction>? {
-            return dietaryRepository.getDietaries()
+            return dietaryRepository.getDietaryRestrictions()
         }
 
         override fun onPostExecute(result: ArrayList<DietaryRestriction>?) {
@@ -149,7 +149,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
 
             // Update patientId which you get after making patient
             addPatientViewModel.patient.id = result.id!!
-            addPatientViewModel.user.patient = result.id!!
+            addPatientViewModel.user.patient = result.id
 
 
             //val restrictionsList = arrayOf(R.array.guideline_array)
@@ -189,6 +189,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
     {
         override fun onPreExecute() {
             super.onPreExecute()
+
             // Progressbar
             loader.visibility = View.VISIBLE
         }
@@ -199,6 +200,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: DietaryManagement?) {
             super.onPostExecute(result)
+
             // Progressbar
             loader.visibility = View.GONE
 
@@ -223,6 +225,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
     {
         override fun onPreExecute() {
             super.onPreExecute()
+
             // Progressbar
             loader.visibility = View.VISIBLE
         }
@@ -233,6 +236,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: UserLogin?) {
             super.onPostExecute(result)
+
             // Progressbar
             loader.visibility = View.GONE
 

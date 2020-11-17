@@ -16,6 +16,9 @@ object GeneralHelper {
     const val PREF_IS_DOCTOR = "IS_DOCTOR"
     const val PREF_DOCTOR_ID = "DOCTOR_ID"
 
+    const val EXTRA_PATIENT = "PATIENT"
+    const val EXTRA_DOCTOR_ID = "DOCTOR_ID"
+
     val prefs: SharedPreferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
 
     fun getUser() : UserLogin

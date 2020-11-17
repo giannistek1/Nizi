@@ -1,6 +1,5 @@
 package nl.stekkinger.nizi.classes.dietary
 
-import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.patient.PatientLogin
 import java.io.Serializable
 
