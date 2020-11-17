@@ -67,7 +67,7 @@ class PatientDetailActivity : AppCompatActivity() {
 
         // Checks if fragment state is null, then start with homeFragment
         if (savedInstanceState == null) {
-            val fragment = PatientHomeFragment(this, patientData)
+            val fragment = PatientHomeFragment(patientData)
             supportFragmentManager.beginTransaction().replace(R.id.activity_patient_detail_fragment_container, fragment, fragment.javaClass.getSimpleName())
                 .commit()
         }
@@ -81,7 +81,7 @@ class PatientDetailActivity : AppCompatActivity() {
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
         when (menuItem.itemId) {
             R.id.nav_home -> {
-                val fragment = PatientHomeFragment(this, patientData)
+                val fragment = PatientHomeFragment(patientData)
                 supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -249,7 +249,7 @@ class PatientDetailActivity : AppCompatActivity() {
                 consumptions = result.consumptions
             )
 
-            val fragment = PatientHomeFragment(this@PatientDetailActivity, patientData)
+            val fragment = PatientHomeFragment(patientData)
             supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
                 .commit()
         }

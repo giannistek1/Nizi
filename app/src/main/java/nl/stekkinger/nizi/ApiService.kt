@@ -10,6 +10,7 @@ import nl.stekkinger.nizi.classes.patient.*
 import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
+import nl.stekkinger.nizi.classes.feedback.Feedback
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -141,6 +142,12 @@ interface ApiService {
     //endregion
 
     //region feedbacks
+    @GET("feedbacks")
+    fun fetchFeedbacks(
+        @Header("Authorization") authHeader : String,
+        @Query("patient.id") patientId: Int
+    ) : Call<ArrayList<Feedback>>
+
     @GET("v1/waterconsumption/period/{patientId}")
     fun fetchConversations(
         @Header("Authorization") authHeader : String,

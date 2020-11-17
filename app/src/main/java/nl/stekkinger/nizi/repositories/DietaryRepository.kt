@@ -5,13 +5,14 @@ import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.dietary.DietaryRestriction
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 
 class DietaryRepository : Repository() {
 
     private val TAG = "DietaryRepository"
 
     private val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-    private val accessToken = preferences.getString("TOKEN", null)
+    private val accessToken = preferences.getString(GeneralHelper.PREF_TOKEN, null)
     private val authHeader = "Bearer " + accessToken
 
     fun addDietary(dietaryManagement: DietaryManagementShort) : DietaryManagement? {

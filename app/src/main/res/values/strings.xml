@@ -92,9 +92,13 @@
     <string name="min">Min</string>
     <string name="max">Max</string>
 
-    <!-- doctor -->
+    <!-- Feedback -->
+    <string name="get_feedbacks_fail">Feedback ophalen mislukt</string>
+    <string name="advice_from">Advies van</string>
 
-    <!-- doctor dashboard -->
+    <!-- Doctor -->
+
+    <!-- Doctor dashboard -->
     <string name="patients">Patiënten</string>
     <string name="get_patients_success">Patiënten opgehaald!</string>
     <string name="get_patients_fail">Patiënten ophalen mislukt!</string>
@@ -103,7 +107,7 @@
     <string name="edit_patient">Patiënt bewerken</string>
     <string name="delete_patient">Patiënt verwijderen</string>
 
-    <!-- detail page -->
+    <!-- Detail page -->
     <string name="data_of">Gegevens van</string>
     <string name="average_of">Gemiddelde van</string>
     <string name="week">Week</string>
@@ -112,7 +116,8 @@
     <string name="get_patient_fail">Patiënt ophalen mislukt</string>
     <string name="fetched_dietary">Richtlijnen opgehaald</string>
     <string name="get_dietary_fail">Richtlijnen ophalen mislukt</string>
-    <!-- patient profiel -->
+
+    <!-- Patient profile -->
     <string name="profile">Profiel</string>
     <string name="profile_patient">Profiel patiënt</string>
     <string name="step_1">Stap 1</string>
@@ -178,11 +183,10 @@
     <string name="user_edited">Gebruiker gewijzigd</string>
     <string name="used_edit_fail">Gebruiker wijzigen mislukt</string>
 
-    <!-- other (image content description, and other stuff that cant be placed) -->
-    <string name="advice_from">Advies van</string>
+    <!-- Oher (image content description, and other stuff that cant be placed) -->
     <string name="ready">Gereed</string>
 
-    <!-- months -->
+    <!-- Months -->
     <string name="january">Januari</string>
     <string name="february">Februari</string>
     <string name="march">Maart</string>

@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
@@ -16,7 +17,7 @@ import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: ArrayList<DietaryGuideline>?): Fragment() {
+class HomeFragment(private val dietaryGuidelines: ArrayList<DietaryGuideline>?): Fragment() {
     private lateinit var mCurrentDate: String
     private lateinit var model: DiaryViewModel
 
@@ -33,6 +34,29 @@ class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: A
         val endDate: String = getDay(mCurrentDate, 1)
         model.setDiaryDate(startDate + "/" + endDate)
 
+
+        view.fragment_home_btn_yesterday.setOnClickListener {
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            val newDate = sdf.parse(getDay(mCurrentDate, -1))
+            mCurrentDate = sdf.format(newDate)
+
+            fragment_home_txt_day.text = mCurrentDate
+            refreshGuidelines()
+        }
+
+        view.fragment_home_btn_tomorrow.setOnClickListener {
+            val sdf = SimpleDateFormat("yyyy-MM-dd")
+            val newDate = sdf.parse(getDay(mCurrentDate, 1))
+            // if new date is NOT after Today
+            if (!newDate.after(Date())) {
+                mCurrentDate = sdf.format(newDate)
+
+                fragment_home_txt_day.text = mCurrentDate
+                refreshGuidelines()
+            }
+        }
+
+        view.fragment_home_txt_day.text = mCurrentDate
 
 
 //        view?.diary_prev_date.setOnClickListener {
@@ -88,29 +112,6 @@ class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: A
 
         })*/
 
-        fragment_home_btn_yesterday.setOnClickListener {
-            val sdf = SimpleDateFormat("yyyy-MM-dd")
-            val newDate = sdf.parse(getDay(mCurrentDate, -1))
-            mCurrentDate = sdf.format(newDate)
-
-            fragment_home_txt_day.text = mCurrentDate
-            refreshGuidelines()
-        }
-
-        fragment_home_btn_tomorrow.setOnClickListener {
-            val sdf = SimpleDateFormat("yyyy-MM-dd")
-            val newDate = sdf.parse(getDay(mCurrentDate, 1))
-            // if new date is NOT after Today
-            if (!newDate.after(Date())) {
-                mCurrentDate = sdf.format(newDate)
-
-                fragment_home_txt_day.text = mCurrentDate
-                refreshGuidelines()
-            }
-        }
-
-        fragment_home_txt_day.text = mCurrentDate
-
         refreshGuidelines()
     }
 
@@ -119,7 +120,7 @@ class HomeFragment(var cont: AppCompatActivity, private val dietaryGuidelines: A
         // Guard
         if (dietaryGuidelines == null) { return }
 
-        GuidelinesHelper.initializeGuidelines(cont, fragment_home_ll_guidelines, dietaryGuidelines)
+        GuidelinesHelper.initializeGuidelines(activity, fragment_home_ll_guidelines, dietaryGuidelines)
     }
 
     fun getDay(date: String, daysAdded: Int): String {

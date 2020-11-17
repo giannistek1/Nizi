@@ -23,8 +23,6 @@ class EditPatientDietaryActivity : AppCompatActivity() {
 
     private var TAG = "EditPatientDietary"
 
-    val EXTRA_DOCTOR_ID = "DOCTOR_ID"
-
     private val authRepository: AuthRepository = AuthRepository()
     private val patientRepository: PatientRepository = PatientRepository()
     private val dietaryRepository: DietaryRepository = DietaryRepository()
@@ -42,7 +40,7 @@ class EditPatientDietaryActivity : AppCompatActivity() {
         // Setup UI
         setContentView(R.layout.activity_add_patient_dietary)
 
-        // Add inputs to list1
+        // Add inputs to list
         textViewList = arrayListOf(activity_add_patient_dietary_et_cal_min, activity_add_patient_dietary_et_cal_max,
             activity_add_patient_dietary_et_water_min, activity_add_patient_dietary_et_water_max,
             activity_add_patient_dietary_et_sodium_min, activity_add_patient_dietary_et_sodium_max,
@@ -82,7 +80,7 @@ class EditPatientDietaryActivity : AppCompatActivity() {
         }
 
         // Get doctorId
-        doctorId = intent.getIntExtra(EXTRA_DOCTOR_ID, 0)
+        doctorId = intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 0)
     }
 
     //region step 1. updatePatient
@@ -180,42 +178,7 @@ class EditPatientDietaryActivity : AppCompatActivity() {
     }
     //endregion
 
-    //region 4. addDietaryToPatient
-    inner class addDietaryToPatientAsyncTask(val dietary: DietaryManagementShort) : AsyncTask<Void, Void, DietaryManagement>()
-    {
-        override fun onPreExecute() {
-            super.onPreExecute()
-
-            // Loader
-            loader.visibility = View.VISIBLE
-        }
-
-        override fun doInBackground(vararg p0: Void?): DietaryManagement? {
-            return dietaryRepository.addDietary(dietary)
-        }
-
-        override fun onPostExecute(result: DietaryManagement?) {
-            super.onPostExecute(result)
-
-            // Loader
-            loader.visibility = View.GONE
-
-            // Guard
-            if (result == null) { Toast.makeText(baseContext, R.string.dietary_add_fail, Toast.LENGTH_SHORT).show()
-                return }
-
-            // Feedback
-            Toast.makeText(baseContext, R.string.dietary_added, Toast.LENGTH_SHORT).show()
-
-            // Remove from list
-            dietaryList.removeAt(0)
-            if (dietaryList.isEmpty())
-                finish()
-        }
-    }
-    //endregion
-
-    //region 3. updateDietaryToPatient
+    //region step 3. updateDietaryToPatient
     inner class updateDietaryAsyncTask(val dietaryManagement: DietaryManagementShort) : AsyncTask<Void, Void, DietaryManagement>()
     {
         override fun onPreExecute() {
@@ -241,6 +204,41 @@ class EditPatientDietaryActivity : AppCompatActivity() {
 
             // Feedback
             Toast.makeText(baseContext, R.string.dietary_changed, Toast.LENGTH_SHORT).show()
+
+            // Remove from list
+            dietaryList.removeAt(0)
+            if (dietaryList.isEmpty())
+                finish()
+        }
+    }
+    //endregion
+
+    //region step 3.5 addDietaryToPatient
+    inner class addDietaryToPatientAsyncTask(val dietary: DietaryManagementShort) : AsyncTask<Void, Void, DietaryManagement>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            // Loader
+            loader.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): DietaryManagement? {
+            return dietaryRepository.addDietary(dietary)
+        }
+
+        override fun onPostExecute(result: DietaryManagement?) {
+            super.onPostExecute(result)
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guard
+            if (result == null) { Toast.makeText(baseContext, R.string.dietary_add_fail, Toast.LENGTH_SHORT).show()
+                return }
+
+            // Feedback
+            Toast.makeText(baseContext, R.string.dietary_added, Toast.LENGTH_SHORT).show()
 
             // Remove from list
             dietaryList.removeAt(0)

@@ -4,20 +4,24 @@ import android.content.Context
 import android.util.Log.d
 
 import nl.stekkinger.nizi.NiziApplication
+import nl.stekkinger.nizi.classes.feedback.Feedback
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.old.Conversation
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
-class ConversationRepository : Repository() {
+class FeedbackRepository : Repository() {
 
-    private val TAG = "ConversationRepository"
+    private val TAG = "FeedbackRepository"
 
     private val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-    private val accessToken = preferences.getString("TOKEN", null)
+    private val accessToken = preferences.getString(GeneralHelper.PREF_TOKEN, null)
     private val authHeader = "Bearer " + accessToken
 
-    // patient calls
+    fun getFeedbacks(): ArrayList<Feedback>? {
+        return service.fetchFeedbacks(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().body()
+    }
 
     fun getConversations(): ArrayList<Conversation>? {
         // TODO: temp, untill api fix, will remove dates from call

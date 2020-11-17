@@ -9,10 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.conversation_item.view.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.old.Conversation
 
 class ConversationAdapter(
-    private var mDataset: ArrayList<Conversation> = ArrayList()
+    private var mDataset: ArrayList<Feedback> = ArrayList()
 ) : RecyclerView.Adapter<ConversationAdapter.ViewHolder>() {
 
 
@@ -37,10 +38,10 @@ class ConversationAdapter(
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var conversation : Conversation = mDataset[position]
+        var conversation: Feedback = mDataset[position]
 
-        holder.date.text = conversation.Date
-        holder.comment.text = conversation.Comment
+        holder.date.text = conversation.date.toString()
+        holder.comment.text = conversation.comment
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -51,7 +52,7 @@ class ConversationAdapter(
         val comment: TextView = itemView.convo_comment
     }
 
-    fun setConversationList(conversations: ArrayList<Conversation>) {
+    fun setConversationList(conversations: ArrayList<Feedback>) {
         this.mDataset = conversations
         notifyDataSetChanged()
     }

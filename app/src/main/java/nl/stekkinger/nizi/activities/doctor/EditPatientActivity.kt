@@ -39,10 +39,13 @@ class EditPatientActivity : AppCompatActivity() {
         activity_add_patient_et_firstName.setText(patientData.user.first_name)
         activity_add_patient_et_lastName.setText(patientData.user.last_name)
         activity_add_patient_et_dob.setText(patientData.patient.date_of_birth)
-        //activity_add_patient_et_weight.setText(model.patient.weight.toString())
         activity_add_patient_et_email.setText(patientData.user.email)
-        activity_add_patient_et_password.setText(patientData.user.password)
-        activity_add_patient_et_password_confirm.setText(patientData.user.password)
+
+        // Hide password
+        activity_add_patient_txt_password.visibility = View.GONE
+        activity_add_patient_et_password.visibility = View.GONE
+        activity_add_patient_txt_password_confirm.visibility = View.GONE
+        activity_add_patient_et_password_confirm.visibility = View.GONE
 
         if (patientData.patient.gender == activity_add_patient_rb_male.text.toString())
             activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
@@ -67,8 +70,6 @@ class EditPatientActivity : AppCompatActivity() {
         if (InputHelper.inputIsEmpty(this, lastNameET, R.string.empty_last_name)) return
         if (InputHelper.inputIsEmpty(this, dobET, R.string.empty_date_of_birth)) return
         if (InputHelper.inputIsEmpty(this, emailET, R.string.empty_email)) return
-        if (InputHelper.inputIsEmpty(this, passwordET, R.string.empty_password)) return
-        if (InputHelper.inputIsEmpty(this, passwordConfirmET, R.string.empty_password_confirm)) return
 
         val checkedGenderRadioButtonId: Int = activity_add_patient_rg_gender.checkedRadioButtonId
         if (checkedGenderRadioButtonId == -1) { return }

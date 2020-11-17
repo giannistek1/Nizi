@@ -33,21 +33,28 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/activity_main_header_background">
 
-<!--        <TextView-->
-<!--            android:id="@+id/fragment_conversation_txt_advice_from"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_marginStart="@dimen/marginLeft"-->
-<!--            android:layout_marginTop="@dimen/marginNormal"-->
-<!--            android:layout_marginBottom="@dimen/marginNormal"-->
-<!--            android:text="@string/advice_from"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="@dimen/h2" />-->
+        <TextView
+            android:id="@+id/fragment_conversation_txt_advice_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginLeft"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"
+            android:text="@string/advice_from"
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2" />
+
+        <ProgressBar
+            android:id="@+id/fragment_conversation_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_conversation_txt_advice_from"
+            android:visibility="gone" />
 
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/conversation_recycler_view"
+        android:id="@+id/fragment_rv_conversation"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/fragment_conversation_rl_statistics"

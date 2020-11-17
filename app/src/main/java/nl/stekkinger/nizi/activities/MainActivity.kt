@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         // Checks if fragment state is null, then start with homeFragment
         if (savedInstanceState == null) {
-            val fragment = HomeFragment(this, dietaryGuidelines)
+            val fragment = HomeFragment(dietaryGuidelines)
             supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, fragment, fragment.javaClass.getSimpleName())
                 .commit()
         }
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener {  menuItem ->
         when (menuItem.itemId) {
             R.id.nav_home -> {
-                val fragment = HomeFragment(this, list)
+                val fragment = HomeFragment(list)
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -209,7 +209,7 @@ class MainActivity : AppCompatActivity() {
 
             list = dietaryGuidelines
 
-            val fragment = HomeFragment(this@MainActivity, dietaryGuidelines)
+            val fragment = HomeFragment(dietaryGuidelines)
             supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
                 .commit()
         }

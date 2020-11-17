@@ -16,7 +16,7 @@ class AuthRepository : Repository() {
     private val TAG = "AuthRepository"
 
     private val prefs = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-    private val accessToken = prefs.getString("TOKEN", null)
+    private val accessToken = prefs.getString(GeneralHelper.PREF_TOKEN, null)
     private val authHeader = "Bearer " + accessToken
 
     // Code 400 gives body = null back

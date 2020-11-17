@@ -8,14 +8,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_patient_home.*
+import kotlinx.android.synthetic.main.fragment_patient_home.view.*
 
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.EditPatientActivity
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import nl.stekkinger.nizi.classes.patient.PatientData
@@ -23,16 +22,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.properties.Delegates
 
-class PatientHomeFragment(var cont: AppCompatActivity, private val patientData: PatientData?) : Fragment() {
+class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
     private lateinit var mCurrentDate: String
     private lateinit var model: DiaryViewModel
 
     // For activity result
     private val REQUEST_CODE = 0
 
-    private var weekNumber by Delegates.observable(0) { property, oldValue, newValue ->
-        fragment_patient_home_week.setText("Week ${newValue}")
-    }
+    // Does not work in fragments
+    /*private var weekNumber by Delegates.observable(0) { property, oldValue, newValue ->
+        fragment_patient_home_week.text = "Week ${newValue}"
+    }*/
+    private var weekNumber: Int = 0
 
     // Gets called one time, you CANT use view references in here
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -43,6 +44,45 @@ class PatientHomeFragment(var cont: AppCompatActivity, private val patientData: 
 
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_patient_home, container, false)
+
+        // Set week
+        val calendar: Calendar = Calendar.getInstance()
+        var weekNumber = calendar.get(Calendar.WEEK_OF_YEAR)
+        view.fragment_patient_home_week.text = "Week ${weekNumber}"
+
+        view.fragment_patient_home_btn_previousWeek.setOnClickListener {
+            if (weekNumber > 1) {
+                weekNumber--
+                view.fragment_patient_home_week.text = "Week ${weekNumber}"
+            }
+        }
+
+        view.fragment_patient_home_btn_nextWeek.setOnClickListener {
+            if (weekNumber < 53) {
+                weekNumber++
+                view.fragment_patient_home_week.text = "Week ${weekNumber}"
+            }
+        }
+
+        // setting date for diary
+        mCurrentDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
+        val startDate: String = getDay(mCurrentDate, 0)
+        val endDate: String = getDay(mCurrentDate, 1)
+        model.setDiaryDate(startDate + "/" + endDate)
+
+        val fullName = "${patientData!!.user.first_name} ${patientData.user.last_name}"
+        view.fragment_patient_home_average_of_patient.text = "${getString(R.string.average_of)} ${fullName}"
+
+        view.fragment_patient_home_btn_edit.setOnClickListener {
+            val intent = Intent(getActivity(), EditPatientActivity::class.java)
+
+            // Prevents multiple activities
+            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+
+            intent.putExtra(GeneralHelper.EXTRA_PATIENT, patientData)
+            intent.putExtra(GeneralHelper.EXTRA_DOCTOR_ID, intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 1))
+            startActivityForResult(intent, REQUEST_CODE)
+        }
 
 //        view?.diary_prev_date.setOnClickListener {
 //            endDate = mCurrentDate
@@ -71,47 +111,14 @@ class PatientHomeFragment(var cont: AppCompatActivity, private val patientData: 
 //                }
 //            }
 //        }
+        refreshGuidelines(view)
+
         return view
     }
 
     // Gets called when visible
     override fun onStart() {
         super.onStart()
-
-        // Set week
-        val calendar: Calendar = Calendar.getInstance()
-        weekNumber = calendar.get(Calendar.WEEK_OF_YEAR)
-        fragment_patient_home_week.setText("Week ${weekNumber}")
-
-        fragment_patient_home_btn_previousWeek.setOnClickListener {
-            if (weekNumber > 1)
-                weekNumber--
-        }
-
-        fragment_patient_home_btn_nextWeek.setOnClickListener {
-            if (weekNumber < 53)
-                weekNumber++
-        }
-
-        // setting date for diary
-        mCurrentDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
-        val startDate: String = getDay(mCurrentDate, 0)
-        val endDate: String = getDay(mCurrentDate, 1)
-        model.setDiaryDate(startDate + "/" + endDate)
-
-        val fullName = "${patientData!!.user.first_name} ${patientData.user.last_name}"
-        fragment_patient_home_average_of_patient.text = "${getString(R.string.average_of)} ${fullName}"
-
-        fragment_patient_home_btn_edit.setOnClickListener {
-            val intent = Intent(getActivity(), EditPatientActivity::class.java)
-
-            // Prevents multiple activities
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-
-            intent.putExtra(GeneralHelper.EXTRA_PATIENT, patientData)
-            intent.putExtra(GeneralHelper.EXTRA_DOCTOR_ID, intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 1))
-            startActivityForResult(intent, REQUEST_CODE)
-        }
 
         /*model.getDiary().observe(viewLifecycleOwner, Observer { result ->
             // update total intake values of the day (guidelines)
@@ -155,13 +162,13 @@ class PatientHomeFragment(var cont: AppCompatActivity, private val patientData: 
 
         fragment_home_txt_day.text = mCurrentDate*/
 
-        refreshGuidelines()
+
     }
 
-    fun refreshGuidelines()
+    fun refreshGuidelines(view: View)
     {
         if (patientData!!.diets != null) {
-            GuidelinesHelper.initializeGuidelines(cont, fragment_patient_home_ll_guidelines, patientData.diets)
+            GuidelinesHelper.initializeGuidelines(activity, view.fragment_patient_home_ll_guidelines, patientData.diets)
         }
     }
 

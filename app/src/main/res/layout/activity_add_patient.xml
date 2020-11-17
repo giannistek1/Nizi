@@ -190,30 +190,6 @@
                 android:hint="@string/date_of_birth_format"
                 android:maxLength="10"/>
 
-            <!-- Weight -->
-            <!--<TextView
-                android:id="@+id/activity_add_patient_txt_weight"
-                android:text="@string/weight_req"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_et_dob"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginStart="@dimen/marginNormal"/>
-
-            <EditText
-                android:id="@+id/activity_add_patient_et_weight"
-                android:inputType="numberDecimal"
-                android:hint="@string/weight"
-                android:maxLength="3"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_txt_weight"
-                android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginStart="@dimen/marginNormal" />-->
-
             <!-- E-Mail -->
             <TextView
                 android:id="@+id/activity_add_patient_txt_email"
