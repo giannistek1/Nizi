@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,84 +8,26 @@
     android:background="@color/gray"
     tools:context=".activities.doctor.PatientDetailActivity">
 
-    <!-- Top part -->
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/activity_patient_detail_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/activity_patient_detail_average_of_patient"
-            android:text="@string/average_of"
-            android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.6"
-            android:layout_marginStart="@dimen/marginLeft"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"/>
 
-        <ImageView
-            android:id="@+id/activity_patient_detail_btn_edit"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:tint="@color/colorAccent"
-            android:src="@drawable/ic_edit"
-            android:contentDescription="@string/edit_patient"/>
-    </LinearLayout>
-
-    <!-- Week -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/activity_patient_detail_btn_previousWeek"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:tint="@color/black"
-            android:src="@drawable/ic_back"
-            android:contentDescription="@string/previous_week"/>
-
-        <TextView
-            android:id="@+id/activity_patient_detail_week"
-            android:text="@string/week"
-            android:textColor="@color/black"
-            android:textSize="@dimen/h2"
+        <ProgressBar
+            android:id="@+id/activity_patient_detail_loader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/marginSmall"
-            android:layout_marginEnd="@dimen/marginSmall"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"/>
+            android:visibility="gone" />
+    </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/activity_patient_detail_btn_nextWeek"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_gravity="center_vertical"
-            android:tint="@color/black"
-            android:src="@drawable/ic_next"
-            android:contentDescription="@string/next_week"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/activity_patient_detail_ll_guidelines"
+    <!-- Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/activity_patient_detail_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-    </LinearLayout>
-
-    <ProgressBar
-        android:id="@+id/activity_patient_detail_loader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
-</LinearLayout>
+        android:layout_alignParentBottom="true"
+        android:background="?android:attr/windowBackground"
+        android:theme="@style/BottomNavigationTheme"
+        app:menu="@menu/bottom_navigation"/>
+</RelativeLayout>

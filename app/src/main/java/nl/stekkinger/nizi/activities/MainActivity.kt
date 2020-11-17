@@ -49,18 +49,20 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        // Checks if  fragment state is null, else start with homeFragment
+        // Checks if fragment state is null, then start with homeFragment
         if (savedInstanceState == null) {
             val fragment = HomeFragment(this, dietaryGuidelines)
             supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, fragment, fragment.javaClass.getSimpleName())
                 .commit()
         }
-        progressBar = activity_main_progressbar
+        progressBar = activity_main_loader
 
         // Get User
         user = GeneralHelper.getUser()
 
         activity_main_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
+
+        //getDietaryAsyncTask().execute()
     }
 
     //region Bottom Nav

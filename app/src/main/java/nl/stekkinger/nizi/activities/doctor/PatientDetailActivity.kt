@@ -6,7 +6,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_patient_detail.*
+import kotlinx.android.synthetic.main.fragment_patient_home.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
@@ -17,6 +20,12 @@ import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.classes.patient.PatientItem
 import nl.stekkinger.nizi.classes.patient.PatientLogin
+import nl.stekkinger.nizi.fragments.ConversationFragment
+import nl.stekkinger.nizi.fragments.DiaryFragment
+import nl.stekkinger.nizi.fragments.HomeFragment
+import nl.stekkinger.nizi.fragments.doctor.PatientDiaryFragment
+import nl.stekkinger.nizi.fragments.doctor.PatientFeedbackFragment
+import nl.stekkinger.nizi.fragments.doctor.PatientHomeFragment
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 import java.util.*
@@ -32,9 +41,6 @@ class PatientDetailActivity : AppCompatActivity() {
     private val REQUEST_CODE = 0
 
     private lateinit var patientData: PatientData
-    private var weekNumber by Delegates.observable(0) { property, oldValue, newValue ->
-        activity_patient_detail_week.setText("Week ${newValue}")
-    }
 
     private lateinit var loader: View
 
@@ -46,22 +52,6 @@ class PatientDetailActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         loader = activity_patient_detail_loader
-
-        // Set week
-        val calendar: Calendar = Calendar.getInstance()
-        weekNumber = calendar.get(Calendar.WEEK_OF_YEAR)
-        activity_patient_detail_week.setText("Week ${weekNumber}")
-
-        activity_patient_detail_btn_previousWeek.setOnClickListener {
-            if (weekNumber > 1)
-                weekNumber--
-        }
-
-        activity_patient_detail_btn_nextWeek.setOnClickListener {
-            if (weekNumber < 53)
-                weekNumber++
-        }
-
 
         val patientItem = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientItem
 
@@ -75,23 +65,45 @@ class PatientDetailActivity : AppCompatActivity() {
             diets = arrayListOf()
         )
 
-        val fullName = "${patientData.user.first_name} ${patientData.user.last_name}"
-        activity_patient_detail_average_of_patient.text = "${getString(R.string.average_of)} ${fullName}"
-
-
-        activity_patient_detail_btn_edit.setOnClickListener {
-            val intent = Intent(this@PatientDetailActivity, EditPatientActivity::class.java)
-
-            // Prevents multiple activities
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-
-            intent.putExtra(GeneralHelper.EXTRA_PATIENT, patientData)
-            intent.putExtra(GeneralHelper.EXTRA_DOCTOR_ID, intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 1))
-            startActivityForResult(intent, REQUEST_CODE)
+        // Checks if fragment state is null, then start with homeFragment
+        if (savedInstanceState == null) {
+            val fragment = PatientHomeFragment(this, patientData)
+            supportFragmentManager.beginTransaction().replace(R.id.activity_patient_detail_fragment_container, fragment, fragment.javaClass.getSimpleName())
+                .commit()
         }
+
+        activity_patient_detail_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
 
         getDietaryManagementsAsyncTask().execute()
     }
+
+    //region Bottom Nav
+    private val navListener = BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
+        when (menuItem.itemId) {
+            R.id.nav_home -> {
+                val fragment = PatientHomeFragment(this, patientData)
+                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
+                    .commit()
+                return@OnNavigationItemSelectedListener true
+            }
+
+            R.id.nav_diary -> {
+                val fragment = PatientDiaryFragment()
+                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
+                    .commit()
+                return@OnNavigationItemSelectedListener true
+            }
+
+            R.id.nav_conversation -> {
+                val fragment = PatientFeedbackFragment()
+                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
+                    .commit()
+                return@OnNavigationItemSelectedListener true
+            }
+        }
+        false
+    }
+    //endregion
 
     // Double in Main but this one is for the week and is an average
     //region getDietary
@@ -185,11 +197,11 @@ class PatientDetailActivity : AppCompatActivity() {
             // Save dietaries for editPage
             patientData.diets = dietaryGuidelines
 
-            GuidelinesHelper.initializeGuidelines(
+            /*GuidelinesHelper.initializeGuidelines(
                 this@PatientDetailActivity,
-                activity_patient_detail_ll_guidelines,
+                fragment_patient_home_ll_guidelines,
                 dietaryGuidelines
-            )
+            )*/
 
             // get patient
             getPatientAsyncTask().execute()
@@ -236,6 +248,10 @@ class PatientDetailActivity : AppCompatActivity() {
                 my_foods = result.my_foods,
                 consumptions = result.consumptions
             )
+
+            val fragment = PatientHomeFragment(this@PatientDetailActivity, patientData)
+            supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
+                .commit()
         }
     }
     //endregion
