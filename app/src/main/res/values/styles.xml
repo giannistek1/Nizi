@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <!-- Custom -->
-        <item name="android:fontFamily">@font/segoe_ui_light</item>
+        <item name="android:fontFamily">@font/segoe_ui</item>
     </style>
 
     <style name="BottomNavigationTheme" parent="Theme.AppCompat.Light">

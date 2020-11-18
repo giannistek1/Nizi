@@ -10,12 +10,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="2dp"
         android:orientation="vertical">
 
+        <!-- title + date -->
         <LinearLayout
+            android:background="@color/gray"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:paddingTop="@dimen/marginSmall"
+            android:paddingBottom="@dimen/marginSmall"
+            android:paddingStart="@dimen/marginLeft"
+            android:paddingEnd="@dimen/marginRight"
             android:orientation="horizontal">
 
             <TextView
@@ -38,7 +43,12 @@
             android:id="@+id/convo_comment"
             android:text="@string/sample_text"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/marginSmall"
+            android:paddingBottom="@dimen/marginSmall"
+            android:paddingStart="@dimen/marginLeft"
+            android:paddingEnd="@dimen/marginRight"
+            android:background="@drawable/text_border"/>
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
