@@ -176,13 +176,20 @@ object GuidelinesHelper {
                 feedbackTextView.text = cont.getString(R.string.feedback_positive)
                 feedbackTextView.setTextColor(getColor(cont, R.color.lime))
             }
+            // If has maximum and bar more than full
             else if (progress > 100 && dietaryGuideline.maximum > 0) {
                 feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.plural)
                 feedbackTextView.setTextColor(getColor(cont, R.color.red))
             }
+            // If has minimum and bar less than full
             else if (progress <= 100 && dietaryGuideline.minimum != 0) {
                 feedbackTextView.text = cont.getString(R.string.feedback_encouraging, dietaryGuideline.plural)
                 feedbackTextView.setTextColor(getColor(cont, R.color.yellow))
+            }
+            // If only has maximum and bar lower than full (100)
+            else if (progress <= 100 && dietaryGuideline.maximum > 0) {
+                feedbackTextView.text = cont.getString(R.string.feedback_positive)
+                feedbackTextView.setTextColor(getColor(cont, R.color.lime))
             }
 
 

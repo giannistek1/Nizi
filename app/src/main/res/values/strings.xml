@@ -89,8 +89,8 @@
     <string name="import_food_diary">Importeren uit voedingsdagboek</string>
 
     <string name="feedback_positive">Goed gedaan</string>
-    <string name="feedback_negative">Minder %1$s innemen</string>
-    <string name="feedback_encouraging">Meer %1$s innemen</string>
+    <string name="feedback_negative">Beperk uw %1$sinname</string>
+    <string name="feedback_encouraging">Neem meer %1$s in</string>
 
     <string name="fetched_doctor">Diëtist opgehaald</string>
     <string name="get_doctor_fail">Diëtist ophalen mislukt</string>
