@@ -11,7 +11,7 @@ data class Patient (
     val id: Int? = null,
     val gender: String,
     val date_of_birth: String,
-    val doctorShort: DoctorShort,
+    val doctor: DoctorShort,
     val user: User? = null,
     val feedbacks: ArrayList<FeedbackShort>? = arrayListOf(),
     val dietary_managements: ArrayList<DietaryManagementShort>? = arrayListOf(),

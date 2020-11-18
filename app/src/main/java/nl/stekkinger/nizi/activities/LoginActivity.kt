@@ -75,8 +75,8 @@ class LoginActivity : AppCompatActivity() {
         }
 
         // Testing
-        activity_login_et_username.setText("BramWenting") // Patient
-        //activity_login_et_username.setText("HugoBrand") // Doctor
+        //activity_login_et_username.setText("BramWenting") // Patient
+        activity_login_et_username.setText("HugoBrand") // Doctor
         activity_login_et_password.setText("Welkom123")
 
     }
@@ -144,7 +144,7 @@ class LoginActivity : AppCompatActivity() {
 
             // Save Patient/Doctor Id
             if (isDoctor)
-                GeneralHelper.prefs.edit().putInt(GeneralHelper.PREF_DOCTOR_ID, result.user.doctorShort!!.id!!).apply()
+                GeneralHelper.prefs.edit().putInt(GeneralHelper.PREF_DOCTOR_ID, result.user.doctor!!.id!!).apply()
             else
                 GeneralHelper.prefs.edit().putInt(GeneralHelper.PREF_DOCTOR_ID, result.user.patient!!.id).apply()
 

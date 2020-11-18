@@ -234,7 +234,7 @@ class PatientDetailActivity : AppCompatActivity() {
                 id = result.id!!,
                 gender = result.gender,
                 date_of_birth = result.date_of_birth,
-                doctor = result.doctorShort.id!!,
+                doctor = result.doctor.id!!,
                 user = result.user.id,
                 feedbacks = result.feedbacks,
                 dietary_managements = arrayListOf(), // Empty because we use a list of DietaryViews for everything

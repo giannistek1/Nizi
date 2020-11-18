@@ -172,7 +172,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                     result[it].user!!.email,
                     result[it].user!!.role,
                     result[it].id!!,
-                    result[it].doctorShort.id!!
+                    result[it].doctor.id!!
                 )
                 patientList.add(pi)
             }

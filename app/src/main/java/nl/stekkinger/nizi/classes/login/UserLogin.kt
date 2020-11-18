@@ -12,7 +12,7 @@ data class UserLogin(
     val last_name: String,
     val role: Role,
     val patient: PatientLogin?,
-    val doctorShort: DoctorShort?,
+    val doctor: DoctorShort?,
 
     // Unimportant stuff
     val created_at: String?,

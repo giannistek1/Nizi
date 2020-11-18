@@ -9,6 +9,7 @@ import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.login.Role
 import nl.stekkinger.nizi.classes.login.UserLogin
+import java.lang.Exception
 
 object GeneralHelper {
     const val PREF_TOKEN = "TOKEN"
@@ -24,16 +25,17 @@ object GeneralHelper {
     fun getUser() : UserLogin
     {
         val gson = Gson()
-        return when(prefs.contains(PREF_TOKEN)) {
-            true -> {val json: String = prefs.getString(PREF_USER, "")!!
-                    gson.fromJson(json, UserLogin::class.java)}
-            false -> UserLogin(
+        return if (prefs.contains(PREF_TOKEN) && prefs.contains(PREF_USER)) {
+            val json: String = prefs.getString(PREF_USER, "")!!
+            gson.fromJson(json, UserLogin::class.java)
+        } else {
+            UserLogin(
                 id = 0, username = "", email = "", first_name = "", last_name = "", provider = "",
                 confirmed = false, blocked = false,
                 //patient = Patient(id = 0, gender = "Male", dateOfBirth = "", ),
                 patient = null,
                 //doctor = Doctor(),
-                doctorShort = null,
+                doctor = null,
                 role = Role(0, "", "", ""),
                 created_at = "", updated_at = ""
             )
