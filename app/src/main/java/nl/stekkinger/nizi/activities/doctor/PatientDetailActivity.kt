@@ -7,22 +7,16 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_patient_detail.*
-import kotlinx.android.synthetic.main.fragment_patient_home.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
-import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.classes.patient.PatientItem
 import nl.stekkinger.nizi.classes.patient.PatientLogin
-import nl.stekkinger.nizi.fragments.ConversationFragment
-import nl.stekkinger.nizi.fragments.DiaryFragment
-import nl.stekkinger.nizi.fragments.HomeFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientDiaryFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientFeedbackFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientHomeFragment
@@ -30,7 +24,6 @@ import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.properties.Delegates
 
 class PatientDetailActivity : AppCompatActivity() {
 
@@ -241,7 +234,7 @@ class PatientDetailActivity : AppCompatActivity() {
                 id = result.id!!,
                 gender = result.gender,
                 date_of_birth = result.date_of_birth,
-                doctor = result.doctor.id!!,
+                doctor = result.doctorShort.id!!,
                 user = result.user.id,
                 feedbacks = result.feedbacks,
                 dietary_managements = arrayListOf(), // Empty because we use a list of DietaryViews for everything

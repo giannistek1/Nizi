@@ -85,6 +85,9 @@
     <string name="feedback_negative">Minder %1$s innemen</string>
     <string name="feedback_encouraging">Meer %1$s innemen</string>
 
+    <string name="fetched_doctor">Diëtist opgehaald</string>
+    <string name="get_doctor_fail">Diëtist ophalen mislukt</string>
+
     <!-- Dashboard -->
     <string name="statistics">Statistieken</string>
     <string name="minimum">Minimaal</string>
@@ -94,6 +97,7 @@
 
     <!-- Feedback -->
     <string name="advice_from_doctor">Advies van diëtist</string>
+    <string name="advice_from">Advies van %1$s</string>
     <string name="fetched_feedbacks">Feedback opgehaald</string>
     <string name="get_feedbacks_fail">Feedback ophalen mislukt</string>
     <string name="conversation_summary">Gesprek samenvatting</string>

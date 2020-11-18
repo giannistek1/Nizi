@@ -1,8 +1,5 @@
 package nl.stekkinger.nizi.classes.feedback
 
-import nl.stekkinger.nizi.classes.doctor.Doctor
-import nl.stekkinger.nizi.classes.patient.PatientLogin
-import java.io.Serializable
 import java.util.*
 
 data class FeedbackShort(

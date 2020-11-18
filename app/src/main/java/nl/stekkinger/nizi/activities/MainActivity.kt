@@ -16,13 +16,15 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
+import nl.stekkinger.nizi.classes.doctor.Doctor
+import nl.stekkinger.nizi.classes.doctor.DoctorShort
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
-import nl.stekkinger.nizi.classes.old.DietaryView
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
+import nl.stekkinger.nizi.repositories.DoctorRepository
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,16 +32,17 @@ class MainActivity : AppCompatActivity() {
 
     private var TAG = "Main"
 
+    // Repositories
     private val authRepository: AuthRepository = AuthRepository()
     private val dietaryRepository: DietaryRepository = DietaryRepository()
+    private val doctorRepository: DoctorRepository = DoctorRepository()
 
-    private lateinit var diaryModel: DiaryViewModel
-    private var list: ArrayList<DietaryGuideline>? = null
-    private lateinit var user: UserLogin
+    private lateinit var user: UserLogin                                // Userdata
+    val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()  // Dietary
+    private lateinit var doctor: Doctor                                 // Doctor
+    private lateinit var diaryModel: DiaryViewModel                     // Diary
 
     private lateinit var loader: View
-
-    val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +76,7 @@ class MainActivity : AppCompatActivity() {
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener {  menuItem ->
         when (menuItem.itemId) {
             R.id.nav_home -> {
-                val fragment = HomeFragment(list)
+                val fragment = HomeFragment(dietaryGuidelines)
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -87,7 +90,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.nav_conversation -> {
-                val fragment = ConversationFragment(user)
+                val fragment = ConversationFragment(user, doctor)
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -206,11 +209,42 @@ class MainActivity : AppCompatActivity() {
                     dietaryGuidelines[index-1] = dietaryGuideline
             }
 
-
-            list = dietaryGuidelines
             val fragment = HomeFragment(dietaryGuidelines)
             supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id, fragment,
                 fragment.javaClass.simpleName).commit()
+
+            getDoctorAsyncTask().execute()
+        }
+    }
+    //endregion
+
+    //region Get Doctor
+    inner class getDoctorAsyncTask() : AsyncTask<Void, Void, Doctor>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            // Loader
+            loader.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): Doctor? {
+            return doctorRepository.getDoctor(user.patient!!.doctor)
+        }
+
+        override fun onPostExecute(result: Doctor?) {
+            super.onPostExecute(result)
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guard
+            if (result == null) { Toast.makeText(baseContext, R.string.get_doctor_fail, Toast.LENGTH_SHORT).show()
+                return }
+
+            Toast.makeText(baseContext, R.string.fetched_doctor, Toast.LENGTH_SHORT).show()
+
+            doctor = result
         }
     }
     //endregion

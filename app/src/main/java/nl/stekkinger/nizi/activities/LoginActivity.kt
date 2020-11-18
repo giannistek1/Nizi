@@ -144,7 +144,7 @@ class LoginActivity : AppCompatActivity() {
 
             // Save Patient/Doctor Id
             if (isDoctor)
-                GeneralHelper.prefs.edit().putInt(GeneralHelper.PREF_DOCTOR_ID, result.user.doctor!!.id!!).apply()
+                GeneralHelper.prefs.edit().putInt(GeneralHelper.PREF_DOCTOR_ID, result.user.doctorShort!!.id!!).apply()
             else
                 GeneralHelper.prefs.edit().putInt(GeneralHelper.PREF_DOCTOR_ID, result.user.patient!!.id).apply()
 

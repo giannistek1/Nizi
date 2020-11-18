@@ -13,11 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_conversation.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConversationAdapter
+import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.repositories.FeedbackRepository
 
-class ConversationFragment(private val user: UserLogin): Fragment() {
+class ConversationFragment(private val user: UserLogin, private val doctor: Doctor): Fragment() {
     private val mRepository: FeedbackRepository = FeedbackRepository()
     private lateinit var adapter: ConversationAdapter
 
@@ -28,7 +29,8 @@ class ConversationFragment(private val user: UserLogin): Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_conversation, container, false)
         loader = view.fragment_conversation_loader
 
-        //view.fragment_conversation_txt_advice_from.text = "Advies van ${dietist}"
+        val doctorName = "${doctor.user.first_name.first()}. ${doctor.user.last_name}"
+        view.fragment_conversation_txt_advice_from.text = getString(R.string.advice_from, doctorName)
 
         // Setup RV
         val recyclerView: RecyclerView = view.fragment_rv_conversation

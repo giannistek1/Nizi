@@ -1,11 +1,9 @@
 package nl.stekkinger.nizi.classes.doctor
 
-import nl.stekkinger.nizi.classes.login.User
-
-data class Doctor(
+data class DoctorShort (
     val id: Int? = null,
     val location: String,
-    val user: User,
+    val user: Int,
 
     // Unimportant
     val created_at: String? = null,

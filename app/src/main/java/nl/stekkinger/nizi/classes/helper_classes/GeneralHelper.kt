@@ -33,7 +33,7 @@ object GeneralHelper {
                 //patient = Patient(id = 0, gender = "Male", dateOfBirth = "", ),
                 patient = null,
                 //doctor = Doctor(),
-                doctor = null,
+                doctorShort = null,
                 role = Role(0, "", "", ""),
                 created_at = "", updated_at = ""
             )

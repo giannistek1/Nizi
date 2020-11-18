@@ -1,6 +1,6 @@
 package nl.stekkinger.nizi.classes.login
 
-import nl.stekkinger.nizi.classes.doctor.Doctor
+import nl.stekkinger.nizi.classes.doctor.DoctorShort
 import nl.stekkinger.nizi.classes.patient.PatientLogin
 import java.io.Serializable
 
@@ -12,7 +12,7 @@ data class UserLogin(
     val last_name: String,
     val role: Role,
     val patient: PatientLogin?,
-    val doctor: Doctor?,
+    val doctorShort: DoctorShort?,
 
     // Unimportant stuff
     val created_at: String?,
