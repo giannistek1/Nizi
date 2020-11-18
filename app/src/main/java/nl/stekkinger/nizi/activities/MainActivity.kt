@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var doctor: Doctor                                 // Doctor
     private lateinit var diaryModel: DiaryViewModel                     // Diary
 
+    private var savedInstanceState: Bundle? = null
+
     private lateinit var loader: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,12 +57,9 @@ class MainActivity : AppCompatActivity() {
 
         })
 
-        // Checks if fragment state is null, then start with homeFragment
-        /*if (savedInstanceState == null) {
-            val fragment = HomeFragment(dietaryGuidelines)
-            supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, fragment, fragment.javaClass.simpleName)
-                .commit()
-        }*/
+        // Checks if fragment state is null and save it
+        if (savedInstanceState != null)
+            this.savedInstanceState = savedInstanceState
 
         loader = activity_main_loader
 
@@ -209,9 +208,12 @@ class MainActivity : AppCompatActivity() {
                     dietaryGuidelines[index-1] = dietaryGuideline
             }
 
-            val fragment = HomeFragment(dietaryGuidelines)
-            supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id, fragment,
-                fragment.javaClass.simpleName).commit()
+            // Checks if fragment state is null, then start with homeFragment
+            if (savedInstanceState == null) {
+                val fragment = HomeFragment(dietaryGuidelines)
+                supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id, fragment,
+                    fragment.javaClass.simpleName).commit()
+            }
 
             getDoctorAsyncTask().execute()
         }

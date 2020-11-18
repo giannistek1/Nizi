@@ -33,8 +33,8 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
     }*/
     private var weekNumber: Int = 0
     private lateinit var mCurrentDate: String
-
     private lateinit var model: DiaryViewModel
+    private val sdf = GeneralHelper.getDateFormat()
 
     // Gets called one time, you CANT use view references in here
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -55,9 +55,8 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
         calendar.clear(Calendar.SECOND);
         calendar.clear(Calendar.MILLISECOND);
 
-        // Set date to format as string
+        // Set format as string
         //val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-        val sdf = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
 
         // First day of week
         calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek);
@@ -86,7 +85,6 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
         }
 
         // setting date for diary
-        mCurrentDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
         val startDate: String = getDay(mCurrentDate, 0)
         val endDate: String = getDay(mCurrentDate, 1)
         model.setDiaryDate(startDate + "/" + endDate)
@@ -196,7 +194,6 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
     fun getDay(date: String, daysAdded: Int): String {
         Log.d("AAAAAA", "BBBBB")
         var newDate = date
-        var sdf = SimpleDateFormat("yyyy-MM-dd")
         val c = Calendar.getInstance()
         c.time = sdf.parse(newDate)
         c.add(Calendar.DATE, daysAdded)

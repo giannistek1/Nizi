@@ -10,6 +10,7 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.login.Role
 import nl.stekkinger.nizi.classes.login.UserLogin
 import java.lang.Exception
+import java.text.SimpleDateFormat
 
 object GeneralHelper {
     const val PREF_TOKEN = "TOKEN"
@@ -45,6 +46,11 @@ object GeneralHelper {
     fun getDoctorId() : Int
     {
         return prefs.getInt(PREF_DOCTOR_ID, 0)
+    }
+
+    fun getDateFormat() : SimpleDateFormat
+    {
+        return SimpleDateFormat("dd MMMM yyyy")
     }
 
     fun hasInternetConnection(context: Context) : Boolean

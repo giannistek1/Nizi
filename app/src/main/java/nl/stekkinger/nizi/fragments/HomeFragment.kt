@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.fragment_home.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import java.text.SimpleDateFormat
 import java.util.*
@@ -20,6 +21,7 @@ import java.util.*
 class HomeFragment(private val dietaryGuidelines: ArrayList<DietaryGuideline>?): Fragment() {
     private lateinit var mCurrentDate: String
     private lateinit var model: DiaryViewModel
+    private val sdf = GeneralHelper.getDateFormat()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View =  inflater.inflate(R.layout.fragment_home, container, false)
@@ -29,35 +31,55 @@ class HomeFragment(private val dietaryGuidelines: ArrayList<DietaryGuideline>?):
         } ?: throw Exception("Invalid Activity")
 
         // Setting date for diary
-        mCurrentDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
-        val startDate: String = getDay(mCurrentDate, 0)
-        val endDate: String = getDay(mCurrentDate, 1)
+        mCurrentDate = sdf.format(Date())
+        val startDate: String = getDay(mCurrentDate, 0) // Wat is startDate?
+        val endDate: String = getDay(mCurrentDate, 1) // Wat is endDate?
         model.setDiaryDate(startDate + "/" + endDate)
 
+        // Gianni
+        val today: String = getDay(mCurrentDate, 0)
+        val yesterday: String = getDay(mCurrentDate, -1)
 
         view.fragment_home_btn_yesterday.setOnClickListener {
-            val sdf = SimpleDateFormat("yyyy-MM-dd")
             val newDate = sdf.parse(getDay(mCurrentDate, -1))
-            mCurrentDate = sdf.format(newDate)
+            mCurrentDate = sdf.format(newDate!!)
 
-            fragment_home_txt_day.text = mCurrentDate
+            if(sdf.format(newDate) == yesterday) {
+                view.fragment_home_txt_day.text = getString(R.string.yesterday)
+            } else {
+                view.fragment_home_txt_day.text = mCurrentDate
+            }
+
             refreshGuidelines()
+
+            // Update UI
+            view.fragment_home_btn_tomorrow.imageAlpha = 255
         }
 
         view.fragment_home_btn_tomorrow.setOnClickListener {
-            val sdf = SimpleDateFormat("yyyy-MM-dd")
             val newDate = sdf.parse(getDay(mCurrentDate, 1))
-            // if new date is NOT after Today
-            if (!newDate.after(Date())) {
-                mCurrentDate = sdf.format(newDate)
 
-                fragment_home_txt_day.text = mCurrentDate
-                refreshGuidelines()
+            // if new date after today
+            if (newDate!!.after(Date())) return@setOnClickListener
+
+            mCurrentDate = sdf.format(newDate)
+
+            if (sdf.format(newDate) == today) {
+                // Update UI
+                view.fragment_home_txt_day.text = getString(R.string.today)
+                view.fragment_home_btn_tomorrow.imageAlpha = 20
+            } else if(sdf.format(newDate) == yesterday) {
+                view.fragment_home_txt_day.text = getString(R.string.yesterday)
+            } else {
+                view.fragment_home_txt_day.text = mCurrentDate
             }
+
+            refreshGuidelines()
         }
 
-        view.fragment_home_txt_day.text = mCurrentDate
-
+        // Update UI
+        view.fragment_home_txt_day.text = getString(R.string.today)
+        view.fragment_home_btn_tomorrow.imageAlpha = 20
 
 //        view?.diary_prev_date.setOnClickListener {
 //            endDate = mCurrentDate
@@ -126,7 +148,6 @@ class HomeFragment(private val dietaryGuidelines: ArrayList<DietaryGuideline>?):
     fun getDay(date: String, daysAdded: Int): String {
         Log.d("AAAAAA", "BBBBB")
         var newDate = date
-        val sdf = SimpleDateFormat("yyyy-MM-dd")
         val c = Calendar.getInstance()
         c.time = sdf.parse(newDate)!!
         c.add(Calendar.DATE, daysAdded)
