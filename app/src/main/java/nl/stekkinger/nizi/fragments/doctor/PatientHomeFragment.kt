@@ -55,9 +55,6 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
         calendar.clear(Calendar.SECOND);
         calendar.clear(Calendar.MILLISECOND);
 
-        // Set format as string
-        //val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-
         // First day of week
         calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek);
         val firstDayOfWeek = sdf.format(calendar.time)
@@ -84,10 +81,10 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
             }
         }
 
-        // setting date for diary
+        /*// setting date for diary
         val startDate: String = getDay(mCurrentDate, 0)
         val endDate: String = getDay(mCurrentDate, 1)
-        model.setDiaryDate(startDate + "/" + endDate)
+        model.setDiaryDate(startDate + "/" + endDate)*/
 
         val fullName = "${patientData!!.user.first_name} ${patientData.user.last_name}"
         view.fragment_patient_home_average_of_patient.text = getString(R.string.average_of, fullName)

@@ -11,6 +11,7 @@ import nl.stekkinger.nizi.classes.login.Role
 import nl.stekkinger.nizi.classes.login.UserLogin
 import java.lang.Exception
 import java.text.SimpleDateFormat
+import java.util.*
 
 object GeneralHelper {
     const val PREF_TOKEN = "TOKEN"
@@ -50,7 +51,8 @@ object GeneralHelper {
 
     fun getDateFormat() : SimpleDateFormat
     {
-        return SimpleDateFormat("dd MMMM yyyy")
+        //val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        return SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
     }
 
     fun hasInternetConnection(context: Context) : Boolean
