@@ -66,11 +66,11 @@ class PatientDetailActivity : AppCompatActivity() {
         )
 
         // Checks if fragment state is null, then start with homeFragment
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             val fragment = PatientHomeFragment(patientData)
             supportFragmentManager.beginTransaction().replace(R.id.activity_patient_detail_fragment_container, fragment, fragment.javaClass.getSimpleName())
                 .commit()
-        }
+        }*/
 
         activity_patient_detail_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
 
