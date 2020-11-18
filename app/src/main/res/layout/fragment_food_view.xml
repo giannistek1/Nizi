@@ -118,7 +118,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_calories_s"/>
+                android:src="@drawable/ic_calories"/>
 
             <TextView
                 android:id="@+id/calories_value_food_view"
@@ -148,7 +148,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_calories_s"/>
+                android:src="@drawable/ic_calories"/>
 
             <TextView
                 android:id="@+id/fiber_value_food_view"
@@ -178,7 +178,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_calories_s"/>
+                android:src="@drawable/ic_calories"/>
 
             <TextView
                 android:id="@+id/protein_value_food_view"
@@ -210,7 +210,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_calories_s"/>
+                android:src="@drawable/ic_calories"/>
 
             <TextView
                 android:id="@+id/water_value_food_view"
@@ -242,7 +242,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_calories_s"/>
+                android:src="@drawable/ic_calories"/>
 
             <TextView
                 android:id="@+id/sodium_value_food_view"
@@ -272,7 +272,7 @@
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_calories_s"/>
+                android:src="@drawable/ic_calories"/>
 
             <TextView
                 android:id="@+id/calcium_value_food_view"

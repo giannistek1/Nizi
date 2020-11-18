@@ -4,7 +4,10 @@
     <dimen name="h2">20sp</dimen>
     <dimen name="h3">16sp</dimen>
 
-    <dimen name="iconSize">30dp</dimen>
+    <dimen name="loginIconSize">30dp</dimen>
+    <dimen name="dateNavigationSize">20dp</dimen>
+    <dimen name="guidelineIconSize">15dp</dimen>
+    <dimen name="guidelineCircleSize">100dp</dimen>
 
     <dimen name="marginLeft">20dp</dimen>
     <dimen name="marginRight">20dp</dimen>

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".fragments.doctor.PatientHomeFragment">
 
     <!-- Top part -->
@@ -46,8 +47,8 @@
 
         <ImageView
             android:id="@+id/fragment_patient_home_btn_previousWeek"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dateNavigationSize"
+            android:layout_height="@dimen/dateNavigationSize"
             android:layout_gravity="center_vertical"
             android:tint="@color/black"
             android:src="@drawable/ic_back"
@@ -57,7 +58,6 @@
             android:id="@+id/fragment_patient_home_week"
             android:text="@string/week"
             android:textColor="@color/black"
-            android:textSize="@dimen/h2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/marginSmall"
@@ -67,8 +67,8 @@
 
         <ImageView
             android:id="@+id/fragment_patient_home_btn_nextWeek"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dateNavigationSize"
+            android:layout_height="@dimen/dateNavigationSize"
             android:layout_gravity="center_vertical"
             android:tint="@color/black"
             android:src="@drawable/ic_next"

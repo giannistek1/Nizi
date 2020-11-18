@@ -16,8 +16,8 @@
 
         <ImageView
             android:id="@+id/fragment_home_btn_yesterday"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dateNavigationSize"
+            android:layout_height="@dimen/dateNavigationSize"
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/yesterday"
             android:src="@drawable/ic_back"
@@ -37,8 +37,8 @@
 
         <ImageView
             android:id="@+id/fragment_home_btn_tomorrow"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/dateNavigationSize"
+            android:layout_height="@dimen/dateNavigationSize"
             android:layout_gravity="center_vertical"
             android:contentDescription="@string/tomorrow"
             android:src="@drawable/ic_next"

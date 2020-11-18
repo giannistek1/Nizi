@@ -23,8 +23,6 @@ import java.util.*
 import kotlin.properties.Delegates
 
 class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
-    private lateinit var mCurrentDate: String
-    private lateinit var model: DiaryViewModel
 
     // For activity result
     private val REQUEST_CODE = 0
@@ -34,6 +32,9 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
         fragment_patient_home_week.text = "Week ${newValue}"
     }*/
     private var weekNumber: Int = 0
+    private lateinit var mCurrentDate: String
+
+    private lateinit var model: DiaryViewModel
 
     // Gets called one time, you CANT use view references in here
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -45,22 +46,42 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_patient_home, container, false)
 
-        // Set week
+        // Set first day of week and last day of
+        // Get current date
         val calendar: Calendar = Calendar.getInstance()
-        var weekNumber = calendar.get(Calendar.WEEK_OF_YEAR)
-        view.fragment_patient_home_week.text = "Week ${weekNumber}"
+        // Clear time from date
+        calendar.set(Calendar.HOUR_OF_DAY, 0); // ! clear would not reset the hour of day !
+        calendar.clear(Calendar.MINUTE);
+        calendar.clear(Calendar.SECOND);
+        calendar.clear(Calendar.MILLISECOND);
+
+        // Set date to format as string
+        //val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        val sdf = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
+
+        // First day of week
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek);
+        val firstDayOfWeek = sdf.format(calendar.time)
+
+        // Last day of week
+        calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek+6);
+        val lastDayOfWeek = sdf.format(calendar.time)
+
+        weekNumber = calendar.get(Calendar.WEEK_OF_YEAR)
+
+        view.fragment_patient_home_week.text = "${firstDayOfWeek} - ${lastDayOfWeek}"
 
         view.fragment_patient_home_btn_previousWeek.setOnClickListener {
             if (weekNumber > 1) {
                 weekNumber--
-                view.fragment_patient_home_week.text = "Week ${weekNumber}"
+                //view.fragment_patient_home_week.text = "Week ${weekNumber}"
             }
         }
 
         view.fragment_patient_home_btn_nextWeek.setOnClickListener {
             if (weekNumber < 53) {
                 weekNumber++
-                view.fragment_patient_home_week.text = "Week ${weekNumber}"
+                //view.fragment_patient_home_week.text = "Week ${weekNumber}"
             }
         }
 
@@ -71,7 +92,7 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
         model.setDiaryDate(startDate + "/" + endDate)
 
         val fullName = "${patientData!!.user.first_name} ${patientData.user.last_name}"
-        view.fragment_patient_home_average_of_patient.text = "${getString(R.string.average_of)} ${fullName}"
+        view.fragment_patient_home_average_of_patient.text = getString(R.string.average_of, fullName)
 
         view.fragment_patient_home_btn_edit.setOnClickListener {
             val intent = Intent(getActivity(), EditPatientActivity::class.java)
@@ -167,7 +188,7 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
 
     fun refreshGuidelines(view: View)
     {
-        if (patientData!!.diets != null) {
+        if (patientData != null) {
             GuidelinesHelper.initializeGuidelines(activity, view.fragment_patient_home_ll_guidelines, patientData.diets)
         }
     }

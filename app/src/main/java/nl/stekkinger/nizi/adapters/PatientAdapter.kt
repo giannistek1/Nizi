@@ -20,7 +20,7 @@ class PatientAdapter(val context: Context, val items: ArrayList<PatientItem>, va
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val item = items.get(position)
-        holder.id.text = "${item.id.toString()}."
+        holder.id.text = "${item.id}."
         holder.name.text = item.name
         holder.itemView.setOnClickListener {
             listener.onItemClick(holder.adapterPosition)

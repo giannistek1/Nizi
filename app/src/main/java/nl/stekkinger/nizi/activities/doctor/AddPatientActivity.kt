@@ -44,12 +44,12 @@ class AddPatientActivity : AppCompatActivity() {
         doctorId = intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 0)
 
         // Testing
-        activity_add_patient_et_firstName.setText("Jaap")
-        activity_add_patient_et_lastName.setText("van Steen")
-        activity_add_patient_et_dob.setText("1995-01-01")
-        activity_add_patient_et_email.setText("jaapvansteen@hotmail.com")
-        activity_add_patient_et_password.setText("Welkom123")
-        activity_add_patient_et_password_confirm.setText("Welkom123")
+        activity_add_patient_et_firstName.setText(getString(R.string.sample_first_name))
+        activity_add_patient_et_lastName.setText(R.string.sample_last_name)
+        activity_add_patient_et_dob.setText(R.string.sample_dob)
+        activity_add_patient_et_email.setText(R.string.sample_email)
+        activity_add_patient_et_password.setText(R.string.sample_password)
+        activity_add_patient_et_password_confirm.setText(R.string.sample_password)
         activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
     }
 

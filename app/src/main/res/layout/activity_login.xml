@@ -166,8 +166,8 @@
                         android:scaleType="fitCenter"
                         android:tint="@color/colorPrimary"
                         android:layout_marginStart="@dimen/marginLeft"
-                        android:layout_width="@dimen/iconSize"
-                        android:layout_height="@dimen/iconSize"
+                        android:layout_width="@dimen/loginIconSize"
+                        android:layout_height="@dimen/loginIconSize"
                         android:contentDescription="@string/ic_website"
                         android:src="@drawable/ic_website"/>
 
@@ -194,8 +194,8 @@
                         android:scaleType="fitCenter"
                         android:tint="@color/colorPrimary"
                         android:layout_marginStart="@dimen/marginLeft"
-                        android:layout_width="@dimen/iconSize"
-                        android:layout_height="@dimen/iconSize"
+                        android:layout_width="@dimen/loginIconSize"
+                        android:layout_height="@dimen/loginIconSize"
                         android:contentDescription="@string/ic_phone"
                         android:src="@drawable/ic_telephone"/>
 
@@ -236,8 +236,8 @@
                         android:scaleType="fitCenter"
                         android:tint="@color/colorPrimary"
                         android:layout_marginStart="@dimen/marginLeft"
-                        android:layout_width="@dimen/iconSize"
-                        android:layout_height="@dimen/iconSize"
+                        android:layout_width="@dimen/loginIconSize"
+                        android:layout_height="@dimen/loginIconSize"
                         android:contentDescription="@string/ic_phone"
                         android:src="@drawable/ic_mail"/>
 
