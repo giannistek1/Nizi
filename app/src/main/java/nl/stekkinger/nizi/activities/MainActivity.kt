@@ -53,11 +53,11 @@ class MainActivity : AppCompatActivity() {
         })
 
         // Checks if fragment state is null, then start with homeFragment
-        if (savedInstanceState == null) {
+        /*if (savedInstanceState == null) {
             val fragment = HomeFragment(dietaryGuidelines)
-            supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, fragment, fragment.javaClass.getSimpleName())
+            supportFragmentManager.beginTransaction().replace(R.id.activity_main_fragment_container, fragment, fragment.javaClass.simpleName)
                 .commit()
-        }
+        }*/
 
         loader = activity_main_loader
 
@@ -74,21 +74,21 @@ class MainActivity : AppCompatActivity() {
         when (menuItem.itemId) {
             R.id.nav_home -> {
                 val fragment = HomeFragment(list)
-                supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
+                supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.nav_diary -> {
                 val fragment = DiaryFragment()
-                supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
+                supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.nav_conversation -> {
                 val fragment = ConversationFragment(user)
-                supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
+                supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity() {
                 var alreadyExists = false
 
                 // Check if dietaryGuideLines already has the food supplement type (e.g. calories)
-                dietaryGuidelines.forEachIndexed loop@ {i, dietary ->
+                dietaryGuidelines.forEachIndexed loop@ {_, dietary ->
                    if (dietary.description.contains(resultDietary.dietary_restriction.description.take(3)))
                    {
                        dietaryGuideline = dietary
@@ -208,10 +208,9 @@ class MainActivity : AppCompatActivity() {
 
 
             list = dietaryGuidelines
-
-            /*val fragment = HomeFragment(dietaryGuidelines)
+            val fragment = HomeFragment(dietaryGuidelines)
             supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id, fragment,
-                fragment.javaClass.simpleName).commit()*/
+                fragment.javaClass.simpleName).commit()
         }
     }
     //endregion

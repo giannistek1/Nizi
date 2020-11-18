@@ -134,8 +134,8 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         }
 
         override fun doInBackground(vararg p0: Void?): ArrayList<Patient>? {
-            try {
-                return patientRepository.getPatientsForDoctor(doctorId)
+            return try {
+                patientRepository.getPatientsForDoctor(doctorId)
             }  catch(e: Exception) {
                 // Failed to connect to API
                 return null

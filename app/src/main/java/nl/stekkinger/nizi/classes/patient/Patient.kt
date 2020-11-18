@@ -5,6 +5,7 @@ import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.MyFood
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
+import nl.stekkinger.nizi.classes.feedback.FeedbackShort
 import nl.stekkinger.nizi.classes.login.User
 
 data class Patient (
@@ -13,7 +14,7 @@ data class Patient (
     val date_of_birth: String,
     val doctor: Doctor,
     val user: User? = null,
-    val feedbacks: ArrayList<Feedback>? = arrayListOf(),
+    val feedbacks: ArrayList<FeedbackShort>? = arrayListOf(),
     val dietary_managements: ArrayList<DietaryManagementShort>? = arrayListOf(),
     val my_foods: ArrayList<MyFood>? = arrayListOf(),
     val consumptions: ArrayList<Consumption>? = arrayListOf(),

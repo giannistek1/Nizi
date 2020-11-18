@@ -4,6 +4,7 @@ import nl.stekkinger.nizi.classes.Consumption
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.MyFood
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
+import nl.stekkinger.nizi.classes.feedback.FeedbackShort
 import java.io.Serializable
 
 data class PatientLogin (
@@ -13,7 +14,7 @@ data class PatientLogin (
     val doctor: Int,
 
     val user: Int? = null,
-    val feedbacks: ArrayList<Feedback>? = arrayListOf(),
+    val feedbacks: ArrayList<FeedbackShort>? = arrayListOf(),
     val dietary_managements: ArrayList<DietaryManagement>? = arrayListOf(),
     val my_foods: ArrayList<MyFood>? = arrayListOf(),
     val consumptions: ArrayList<Consumption>? = arrayListOf(),
