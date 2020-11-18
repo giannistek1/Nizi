@@ -1,12 +1,9 @@
 package nl.stekkinger.nizi.repositories
 
-import android.content.Context
 import android.util.Log
 import android.util.Log.d
 import androidx.lifecycle.MutableLiveData
-import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.classes.*
-import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -15,10 +12,6 @@ import kotlin.collections.ArrayList
 class FoodRepository : Repository() {
 
     private val TAG = "FoodRepository"
-
-    private val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-    private val accessToken = preferences.getString(GeneralHelper.PREF_TOKEN, null)
-    private val authHeader = "Bearer " + accessToken
 
     fun getDiary(startDate: String, endDate: String): MutableLiveData<Consumptions.Result> {
         val result = MutableLiveData<Consumptions.Result>()

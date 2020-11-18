@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.conversation_item.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.feedback.Feedback
-import nl.stekkinger.nizi.classes.old.Conversation
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList

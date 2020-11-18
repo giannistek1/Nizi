@@ -10,14 +10,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_conversation.*
 import kotlinx.android.synthetic.main.fragment_conversation.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConversationAdapter
 import nl.stekkinger.nizi.classes.feedback.Feedback
-import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.login.UserLogin
-import nl.stekkinger.nizi.classes.old.Conversation
 import nl.stekkinger.nizi.repositories.FeedbackRepository
 
 class ConversationFragment(private val user: UserLogin): Fragment() {
@@ -49,7 +46,6 @@ class ConversationFragment(private val user: UserLogin): Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
 
     }
 

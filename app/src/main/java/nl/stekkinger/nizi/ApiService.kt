@@ -5,11 +5,11 @@ import nl.stekkinger.nizi.classes.login.LoginRequest
 import nl.stekkinger.nizi.classes.login.LoginResponse
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.dietary.DietaryRestriction
-import nl.stekkinger.nizi.classes.old.Conversation
 import nl.stekkinger.nizi.classes.patient.*
 import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
+import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import retrofit2.Call
 import retrofit2.http.*
@@ -148,22 +148,13 @@ interface ApiService {
         @Query("patient.id") patientId: Int
     ) : Call<ArrayList<Feedback>>
 
-    @GET("v1/waterconsumption/period/{patientId}")
+    /*@GET("v1/waterconsumption/period/{patientId}")
     fun fetchConversations(
         @Header("Authorization") authHeader : String,
         @Path("patientId") patientId: Int,
         @Query("beginDate") beginDate: String,
         @Query("endDate") endDate: String
-    ) : Call<ArrayList<Conversation>>
-
-//    @GET("v1/waterconsumption/period/{patientId}")
-//    fun fetchConversations(
-//        @Header("Authorization") authHeader : String,
-//        @Path("patientId") patientId: Int,
-//        @Query("beginDate") beginDate: String,
-//        @Query("endDate") endDate: String
-//    ) : Call<ArrayList<String>>
-    //endregion
+    ) : Call<ArrayList<Conversation>>*/
 
     //region meals
     @POST("v1/meal/{patientId}")
@@ -228,12 +219,12 @@ interface ApiService {
     ) : Call<DietaryManagement>
     //endregion
 
-    // Never used
     //region doctors
-    @GET("v1/doctor")
-    fun getDoctors(
-
-    ) : Call<Unit>
+    @GET("doctors/{doctorId}")
+    fun getDoctor(
+        @Header("Authorization") authHeader : String,
+        @Path("doctorId") doctorId: Int
+    ) : Call<Doctor>
 
     @POST("v1/doctor")
     fun addDoctor(
