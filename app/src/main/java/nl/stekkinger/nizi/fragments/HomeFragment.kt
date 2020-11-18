@@ -59,7 +59,7 @@ class HomeFragment(private val dietaryGuidelines: ArrayList<DietaryGuideline>?):
         view.fragment_home_btn_tomorrow.setOnClickListener {
             val newDate = sdf.parse(getDay(mCurrentDate, 1))
 
-            // if new date after today
+            // Guard: if new date after today
             if (newDate!!.after(Date())) return@setOnClickListener
 
             mCurrentDate = sdf.format(newDate)
