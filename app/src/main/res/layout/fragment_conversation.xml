@@ -40,7 +40,7 @@
             android:layout_marginStart="@dimen/marginLeft"
             android:layout_marginTop="@dimen/marginNormal"
             android:layout_marginBottom="@dimen/marginNormal"
-            android:text="@string/advice_from"
+            android:text="@string/advice_from_doctor"
             android:textColor="@color/black"
             android:textSize="@dimen/h2" />
 

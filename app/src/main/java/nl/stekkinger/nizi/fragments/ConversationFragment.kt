@@ -15,19 +15,25 @@ import kotlinx.android.synthetic.main.fragment_conversation.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConversationAdapter
 import nl.stekkinger.nizi.classes.feedback.Feedback
+import nl.stekkinger.nizi.classes.login.User
+import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.old.Conversation
 import nl.stekkinger.nizi.repositories.FeedbackRepository
 
-class ConversationFragment: Fragment() {
+class ConversationFragment(private val user: UserLogin): Fragment() {
     private val mRepository: FeedbackRepository = FeedbackRepository()
     private lateinit var adapter: ConversationAdapter
 
     private lateinit var loader: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // Setup UI
         val view: View = inflater.inflate(R.layout.fragment_conversation, container, false)
         loader = view.fragment_conversation_loader
 
+        //view.fragment_conversation_txt_advice_from.text = "Advies van ${dietist}"
+
+        // Setup RV
         val recyclerView: RecyclerView = view.fragment_rv_conversation
         // TODO: change recycler view
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -35,6 +41,7 @@ class ConversationFragment: Fragment() {
         adapter = ConversationAdapter()
         recyclerView.adapter = adapter
 
+        // Get feedback
         getConversationsAsyncTask().execute()
 
         return view
@@ -43,8 +50,7 @@ class ConversationFragment: Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        //val helper = GuidelinesHelperClass()
-        //helper.initializeGuidelines(activity, ll_guidelines_content)
+
     }
 
     inner class getConversationsAsyncTask : AsyncTask<Void, Void, ArrayList<Feedback>>() {
@@ -56,8 +62,7 @@ class ConversationFragment: Fragment() {
         }
 
         override fun doInBackground(vararg params: Void?): ArrayList<Feedback>? {
-            var conversations = mRepository.getFeedbacks()
-            return conversations
+            return mRepository.getFeedbacks(user.patient!!.id)
         }
 
         override fun onPostExecute(result: ArrayList<Feedback>?) {
@@ -69,6 +74,8 @@ class ConversationFragment: Fragment() {
             // Guard
             if (result == null) { Toast.makeText(activity, R.string.get_feedbacks_fail, Toast.LENGTH_SHORT).show()
                 return }
+
+            Toast.makeText(activity, R.string.fetched_feedbacks, Toast.LENGTH_SHORT).show()
 
             d("CONVO", result.toString())
             adapter.setConversationList(result)

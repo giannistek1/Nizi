@@ -11,6 +11,9 @@ import kotlinx.android.synthetic.main.conversation_item.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.old.Conversation
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ConversationAdapter(
     private var mDataset: ArrayList<Feedback> = ArrayList()
@@ -38,9 +41,11 @@ class ConversationAdapter(
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var conversation: Feedback = mDataset[position]
+        val conversation: Feedback = mDataset[position]
 
-        holder.date.text = conversation.date.toString()
+        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val date = sdf.format(conversation.date)
+        holder.date.text = date
         holder.comment.text = conversation.comment
     }
 

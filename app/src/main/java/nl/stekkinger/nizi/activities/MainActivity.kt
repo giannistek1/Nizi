@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.nav_conversation -> {
-                val fragment = ConversationFragment()
+                val fragment = ConversationFragment(user)
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -209,9 +209,9 @@ class MainActivity : AppCompatActivity() {
 
             list = dietaryGuidelines
 
-            val fragment = HomeFragment(dietaryGuidelines)
-            supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
-                .commit()
+            /*val fragment = HomeFragment(dietaryGuidelines)
+            supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id, fragment,
+                fragment.javaClass.simpleName).commit()*/
         }
     }
     //endregion

@@ -19,8 +19,8 @@ class FeedbackRepository : Repository() {
     private val accessToken = preferences.getString(GeneralHelper.PREF_TOKEN, null)
     private val authHeader = "Bearer " + accessToken
 
-    fun getFeedbacks(): ArrayList<Feedback>? {
-        return service.fetchFeedbacks(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().body()
+    fun getFeedbacks(patientId: Int): ArrayList<Feedback>? {
+        return service.fetchFeedbacks(authHeader = authHeader, patientId = patientId).execute().body()
     }
 
     fun getConversations(): ArrayList<Conversation>? {

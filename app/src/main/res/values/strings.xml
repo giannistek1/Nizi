@@ -93,8 +93,12 @@
     <string name="max">Max</string>
 
     <!-- Feedback -->
+    <string name="advice_from_doctor">Advies van diëtist</string>
+    <string name="fetched_feedbacks">Feedback opgehaald</string>
     <string name="get_feedbacks_fail">Feedback ophalen mislukt</string>
-    <string name="advice_from">Advies van</string>
+    <string name="conversation_summary">Gesprek samenvatting</string>
+    <string name="sample_date">01-01-2019</string>
+    <string name="sample_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
 
     <!-- Doctor -->
 
