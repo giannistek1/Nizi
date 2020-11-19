@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.conversation_item.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.feedback.Feedback
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -28,6 +29,9 @@ class ConversationAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.conversation_item, parent, false)
+        // Hide comment
+        view.convo_comment.visibility = GONE
+        
         return ViewHolder(view)
             .listen { _, _ ->
                 if (view.convo_comment.visibility == GONE ) {
@@ -42,7 +46,7 @@ class ConversationAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val conversation: Feedback = mDataset[position]
 
-        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+        val sdf = GeneralHelper.getDateFormat()
         val date = sdf.format(conversation.date)
         holder.date.text = date
         holder.comment.text = conversation.comment

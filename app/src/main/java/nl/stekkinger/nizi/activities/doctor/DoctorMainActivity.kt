@@ -157,6 +157,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             // Clear
             patientList.clear()
 
+            // TODO: Change forEach into for so you can continue instead of return
             // Fill
             (0 until result.count()).forEach {
                 if (result[it].user == null) return@forEach

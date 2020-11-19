@@ -32,7 +32,7 @@ class EditPatientDietaryActivity : AppCompatActivity() {
     private var doctorId: Int? = null
     private lateinit var patientData: PatientData
 
-    private lateinit var dietaryList: ArrayList<DietaryManagementShort>
+    private lateinit var newDietaryList: ArrayList<DietaryManagementShort>
     private lateinit var textViewList: ArrayList<EditText>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -146,31 +146,33 @@ class EditPatientDietaryActivity : AppCompatActivity() {
                 "Eiwitbeperking", "Eiwitverrijking",
                 "Vezelbeperking", "Vezelverrijking")
 
-            dietaryList = arrayListOf()
+            newDietaryList = arrayListOf()
 
             // Add dietaries by looping through each editText View
             restrictionsList.forEachIndexed { index, _ ->
                 if (textViewList[index].text.toString() != "") {
-                    dietaryList.add(
+                    newDietaryList.add(
                         DietaryManagementShort(
                             dietary_restriction = index+1,
                             amount = textViewList[index].text.toString().toInt(),
-                            is_active =  true,
+                            is_active = true,
                             patient = patientData.patient.id
                         )
                     )
                 }
             }
 
+
+
             // Add the dietaries that were added (filled in)
             if (patientData.diets.count() == 0) {
-                dietaryList.forEachIndexed { _, dietary ->
+                newDietaryList.forEachIndexed { _, dietary ->
                     addDietaryToPatientAsyncTask(dietary).execute()
                 }
             }
             else
             {
-                dietaryList.forEachIndexed { _, dietary ->
+                newDietaryList.forEachIndexed { _, dietary ->
                     updateDietaryAsyncTask(dietary).execute()
                 }
             }
@@ -206,8 +208,8 @@ class EditPatientDietaryActivity : AppCompatActivity() {
             Toast.makeText(baseContext, R.string.dietary_changed, Toast.LENGTH_SHORT).show()
 
             // Remove from list
-            dietaryList.removeAt(0)
-            if (dietaryList.isEmpty())
+            newDietaryList.removeAt(0)
+            if (newDietaryList.isEmpty())
                 finish()
         }
     }
@@ -241,8 +243,8 @@ class EditPatientDietaryActivity : AppCompatActivity() {
             Toast.makeText(baseContext, R.string.dietary_added, Toast.LENGTH_SHORT).show()
 
             // Remove from list
-            dietaryList.removeAt(0)
-            if (dietaryList.isEmpty())
+            newDietaryList.removeAt(0)
+            if (newDietaryList.isEmpty())
                 finish()
         }
     }
