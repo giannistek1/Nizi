@@ -113,7 +113,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/marginLeft"
+            android:layout_marginStart="@dimen/marginHorizontal"
             android:layout_marginEnd="@dimen/marginRight"
             android:layout_marginBottom="@dimen/marginNormal"
             android:background="@color/white"

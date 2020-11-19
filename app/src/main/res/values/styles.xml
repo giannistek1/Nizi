@@ -6,8 +6,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
         <!-- Custom -->
-        <item name="android:fontFamily">@font/segoe_ui</item>
+        <item name="android:fontFamily">@font/</item>
+        <item name="android:textSize">@dimen/textSizeNormal</item>
+
+        <!-- For buttons -->
+        <item name="android:textAllCaps">false</item>
     </style>
 
     <style name="BottomNavigationTheme" parent="Theme.AppCompat.Light">

@@ -31,7 +31,7 @@ class ConversationAdapter(
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.conversation_item, parent, false)
         // Hide comment
         view.convo_comment.visibility = GONE
-        
+
         return ViewHolder(view)
             .listen { _, _ ->
                 if (view.convo_comment.visibility == GONE ) {
@@ -46,7 +46,7 @@ class ConversationAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val conversation: Feedback = mDataset[position]
 
-        val sdf = GeneralHelper.getDateFormat()
+        val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         val date = sdf.format(conversation.date)
         holder.date.text = date
         holder.comment.text = conversation.comment

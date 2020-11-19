@@ -32,6 +32,4 @@ class PatientRepository : Repository() {
     {
         return service.updatePatient(authHeader, patient.id, patient).execute().body()
     }
-
-
 }

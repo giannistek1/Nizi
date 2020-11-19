@@ -33,7 +33,7 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
         view.fragment_conversation_txt_advice_from.text = getString(R.string.advice_from, doctorName)
 
         // Setup RV
-        val recyclerView: RecyclerView = view.fragment_rv_conversation
+        val recyclerView: RecyclerView = view.fragment_conversation_rv
         // TODO: change recycler view
         recyclerView.layoutManager = LinearLayoutManager(activity)
 

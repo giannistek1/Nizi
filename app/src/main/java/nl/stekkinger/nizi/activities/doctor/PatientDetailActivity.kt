@@ -88,7 +88,7 @@ class PatientDetailActivity : AppCompatActivity() {
             }
 
             R.id.nav_conversation -> {
-                val fragment = PatientFeedbackFragment()
+                val fragment = PatientFeedbackFragment(patientData)
                 supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
                     .commit()
                 return@OnNavigationItemSelectedListener true

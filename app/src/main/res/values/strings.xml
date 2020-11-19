@@ -23,12 +23,14 @@
     <string name="login_fail">Inloggen mislukt!</string>
     <string name="register">Registreren</string>
     <string name="login">Inloggen</string>
+    <string name="login_capitalized">INLOGGEN</string>
     <string name="login_as_patient">Inloggen als patiënt</string>
     <string name="login_as_dietist">Inloggen als diëtist</string>
     <string name="logout">Uitloggen</string>
+    <string name="name">Naam</string>
     <string name="username">Gebruikersnaam</string>
     <string name="password">Wachtwoord</string>
-    <string name="password_forgotten">Wachtwoord vergeten?</string>
+    <string name="password_forgotten">Wachtwoord vergeten</string>
     <string name="username_cant_be_empty">Gebruikersnaam mag niet leeg zijn</string>
     <string name="password_cant_be_empty">Wachtwoord mag niet leeg zijn</string>
     <string name="credentials_wrong">Gebruikersnaam of wachtwoord klopt niet</string>
@@ -103,6 +105,7 @@
     <string name="max">Max</string>
 
     <!-- Feedback -->
+
     <string name="advice_from_doctor">Advies van diëtist</string>
     <string name="advice_from">Advies van %1$s</string>
     <string name="fetched_feedbacks">Feedback opgehaald</string>
@@ -110,6 +113,7 @@
     <string name="conversation_summary">Gesprek samenvatting</string>
     <string name="sample_date">01-01-2019</string>
     <string name="sample_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</string>
+    <string name="add_advice">Advies toevoegen</string>
 
     <!-- Doctor -->
 
@@ -228,11 +232,14 @@
     <string name="content_meal_photo_display">Maaltijd foto display</string>
 
     <string name="header_background">Kop achtergrond</string>
-    <string name="ic_website">Website icoon</string>
-    <string name="ic_phone">Telefoon icoon</string>
-    <string name="ic_mail">Mail icoon</string>
-    <string name="ic_user">Gebruiker icoon</string>
-    <string name="ic_culinary">Etensgerei icoon</string>
+    <string name="ic_user">Gebruiker icoontje</string>
+    <string name="ic_lock">Slot icoontje</string>
+    <string name="ic_website">Website icoontje</string>
+    <string name="ic_phone">Telefoon icoontje</string>
+    <string name="ic_mail">Mail icoontje</string>
+    <string name="ic_home">Home icoontje</string>
+    <string name="ic_culinary">Etensgerei icoontje</string>
+    <string name="ic_conversation">Gesprekken icoontje</string>
 
     <string name="food_diary">Voedingsdagboek</string>
     <string name="user">Gebruiker</string>

@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="h1">24sp</dimen>
-    <dimen name="h2">20sp</dimen>
+    <!-- Text sizes -->
+    <dimen name="h1">20sp</dimen>
+    <dimen name="h2">18sp</dimen>
     <dimen name="h3">16sp</dimen>
+    <dimen name="textSizeBig">14sp</dimen>
+    <dimen name="textSizeNormal">14sp</dimen>
+    <dimen name="textSize13">13sp</dimen>
+    <dimen name="textSize12">12sp</dimen>
+    <dimen name="textSize11">11sp</dimen>
+    <dimen name="textSize10">10sp</dimen>
 
-    <dimen name="loginIconSize">30dp</dimen>
+    <!-- Icon sizes -->
+    <dimen name="loginIconSize">20dp</dimen>
+    <dimen name="contactIconSize">28dp</dimen>
     <dimen name="dateNavigationSize">20dp</dimen>
     <dimen name="guidelineIconSize">15dp</dimen>
     <dimen name="guidelineCircleSize">100dp</dimen>
 
-    <dimen name="marginLeft">20dp</dimen>
+    <!-- Button -->
+    <dimen name="paddingButton">6dp</dimen>
+
+    <dimen name="marginHorizontal">30dp</dimen>
     <dimen name="marginRight">20dp</dimen>
-    <!--Top and bottom-->
+    <dimen name="marginVerySmall">6dp</dimen>
     <dimen name="marginSmall">10dp</dimen>
     <dimen name="marginNormal">16dp</dimen>
     <dimen name="marginDouble">32dp</dimen>
+    <dimen name="marginVeryBig">64dp</dimen>
 
     <!-- Shadow -->
     <dimen name="elevationNormal">5dp</dimen>

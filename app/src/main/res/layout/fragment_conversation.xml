@@ -1,43 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- Header (REUSEABLE BUT NOT IMPLEMENTED YET) -->
-    <LinearLayout
-        android:id="@+id/activity_main_header_background"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary">
-
-        <TextView
-            android:id="@+id/activity_main_txt_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:fontFamily="@font/segoe_ui_semibold"
-            android:gravity="center"
-            android:text="@string/conversations"
-            android:textColor="@color/white"
-            android:textSize="@dimen/h1"/>
-
-    </LinearLayout>
 
     <!-- Advice from -->
     <RelativeLayout
-        android:id="@+id/fragment_conversation_rl_statistics"
+        android:id="@+id/fragment_conversation_rl_advice_from"
+        android:background="@color/gray"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/activity_main_header_background">
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/fragment_conversation_txt_advice_from"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/marginLeft"
+            android:layout_marginStart="@dimen/marginHorizontal"
             android:layout_marginTop="@dimen/marginSmall"
             android:layout_marginBottom="@dimen/marginSmall"
             android:text="@string/advice_from_doctor"
@@ -53,10 +33,10 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_rv_conversation"
+        android:id="@+id/fragment_conversation_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/fragment_conversation_rl_statistics"
+        android:layout_below="@+id/fragment_conversation_rl_advice_from"
         android:layout_marginTop="2dp"
         android:background="@android:color/white"
         android:padding="2dp"

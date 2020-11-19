@@ -127,7 +127,7 @@ class LoginActivity : AppCompatActivity() {
         override fun onPostExecute(result: LoginResponse?) {
             super.onPostExecute(result)
             // Loader
-            progressBar.visibility = View.GONE
+            progressBar.visibility = View.INVISIBLE
 
             // Guard result either gives the (token, user, patient/doctor) OR null
             if (result == null) { Toast.makeText(baseContext, R.string.credentials_wrong, Toast.LENGTH_SHORT).show(); return }

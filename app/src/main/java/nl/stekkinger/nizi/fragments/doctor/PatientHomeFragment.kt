@@ -49,7 +49,7 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
 
         // Edit Button
         view.fragment_patient_home_btn_edit.setOnClickListener {
-            val intent = Intent(getActivity(), EditPatientActivity::class.java)
+            val intent = Intent(activity, EditPatientActivity::class.java)
 
             // Prevents multiple activities
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)

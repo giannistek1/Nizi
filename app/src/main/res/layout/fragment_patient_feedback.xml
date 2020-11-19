@@ -1,14 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context=".fragments.doctor.PatientFeedbackFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- Advice for -->
+    <RelativeLayout
+        android:id="@+id/fragment_patient_feedback_rl_for"
+        android:background="@color/gray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/marginHorizontal"
+        android:paddingEnd="@dimen/marginSmall"
+        android:paddingTop="@dimen/marginSmall"
+        android:paddingBottom="@dimen/marginSmall">
+
+        <TextView
+            android:id="@+id/fragment_patient_feedback_txt_adviceFor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/advice_from_doctor"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSizeNormal"/>
+
+        <ProgressBar
+            android:id="@+id/fragment_patient_feedback_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_patient_feedback_txt_adviceFor"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <!-- Add advice -->
+    <RelativeLayout
+        android:id="@+id/fragment_patient_feedback_rl_addAdvice"
+        android:background="@color/lightGray"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_patient_feedback_rl_for"
+        android:paddingStart="@dimen/marginHorizontal"
+        android:paddingEnd="@dimen/marginSmall"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/fragment_patient_feedback_txt_addAdvice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/add_advice"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSize12"/>
+
+        <TextView
+            android:id="@+id/fragment_patient_feedback_txt_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/fragment_patient_feedback_btn_addAdvice"
+            android:layout_centerVertical="true"
+            android:text="@string/save"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textSize12"/>
+
+        <ImageView
+            android:id="@+id/fragment_patient_feedback_btn_addAdvice"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:scaleType="fitCenter"
+            android:tint="@color/colorPrimary"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="@string/add_patient"
+            android:src="@drawable/ic_add"/>
+
+    </RelativeLayout>
+
+    <!-- New feedback input -->
+    <EditText
+        android:id="@+id/fragment_patient_feedback_et_newFeedback"
+        android:background="@drawable/text_border"
+        android:inputType="textMultiLine"
+        android:lines="8"
+        android:minLines="6"
+        android:gravity="top|start"
+        android:maxLines="10"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/fragment_patient_feedback_rl_addAdvice"
+        android:scrollbars="vertical"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/fragment_patient_feedback_rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_below="@+id/fragment_patient_feedback_et_newFeedback"
+        android:layout_marginTop="2dp"
+        android:background="@android:color/white"
+        android:padding="2dp"
+        android:scrollbars="vertical" />
 
-</FrameLayout>
+</RelativeLayout>

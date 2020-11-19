@@ -14,12 +14,12 @@
 
         <!-- title + date -->
         <LinearLayout
-            android:background="@color/gray"
+            android:background="@color/lightGray"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:paddingTop="@dimen/marginSmall"
             android:paddingBottom="@dimen/marginSmall"
-            android:paddingStart="@dimen/marginLeft"
+            android:paddingStart="@dimen/marginHorizontal"
             android:paddingEnd="@dimen/marginRight"
             android:orientation="horizontal">
 
@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/marginSmall"
             android:paddingBottom="@dimen/marginSmall"
-            android:paddingStart="@dimen/marginLeft"
+            android:paddingStart="@dimen/marginHorizontal"
             android:paddingEnd="@dimen/marginRight"
             android:background="@drawable/text_border"/>
 
