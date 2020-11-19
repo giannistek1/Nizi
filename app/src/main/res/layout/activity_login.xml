@@ -77,8 +77,6 @@
                         android:background="@drawable/text_border_gray"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/marginVerySmall"
-                        android:paddingBottom="@dimen/marginVerySmall"
                         android:elevation="@dimen/elevationNormal"
                         android:orientation="horizontal">
 
@@ -102,8 +100,10 @@
                             android:inputType="text"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingStart="@dimen/marginVerySmall"
+                            android:paddingStart="@dimen/marginSmall"
                             android:paddingEnd="0dp"
+                            android:paddingTop="@dimen/marginSmaller"
+                            android:paddingBottom="@dimen/marginSmaller"
                             android:background="@null"/>
                     </LinearLayout>
 
@@ -123,8 +123,7 @@
                         android:background="@drawable/text_border_gray"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/marginVerySmall"
-                        android:paddingBottom="@dimen/marginVerySmall"
+                        android:layout_marginBottom="@dimen/marginSize2"
                         android:elevation="@dimen/elevationNormal"
                         android:orientation="horizontal">
 
@@ -147,12 +146,13 @@
                             tools:targetApi="o"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingStart="@dimen/marginVerySmall"
+                            android:paddingStart="@dimen/marginSmall"
                             android:paddingEnd="0dp"
+                            android:paddingTop="@dimen/marginSmaller"
+                            android:paddingBottom="@dimen/marginSmaller"
                             android:inputType="textPassword"
                             android:background="@null"/>
                     </LinearLayout>
-
 
                     <TextView
                         android:id="@+id/activity_login_txt_password_forgotten"

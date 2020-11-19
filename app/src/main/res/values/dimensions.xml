@@ -12,7 +12,7 @@
     <dimen name="textSize10">10sp</dimen>
 
     <!-- Icon sizes -->
-    <dimen name="loginIconSize">20dp</dimen>
+    <dimen name="loginIconSize">24dp</dimen>
     <dimen name="contactIconSize">28dp</dimen>
     <dimen name="dateNavigationSize">20dp</dimen>
     <dimen name="guidelineIconSize">15dp</dimen>
@@ -23,7 +23,9 @@
 
     <dimen name="marginHorizontal">30dp</dimen>
     <dimen name="marginRight">20dp</dimen>
+    <dimen name="marginSize2">2dp</dimen>
     <dimen name="marginVerySmall">6dp</dimen>
+    <dimen name="marginSmaller">8dp</dimen>
     <dimen name="marginSmall">10dp</dimen>
     <dimen name="marginNormal">16dp</dimen>
     <dimen name="marginDouble">32dp</dimen>
