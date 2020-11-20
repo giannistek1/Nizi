@@ -16,7 +16,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class ConversationAdapter(
-    private var mDataset: ArrayList<Feedback> = ArrayList()
+    private var mDataset: MutableList<Feedback> = ArrayList()
 ) : RecyclerView.Adapter<ConversationAdapter.ViewHolder>() {
 
 
@@ -60,7 +60,7 @@ class ConversationAdapter(
         val comment: TextView = itemView.convo_comment
     }
 
-    fun setConversationList(conversations: ArrayList<Feedback>) {
+    fun setConversationList(conversations: MutableList<Feedback>) {
         this.mDataset = conversations
         notifyDataSetChanged()
     }

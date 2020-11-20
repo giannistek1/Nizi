@@ -8,7 +8,8 @@ import nl.stekkinger.nizi.R
 
 object InputHelper {
     fun inputIsEmpty(context: Context, input: EditText, stringIndex: Int) : Boolean {
-        if (input.text.isEmpty()) {
+        // Check if input is blank (does NOT count whitespace, alternative: .trim().isEmpty())
+        if (input.text.isBlank()) {
             input.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
             input.requestFocus()
             Toast.makeText(context, stringIndex, Toast.LENGTH_SHORT).show()

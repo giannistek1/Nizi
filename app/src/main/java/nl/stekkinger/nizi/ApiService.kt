@@ -12,6 +12,7 @@ import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.doctor.DoctorShort
 import nl.stekkinger.nizi.classes.feedback.Feedback
+import nl.stekkinger.nizi.classes.feedback.FeedbackShort
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -143,6 +144,12 @@ interface ApiService {
     //endregion
 
     //region feedbacks
+    @POST("feedbacks")
+    fun addFeedback(
+        @Header("Authorization") authHeader : String,
+        @Body body: FeedbackShort
+    ) : Call<Feedback>
+
     @GET("feedbacks")
     fun fetchFeedbacks(
         @Header("Authorization") authHeader : String,

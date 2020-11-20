@@ -4,15 +4,15 @@ import java.io.Serializable
 import java.util.*
 
 data class FeedbackShort(
-    val id: Int,
+    val id: Int = 0,
     val title: String,
     val comment: String,
-    val date: Date,
-    val is_read: Boolean,
+    val date: String,
+    val is_read: Boolean = false,
     val patient: Int,
     val doctor: Int,
 
     // Unimportant stuff
-    val created_at: String,
-    val updated_at: String
+    val created_at: String? = null,
+    val updated_at: String? = null
 ) : Serializable

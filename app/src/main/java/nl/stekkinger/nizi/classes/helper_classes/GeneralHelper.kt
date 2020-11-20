@@ -55,6 +55,16 @@ object GeneralHelper {
         return SimpleDateFormat("dd MMMM yyyy", Locale.getDefault())
     }
 
+    fun getCreateDateFormat() : SimpleDateFormat
+    {
+        return SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    }
+
+    fun getFeedbackDateFormat() : SimpleDateFormat
+    {
+        return SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    }
+
     fun hasInternetConnection(context: Context) : Boolean
     {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?

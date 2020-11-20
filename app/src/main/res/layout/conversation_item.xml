@@ -42,7 +42,7 @@
         <TextView
             android:id="@+id/convo_comment"
             android:text="@string/sample_text"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/marginSmall"
             android:paddingBottom="@dimen/marginSmall"
