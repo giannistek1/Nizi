@@ -20,6 +20,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <!-- Toolbar -->
+        <include layout="@layout/toolbar"/>
+
         <LinearLayout
             android:background="@color/colorPrimary"
             android:layout_width="match_parent"
@@ -27,6 +30,7 @@
 
             <TextView
                 android:id="@+id/activity_main_txt_header"
+                android:fontFamily="@font/segoe_ui_semibold"
                 android:textSize="@dimen/h1"
                 android:gravity="center"
                 android:textColor="@color/white"
@@ -43,7 +47,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/marginHorizontal"
-            android:layout_marginEnd="@dimen/marginRight"
+            android:layout_marginEnd="@dimen/marginBigger"
             android:background="@color/white"
             android:elevation="@dimen/elevationNormal"
             android:orientation="vertical">
@@ -93,7 +97,7 @@
 
                         <EditText
                             android:id="@+id/activity_login_et_username"
-                            android:fontFamily="@font/segoe_ui"
+                            android:fontFamily="@font/segoe_ui_light"
                             android:hint="@string/username"
                             android:autofillHints="@string/username"
                             tools:targetApi="o"
@@ -140,7 +144,7 @@
 
                         <EditText
                             android:id="@+id/activity_login_et_password"
-                            android:fontFamily="@font/segoe_ui"
+                            android:fontFamily="@font/segoe_ui_light"
                             android:hint="@string/password"
                             android:autofillHints="@string/password"
                             tools:targetApi="o"
@@ -190,9 +194,9 @@
                             android:id="@+id/activity_login_btn_login"
                             android:fontFamily="@font/segoe_ui_semibold"
                             android:text="@string/login"
+                            android:textColor="@android:color/white"
                             android:enabled="false"
                             android:background="@color/colorAccent"
-                            android:textColor="@android:color/white"
                             android:layout_width="0dp"
                             android:layout_weight="5"
                             android:layout_height="wrap_content"

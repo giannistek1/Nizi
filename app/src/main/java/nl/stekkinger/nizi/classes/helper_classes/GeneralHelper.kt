@@ -77,5 +77,4 @@ object GeneralHelper {
 
         return hasConnection
     }
-
 }

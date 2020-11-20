@@ -11,6 +11,7 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add_patient.*
+import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
@@ -25,7 +26,7 @@ class AddPatientActivity : AppCompatActivity() {
     // For activity result
     private val REQUEST_CODE = 0
 
-    private lateinit var progressBar: View
+    private lateinit var loader: View
 
     private var doctorId: Int? = null
 
@@ -33,9 +34,10 @@ class AddPatientActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // Setup UI
         setContentView(R.layout.activity_add_patient)
-
+        setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        progressBar = activity_add_patient_progressbar
+        toolbar_txt_back.text = getString(R.string.patient_overview)
+        loader = activity_add_patient_progressbar
 
         activity_add_patient_btn_to_guidelines.setOnClickListener {
             tryCreatePatient(activity_add_patient_et_firstName, activity_add_patient_et_lastName,

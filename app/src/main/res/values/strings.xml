@@ -10,6 +10,8 @@
     <string name="sample_password">Welkom123</string>
 
     <!--- General -->
+    <string name="back">Terug</string>
+    <string name="patient_overview">Patiënt overzicht</string>
     <string name="no_internet_connection">Geen internetverbinding</string>
     <string name="api_is_down">Server offline, probeer later opnieuw</string>
 
@@ -146,6 +148,7 @@
     <string name="step_1">Stap 1</string>
     <string name="step_2">Stap 2</string>
     <string name="personal_info">Persoonlijke informatie</string>
+    <string name="personal_info_short">Pers. informatie</string>
     <string name="first_name_req">Voornaam*</string>
     <string name="name_req">Naam*</string>
     <string name="patient_name">Patientnaam</string>

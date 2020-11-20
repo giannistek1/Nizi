@@ -7,10 +7,14 @@
     android:background="@color/gray"
     tools:context=".activities.MainActivity">
 
+    <!-- Toolbar -->
+    <include layout="@layout/toolbar"/>
+
     <RelativeLayout
         android:id="@+id/activity_main_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
         android:layout_above="@+id/activity_main_bottom_navigation">
 
 

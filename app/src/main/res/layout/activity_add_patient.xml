@@ -6,103 +6,107 @@
     android:layout_height="match_parent"
     tools:context=".activities.doctor.AddPatientActivity">
 
-        <!-- Steps -->
+    <!-- Toolbar -->
+    <include layout="@layout/toolbar"/>
+
+    <!-- Steps -->
+    <LinearLayout
+        android:id="@+id/activity_add_patient_ll_steps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:background="@color/gray"
+        android:layout_below="@+id/toolbar">
+
+        <!-- Step 1 -->
         <LinearLayout
-            android:id="@+id/activity_add_patient_ll_steps"
-            android:layout_width="match_parent"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:background="@color/gray">
+            android:orientation="vertical"
+            android:layout_weight="0.4">
 
-            <!-- Step 1 -->
-            <LinearLayout
-                android:layout_width="10dp"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="0.4">
+            <TextView
+                android:id="@+id/activity_add_patient_txt_step_1"
+                android:text="@string/step_1"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h3"
+                android:fontFamily="@font/segoe_ui_semibold"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:id="@+id/activity_add_patient_txt_step_1"
-                    android:text="@string/step_1"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/h3"
-                    android:fontFamily="@font/segoe_ui_semibold"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/ic_user"
+                android:src="@drawable/ic_user"/>
 
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/ic_user"
-                    android:src="@drawable/ic_user"/>
+            <TextView
+                android:id="@+id/activity_add_patient_txt_personal_info"
+                android:text="@string/personal_info"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/h3"
+                android:fontFamily="@font/segoe_ui_semibold"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-                <TextView
-                    android:id="@+id/activity_add_patient_txt_personal_info"
-                    android:text="@string/personal_info"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/h3"
-                    android:fontFamily="@font/segoe_ui_semibold"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <!-- Arrow -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="0.2"
-                android:layout_gravity="center">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:contentDescription="@string/arrow_right"
-                    android:src="@drawable/ic_arrow_r"/>
-
-            </LinearLayout>
-
-            <!-- Step 2 -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="0.4">
-
-                <TextView
-                    android:id="@+id/activity_add_patient_txt_step_2"
-                    android:text="@string/step_2"
-                    android:textColor="@color/darkGray"
-                    android:textSize="@dimen/h3"
-                    android:fontFamily="@font/segoe_ui_semibold"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center"
-                    android:tint="@color/black"
-                    android:contentDescription="@string/ic_culinary"
-                    android:src="@drawable/ic_culinary"/>
-
-                <TextView
-                    android:id="@+id/activity_add_patient_txt_guidelines"
-                    android:text="@string/guidelines"
-                    android:textColor="@color/darkGray"
-                    android:textSize="@dimen/h3"
-                    android:fontFamily="@font/segoe_ui_semibold"
-                    android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-            </LinearLayout>
         </LinearLayout>
+
+        <!-- Arrow -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="0.2"
+            android:layout_gravity="center">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:contentDescription="@string/arrow_right"
+                android:src="@drawable/ic_arrow_r"/>
+
+        </LinearLayout>
+
+        <!-- Step 2 -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="0.4">
+
+            <TextView
+                android:id="@+id/activity_add_patient_txt_step_2"
+                android:text="@string/step_2"
+                android:textColor="@color/darkGray"
+                android:textSize="@dimen/h3"
+                android:fontFamily="@font/segoe_ui_semibold"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:tint="@color/black"
+                android:contentDescription="@string/ic_culinary"
+                android:src="@drawable/ic_culinary"/>
+
+            <TextView
+                android:id="@+id/activity_add_patient_txt_guidelines"
+                android:text="@string/guidelines"
+                android:textColor="@color/darkGray"
+                android:textSize="@dimen/h3"
+                android:fontFamily="@font/segoe_ui_semibold"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <!-- Patient data -->
     <ScrollView
@@ -114,7 +118,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/marginHorizontal"
-            android:layout_marginEnd="@dimen/marginRight"
+            android:layout_marginEnd="@dimen/marginBigger"
             android:layout_marginBottom="@dimen/marginNormal"
             android:background="@color/white"
             android:elevation="@dimen/elevationNormal">

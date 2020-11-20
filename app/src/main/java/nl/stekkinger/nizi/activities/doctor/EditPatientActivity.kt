@@ -11,6 +11,7 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient.*
+import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
@@ -23,7 +24,7 @@ class EditPatientActivity : AppCompatActivity() {
     // For activity result
     private val REQUEST_CODE = 0
 
-    private lateinit var progressBar: View
+    private lateinit var loader: View
 
     private var doctorId: Int? = null
     private lateinit var patientData: PatientData
@@ -32,9 +33,10 @@ class EditPatientActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // Setup UI Same layout as add patient
         setContentView(R.layout.activity_add_patient)
-
+        setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        progressBar = activity_add_patient_progressbar
+        toolbar_txt_back.text = getString(R.string.patient_overview)
+        loader = activity_add_patient_progressbar
 
         // Fill patient
         patientData = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientData

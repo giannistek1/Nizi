@@ -19,13 +19,14 @@
             android:layout_height="match_parent"
             android:paddingTop="@dimen/marginSmall"
             android:paddingBottom="@dimen/marginSmall"
-            android:paddingStart="@dimen/marginHorizontal"
-            android:paddingEnd="@dimen/marginRight"
+            android:paddingStart="@dimen/marginNormal"
+            android:paddingEnd="@dimen/marginBigger"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/convo_title"
                 android:text="@string/conversation_summary"
+                android:textSize="@dimen/textSize11"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"/>
@@ -33,6 +34,7 @@
             <TextView
                 android:id="@+id/convo_date"
                 android:text="@string/sample_date"
+                android:textSize="@dimen/textSize11"
                 android:gravity="end"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -47,7 +49,7 @@
             android:paddingTop="@dimen/marginSmall"
             android:paddingBottom="@dimen/marginSmall"
             android:paddingStart="@dimen/marginHorizontal"
-            android:paddingEnd="@dimen/marginRight"
+            android:paddingEnd="@dimen/marginBigger"
             android:background="@drawable/text_border"/>
 
     </LinearLayout>

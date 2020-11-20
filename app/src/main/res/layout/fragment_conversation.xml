@@ -15,20 +15,21 @@
 
         <TextView
             android:id="@+id/fragment_conversation_txt_advice_from"
+            android:text="@string/advice_from_doctor"
+            android:textSize="@dimen/textSize12"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/marginHorizontal"
+            android:layout_marginStart="@dimen/marginBigger"
             android:layout_marginTop="@dimen/marginSmall"
-            android:layout_marginBottom="@dimen/marginSmall"
-            android:text="@string/advice_from_doctor"
-            android:textColor="@color/black" />
+            android:layout_marginBottom="@dimen/marginSmall"/>
 
         <ProgressBar
             android:id="@+id/fragment_conversation_loader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_conversation_txt_advice_from"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
@@ -40,6 +41,6 @@
         android:layout_marginTop="2dp"
         android:background="@android:color/white"
         android:padding="2dp"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"/>
 
 </RelativeLayout>

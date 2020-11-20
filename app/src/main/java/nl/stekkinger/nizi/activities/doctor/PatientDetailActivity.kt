@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_patient_detail.*
+import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
@@ -42,7 +43,10 @@ class PatientDetailActivity : AppCompatActivity() {
 
         // Setup UI
         setContentView(R.layout.activity_patient_detail)
+        setSupportActionBar(toolbar)
+        // Back button
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        toolbar_txt_back.text = getString(R.string.patient_overview)
 
         loader = activity_patient_detail_loader
 

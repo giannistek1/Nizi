@@ -12,7 +12,7 @@
         android:background="@color/gray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/marginHorizontal"
+        android:paddingStart="@dimen/marginBigger"
         android:paddingEnd="@dimen/marginSmall"
         android:paddingTop="@dimen/marginSmall"
         android:paddingBottom="@dimen/marginSmall">
@@ -41,7 +41,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/fragment_patient_feedback_rl_for"
-        android:paddingStart="@dimen/marginHorizontal"
+        android:paddingStart="@dimen/marginBigger"
         android:paddingEnd="@dimen/marginSmall"
         android:orientation="horizontal">
 

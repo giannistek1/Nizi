@@ -16,6 +16,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.DoctorMainActivity
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -35,14 +36,17 @@ class LoginActivity : AppCompatActivity() {
 
     private var isDoctor = false
 
-    private lateinit var progressBar: View
+    private lateinit var loader: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         // Setup the UI
         setContentView(R.layout.activity_login)
-        progressBar = activity_login_loader
+        setSupportActionBar(toolbar)
+        // Show app title by hiding the bar overlayed on the toolbar
+        toolbar_bar.visibility = View.GONE
+        loader = activity_login_loader
 
         activity_login_et_username.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -119,7 +123,7 @@ class LoginActivity : AppCompatActivity() {
         override fun onPreExecute() {
             super.onPreExecute()
             // Loader
-            progressBar.visibility = View.VISIBLE
+            loader.visibility = View.VISIBLE
         }
 
         override fun doInBackground(vararg p0: Void?): LoginResponse? {
@@ -136,7 +140,7 @@ class LoginActivity : AppCompatActivity() {
         override fun onPostExecute(result: LoginResponse?) {
             super.onPostExecute(result)
             // Loader
-            progressBar.visibility = View.INVISIBLE
+            loader.visibility = View.INVISIBLE
 
             // Guards
             // Since you can't toast in onBackground

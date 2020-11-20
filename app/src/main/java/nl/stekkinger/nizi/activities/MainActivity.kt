@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.fragments.HomeFragment
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.*
@@ -48,8 +49,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // UI
+        // Setup UI
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
+        toolbar_title.text = getString(R.string.app_name)
+        loader = activity_main_loader
+        activity_main_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
 
         diaryModel = ViewModelProviders.of(this)[DiaryViewModel::class.java]
 
@@ -61,12 +66,8 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState != null)
             this.savedInstanceState = savedInstanceState
 
-        loader = activity_main_loader
-
         // Get User
         user = GeneralHelper.getUser()
-
-        activity_main_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
 
         getDietaryAsyncTask().execute()
     }
@@ -75,6 +76,7 @@ class MainActivity : AppCompatActivity() {
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener {  menuItem ->
         when (menuItem.itemId) {
             R.id.nav_home -> {
+                toolbar_title.text = getString(R.string.app_name)
                 val fragment = HomeFragment(dietaryGuidelines)
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
@@ -82,6 +84,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.nav_diary -> {
+                toolbar_title.text = getString(R.string.diary)
                 val fragment = DiaryFragment()
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
@@ -89,6 +92,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.nav_conversation -> {
+                toolbar_title.text = getString(R.string.conversations)
                 val fragment = ConversationFragment(user, doctor)
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()

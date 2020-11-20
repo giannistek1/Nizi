@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
+import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
@@ -55,6 +56,10 @@ class AddPatientDietaryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // Setup UI
         setContentView(R.layout.activity_add_patient_dietary)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        toolbar_txt_back.text = getString(R.string.personal_info_short)
+        loader = activity_add_patient_dietary_loader
 
         // Ideally dynamic inputs
         // Add inputs to list
@@ -65,8 +70,6 @@ class AddPatientDietaryActivity : AppCompatActivity() {
             activity_add_patient_dietary_et_protein_min, activity_add_patient_dietary_et_protein_max,
             activity_add_patient_dietary_et_fiber_min, activity_add_patient_dietary_et_fiber_max
         )
-
-        loader = activity_add_patient_dietary_loader
 
         activity_add_patient_dietary_btn_save.setOnClickListener {
 

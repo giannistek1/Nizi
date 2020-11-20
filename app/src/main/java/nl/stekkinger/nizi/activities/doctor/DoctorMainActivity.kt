@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_doctor_main.*
+import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.PatientAdapter
 import nl.stekkinger.nizi.adapters.PatientAdapterListener
@@ -50,9 +51,14 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // setup UI
+        /// setup UI
         setContentView(R.layout.activity_doctor_main)
+
+        // Set toolbar
+        setSupportActionBar(toolbar)
+        toolbar_title.text = getString(R.string.patients)
         loader = activity_doctor_main_loader
+
 
         // Get User and doctorId
         user = GeneralHelper.getUser()

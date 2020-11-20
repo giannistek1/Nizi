@@ -7,45 +7,17 @@
     android:background="@color/gray"
     tools:context=".activities.doctor.DoctorMainActivity">
 
-    <!-- Blue bg behind white bg -->
-    <ImageView
-        android:id="@+id/activity_main_background"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="fitCenter"
-        android:contentDescription="@string/header_background"
-        android:src="@drawable/rectangle" />
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Header -->
-        <LinearLayout
-            android:id="@+id/activity_doctor_main_ll_header"
-            android:background="@color/colorPrimary"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/activity_doctor_main_txt_header"
-                android:textSize="@dimen/h1"
-                android:fontFamily="@font/segoe_ui_semibold"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:text="@string/patients"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginBottom="@dimen/marginNormal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
+        <!-- Toolbar -->
+        <include layout="@layout/toolbar"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/activity_doctor_main_ll_header"
-            android:layout_marginStart="@dimen/marginHorizontal"
-            android:layout_marginEnd="@dimen/marginRight"
+            android:layout_below="@+id/toolbar"
             android:layout_marginBottom="@dimen/marginNormal"
             android:background="@color/white"
             android:elevation="@dimen/elevationNormal">

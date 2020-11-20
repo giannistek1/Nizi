@@ -4,7 +4,7 @@
     <dimen name="h1">20sp</dimen>
     <dimen name="h2">18sp</dimen>
     <dimen name="h3">16sp</dimen>
-    <dimen name="textSizeBig">14sp</dimen>
+    <dimen name="textSizeBig">16sp</dimen>
     <dimen name="textSizeNormal">14sp</dimen>
     <dimen name="textSize13">13sp</dimen>
     <dimen name="textSize12">12sp</dimen>
@@ -21,15 +21,18 @@
     <!-- Button -->
     <dimen name="paddingButton">6dp</dimen>
 
-    <dimen name="marginHorizontal">30dp</dimen>
-    <dimen name="marginRight">20dp</dimen>
-    <dimen name="marginSize2">2dp</dimen>
-    <dimen name="marginVerySmall">6dp</dimen>
-    <dimen name="marginSmaller">8dp</dimen>
-    <dimen name="marginSmall">10dp</dimen>
-    <dimen name="marginNormal">16dp</dimen>
-    <dimen name="marginDouble">32dp</dimen>
     <dimen name="marginVeryBig">64dp</dimen>
+    <dimen name="marginDouble">32dp</dimen>
+    <dimen name="marginHorizontal">30dp</dimen>
+    <dimen name="marginBigger">20dp</dimen>
+    <dimen name="marginNormal">16dp</dimen>
+    <dimen name="marginSmall">10dp</dimen>
+    <dimen name="marginSmaller">8dp</dimen>
+    <dimen name="marginVerySmall">6dp</dimen>
+    <dimen name="marginSize2">2dp</dimen>
+
+
+
 
     <!-- Shadow -->
     <dimen name="elevationNormal">5dp</dimen>
