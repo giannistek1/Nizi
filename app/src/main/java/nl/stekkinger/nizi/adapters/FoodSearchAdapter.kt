@@ -1,6 +1,5 @@
 package nl.stekkinger.nizi.adapters
 
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.food_item.view.*
+import kotlinx.android.synthetic.main.item_food.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.Food
@@ -34,7 +33,7 @@ class FoodSearchAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.food_item, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_food, parent, false)
         activity = view.context as AppCompatActivity
         return ViewHolder(view)
             .listen { pos, _ ->

@@ -10,8 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.meal_item.view.*
+import kotlinx.android.synthetic.main.item_meal.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.Meal
@@ -30,7 +29,7 @@ class MealAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.meal_item, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_meal, parent, false)
         return ViewHolder(view)
             .listen { pos, _ ->
                 var meal = mDataset[pos]

@@ -7,10 +7,9 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.conversation_item.view.*
+import kotlinx.android.synthetic.main.item_conversation.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.feedback.Feedback
-import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -28,7 +27,7 @@ class ConversationAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.conversation_item, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_conversation, parent, false)
         // Hide comment
         view.convo_comment.visibility = GONE
 

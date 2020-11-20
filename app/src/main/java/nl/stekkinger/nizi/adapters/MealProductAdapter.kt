@@ -3,16 +3,11 @@ package nl.stekkinger.nizi.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.diary_food_item.view.*
+import kotlinx.android.synthetic.main.item_diary_food.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.Food
-import nl.stekkinger.nizi.classes.Meal
 import nl.stekkinger.nizi.classes.MealProduct
 
 class MealProductAdapter(
@@ -29,7 +24,7 @@ class MealProductAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.diary_food_item, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_diary_food, parent, false)
         return ViewHolder(view)
             .listen { pos, _ ->
 //                var food = mDataset[pos]

@@ -1,15 +1,13 @@
 package nl.stekkinger.nizi.adapters
 
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.diary_food_item.view.*
+import kotlinx.android.synthetic.main.item_diary_food.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.Consumption
-import nl.stekkinger.nizi.classes.Consumptions
 import nl.stekkinger.nizi.classes.DiaryViewModel
 
 class ConsumptionAdapter(
@@ -26,7 +24,7 @@ class ConsumptionAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.diary_food_item, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_diary_food, parent, false)
         return ViewHolder(view)
 //            .listen { pos, _ ->
 ////                var consumption = mDataset[pos]
