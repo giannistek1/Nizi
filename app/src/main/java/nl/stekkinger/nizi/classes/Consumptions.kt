@@ -28,9 +28,4 @@ class Consumptions {
 //        val PatientId: Int,
 //        val Id: Int
 //    )
-    data class WeightUnit (
-        val Id: Int,
-        val Unit: String,
-        val Short: String
-    )
 }

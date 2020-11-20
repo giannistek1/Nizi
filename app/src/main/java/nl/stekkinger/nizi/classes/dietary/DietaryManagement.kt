@@ -6,8 +6,9 @@ import java.io.Serializable
 // Used as result
 data class DietaryManagement(
     val id: Int? = null,
-    val dietary_restriction: DietaryRestriction,
-    var amount: Int,
+    val dietary_restriction: DietaryRestrictionShort,
+    var minimum: Int,
+    var maximum: Int,
     var is_active: Boolean,
     val patient: PatientLogin,
 

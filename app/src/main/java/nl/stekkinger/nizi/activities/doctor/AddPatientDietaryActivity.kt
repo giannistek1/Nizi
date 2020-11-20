@@ -24,6 +24,7 @@ import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 import java.lang.Exception
+import java.lang.Math.ceil
 
 class AddPatientDietaryActivity : AppCompatActivity() {
 
@@ -66,7 +67,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
         textViewList = arrayListOf(activity_add_patient_dietary_et_cal_min, activity_add_patient_dietary_et_cal_max,
             activity_add_patient_dietary_et_water_min, activity_add_patient_dietary_et_water_max,
             activity_add_patient_dietary_et_sodium_min, activity_add_patient_dietary_et_sodium_max,
-            activity_add_patient_dietary_et_potassium_max, activity_add_patient_dietary_et_potassium_max,
+            activity_add_patient_dietary_et_potassium_min, activity_add_patient_dietary_et_potassium_max,
             activity_add_patient_dietary_et_protein_min, activity_add_patient_dietary_et_protein_max,
             activity_add_patient_dietary_et_fiber_min, activity_add_patient_dietary_et_fiber_max
         )
@@ -89,8 +90,8 @@ class AddPatientDietaryActivity : AppCompatActivity() {
         doctorId = intent.getIntExtra(EXTRA_DOCTOR_ID, 0)
 
         // Testing
-        activity_add_patient_dietary_et_water_min.setText("6969")
-        activity_add_patient_dietary_et_water_max.setText("9696")
+        activity_add_patient_dietary_et_water_min.setText("1969")
+        activity_add_patient_dietary_et_water_max.setText("3696")
 
         // Check connection
         if (!GeneralHelper.hasInternetConnection(this)) return
@@ -143,7 +144,8 @@ class AddPatientDietaryActivity : AppCompatActivity() {
     {
         override fun onPreExecute() {
             super.onPreExecute()
-            // Progressbar
+
+            // Loader
             loader.visibility = View.VISIBLE
         }
 
@@ -153,7 +155,8 @@ class AddPatientDietaryActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: Patient?) {
             super.onPostExecute(result)
-            // Progressbar
+
+            // Loader
             loader.visibility = View.GONE
 
             // Guard
@@ -167,29 +170,39 @@ class AddPatientDietaryActivity : AppCompatActivity() {
             addPatientViewModel.patient.id = result.id!!
             addPatientViewModel.user.patient = result.id
 
-
-            //val restrictionsList = arrayOf(R.array.guideline_array)
-            val restrictionsList = arrayOf("Caloriebeperking", "Calorieverrijking",
-            "Vochtbeperking", "Vochtverrijking",
-            "Natriumbeperking", "Natriumverrijking",
-            "Kaliumbeperking", "Kaliumverrijking",
-            "Eiwitbeperking", "Eiwitverrijking",
-            "Vezelbeperking", "Vezelverrijking")
-
             dietaryManagementList = arrayListOf()
 
+            var dietaryManagement: DietaryManagementShort
+            var minimumText = "0"
+            var maximumText = "0"
+
             // Add dietaries by looping through each editText View
-            restrictionsList.forEachIndexed { index, _ ->
-                if (textViewList[index].text.isNotEmpty()) {
-                    dietaryManagementList.add(
-                        DietaryManagementShort(
-                            dietary_restriction = index + 1,
-                            amount = textViewList[index].text.toString().toInt(),
-                            is_active = true,
-                            patient = addPatientViewModel.patient.id
-                        )
-                    )
-                }
+            for (i in 0 until dietaryRestrictionList.count()) {
+
+                val minIndex = i*2 // 0 2 4 6 8 10
+                val maxIndex = i*2+1 // 1 3 5 7 9 11
+
+                // Check empty
+                //if (textViewList[minIndex].text.isBlank() && textViewList[maxIndex].text.isBlank()) continue
+                if (textViewList[minIndex].text.isBlank())
+                    textViewList[minIndex].setText("0")
+                if (textViewList[maxIndex].text.isBlank())
+                    textViewList[maxIndex].setText("0")
+
+                minimumText = textViewList[minIndex].text.toString().replaceFirst("^0+(?!$)", "")
+                maximumText = textViewList[maxIndex].text.toString().replaceFirst("^0+(?!$)", "")
+
+                if (minimumText == "0" && maximumText == "0") continue
+
+                dietaryManagement = DietaryManagementShort(
+                    dietary_restriction = i+1,
+                    minimum = textViewList[minIndex].text.toString().toInt(),
+                    maximum = textViewList[maxIndex].text.toString().toInt(),
+                    is_active = true,
+                    patient = addPatientViewModel.patient.id
+                )
+
+                dietaryManagementList.add(dietaryManagement)
             }
 
             // Add the dietaryManagements that were added (filled in)

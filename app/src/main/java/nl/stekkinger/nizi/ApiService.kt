@@ -249,4 +249,11 @@ interface ApiService {
         @Path("doctorId") doctorId: Int
     ) : Call<Unit>
     //endregion
+
+    //region weight-units
+    @GET("weight-units")
+    fun getWeightUnits(
+        @Header("Authorization") authHeader : String
+    ) : Call<ArrayList<WeightUnit>>
+    //endregion
 }

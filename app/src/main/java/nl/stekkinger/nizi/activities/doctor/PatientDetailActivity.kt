@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_patient_detail.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.classes.WeightUnit
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -23,18 +24,20 @@ import nl.stekkinger.nizi.fragments.doctor.PatientFeedbackFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientHomeFragment
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
-import java.util.*
+import nl.stekkinger.nizi.repositories.WeightUnitRepository
 import kotlin.collections.ArrayList
 
 class PatientDetailActivity : AppCompatActivity() {
 
     private val patientRepository: PatientRepository = PatientRepository()
+    private val weightUnitRepository: WeightUnitRepository = WeightUnitRepository()
     private val dietaryRepository: DietaryRepository = DietaryRepository()
 
     // For activity result
     private val REQUEST_CODE = 0
 
-    private lateinit var patientData: PatientData
+    private lateinit var weightUnits: ArrayList<WeightUnit>             // WeightUnits
+    private lateinit var patientData: PatientData                       // User, Patient, Doctor, Dietary
 
     private lateinit var loader: View
 
@@ -62,16 +65,9 @@ class PatientDetailActivity : AppCompatActivity() {
             diets = arrayListOf()
         )
 
-        // Checks if fragment state is null, then start with homeFragment
-        /*if (savedInstanceState == null) {
-            val fragment = PatientHomeFragment(patientData)
-            supportFragmentManager.beginTransaction().replace(R.id.activity_patient_detail_fragment_container, fragment, fragment.javaClass.getSimpleName())
-                .commit()
-        }*/
-
         activity_patient_detail_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
 
-        getDietaryManagementsAsyncTask().execute()
+        getWeightUnitsAsyncTask().execute()
     }
 
     //region Bottom Nav
@@ -99,6 +95,48 @@ class PatientDetailActivity : AppCompatActivity() {
             }
         }
         false
+    }
+    //endregion
+
+    // TODO: Double in main
+    //region Get WeightUnits
+    inner class getWeightUnitsAsyncTask() : AsyncTask<Void, Void, ArrayList<WeightUnit>>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            // Loader
+            loader.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): ArrayList<WeightUnit>? {
+            return try {
+                weightUnitRepository.getWeightUnits()
+            } catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
+        }
+
+        override fun onPostExecute(result: ArrayList<WeightUnit>?) {
+            super.onPostExecute(result)
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
+            if (result == null) { Toast.makeText(baseContext, R.string.get_weight_unit_fail, Toast.LENGTH_SHORT).show()
+                return }
+
+            // Feedback
+            Toast.makeText(baseContext, R.string.fetched_weight_units, Toast.LENGTH_SHORT).show()
+
+            weightUnits = result
+
+            getDietaryManagementsAsyncTask().execute()
+        }
     }
     //endregion
 
@@ -133,10 +171,23 @@ class PatientDetailActivity : AppCompatActivity() {
 
             result.forEachIndexed { index, resultDietary ->
 
-                lateinit var dietaryGuideline: DietaryGuideline
+                //lateinit var dietaryGuideline: DietaryGuideline
+
+
+                val dietaryGuideline =
+                    DietaryGuideline(
+                        description = resultDietary.dietary_restriction.description,
+                        restriction = resultDietary.dietary_restriction.description,
+                        plural = resultDietary.dietary_restriction.plural,
+                        minimum = resultDietary.minimum, maximum = resultDietary.maximum, amount = 0,
+                        weightUnit = ""
+                    )
+
+                val weightUnit = weightUnits.find { it.id == resultDietary.dietary_restriction.weight_unit }
+                dietaryGuideline.weightUnit = weightUnit!!.short
 
                 // fill in restriction and make dietaryGuideline
-                val restriction = resultDietary.dietary_restriction.description.replace("beperking", "").replace("verrijking","")
+                /*val restriction = resultDietary.dietary_restriction.description.replace("beperking", "").replace("verrijking","")
                 dietaryGuideline =
                     DietaryGuideline(
                         resultDietary.dietary_restriction.description,
@@ -185,10 +236,10 @@ class PatientDetailActivity : AppCompatActivity() {
                     dietaryGuideline.weightUnit = getString(R.string.milliliter_short)
 
                 // Add to or update list of dietaries
-                if (!alreadyExists) // create new
+                if (!alreadyExists) // create new*/
                     dietaryGuidelines.add(dietaryGuideline)
-                else // update
-                    dietaryGuidelines[index - 1] = dietaryGuideline
+                //else // update
+                    //dietaryGuidelines[index - 1] = dietaryGuideline
             }
 
             // Save dietaries for editPage

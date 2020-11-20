@@ -18,7 +18,6 @@ import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.doctor.Doctor
-import nl.stekkinger.nizi.classes.doctor.DoctorShort
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.fragments.ConversationFragment
@@ -26,7 +25,7 @@ import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.DoctorRepository
-import java.util.*
+import nl.stekkinger.nizi.repositories.WeightUnitRepository
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
@@ -35,10 +34,12 @@ class MainActivity : AppCompatActivity() {
 
     // Repositories
     private val authRepository: AuthRepository = AuthRepository()
+    private val weightUnitRepository: WeightUnitRepository = WeightUnitRepository()
     private val dietaryRepository: DietaryRepository = DietaryRepository()
     private val doctorRepository: DoctorRepository = DoctorRepository()
 
     private lateinit var user: UserLogin                                // Userdata
+    private lateinit var weightUnits: ArrayList<WeightUnit>             // WeightUnits
     val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()  // Dietary
     private lateinit var doctor: Doctor                                 // Doctor
     private lateinit var diaryModel: DiaryViewModel                     // Diary
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         // Get User
         user = GeneralHelper.getUser()
 
-        getDietaryAsyncTask().execute()
+        getWeightUnits().execute()
     }
 
     //region Bottom Nav
@@ -127,6 +128,47 @@ class MainActivity : AppCompatActivity() {
     }
     //endregion
 
+    //region Get WeightUnits
+    inner class getWeightUnits() : AsyncTask<Void, Void, ArrayList<WeightUnit>>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            // Loader
+            loader.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): ArrayList<WeightUnit>? {
+            return try {
+                weightUnitRepository.getWeightUnits()
+            } catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
+        }
+
+        override fun onPostExecute(result: ArrayList<WeightUnit>?) {
+            super.onPostExecute(result)
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
+            if (result == null) { Toast.makeText(baseContext, R.string.get_weight_unit_fail, Toast.LENGTH_SHORT).show()
+                return }
+
+            // Feedback
+            Toast.makeText(baseContext, R.string.fetched_weight_units, Toast.LENGTH_SHORT).show()
+
+            weightUnits = result
+
+            getDietaryAsyncTask().execute()
+        }
+    }
+    //endregion
+
     //region Get Dietary
     inner class getDietaryAsyncTask() : AsyncTask<Void, Void, ArrayList<DietaryManagement>>()
     {
@@ -158,65 +200,22 @@ class MainActivity : AppCompatActivity() {
             if (result == null) { Toast.makeText(baseContext, R.string.get_dietary_fail, Toast.LENGTH_SHORT).show()
                 return }
 
+            // Feedback
             Toast.makeText(baseContext, R.string.fetched_dietary, Toast.LENGTH_SHORT).show()
 
             result.forEachIndexed { index, resultDietary ->
-
-                lateinit var dietaryGuideline: DietaryGuideline
-
-                val restriction = resultDietary.dietary_restriction.description.replace("beperking", "").replace("verrijking","")
-                dietaryGuideline =
-                    DietaryGuideline(
-                        resultDietary.dietary_restriction.description, restriction, restriction.toLowerCase(Locale.ROOT),
-                        0, 0, 0, ""
+                val dietaryGuideline = DietaryGuideline(
+                        description = resultDietary.dietary_restriction.description,
+                        restriction = resultDietary.dietary_restriction.description,
+                        plural = resultDietary.dietary_restriction.plural,
+                        minimum = resultDietary.minimum, maximum = resultDietary.maximum, amount = 0,
+                        weightUnit = ""
                     )
 
-                var alreadyExists = false
+                val weightUnit = weightUnits.find { it.id == resultDietary.dietary_restriction.weight_unit }
+                dietaryGuideline.weightUnit = weightUnit!!.short
 
-                // Check if dietaryGuideLines already has the food supplement type (e.g. calories)
-                dietaryGuidelines.forEachIndexed loop@ {_, dietary ->
-                   if (dietary.description.contains(resultDietary.dietary_restriction.description.take(3)))
-                   {
-                       dietaryGuideline = dietary
-                       alreadyExists = true
-                       return@loop
-                   }
-                }
-
-                // Plurals
-                if (resultDietary.dietary_restriction.description.contains("Calorie"))
-                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase(Locale.ROOT) + "en"
-                else if (resultDietary.dietary_restriction.description.contains("Eiwit"))
-                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase(Locale.ROOT) + "ten"
-                else if (resultDietary.dietary_restriction.description.contains("Vezel"))
-                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase(Locale.ROOT) + "s"
-
-                // minimum/maximum
-                if (resultDietary.dietary_restriction.description.contains("beperking"))
-                {
-                    dietaryGuideline.minimum = resultDietary.amount
-                }
-                else if (resultDietary.dietary_restriction.description.contains("verrijking"))
-                {
-                    dietaryGuideline.description = dietaryGuideline.description.replace("beperking", "")
-                    dietaryGuideline.maximum = resultDietary.amount
-                }
-
-                // Fill in weight unit
-                if (resultDietary.dietary_restriction.description.contains("Calorie"))
-                    dietaryGuideline.weightUnit = getString(R.string.kcal)
-                else if (resultDietary.dietary_restriction.description.contains("Natrium") || resultDietary.dietary_restriction.description.contains("Kalium"))
-                    dietaryGuideline.weightUnit = getString(R.string.milligram_short)
-                else if (resultDietary.dietary_restriction.description.contains("Eiwit") || resultDietary.dietary_restriction.description.contains("Vezel"))
-                    dietaryGuideline.weightUnit = getString(R.string.gram)
-                else if (resultDietary.dietary_restriction.description.contains("Vocht"))
-                    dietaryGuideline.weightUnit = getString(R.string.milliliter_short)
-
-                // Add to dietary list or update list
-                if (!alreadyExists) // create new
-                    dietaryGuidelines.add(dietaryGuideline)
-                else // update
-                    dietaryGuidelines[index-1] = dietaryGuideline
+                dietaryGuidelines.add(dietaryGuideline)
             }
 
             // Checks if fragment state is null, then start with homeFragment

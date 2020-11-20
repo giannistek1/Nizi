@@ -6,7 +6,8 @@ import java.io.Serializable
 data class DietaryManagementShort(
     val id: Int? = null,
     val dietary_restriction: Int,
-    var amount: Int,
+    var minimum: Int,
+    var maximum: Int,
     var is_active: Boolean,
     val patient: Int,
 

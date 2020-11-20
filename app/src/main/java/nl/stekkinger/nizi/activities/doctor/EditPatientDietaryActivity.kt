@@ -164,7 +164,7 @@ class EditPatientDietaryActivity : AppCompatActivity() {
             newDietaryList = arrayListOf()
 
             // Add dietaries by looping through each editText View
-            restrictionsList.forEachIndexed { index, _ ->
+            /*restrictionsList.forEachIndexed { index, _ ->
                 if (textViewList[index].text.toString() != "") {
                     newDietaryList.add(
                         DietaryManagementShort(
@@ -175,7 +175,7 @@ class EditPatientDietaryActivity : AppCompatActivity() {
                         )
                     )
                 }
-            }
+            }*/
 
 
 

@@ -137,6 +137,8 @@
     <string name="average_of">Gemiddelde van %1$s</string>
     <string name="week">Week</string>
     <string name="trends">Trends</string>
+    <string name="fetched_weight_units">Gewichtseenheden opgehaald</string>
+    <string name="get_weight_unit_fail">Gewichtseenheden opgehaald</string>
     <string name="fetched_patient">Patiënt opgehaald</string>
     <string name="get_patient_fail">Patiënt ophalen mislukt</string>
     <string name="fetched_dietary">Richtlijnen opgehaald</string>
