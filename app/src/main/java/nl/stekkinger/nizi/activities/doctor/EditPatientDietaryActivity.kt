@@ -1,10 +1,13 @@
 package nl.stekkinger.nizi.activities.doctor
 
+import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
@@ -18,6 +21,7 @@ import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
+import java.lang.Exception
 
 class EditPatientDietaryActivity : AppCompatActivity() {
 
@@ -94,7 +98,13 @@ class EditPatientDietaryActivity : AppCompatActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): Patient? {
-            return patientRepository.updatePatient(patientData.patient)
+            return try {
+                patientRepository.updatePatient(patientData.patient)
+            }  catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
         }
 
         override fun onPostExecute(result: Patient?) {
@@ -103,7 +113,8 @@ class EditPatientDietaryActivity : AppCompatActivity() {
             // Loader
             loader.visibility = View.GONE
 
-            // Guard
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
             if (result == null) { Toast.makeText(baseContext, R.string.patient_edit_fail, Toast.LENGTH_SHORT).show()
                 return }
 
@@ -226,7 +237,13 @@ class EditPatientDietaryActivity : AppCompatActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): DietaryManagement? {
-            return dietaryRepository.addDietary(dietary)
+            return try {
+                dietaryRepository.addDietary(dietary)
+            }  catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
         }
 
         override fun onPostExecute(result: DietaryManagement?) {
@@ -256,4 +273,14 @@ class EditPatientDietaryActivity : AppCompatActivity() {
         setResult(RESULT_OK, returnIntent)
         super.finish()
     }
+
+    //region Hides Keyboard on touch
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+    //endregion
 }

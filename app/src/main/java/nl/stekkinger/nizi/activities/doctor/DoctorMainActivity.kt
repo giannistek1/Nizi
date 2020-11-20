@@ -196,14 +196,16 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         }
     }
 
+    //region HideKeyboard function
     fun Activity.hideKeyboard() {
         hideKeyboard(currentFocus ?: View(this))
     }
 
-    fun Context.hideKeyboard(view: View) {
+    private fun Context.hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
+    //endregion
 
     //region Hides Keyboard on touch
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {

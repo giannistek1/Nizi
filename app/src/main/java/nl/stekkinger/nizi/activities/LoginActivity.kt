@@ -139,7 +139,7 @@ class LoginActivity : AppCompatActivity() {
             progressBar.visibility = View.INVISIBLE
 
             // Guards
-            // Since you can't toast on a catch
+            // Since you can't toast in onBackground
             if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
             // Result either gives the (token, user, patient/doctor) OR null
             if (result == null) { Toast.makeText(baseContext, R.string.credentials_wrong, Toast.LENGTH_SHORT).show(); return }

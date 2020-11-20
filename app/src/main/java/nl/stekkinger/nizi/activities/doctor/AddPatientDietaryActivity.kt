@@ -1,10 +1,13 @@
 package nl.stekkinger.nizi.activities.doctor
 
+import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
@@ -19,6 +22,7 @@ import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
+import java.lang.Exception
 
 class AddPatientDietaryActivity : AppCompatActivity() {
 
@@ -97,20 +101,29 @@ class AddPatientDietaryActivity : AppCompatActivity() {
     {
         override fun onPreExecute() {
             super.onPreExecute()
-            // Progressbar
+
+            // Loader
             loader.visibility = View.VISIBLE
         }
 
         override fun doInBackground(vararg p0: Void?): ArrayList<DietaryRestriction>? {
-            return dietaryRepository.getDietaryRestrictions()
+            return try {
+                dietaryRepository.getDietaryRestrictions()
+            }  catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
         }
 
         override fun onPostExecute(result: ArrayList<DietaryRestriction>?) {
             super.onPostExecute(result)
-            // Progressbar
+
+            // Loader
             loader.visibility = View.GONE
 
-            // Guard
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
             if (result == null) {  Toast.makeText(baseContext, R.string.fetch_dietary_restrictions_fail,
                 Toast.LENGTH_SHORT).show(); return }
 
@@ -291,4 +304,14 @@ class AddPatientDietaryActivity : AppCompatActivity() {
         setResult(RESULT_OK, returnIntent)
         super.finish()
     }
+
+    //region Hides Keyboard on touch
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+    //endregion
 }

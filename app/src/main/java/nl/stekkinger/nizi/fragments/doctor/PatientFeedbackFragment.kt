@@ -94,7 +94,13 @@ class PatientFeedbackFragment(private val patientData: PatientData) : Fragment()
         }
 
         override fun doInBackground(vararg params: Void?): ArrayList<Feedback>? {
-            return feedbackRepository.getFeedbacks(patientData.patient.id)
+            return try {
+                feedbackRepository.getFeedbacks(patientData.patient.id)
+            } catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
         }
 
         override fun onPostExecute(result: ArrayList<Feedback>?) {
@@ -103,7 +109,8 @@ class PatientFeedbackFragment(private val patientData: PatientData) : Fragment()
             // Loader
             loader.visibility = View.GONE
 
-            // Guard
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(activity, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
             if (result == null) { Toast.makeText(activity, R.string.get_feedbacks_fail, Toast.LENGTH_SHORT).show()
                 return }
 
@@ -126,9 +133,9 @@ class PatientFeedbackFragment(private val patientData: PatientData) : Fragment()
         override fun doInBackground(vararg params: Void?): Feedback? {
             return try {
                  feedbackRepository.addFeedback(newFeedback)
-            }
-            catch(e: Exception) {
-                print(e.message)
+            } catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
                 return null
             }
         }
@@ -139,7 +146,8 @@ class PatientFeedbackFragment(private val patientData: PatientData) : Fragment()
             // Loader
             loader.visibility = View.GONE
 
-            // Guard
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(activity, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
             if (result == null) { Toast.makeText(activity, R.string.add_feedback_fail, Toast.LENGTH_SHORT).show()
                 return }
 

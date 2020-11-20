@@ -15,8 +15,10 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConversationAdapter
 import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.feedback.Feedback
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.repositories.FeedbackRepository
+import java.lang.Exception
 
 class ConversationFragment(private val user: UserLogin, private val doctor: Doctor): Fragment() {
     private val mRepository: FeedbackRepository = FeedbackRepository()
@@ -60,7 +62,13 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
         }
 
         override fun doInBackground(vararg params: Void?): ArrayList<Feedback>? {
-            return mRepository.getFeedbacks(user.patient!!.id)
+            return try {
+                mRepository.getFeedbacks(user.patient!!.id)
+            }  catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
         }
 
         override fun onPostExecute(result: ArrayList<Feedback>?) {
@@ -69,7 +77,8 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
             // Loader
             loader.visibility = View.GONE
 
-            // Guard
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(activity, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
             if (result == null) { Toast.makeText(activity, R.string.get_feedbacks_fail, Toast.LENGTH_SHORT).show()
                 return }
 
