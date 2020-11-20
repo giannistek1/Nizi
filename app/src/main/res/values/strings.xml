@@ -11,6 +11,7 @@
 
     <!--- General -->
     <string name="no_internet_connection">Geen internetverbinding</string>
+    <string name="api_is_down">Server offline, probeer later opnieuw</string>
 
     <!-- Navigatie -->
     <string name="home">Home</string>

@@ -1,12 +1,15 @@
 package nl.stekkinger.nizi.activities
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -120,7 +123,13 @@ class LoginActivity : AppCompatActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): LoginResponse? {
-            return authRepository.login(loginRequest)
+            return try {
+                 authRepository.login(loginRequest)
+            } catch (e: Exception ){
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
         }
 
         // Result must be nullable
@@ -129,7 +138,10 @@ class LoginActivity : AppCompatActivity() {
             // Loader
             progressBar.visibility = View.INVISIBLE
 
-            // Guard result either gives the (token, user, patient/doctor) OR null
+            // Guards
+            // Since you can't toast on a catch
+            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
+            // Result either gives the (token, user, patient/doctor) OR null
             if (result == null) { Toast.makeText(baseContext, R.string.credentials_wrong, Toast.LENGTH_SHORT).show(); return }
 
             // Feedback
@@ -155,6 +167,16 @@ class LoginActivity : AppCompatActivity() {
 
             showNextActivity()
         }
+    }
+    //endregion
+
+    //region Hides Keyboard on touch
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
     }
     //endregion
 }

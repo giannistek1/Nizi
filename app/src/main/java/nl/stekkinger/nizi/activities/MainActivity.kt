@@ -134,7 +134,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): ArrayList<DietaryManagement>? {
-            return dietaryRepository.getDietaryManagements(user.patient!!.id)
+            return try {
+                dietaryRepository.getDietaryManagements(user.patient!!.id)
+            } catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
         }
 
         override fun onPostExecute(result: ArrayList<DietaryManagement>?) {
@@ -143,7 +149,8 @@ class MainActivity : AppCompatActivity() {
             // Loader
             loader.visibility = View.GONE
 
-            // Guard
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
             if (result == null) { Toast.makeText(baseContext, R.string.get_dietary_fail, Toast.LENGTH_SHORT).show()
                 return }
 

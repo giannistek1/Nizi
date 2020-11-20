@@ -1,11 +1,15 @@
 package nl.stekkinger.nizi.activities.doctor
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -137,7 +141,8 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             return try {
                 patientRepository.getPatientsForDoctor(doctorId)
             }  catch(e: Exception) {
-                // Failed to connect to API
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
                 return null
             }
         }
@@ -148,7 +153,8 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             // Loader
             loader.visibility = View.GONE
 
-            // Guard
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
             if (result == null) { Toast.makeText(baseContext, R.string.get_patients_fail, Toast.LENGTH_SHORT).show()
                 return }
 
@@ -189,4 +195,23 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             recreate()
         }
     }
+
+    fun Activity.hideKeyboard() {
+        hideKeyboard(currentFocus ?: View(this))
+    }
+
+    fun Context.hideKeyboard(view: View) {
+        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    //region Hides Keyboard on touch
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+        return super.dispatchTouchEvent(ev)
+    }
+    //endregion
 }
