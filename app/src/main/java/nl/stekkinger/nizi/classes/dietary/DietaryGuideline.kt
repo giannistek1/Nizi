@@ -4,8 +4,8 @@ import java.io.Serializable
 
 // Easy compact version
 data class DietaryGuideline(
-    var description: String, // caloriebeperking
-    var restriction: String, // unneeded? calorie/eiwit etc
+    var id: Int,
+    var description: String, // calorie/vocht etc
     var plural: String, // calorieën
     var minimum: Int,
     var maximum: Int,

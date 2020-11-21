@@ -20,6 +20,7 @@ import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository
@@ -78,7 +79,12 @@ class MainActivity : AppCompatActivity() {
         when (menuItem.itemId) {
             R.id.nav_home -> {
                 toolbar_title.text = getString(R.string.app_name)
-                val fragment = HomeFragment(dietaryGuidelines)
+                val fragment = HomeFragment()
+
+                val bundle = Bundle()
+                bundle.putSerializable(GeneralHelper.EXTRA_DIETARY, dietaryGuidelines)
+                fragment.arguments = bundle
+
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
@@ -205,8 +211,8 @@ class MainActivity : AppCompatActivity() {
 
             result.forEachIndexed { index, resultDietary ->
                 val dietaryGuideline = DietaryGuideline(
+                        id = resultDietary.id!!,
                         description = resultDietary.dietary_restriction.description,
-                        restriction = resultDietary.dietary_restriction.description,
                         plural = resultDietary.dietary_restriction.plural,
                         minimum = resultDietary.minimum, maximum = resultDietary.maximum, amount = 0,
                         weightUnit = ""
@@ -220,7 +226,12 @@ class MainActivity : AppCompatActivity() {
 
             // Checks if fragment state is null, then start with homeFragment
             if (savedInstanceState == null) {
-                val fragment = HomeFragment(dietaryGuidelines)
+                val fragment = HomeFragment()
+
+                val bundle = Bundle()
+                bundle.putSerializable(GeneralHelper.EXTRA_DIETARY, dietaryGuidelines)
+                fragment.arguments = bundle
+
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id, fragment,
                     fragment.javaClass.simpleName).commit()
             }

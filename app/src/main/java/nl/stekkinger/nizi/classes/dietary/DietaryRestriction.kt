@@ -1,6 +1,6 @@
 package nl.stekkinger.nizi.classes.dietary
 
-import nl.stekkinger.nizi.classes.WeightUnit
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 
 data class DietaryRestriction (
     val id: Int,

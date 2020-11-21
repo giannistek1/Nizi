@@ -15,10 +15,12 @@ import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
+import nl.stekkinger.nizi.classes.patient.PatientData
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HomeFragment(private val dietaryGuidelines: ArrayList<DietaryGuideline>?): Fragment() {
+class HomeFragment: Fragment() {
+    private lateinit var dietaryGuidelines: ArrayList<DietaryGuideline>
     private lateinit var mCurrentDate: String
     private lateinit var model: DiaryViewModel
     private val sdf = GeneralHelper.getDateFormat()
@@ -29,6 +31,10 @@ class HomeFragment(private val dietaryGuidelines: ArrayList<DietaryGuideline>?):
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
+
+        // Get dietary list from bundle
+        val bundle: Bundle = this.arguments!!
+        dietaryGuidelines = bundle.getSerializable(GeneralHelper.EXTRA_DIETARY) as ArrayList<DietaryGuideline>
 
         // Setting date for diary
         mCurrentDate = sdf.format(Date())

@@ -10,9 +10,9 @@ import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.doctor.Doctor
-import nl.stekkinger.nizi.classes.doctor.DoctorShort
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.feedback.FeedbackShort
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import retrofit2.Call
 import retrofit2.http.*
 

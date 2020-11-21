@@ -21,4 +21,8 @@ class DietaryRepository : Repository() {
     fun updateDietary(dietaryManagement: DietaryManagementShort) : DietaryManagement? {
         return service.updateDietaryManagement(authHeader, dietaryManagement, dietaryManagement.id!!).execute().body()
     }
+
+    fun deleteDietary(dietaryManagementId: Int) : DietaryManagement? {
+        return service.deleteDietary(authHeader, dietaryManagementId).execute().body()
+    }
 }

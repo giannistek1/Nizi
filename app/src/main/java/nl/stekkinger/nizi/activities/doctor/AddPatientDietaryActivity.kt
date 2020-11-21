@@ -38,7 +38,6 @@ class AddPatientDietaryActivity : AppCompatActivity() {
 
     private var doctorId: Int? = null
     private lateinit var addPatientViewModel: AddPatientViewModel
-
     private lateinit var dietaryRestrictionList: ArrayList<DietaryRestriction>
     private lateinit var dietaryManagementList: ArrayList<DietaryManagementShort>
     private lateinit var textViewList: ArrayList<EditText>
@@ -166,29 +165,29 @@ class AddPatientDietaryActivity : AppCompatActivity() {
             // Feedback
             Toast.makeText(baseContext, R.string.patient_added, Toast.LENGTH_SHORT).show()
 
-            // Update patientId which you get after making patient
+            // Update patientId which you get after making patient (two places)
             addPatientViewModel.patient.id = result.id!!
             addPatientViewModel.user.patient = result.id
 
             dietaryManagementList = arrayListOf()
 
             var dietaryManagement: DietaryManagementShort
-            var minimumText = "0"
-            var maximumText = "0"
+            var minimumText: String
+            var maximumText: String
 
-            // Add dietaries by looping through each editText View
+            // Loop through each restriction and check if filled in
             for (i in 0 until dietaryRestrictionList.count()) {
 
-                val minIndex = i*2 // 0 2 4 6 8 10
-                val maxIndex = i*2+1 // 1 3 5 7 9 11
+                val minIndex = i*2      // 0 2 4 6 8 10
+                val maxIndex = i*2+1    // 1 3 5 7 9 11
 
-                // Check empty
-                //if (textViewList[minIndex].text.isBlank() && textViewList[maxIndex].text.isBlank()) continue
+                // Check empty, fill in with 0
                 if (textViewList[minIndex].text.isBlank())
                     textViewList[minIndex].setText("0")
                 if (textViewList[maxIndex].text.isBlank())
                     textViewList[maxIndex].setText("0")
 
+                // Remove unnecessary 0's
                 minimumText = textViewList[minIndex].text.toString().replaceFirst("^0+(?!$)", "")
                 maximumText = textViewList[maxIndex].text.toString().replaceFirst("^0+(?!$)", "")
 
@@ -206,8 +205,8 @@ class AddPatientDietaryActivity : AppCompatActivity() {
             }
 
             // Add the dietaryManagements that were added (filled in)
-            dietaryManagementList.forEachIndexed { _, dietaryManagement ->
-                addDietaryToPatientAsyncTask(dietaryManagement).execute()
+            dietaryManagementList.forEachIndexed { _, dietaryManagementElement ->
+                addDietaryToPatientAsyncTask(dietaryManagementElement).execute()
             }
         }
     }
@@ -219,7 +218,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
         override fun onPreExecute() {
             super.onPreExecute()
 
-            // Progressbar
+            // Loader
             loader.visibility = View.VISIBLE
         }
 
@@ -230,7 +229,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
         override fun onPostExecute(result: DietaryManagement?) {
             super.onPostExecute(result)
 
-            // Progressbar
+            // Loader
             loader.visibility = View.GONE
 
             // Guard
@@ -255,7 +254,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
         override fun onPreExecute() {
             super.onPreExecute()
 
-            // Progressbar
+            // Loader
             loader.visibility = View.VISIBLE
         }
 
@@ -266,7 +265,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
         override fun onPostExecute(result: UserLogin?) {
             super.onPostExecute(result)
 
-            // Progressbar
+            // Loader
             loader.visibility = View.GONE
 
             // Guard
@@ -289,7 +288,8 @@ class AddPatientDietaryActivity : AppCompatActivity() {
     {
         override fun onPreExecute() {
             super.onPreExecute()
-            // Progressbar
+
+            // Loader
             loader.visibility = View.VISIBLE
         }
 
@@ -299,7 +299,8 @@ class AddPatientDietaryActivity : AppCompatActivity() {
 
         override fun onPostExecute(result: Patient?) {
             super.onPostExecute(result)
-            // Progressbar
+
+            // Loader
             loader.visibility = View.GONE
 
             // Guard

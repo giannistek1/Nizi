@@ -9,7 +9,6 @@ import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.login.Role
 import nl.stekkinger.nizi.classes.login.UserLogin
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,17 +17,19 @@ object GeneralHelper {
     const val PREF_USER = "USER"
     const val PREF_IS_DOCTOR = "IS_DOCTOR"
     const val PREF_DOCTOR_ID = "DOCTOR_ID"
+    const val PREF_WEIGHT_UNIT = "WEIGHT_UNITS"
 
     const val EXTRA_PATIENT = "PATIENT"
     const val EXTRA_DOCTOR_ID = "DOCTOR_ID"
+    const val EXTRA_DIETARY = "DIETARY"
 
     var apiIsDown = false
 
     val prefs: SharedPreferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
+    private val gson = Gson()
 
     fun getUser() : UserLogin
     {
-        val gson = Gson()
         return if (prefs.contains(PREF_TOKEN) && prefs.contains(PREF_USER)) {
             val json: String = prefs.getString(PREF_USER, "")!!
             gson.fromJson(json, UserLogin::class.java)

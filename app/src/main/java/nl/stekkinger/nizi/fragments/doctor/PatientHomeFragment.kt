@@ -19,7 +19,7 @@ import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import nl.stekkinger.nizi.classes.patient.PatientData
 import java.util.*
 
-class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
+class PatientHomeFragment : Fragment() {
 
     // For activity result
     private val REQUEST_CODE = 0
@@ -28,8 +28,9 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
     /*private var weekNumber by Delegates.observable(0) { property, oldValue, newValue ->
         fragment_patient_home_week.text = "Week ${newValue}"
     }*/
-    private var selectedWeekNumber: Int = 0
+
     private lateinit var mCurrentDate: String
+    private lateinit var patientData: PatientData
     private lateinit var model: DiaryViewModel
     private val sdf = GeneralHelper.getDateFormat()
 
@@ -42,6 +43,10 @@ class PatientHomeFragment(private val patientData: PatientData?) : Fragment() {
 
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_patient_home, container, false)
+
+        // Get patient data from bundle
+        val bundle: Bundle = this.arguments!!
+        patientData = bundle.getSerializable(GeneralHelper.EXTRA_PATIENT) as PatientData
 
         // Header
         val fullName = "${patientData!!.user.first_name} ${patientData.user.last_name}"

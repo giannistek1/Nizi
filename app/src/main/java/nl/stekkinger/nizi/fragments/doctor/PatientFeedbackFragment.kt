@@ -30,12 +30,13 @@ import kotlin.collections.ArrayList
 /**
  * A simple [Fragment] subclass.
  */
-class PatientFeedbackFragment(private val patientData: PatientData) : Fragment() {
+class PatientFeedbackFragment : Fragment() {
 
     private val feedbackRepository: FeedbackRepository = FeedbackRepository()
 
     private var mContext: Context? = null
 
+    private lateinit var patientData: PatientData
     private lateinit var newFeedback: FeedbackShort
     private lateinit var feedbackList: MutableList<Feedback>
 
@@ -50,6 +51,10 @@ class PatientFeedbackFragment(private val patientData: PatientData) : Fragment()
         val view: View = inflater.inflate(R.layout.fragment_patient_feedback, container, false)
         loader = view.fragment_patient_feedback_loader
         mNewFeedbackET = view.fragment_patient_feedback_et_newFeedback as EditText
+
+        // Get patient data from bundle
+        val bundle: Bundle = this.arguments!!
+        patientData = bundle.getSerializable(GeneralHelper.EXTRA_PATIENT) as PatientData
 
         val patientName = "${patientData.user.first_name.first()}. ${patientData.user.last_name}"
         view.fragment_patient_feedback_txt_adviceFor.text = getString(R.string.advice_from, patientName)

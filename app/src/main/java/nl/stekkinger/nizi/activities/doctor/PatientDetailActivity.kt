@@ -7,10 +7,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_patient_detail.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.WeightUnit
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -19,13 +19,15 @@ import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.classes.patient.PatientItem
 import nl.stekkinger.nizi.classes.patient.PatientLogin
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.fragments.doctor.PatientDiaryFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientFeedbackFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientHomeFragment
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 import nl.stekkinger.nizi.repositories.WeightUnitRepository
-import kotlin.collections.ArrayList
+
 
 class PatientDetailActivity : AppCompatActivity() {
 
@@ -39,6 +41,8 @@ class PatientDetailActivity : AppCompatActivity() {
     private lateinit var weightUnits: ArrayList<WeightUnit>             // WeightUnits
     private lateinit var patientData: PatientData                       // User, Patient, Doctor, Dietary
 
+    private var savedInstanceState: Bundle? = null
+
     private lateinit var loader: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +54,11 @@ class PatientDetailActivity : AppCompatActivity() {
         // Back button
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar_txt_back.text = getString(R.string.patient_overview)
-
         loader = activity_patient_detail_loader
+
+        // Checks if fragment state is null and save it
+        if (savedInstanceState != null)
+            this.savedInstanceState = savedInstanceState
 
         val patientItem = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientItem
 
@@ -74,22 +81,32 @@ class PatientDetailActivity : AppCompatActivity() {
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener { menuItem ->
         when (menuItem.itemId) {
             R.id.nav_home -> {
-                val fragment = PatientHomeFragment(patientData)
-                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
+                val fragment = PatientHomeFragment()
+
+                val bundle = Bundle()
+                bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
+                fragment.arguments = bundle
+
+                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.nav_diary -> {
                 val fragment = PatientDiaryFragment()
-                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
+                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.nav_conversation -> {
-                val fragment = PatientFeedbackFragment(patientData)
-                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
+                val fragment = PatientFeedbackFragment()
+
+                val bundle = Bundle()
+                bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
+                fragment.arguments = bundle
+
+                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
@@ -133,6 +150,13 @@ class PatientDetailActivity : AppCompatActivity() {
             // Feedback
             Toast.makeText(baseContext, R.string.fetched_weight_units, Toast.LENGTH_SHORT).show()
 
+            // Save weightUnits
+            val gson = Gson()
+            val weightUnitHolder = WeightUnitHolder()
+            weightUnitHolder.weightUnits = result
+            val json = gson.toJson(weightUnitHolder)
+            GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_WEIGHT_UNIT, json).apply()
+
             weightUnits = result
 
             getDietaryManagementsAsyncTask().execute()
@@ -169,15 +193,12 @@ class PatientDetailActivity : AppCompatActivity() {
 
             val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
 
-            result.forEachIndexed { index, resultDietary ->
-
-                //lateinit var dietaryGuideline: DietaryGuideline
-
+            result.forEachIndexed { _, resultDietary ->
 
                 val dietaryGuideline =
                     DietaryGuideline(
+                        id = resultDietary.id!!,
                         description = resultDietary.dietary_restriction.description,
-                        restriction = resultDietary.dietary_restriction.description,
                         plural = resultDietary.dietary_restriction.plural,
                         minimum = resultDietary.minimum, maximum = resultDietary.maximum, amount = 0,
                         weightUnit = ""
@@ -186,70 +207,11 @@ class PatientDetailActivity : AppCompatActivity() {
                 val weightUnit = weightUnits.find { it.id == resultDietary.dietary_restriction.weight_unit }
                 dietaryGuideline.weightUnit = weightUnit!!.short
 
-                // fill in restriction and make dietaryGuideline
-                /*val restriction = resultDietary.dietary_restriction.description.replace("beperking", "").replace("verrijking","")
-                dietaryGuideline =
-                    DietaryGuideline(
-                        resultDietary.dietary_restriction.description,
-                        restriction,
-                        restriction.toLowerCase(Locale.ROOT),
-                        0,
-                        0,
-                        0,
-                        ""
-                    )
-
-                var alreadyExists = false
-
-                // Check if dietaryGuideLines already has the food supplement type (e.g. calories)
-                // by checking the first four letters
-                dietaryGuidelines.forEachIndexed loop@{ _, dietary ->
-                    if (dietary.description.contains(resultDietary.dietary_restriction.description.take(4))) {
-                        dietaryGuideline = dietary
-                        alreadyExists = true
-                        return@loop
-                    }
-                }
-
-                // Plurals
-                if (resultDietary.dietary_restriction.description.contains("Calorie"))
-                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase(Locale.ROOT) + "en"
-                else if (resultDietary.dietary_restriction.description.contains("Eiwit"))
-                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase(Locale.ROOT) + "ten"
-                else if (resultDietary.dietary_restriction.description.contains("Vezel"))
-                    dietaryGuideline.plural = dietaryGuideline.restriction.toLowerCase(Locale.ROOT) + "s"
-
-                // Fill in minimum/maximum
-                if (resultDietary.dietary_restriction.description.contains("beperking"))
-                    dietaryGuideline.minimum = resultDietary.amount
-                else if (resultDietary.dietary_restriction.description.contains("verrijking"))
-                    dietaryGuideline.maximum = resultDietary.amount
-
-                // fill in Weight unit & plural
-                if (resultDietary.dietary_restriction.description.contains("Calorie"))
-                    dietaryGuideline.weightUnit = getString(R.string.kcal)
-                else if (resultDietary.dietary_restriction.description.contains("Natrium") || resultDietary.dietary_restriction.description.contains("Kalium"))
-                    dietaryGuideline.weightUnit = getString(R.string.milligram_short)
-                else if (resultDietary.dietary_restriction.description.contains("Eiwit") || resultDietary.dietary_restriction.description.contains("Vezel"))
-                    dietaryGuideline.weightUnit = getString(R.string.gram)
-                else if (resultDietary.dietary_restriction.description.contains("Vocht"))
-                    dietaryGuideline.weightUnit = getString(R.string.milliliter_short)
-
-                // Add to or update list of dietaries
-                if (!alreadyExists) // create new*/
-                    dietaryGuidelines.add(dietaryGuideline)
-                //else // update
-                    //dietaryGuidelines[index - 1] = dietaryGuideline
+                dietaryGuidelines.add(dietaryGuideline)
             }
 
             // Save dietaries for editPage
             patientData.diets = dietaryGuidelines
-
-            /*GuidelinesHelper.initializeGuidelines(
-                this@PatientDetailActivity,
-                fragment_patient_home_ll_guidelines,
-                dietaryGuidelines
-            )*/
 
             // get patient
             getPatientAsyncTask().execute()
@@ -297,9 +259,20 @@ class PatientDetailActivity : AppCompatActivity() {
                 consumptions = result.consumptions
             )
 
-            val fragment = PatientHomeFragment(patientData)
-            supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.getSimpleName())
-                .commit()
+
+            // Checks if fragment state is null, then start with homeFragment
+            if (savedInstanceState == null) {
+
+                val fragment = PatientHomeFragment()
+                val bundle = Bundle()
+                bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
+                fragment.arguments = bundle
+                supportFragmentManager.beginTransaction().replace(
+                    activity_patient_detail_fragment_container.id,
+                    fragment,
+                    fragment.javaClass.simpleName)
+                    .commit()
+            }
         }
     }
     //endregion
