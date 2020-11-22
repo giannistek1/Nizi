@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Dietary guideline progress circle width -->
+    <dimen name="progressCircleThickness">10dp</dimen>
+    <dimen name="guidelineCircleSize">100dp</dimen>
+
     <!-- Text sizes -->
     <dimen name="h1">20sp</dimen>
     <dimen name="h2">18sp</dimen>
@@ -16,7 +20,7 @@
     <dimen name="contactIconSize">28dp</dimen>
     <dimen name="dateNavigationSize">20dp</dimen>
     <dimen name="guidelineIconSize">15dp</dimen>
-    <dimen name="guidelineCircleSize">100dp</dimen>
+
 
     <!-- Button -->
     <dimen name="paddingButton">6dp</dimen>
@@ -30,9 +34,6 @@
     <dimen name="marginSmaller">8dp</dimen>
     <dimen name="marginVerySmall">6dp</dimen>
     <dimen name="marginSize2">2dp</dimen>
-
-
-
 
     <!-- Shadow -->
     <dimen name="elevationNormal">5dp</dimen>

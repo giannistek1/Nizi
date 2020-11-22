@@ -12,6 +12,7 @@
         android:layout_marginStart="@dimen/marginSmall"
         android:layout_alignParentStart="true"
         android:paddingStart="@dimen/marginNormal"
+        android:paddingEnd="0dp"
         android:paddingTop="@dimen/marginSmall"
         android:textColor="@color/colorPrimary"/>
 
@@ -21,8 +22,9 @@
         android:fontFamily="@font/segoe_ui_semibold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/item_patient_id"
+        android:layout_toEndOf="@+id/item_patient_id"
         android:paddingStart="@dimen/marginNormal"
+        android:paddingEnd="0dp"
         android:paddingTop="@dimen/marginSmall"
         android:textColor="@color/colorPrimary"/>
 
@@ -30,7 +32,5 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/item_patient_name"
-        android:layout_marginStart="@dimen/marginNormal"
-        android:layout_marginEnd="@dimen/marginNormal"
         android:background="@color/darkGray"/>
 </RelativeLayout>

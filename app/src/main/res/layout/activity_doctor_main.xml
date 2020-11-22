@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,37 +7,66 @@
     android:background="@color/gray"
     tools:context=".activities.doctor.DoctorMainActivity">
 
+    <!-- Toolbar -->
+    <include layout="@layout/toolbar"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:padding="@dimen/marginNormal"
+        android:background="@color/white">
 
-        <!-- Toolbar -->
-        <include layout="@layout/toolbar"/>
-
-        <RelativeLayout
+        <LinearLayout
+            android:id="@+id/activity_doctor_main_ll_searchPatient"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/toolbar"
-            android:layout_marginBottom="@dimen/marginNormal"
-            android:background="@color/white"
-            android:elevation="@dimen/elevationNormal">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/activity_doctor_main_et_searchPatients"
-                android:layout_width="300dp"
+            <!-- Input -->
+            <LinearLayout
+                android:background="@drawable/text_border_gray"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/marginSmall"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:inputType="text"
-                android:hint="@string/search_by_name"/>
+                android:layout_weight="6"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/marginSmall"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/activity_doctor_main_ic_user"
+                    android:scaleType="fitCenter"
+                    android:tint="@color/colorPrimary"
+                    android:layout_width="@dimen/loginIconSize"
+                    android:layout_height="@dimen/loginIconSize"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/marginVerySmall"
+                    android:contentDescription="@string/ic_user"
+                    android:src="@drawable/ic_user"/>
+
+                <EditText
+                    android:id="@+id/activity_doctor_main_et_searchPatients"
+                    android:fontFamily="@font/helvetica_light"
+                    android:textSize="@dimen/textSize12"
+                    android:hint="@string/search_by_name"
+                    android:autofillHints="@string/username"
+                    tools:targetApi="o"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/marginSmall"
+                    android:paddingEnd="0dp"
+                    android:paddingTop="@dimen/marginSmaller"
+                    android:paddingBottom="@dimen/marginSmaller"
+                    android:background="@null"/>
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/activity_doctor_main_btn_addPatient"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_toEndOf="@+id/activity_doctor_main_et_searchPatients"
-                android:layout_marginStart="@dimen/marginSmall"
-                android:layout_marginTop="@dimen/marginNormal"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
                 android:scaleType="fitCenter"
                 android:tint="@color/colorPrimary"
                 android:clickable="true"
@@ -45,21 +74,31 @@
                 android:contentDescription="@string/add_patient"
                 android:src="@drawable/ic_add" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/activity_doctor_main_rv"
-                android:layout_width="match_parent"
+            <TextView
+                android:text="@string/patient"
+                android:fontFamily="@font/helvetica_neue_medium"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/activity_doctor_main_et_searchPatients"
-                android:layout_marginTop="@dimen/marginNormal">
+                android:layout_weight="2"
+                android:gravity="center_vertical|start">
 
-            </androidx.recyclerview.widget.RecyclerView>
+            </TextView>
+        </LinearLayout>
 
-            <ProgressBar
-                android:id="@+id/activity_doctor_main_loader"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_doctor_main_et_searchPatients"
-                android:visibility="gone" />
-        </RelativeLayout>
+        <ProgressBar
+            android:id="@+id/activity_doctor_main_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/activity_doctor_main_ll_searchPatient"
+            android:visibility="gone"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/activity_doctor_main_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/activity_doctor_main_ll_searchPatient"
+            android:layout_marginTop="@dimen/marginNormal">
+
+        </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
-</FrameLayout>
+</RelativeLayout>

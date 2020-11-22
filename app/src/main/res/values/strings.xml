@@ -124,9 +124,10 @@
 
     <!-- Doctor dashboard -->
     <string name="patients">Patiënten</string>
+    <string name="patient">Patiënt</string>
     <string name="get_patients_success">Patiënten opgehaald!</string>
     <string name="get_patients_fail">Patiënten ophalen mislukt!</string>
-    <string name="search_by_name">Zoek op naam</string>
+    <string name="search_by_name">Zoeken op naam</string>
     <string name="add_patient">Patiënt toevoegen</string>
     <string name="edit_patient">Patiënt bewerken</string>
     <string name="delete_patient">Patiënt verwijderen</string>
