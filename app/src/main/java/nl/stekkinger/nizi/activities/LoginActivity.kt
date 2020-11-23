@@ -99,7 +99,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun toggleLoginButtonIfNotEmpty(usernameET: EditText, passwordET: EditText, loginButton: Button) {
-        loginButton.isEnabled = (usernameET.text.toString().length > 3 && passwordET.text.toString().length > 3)
+        if (usernameET.text.toString().length > 3 && passwordET.text.toString().length > 3) {
+            loginButton.isEnabled = true
+            loginButton.alpha = 1f
+        } else {
+            loginButton.isEnabled = false
+            loginButton.alpha = 0.2f
+        }
     }
 
     private fun doLogin(usernameET: EditText, passwordET: EditText) {
