@@ -73,6 +73,9 @@ class MainActivity : AppCompatActivity() {
         // Get User
         user = GeneralHelper.getUser()
 
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(this)) return
+
         getWeightUnits().execute()
     }
 

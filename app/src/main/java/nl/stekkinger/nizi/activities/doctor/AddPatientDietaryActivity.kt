@@ -15,9 +15,7 @@ import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
-import nl.stekkinger.nizi.classes.dietary.DietaryManagement
-import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
-import nl.stekkinger.nizi.classes.dietary.DietaryRestriction
+import nl.stekkinger.nizi.classes.dietary.*
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.patient.Patient
@@ -73,7 +71,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
 
         activity_add_patient_dietary_btn_save.setOnClickListener {
 
-            // (Guard) Check connection
+            // (Guard) Check internet connection
             if (!GeneralHelper.hasInternetConnection(this)) return@setOnClickListener
 
             // TODO: Check if anything is notEmpty first

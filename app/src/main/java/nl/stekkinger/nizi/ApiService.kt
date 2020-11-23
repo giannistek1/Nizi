@@ -165,14 +165,7 @@ interface ApiService {
         @Header("Authorization") authHeader : String,
         @Query("patient.id") patientId: Int
     ) : Call<ArrayList<Feedback>>
-
-    /*@GET("v1/waterconsumption/period/{patientId}")
-    fun fetchConversations(
-        @Header("Authorization") authHeader : String,
-        @Path("patientId") patientId: Int,
-        @Query("beginDate") beginDate: String,
-        @Query("endDate") endDate: String
-    ) : Call<ArrayList<Conversation>>*/
+    //endregion
 
     //region meals
     @POST("v1/meal/{patientId}")

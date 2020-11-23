@@ -1,11 +1,7 @@
 package nl.stekkinger.nizi.repositories
 
-import android.util.Log.d
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.feedback.FeedbackShort
-//import nl.stekkinger.nizi.classes.old.Conversation
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class FeedbackRepository : Repository() {

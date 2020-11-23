@@ -74,6 +74,9 @@ class PatientDetailActivity : AppCompatActivity() {
 
         activity_patient_detail_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
 
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(this)) return
+
         getWeightUnitsAsyncTask().execute()
     }
 

@@ -43,6 +43,9 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
         adapter = ConversationAdapter()
         recyclerView.adapter = adapter
 
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(context!!)) return view
+
         // Get feedback
         getConversationsAsyncTask().execute()
 

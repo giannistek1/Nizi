@@ -1,7 +1,5 @@
 package nl.stekkinger.nizi.classes.diary
 
-import nl.stekkinger.nizi.classes.patient.Patient
-
 data class ConsumptionShort (
     val id: Int = 0,
     val amount: Float,

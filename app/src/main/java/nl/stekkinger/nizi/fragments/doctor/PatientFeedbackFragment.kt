@@ -84,6 +84,9 @@ class PatientFeedbackFragment : Fragment() {
         adapter = ConversationAdapter()
         mFeedbackRV.adapter = adapter
 
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(context!!)) return view
+
         // Get feedback
         getConversationsAsyncTask().execute()
 

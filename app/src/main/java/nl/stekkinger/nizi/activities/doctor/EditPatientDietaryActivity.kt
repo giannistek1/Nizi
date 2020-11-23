@@ -98,7 +98,10 @@ class EditPatientDietaryActivity : AppCompatActivity() {
         loader = activity_add_patient_dietary_loader
 
         activity_add_patient_dietary_btn_save.setOnClickListener {
-                updatePatientAsyncTask().execute()
+            // (Guard) Check internet connection
+            if (!GeneralHelper.hasInternetConnection(this)) return@setOnClickListener
+
+            updatePatientAsyncTask().execute()
         }
 
         // Get doctorId
