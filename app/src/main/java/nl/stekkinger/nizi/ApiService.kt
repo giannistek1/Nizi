@@ -84,6 +84,12 @@ interface ApiService {
         @Body body: Consumption
     ) : Call<Unit>
 
+    @PUT("consumptions")
+    fun editConsumption(
+        @Header("Authorization") authHeader : String,
+        @Body body: Consumption
+    ) : Call<Unit>
+
     @GET("consumptions")
     fun fetchConsumptions(
         @Header("Authorization") authHeader : String,

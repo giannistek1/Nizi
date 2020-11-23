@@ -39,6 +39,7 @@ class FoodSearchAdapter(
             .listen { pos, _ ->
                 var food = mDataset[pos]
                 if(fragment == "food") { model.select(activity, food) }
+                if(fragment == "favorites") { model.select(activity, food) }
                 if(fragment == "meal") { model.selectMealProduct(activity, food) }
             }
     }

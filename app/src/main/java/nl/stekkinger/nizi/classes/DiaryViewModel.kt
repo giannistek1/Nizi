@@ -128,7 +128,7 @@ class DiaryViewModel(
         val foodMealArray: ArrayList<FoodMealComponent> = arrayListOf()
         foodMealArray.add(foodItem)
         val consumption = Consumption(
-            amount = (food.portion_size * portion).toFloat(),
+            amount = portion.toFloat(),
             date = mCurrentDay+"T11:00:00.000Z",
             meal_time = mMealTime,
             patient = GeneralHelper.getUser().patient!!.id,
@@ -137,6 +137,40 @@ class DiaryViewModel(
         )
         d("conmod", consumption.toString())
         mRepository.addConsumption(consumption)
+    }
+
+    fun editFood(consumptionResponse: ConsumptionResponse, portion: Float) {
+        val foodItem = FoodMealComponent(
+            id = consumptionResponse.food_meal_component[0].id,
+            name = consumptionResponse.food_meal_component[0].name,
+            description = consumptionResponse.food_meal_component[0].description,
+            kcal = (consumptionResponse.food_meal_component[0].kcal * portion).toFloat(),
+            protein = (consumptionResponse.food_meal_component[0].protein * portion).toFloat(),
+            potassium = (consumptionResponse.food_meal_component[0].potassium * portion).toFloat(),
+            sodium = (consumptionResponse.food_meal_component[0].sodium * portion).toFloat(),
+            water = (consumptionResponse.food_meal_component[0].water * portion).toFloat(),
+            fiber = (consumptionResponse.food_meal_component[0].fiber * portion).toFloat(),
+            portion_size = consumptionResponse.food_meal_component[0].portion_size,
+            image_url = consumptionResponse.food_meal_component[0].image_url
+        )
+        val weightUnit = WeightUnit(
+            id = consumptionResponse.weight_unit.id,
+            unit = consumptionResponse.weight_unit.unit,
+            short = consumptionResponse.weight_unit.short
+        )
+        d("conunit", weightUnit.toString())
+        // the foodMealComponent has to be in array in strapi
+        val foodMealArray: ArrayList<FoodMealComponent> = arrayListOf()
+        foodMealArray.add(foodItem)
+        val consumption = Consumption(
+            amount = portion,
+            date = mCurrentDay+"T11:00:00.000Z",
+            meal_time = mMealTime,
+            patient = GeneralHelper.getUser().patient!!.id,
+            weight_unit = weightUnit,
+            food_meal_component = foodMealArray
+        )
+        mRepository.editConsumption(consumption)
     }
 
     // meals

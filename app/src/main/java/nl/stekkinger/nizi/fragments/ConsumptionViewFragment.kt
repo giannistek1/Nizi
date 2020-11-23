@@ -2,6 +2,9 @@ package nl.stekkinger.nizi.fragments
 
 import android.os.Bundle
 import android.view.*
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -10,10 +13,9 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_food_view.*
 import kotlinx.android.synthetic.main.fragment_food_view.view.*
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.Consumption
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
-import nl.stekkinger.nizi.classes.diary.Food
+
 
 class ConsumptionViewFragment : Fragment() {
     private lateinit var model: DiaryViewModel
@@ -42,7 +44,8 @@ class ConsumptionViewFragment : Fragment() {
             // Update the UI
             view.title_food_view.text = mConsumption.food_meal_component[0].name
             Picasso.get().load(mConsumption.food_meal_component[0].image_url).into(image_food_view)
-            serving_size_value.text = mConsumption.amount.toString() + " " + mConsumption.weight_unit.unit
+            serving_input.setText(mConsumption.amount.toString(), TextView.BufferType.EDITABLE)
+            serving_size_value.text = mConsumption.food_meal_component[0].portion_size.toString() + " " + mConsumption.weight_unit.unit
             calories_value_food_view.text = mConsumption.food_meal_component[0].kcal.toString() + " Kcal"
             protein_value_food_view.text = mConsumption.food_meal_component[0].protein.toString() + " g"
             potassium_value_food_view.text = mConsumption.food_meal_component[0].potassium.toString() + " g"
@@ -64,7 +67,16 @@ class ConsumptionViewFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.confirm_btn -> {
+                Toast.makeText(this.context, "toegevoegd", Toast.LENGTH_LONG).show()
 
+                val portion = mServingInput.editText?.text.toString().trim().toFloat()
+//                mConsumption.amount = portion
+                model.editFood(mConsumption, portion)
+
+                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    DiaryFragment()
+                ).commit()
                 true
             }
             else -> super.onOptionsItemSelected(item)

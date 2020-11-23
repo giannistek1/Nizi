@@ -38,7 +38,8 @@ class FoodViewFragment : Fragment() {
             // Update the UI
             title_food_view.text = food.name
             Picasso.get().load(food.image_url).into(image_food_view)
-            serving_size_value.text = food.portion_size.toString() + " " + food.weight_unit
+            // todo: amount not properly used in consumption/food
+            serving_size_value.text = food.portion_size.toString() + " " + food.weight_unit.unit
             calories_value_food_view.text = food.kcal.toString() + " Kcal"
             fiber_value_food_view.text = food.fiber.toString() + " g"
             protein_value_food_view.text = food.protein.toString() + " g"

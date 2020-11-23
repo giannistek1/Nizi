@@ -112,6 +112,18 @@ class FoodRepository : Repository() {
         })
     }
 
+    fun editConsumption(consumption: Consumption) {
+        service.editConsumption(authHeader = authHeader, body = consumption).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                d("con", response.toString())
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+
+            }
+        })
+    }
+
     fun getMeals(): ArrayList<Meal>? {
         return service.getMeals(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().body()
     }
