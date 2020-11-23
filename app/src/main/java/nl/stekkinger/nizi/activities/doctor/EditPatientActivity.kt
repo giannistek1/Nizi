@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi.activities.doctor
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -66,6 +67,10 @@ class EditPatientActivity : AppCompatActivity() {
 
         // Get doctorId
         doctorId = intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 0)
+
+        // Standard on canceled
+        val returnIntent = Intent()
+        setResult(Activity.RESULT_CANCELED, returnIntent)
     }
 
     private fun tryEditPatient(firstNameET: EditText, lastNameET: EditText, dobET: EditText, emailET:
@@ -109,15 +114,17 @@ class EditPatientActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            // In case we wanna return something
+            val returnIntent = Intent()
+            setResult(RESULT_OK, returnIntent)
             finish()
         }
     }
 
     override fun finish() {
-        // In case we wanna return something
-        val returnIntent = Intent()
-        setResult(RESULT_OK, returnIntent)
+
         super.finish()
     }
 

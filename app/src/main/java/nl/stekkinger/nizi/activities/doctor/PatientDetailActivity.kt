@@ -36,7 +36,7 @@ class PatientDetailActivity : AppCompatActivity() {
     private val dietaryRepository: DietaryRepository = DietaryRepository()
 
     // For activity result
-    private val REQUEST_CODE = 0
+    private val EDIT_PATIENT_REQUEST_CODE = 0
 
     private lateinit var weightUnits: ArrayList<WeightUnit>             // WeightUnits
     private lateinit var patientData: PatientData                       // User, Patient, Doctor, Dietary
@@ -279,8 +279,8 @@ class PatientDetailActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            // TODO: Only do this when you do succesful patient change in editingView
+
+        if (requestCode == EDIT_PATIENT_REQUEST_CODE && resultCode == RESULT_OK) {
             // refresh activity
             recreate()
         }
