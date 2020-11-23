@@ -43,8 +43,8 @@ class FoodViewFragment : Fragment() {
             fiber_value_food_view.text = food.fiber.toString() + " g"
             protein_value_food_view.text = food.protein.toString() + " g"
             water_value_food_view.text = food.water.toString() + "ml"
-            sodium_value_food_view.text = (food.sodium).toString() + " mg"
-            calcium_value_food_view.text = (food.sodium).toString() + " mg"
+            sodium_value_food_view.text = (food.sodium *1000).toString() + " mg"
+            potassium_value_food_view.text = (food.potassium * 1000).toString() + " mg"
 
             // store food product
             mFood = food

@@ -3,15 +3,21 @@ package nl.stekkinger.nizi.fragments
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.textfield.TextInputLayout
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_food_view.*
+import kotlinx.android.synthetic.main.fragment_food_view.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.Consumption
 import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
+import nl.stekkinger.nizi.classes.diary.Food
 
 class ConsumptionViewFragment : Fragment() {
     private lateinit var model: DiaryViewModel
-    private lateinit var mConsumption: Consumption
+    private lateinit var mConsumption: ConsumptionResponse
     private lateinit var mServingInput: TextInputLayout
 
     override fun onCreateView(
@@ -29,15 +35,24 @@ class ConsumptionViewFragment : Fragment() {
             ViewModelProviders.of(this).get(DiaryViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        // Update the UI
-//        title_food_view.text = mConsumption.FoodName
-//        serving_size_value.text = mConsumption.Amount.toString() + " " + mConsumption.WeightUnitId
-//        calories_value_food_view.text = mConsumption.KCal.toString() + " Kcal"
-//        fiber_value_food_view.text = mConsumption.Fiber.toString() + " g"
-//        protein_value_food_view.text = mConsumption.Protein.toString() + " g"
-//        water_value_food_view.text = "0 ml" // TODO update API with water input
-//        sodium_value_food_view.text = (mConsumption.Sodium * 1000).toString() + " mg"
-//        calcium_value_food_view.text = (mConsumption.Calium * 1000).toString() + " mg"
+        model.selectedEdit.observe(this, Observer<ConsumptionResponse> { food ->
+            // store food product
+            mConsumption = food
+
+            // Update the UI
+            view.title_food_view.text = mConsumption.food_meal_component[0].name
+            Picasso.get().load(mConsumption.food_meal_component[0].image_url).into(image_food_view)
+            serving_size_value.text = mConsumption.amount.toString() + " " + mConsumption.weight_unit.unit
+            calories_value_food_view.text = mConsumption.food_meal_component[0].kcal.toString() + " Kcal"
+            protein_value_food_view.text = mConsumption.food_meal_component[0].protein.toString() + " g"
+            potassium_value_food_view.text = mConsumption.food_meal_component[0].potassium.toString() + " g"
+            sodium_value_food_view.text = (mConsumption.food_meal_component[0].sodium * 1000).toString() + " mg"
+            fiber_value_food_view.text = mConsumption.food_meal_component[0].fiber.toString() + " g"
+            water_value_food_view.text = mConsumption.food_meal_component[0].water.toString() + "ml"
+        })
+
+
+        //calcium_value_food_view.text = (mConsumption.food_meal_component[0].water * 1000).toString() + " mg"
 
         return view
     }

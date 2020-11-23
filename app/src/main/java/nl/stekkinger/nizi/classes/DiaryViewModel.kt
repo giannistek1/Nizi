@@ -15,6 +15,7 @@ import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.FoodMealComponent
 import nl.stekkinger.nizi.classes.diary.WeightUnit
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.fragments.ConsumptionViewFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.fragments.MealFoodViewFragment
 import java.util.*
@@ -88,13 +89,16 @@ class DiaryViewModel(
         selected.value = food
     }
 
+    val selectedEdit = MutableLiveData<ConsumptionResponse>()
+
     // TODO: find fix for editing consumptions (impossible with current API)
-//    fun selectEdit(activity: AppCompatActivity, consumption: Consumptions.Consumption) {
-//        (activity).supportFragmentManager.beginTransaction().replace(
-//            R.id.activity_main_fragment_container,
-//            ConsumptionViewFragment()
-//        ).commit()
-//    }
+    fun selectEdit(activity: AppCompatActivity, consumption: ConsumptionResponse) {
+        (activity).supportFragmentManager.beginTransaction().replace(
+            R.id.activity_main_fragment_container,
+            ConsumptionViewFragment()
+        ).commit()
+        selectedEdit.value = consumption
+    }
 
     val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
     fun addFood(food: Food, portion: Double = 1.0) {

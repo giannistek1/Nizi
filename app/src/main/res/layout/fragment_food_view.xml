@@ -99,7 +99,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/food_view_nutrition"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -114,11 +114,6 @@
                 android:text="@string/calories"
                 android:textColor="@color/black"
                 android:layout_marginTop="10dp" />
-            
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_calories"/>
 
             <TextView
                 android:id="@+id/calories_value_food_view"
@@ -145,11 +140,6 @@
                 android:textColor="@color/black"
                 android:layout_marginTop="10dp" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_calories"/>
-
             <TextView
                 android:id="@+id/fiber_value_food_view"
                 android:layout_width="match_parent"
@@ -174,11 +164,6 @@
                 android:text="@string/proteins"
                 android:textColor="@color/black"
                 android:layout_marginTop="10dp" />
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_calories"/>
 
             <TextView
                 android:id="@+id/protein_value_food_view"
@@ -207,11 +192,6 @@
                 android:textColor="@color/black"
                 android:layout_marginTop="10dp" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_calories"/>
-
             <TextView
                 android:id="@+id/water_value_food_view"
                 android:layout_width="match_parent"
@@ -239,11 +219,6 @@
                 android:textColor="@color/black"
                 android:layout_marginTop="10dp" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_calories"/>
-
             <TextView
                 android:id="@+id/sodium_value_food_view"
                 android:layout_width="wrap_content"
@@ -269,13 +244,8 @@
                 android:textColor="@color/black"
                 android:layout_marginTop="10dp" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_calories"/>
-
             <TextView
-                android:id="@+id/calcium_value_food_view"
+                android:id="@+id/potassium_value_food_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14dp"

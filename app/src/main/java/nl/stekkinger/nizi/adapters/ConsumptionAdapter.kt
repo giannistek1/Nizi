@@ -32,7 +32,7 @@ class ConsumptionAdapter(
             .listen { pos, _ ->
                 var consumption = mDataset[pos]
                 val activity = view.context as AppCompatActivity
-//                model.selectEdit(activity, consumption)
+                model.selectEdit(activity, consumption)
             }
     }
 

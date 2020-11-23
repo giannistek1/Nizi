@@ -48,7 +48,7 @@ class FoodSearchAdapter(
         var food: Food = mDataset[position]
         Picasso.get().load(food.image_url).resize(40, 40).into(holder.image)
         holder.title.text = food.name
-        holder.summary.text = food.portion_size.toString() + " " + food.weight_unit
+        holder.summary.text = food.portion_size.toString() + " " + food.weight_unit.unit
 
         if (fragment == "food") {
             holder.addBtn.setOnClickListener {
