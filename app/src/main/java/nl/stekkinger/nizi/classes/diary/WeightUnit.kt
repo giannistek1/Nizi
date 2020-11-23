@@ -1,5 +1,5 @@
 package nl.stekkinger.nizi.classes.diary
-
+// TODO: Delete this, use other WeightUnit
 data class WeightUnit(
         val id: Int,
         val unit: String,

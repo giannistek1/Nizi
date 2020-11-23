@@ -92,23 +92,4 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
             adapter.setConversationList(result)
         }
     }
-
-//    inner class getConversationsAsyncTask() : AsyncTask<Void, Void, ArrayList<String>>() {
-//        override fun doInBackground(vararg params: Void?): ArrayList<String>? {
-//            var conversations = mRepository.getConversations()
-//            return conversations
-//        }
-//
-//        override fun onPreExecute() {
-//            super.onPreExecute()
-//        }
-//
-//        override fun onPostExecute(result: ArrayList<String>?) {
-//            super.onPostExecute(result)
-//            if(result != null) {
-//                d("CONVO", result.toString())
-////                adapter.setMealList(result)
-//            }
-//        }
-//    }
 }

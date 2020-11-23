@@ -84,6 +84,7 @@ class PatientHomeFragment : Fragment() {
         var selectedLastDayOfWeek = currentLastDayOfWeek
 
         view.fragment_patient_home_btn_previousWeek.setOnClickListener {
+            // Set calendar date to first day of selected week,  substract 7, get date
             calendar.time = selectedFirstDayOfWeek
             calendar.add(Calendar.DATE, -7)
             selectedFirstDayOfWeek = calendar.time

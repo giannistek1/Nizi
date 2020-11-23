@@ -60,7 +60,6 @@ class PatientFeedbackFragment : Fragment() {
         view.fragment_patient_feedback_txt_adviceFor.text = getString(R.string.advice_from, patientName)
 
         view.fragment_patient_feedback_btn_addAdvice.setOnClickListener {
-
             hideKeyboard()
 
             // Guard
@@ -188,6 +187,7 @@ class PatientFeedbackFragment : Fragment() {
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
+    // For Bundle
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
