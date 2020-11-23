@@ -35,7 +35,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     val EXTRA_DOCTOR_ID = "DOCTOR_ID"
 
     // For activity result
-    private val REQUEST_CODE = 0
+    private val REFRESH_REQUEST_CODE = 0
 
     //region Repositories
     private val authRepository: AuthRepository = AuthRepository()
@@ -71,7 +71,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             // Prevents multiple activities
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
             intent.putExtra(EXTRA_DOCTOR_ID, doctorId)
-            startActivityForResult(intent, REQUEST_CODE)
+            startActivityForResult(intent, REFRESH_REQUEST_CODE)
         }
 
         // Check connection
@@ -196,7 +196,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == REFRESH_REQUEST_CODE && resultCode == RESULT_OK) {
             // refresh activity (recyclerview)
             recreate()
         }

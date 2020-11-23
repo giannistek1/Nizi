@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi.activities.doctor
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
@@ -24,7 +25,6 @@ import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 import java.lang.Exception
-import java.lang.Math.ceil
 
 class AddPatientDietaryActivity : AppCompatActivity() {
 
@@ -78,6 +78,7 @@ class AddPatientDietaryActivity : AppCompatActivity() {
 
             // TODO: Check if anything is notEmpty first
             // if all empty, toast: dietaries_empty, return
+            //checkValidInputs()
 
             registerPatientAsyncTask().execute()
         }
@@ -87,6 +88,10 @@ class AddPatientDietaryActivity : AppCompatActivity() {
 
         // Get doctorId
         doctorId = intent.getIntExtra(EXTRA_DOCTOR_ID, 0)
+
+        // Standard on canceled
+        val returnIntent = Intent()
+        setResult(Activity.RESULT_CANCELED, returnIntent)
 
         // Testing
         activity_add_patient_dietary_et_water_min.setText("1969")
@@ -310,15 +315,17 @@ class AddPatientDietaryActivity : AppCompatActivity() {
             // Feedback
             Toast.makeText(baseContext, R.string.patient_updated, Toast.LENGTH_SHORT).show()
 
+            // In case we wanna return something
+            val returnIntent = Intent()
+            setResult(RESULT_OK, returnIntent)
             finish()
         }
     }
     //endregion
 
     override fun finish() {
-        // In case we wanna return something
-        val returnIntent = Intent()
-        setResult(RESULT_OK, returnIntent)
+
+
         super.finish()
     }
 
