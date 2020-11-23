@@ -27,6 +27,8 @@ import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.patient.PatientItem
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
@@ -154,9 +156,9 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         if (text.isEmpty()) {
             filteredList.addAll(patientList)
         } else {
-            text = text.toLowerCase()
+            text = text.toLowerCase(Locale.getDefault())
             for (item in patientList) {
-                if (item.name.toLowerCase().contains(text)) {
+                if (item.name.toLowerCase(Locale.getDefault()).contains(text)) {
                     filteredList.add(item)
                 }
             }
