@@ -125,10 +125,8 @@
             <!-- (First) Name -->
             <TextView
                 android:id="@+id/activity_add_patient_txt_firstName"
+                android:textColor="@color/black"
                 android:text="@string/first_name_req"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/marginNormal" />
@@ -139,6 +137,7 @@
                 android:background="@drawable/text_border_gray"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginSmall"
                 android:layout_marginBottom="@dimen/marginSize2"
                 android:layout_below="@+id/activity_add_patient_txt_firstName"
                 android:elevation="@dimen/elevationNormal"
@@ -158,7 +157,7 @@
                 <EditText
                     android:id="@+id/activity_add_patient_et_firstName"
                     android:inputType="textCapSentences"
-                    android:fontFamily="@font/segoe_ui_light"
+                    android:fontFamily="@font/helvetica_neue_light"
                     android:hint="@string/first_name"
                     android:autofillHints="@string/first_name"
                     tools:targetApi="o"
@@ -175,11 +174,9 @@
             <!-- Last Name -->
             <TextView
                 android:id="@+id/activity_add_patient_txt_lastName"
+                android:textColor="@color/black"
                 android:text="@string/last_name_req"
                 android:maxLength="128"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/activity_add_patient_ll_firstName"
@@ -211,7 +208,7 @@
                 <EditText
                     android:id="@+id/activity_add_patient_et_lastName"
                     android:inputType="textCapSentences"
-                    android:fontFamily="@font/segoe_ui_light"
+                    android:fontFamily="@font/helvetica_neue_light"
                     android:hint="@string/last_name"
                     android:autofillHints="@string/last_name"
                     tools:targetApi="o"
@@ -228,10 +225,8 @@
             <!-- DoB -->
             <TextView
                 android:id="@+id/activity_add_patient_txt_dob"
+                android:textColor="@color/black"
                 android:text="@string/date_of_birth_req"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/activity_add_patient_ll_lastName"
@@ -263,7 +258,7 @@
                 <EditText
                     android:id="@+id/activity_add_patient_et_dob"
                     android:inputType="date"
-                    android:fontFamily="@font/segoe_ui_light"
+                    android:fontFamily="@font/helvetica_neue_light"
                     android:hint="@string/date_of_birth_format"
                     android:autofillHints="@string/date_of_birth"
                     tools:targetApi="o"
@@ -280,10 +275,8 @@
             <!-- E-Mail -->
             <TextView
                 android:id="@+id/activity_add_patient_txt_email"
+                android:textColor="@color/black"
                 android:text="@string/email_req"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/activity_add_patient_ll_dob"
@@ -315,7 +308,7 @@
                 <EditText
                     android:id="@+id/activity_add_patient_et_email"
                     android:inputType="textEmailAddress"
-                    android:fontFamily="@font/segoe_ui_light"
+                    android:fontFamily="@font/helvetica_neue_light"
                     android:hint="@string/email"
                     android:autofillHints="@string/email"
                     tools:targetApi="o"
@@ -332,10 +325,8 @@
             <!-- Password -->
             <TextView
                 android:id="@+id/activity_add_patient_txt_password"
+                android:textColor="@color/black"
                 android:text="@string/password_req"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/activity_add_patient_ll_email"
@@ -367,7 +358,7 @@
                 <EditText
                     android:id="@+id/activity_add_patient_et_password"
                     android:inputType="textPassword"
-                    android:fontFamily="@font/segoe_ui_light"
+                    android:fontFamily="@font/helvetica_neue_light"
                     android:hint="@string/password"
                     android:autofillHints="@string/password"
                     tools:targetApi="o"
@@ -384,10 +375,8 @@
             <!-- Confirm password -->
             <TextView
                 android:id="@+id/activity_add_patient_txt_password_confirm"
+                android:textColor="@color/black"
                 android:text="@string/password_confirm_req"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/activity_add_patient_ll_password"
@@ -419,7 +408,7 @@
                 <EditText
                     android:id="@+id/activity_add_patient_et_passwordConfirm"
                     android:inputType="textPassword"
-                    android:fontFamily="@font/segoe_ui_light"
+                    android:fontFamily="@font/helvetica_neue_light"
                     android:hint="@string/password_confirm"
                     android:autofillHints="@string/password_confirm"
                     tools:targetApi="o"
@@ -433,12 +422,11 @@
                     android:background="@null"/>
             </LinearLayout>
 
+            <!-- Gender -->
             <TextView
                 android:id="@+id/activity_add_patient_txt_gender"
+                android:textColor="@color/black"
                 android:text="@string/gender"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/activity_add_patient_ll_passwordConfirm"
@@ -454,6 +442,7 @@
 
                 <RadioButton
                     android:id="@+id/activity_add_patient_rb_male"
+                    android:textSize="@dimen/textSize12"
                     android:text="@string/male"
                     android:button="@null"
                     android:drawableBottom="@android:drawable/btn_radio"
@@ -463,6 +452,7 @@
 
                 <RadioButton
                     android:id="@+id/activity_add_patient_rb_female"
+                    android:textSize="@dimen/textSize12"
                     android:text="@string/female"
                     android:button="@null"
                     android:drawableBottom="@android:drawable/btn_radio"

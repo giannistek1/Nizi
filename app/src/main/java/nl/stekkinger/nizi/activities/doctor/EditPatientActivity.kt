@@ -49,9 +49,9 @@ class EditPatientActivity : AppCompatActivity() {
 
         // Hide password
         activity_add_patient_txt_password.visibility = View.GONE
-        activity_add_patient_et_password.visibility = View.GONE
+        activity_add_patient_ll_password.visibility = View.GONE
         activity_add_patient_txt_password_confirm.visibility = View.GONE
-        activity_add_patient_et_passwordConfirm.visibility = View.GONE
+        activity_add_patient_ll_passwordConfirm.visibility = View.GONE
 
         if (patientData.patient.gender == activity_add_patient_rb_male.text.toString())
             activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
