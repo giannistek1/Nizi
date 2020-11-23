@@ -31,7 +31,7 @@ import nl.stekkinger.nizi.repositories.DoctorRepository
 import nl.stekkinger.nizi.repositories.WeightUnitRepository
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private var TAG = "Main"
 

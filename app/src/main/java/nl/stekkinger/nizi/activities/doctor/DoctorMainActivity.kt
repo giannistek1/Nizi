@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_doctor_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.adapters.PatientAdapter
 import nl.stekkinger.nizi.adapters.PatientAdapterListener
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -31,7 +32,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
+class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
 
     private var TAG = "DoctorMain"
 
@@ -148,6 +149,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         activity_doctor_main_rv.layoutManager = LinearLayoutManager(this)
     }
 
+    // region Filter
     fun filter(text: String) {
         var text = text
 
@@ -165,7 +167,9 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         }
         activity_doctor_main_rv.adapter!!.notifyDataSetChanged()
     }
+    //endregion
 
+    //region getPatients
     inner class getPatientsForDoctorAsyncTask() : AsyncTask<Void, Void, ArrayList<Patient>>()
     {
         override fun onPreExecute() {
@@ -228,6 +232,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
             setupRecyclerView()
         }
     }
+    //endregion
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -246,16 +251,6 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     private fun Context.hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-    //endregion
-
-    //region Hides Keyboard on touch
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-        return super.dispatchTouchEvent(ev)
     }
     //endregion
 }

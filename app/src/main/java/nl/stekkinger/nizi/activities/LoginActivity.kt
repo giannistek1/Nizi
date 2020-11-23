@@ -26,7 +26,7 @@ import nl.stekkinger.nizi.classes.login.LoginResponse
 import nl.stekkinger.nizi.repositories.AuthRepository
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     private var TAG = "Login"
 
@@ -177,16 +177,6 @@ class LoginActivity : AppCompatActivity() {
 
             showNextActivity()
         }
-    }
-    //endregion
-
-    //region Hides Keyboard on touch
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-        return super.dispatchTouchEvent(ev)
     }
     //endregion
 }

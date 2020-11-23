@@ -14,11 +14,12 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.patient.PatientData
 
-class EditPatientActivity : AppCompatActivity() {
+class EditPatientActivity : BaseActivity() {
 
     private var TAG = "EditPatient"
 
@@ -122,19 +123,4 @@ class EditPatientActivity : AppCompatActivity() {
             finish()
         }
     }
-
-    override fun finish() {
-
-        super.finish()
-    }
-
-    //region Hides Keyboard on touch
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-        return super.dispatchTouchEvent(ev)
-    }
-    //endregion
 }

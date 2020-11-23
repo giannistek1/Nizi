@@ -8,7 +8,7 @@ import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.feedback.FeedbackShort
 import java.io.Serializable
 
-data class PatientLogin (
+data class PatientShort (
     var id: Int = 0,
     var gender: String,
     var date_of_birth: String,

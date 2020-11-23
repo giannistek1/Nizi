@@ -1,6 +1,6 @@
 package nl.stekkinger.nizi.classes.dietary
 
-import nl.stekkinger.nizi.classes.patient.PatientLogin
+import nl.stekkinger.nizi.classes.patient.PatientShort
 import java.io.Serializable
 
 // Used as result
@@ -10,7 +10,7 @@ data class DietaryManagement(
     var minimum: Int,
     var maximum: Int,
     var is_active: Boolean,
-    val patient: PatientLogin,
+    val patient: PatientShort,
 
     // Unimportant stuff
     val created_at: String? = null,

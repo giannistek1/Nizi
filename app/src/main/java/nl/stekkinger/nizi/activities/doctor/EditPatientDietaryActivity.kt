@@ -15,6 +15,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.dietary.DietaryRestriction
@@ -28,7 +29,7 @@ import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 import java.lang.Exception
 
-class EditPatientDietaryActivity : AppCompatActivity() {
+class EditPatientDietaryActivity : BaseActivity() {
 
     private var TAG = "EditPatientDietary"
 
@@ -426,21 +427,6 @@ class EditPatientDietaryActivity : AppCompatActivity() {
                 finish()
             }
         }
-    }
-    //endregion
-
-
-    override fun finish() {
-        super.finish()
-    }
-
-    //region Hides Keyboard on touch
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-        return super.dispatchTouchEvent(ev)
     }
     //endregion
 }

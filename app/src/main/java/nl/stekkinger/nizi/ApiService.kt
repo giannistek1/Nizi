@@ -42,7 +42,7 @@ interface ApiService {
     @POST("patients")
     fun registerPatient(
         @Header("Authorization") authHeader : String,
-        @Body body: PatientLogin
+        @Body body: PatientShort
     ) : Call<Patient>
 
     @GET("patients")
@@ -68,7 +68,7 @@ interface ApiService {
     fun updatePatient(
         @Header("Authorization") authHeader : String,
         @Path("patientId") patientId: Int,
-        @Body body: PatientLogin
+        @Body body: PatientShort
     ) : Call<Patient>
 
     @DELETE("v1/patient/{patientId}")

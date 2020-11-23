@@ -18,7 +18,7 @@ import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
-import nl.stekkinger.nizi.classes.patient.PatientLogin
+import nl.stekkinger.nizi.classes.patient.PatientShort
 
 
 class AddPatientActivity : AppCompatActivity() {
@@ -102,7 +102,7 @@ class AddPatientActivity : AppCompatActivity() {
                 role = 4 // Patient role
             ),
             // Update corresponding user later when its made
-            patient = PatientLogin(
+            patient = PatientShort(
                 gender = selectedRadioButton.text.toString(),
                 date_of_birth = dobET.text.toString().trim(),
                 doctor = doctorId!!
