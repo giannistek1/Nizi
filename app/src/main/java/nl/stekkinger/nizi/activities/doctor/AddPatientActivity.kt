@@ -44,7 +44,7 @@ class AddPatientActivity : AppCompatActivity() {
         activity_add_patient_btn_to_guidelines.setOnClickListener {
             tryCreatePatient(activity_add_patient_et_firstName, activity_add_patient_et_lastName,
                 activity_add_patient_et_dob, activity_add_patient_et_email, activity_add_patient_et_password,
-            activity_add_patient_et_password_confirm)
+            activity_add_patient_et_passwordConfirm)
         }
 
         // Get doctorId
@@ -60,7 +60,7 @@ class AddPatientActivity : AppCompatActivity() {
         activity_add_patient_et_dob.setText(R.string.sample_dob)
         activity_add_patient_et_email.setText(R.string.sample_email)
         activity_add_patient_et_password.setText(R.string.sample_password)
-        activity_add_patient_et_password_confirm.setText(R.string.sample_password)
+        activity_add_patient_et_passwordConfirm.setText(R.string.sample_password)
         activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
         //endregion
     }

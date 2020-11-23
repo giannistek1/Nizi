@@ -51,7 +51,7 @@ class EditPatientActivity : AppCompatActivity() {
         activity_add_patient_txt_password.visibility = View.GONE
         activity_add_patient_et_password.visibility = View.GONE
         activity_add_patient_txt_password_confirm.visibility = View.GONE
-        activity_add_patient_et_password_confirm.visibility = View.GONE
+        activity_add_patient_et_passwordConfirm.visibility = View.GONE
 
         if (patientData.patient.gender == activity_add_patient_rb_male.text.toString())
             activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
@@ -62,7 +62,7 @@ class EditPatientActivity : AppCompatActivity() {
 
             tryEditPatient(activity_add_patient_et_firstName, activity_add_patient_et_lastName,
                 activity_add_patient_et_dob, activity_add_patient_et_email, activity_add_patient_et_password,
-                activity_add_patient_et_password_confirm)
+                activity_add_patient_et_passwordConfirm)
         }
 
         // Get doctorId

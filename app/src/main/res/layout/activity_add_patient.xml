@@ -117,11 +117,10 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/marginHorizontal"
-            android:layout_marginEnd="@dimen/marginBigger"
             android:layout_marginBottom="@dimen/marginNormal"
-            android:background="@color/white"
-            android:elevation="@dimen/elevationNormal">
+            android:paddingStart="@dimen/marginDouble"
+            android:paddingEnd="@dimen/marginDouble"
+            android:background="@color/white">
 
             <!-- (First) Name -->
             <TextView
@@ -132,19 +131,46 @@
                 android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginStart="@dimen/marginNormal"/>
+                android:layout_marginTop="@dimen/marginNormal" />
 
-            <EditText
-                android:id="@+id/activity_add_patient_et_firstName"
-                android:inputType="textCapSentences"
-                android:hint="@string/first_name"
-                android:maxLength="128"
-                android:layout_width="300dp"
+            <!-- First name input -->
+            <LinearLayout
+                android:id="@+id/activity_add_patient_ll_firstName"
+                android:background="@drawable/text_border_gray"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/marginSize2"
                 android:layout_below="@+id/activity_add_patient_txt_firstName"
-                android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginStart="@dimen/marginNormal" />
+                android:elevation="@dimen/elevationNormal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/activity_add_patient_ic_firstName"
+                    android:scaleType="fitCenter"
+                    android:tint="@color/colorPrimary"
+                    android:layout_width="@dimen/loginIconSize"
+                    android:layout_height="@dimen/loginIconSize"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/marginVerySmall"
+                    android:contentDescription="@string/ic_user"
+                    android:src="@drawable/ic_user"/>
+
+                <EditText
+                    android:id="@+id/activity_add_patient_et_firstName"
+                    android:inputType="textCapSentences"
+                    android:fontFamily="@font/segoe_ui_light"
+                    android:hint="@string/first_name"
+                    android:autofillHints="@string/first_name"
+                    tools:targetApi="o"
+                    android:maxLength="128"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/marginSmall"
+                    android:paddingEnd="0dp"
+                    android:paddingTop="@dimen/marginSmaller"
+                    android:paddingBottom="@dimen/marginSmaller"
+                    android:background="@null"/>
+            </LinearLayout>
 
             <!-- Last Name -->
             <TextView
@@ -156,19 +182,48 @@
                 android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_et_firstName"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginStart="@dimen/marginNormal"/>
+                android:layout_below="@+id/activity_add_patient_ll_firstName"
+                android:layout_marginTop="@dimen/marginNormal"/>
 
-            <EditText
-                android:id="@+id/activity_add_patient_et_lastName"
-                android:inputType="textCapSentences"
-                android:hint="@string/last_name"
-                android:layout_width="300dp"
+            <!-- Last name input -->
+            <LinearLayout
+                android:id="@+id/activity_add_patient_ll_lastName"
+                android:background="@drawable/text_border_gray"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_txt_lastName"
                 android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginStart="@dimen/marginNormal" />
+                android:layout_marginBottom="@dimen/marginSize2"
+                android:layout_below="@+id/activity_add_patient_txt_lastName"
+                android:elevation="@dimen/elevationNormal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/activity_add_patient_ic_lastName"
+                    android:scaleType="fitCenter"
+                    android:tint="@color/colorPrimary"
+                    android:layout_width="@dimen/loginIconSize"
+                    android:layout_height="@dimen/loginIconSize"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/marginVerySmall"
+                    android:contentDescription="@string/ic_user"
+                    android:src="@drawable/ic_user"/>
+
+                <EditText
+                    android:id="@+id/activity_add_patient_et_lastName"
+                    android:inputType="textCapSentences"
+                    android:fontFamily="@font/segoe_ui_light"
+                    android:hint="@string/last_name"
+                    android:autofillHints="@string/last_name"
+                    tools:targetApi="o"
+                    android:maxLength="128"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/marginSmall"
+                    android:paddingEnd="0dp"
+                    android:paddingTop="@dimen/marginSmaller"
+                    android:paddingBottom="@dimen/marginSmaller"
+                    android:background="@null"/>
+            </LinearLayout>
 
             <!-- DoB -->
             <TextView
@@ -179,20 +234,48 @@
                 android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_et_lastName"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginStart="@dimen/marginNormal"/>
+                android:layout_below="@+id/activity_add_patient_ll_lastName"
+                android:layout_marginTop="@dimen/marginNormal"/>
 
-            <EditText
-                android:id="@+id/activity_add_patient_et_dob"
-                android:layout_width="200dp"
+            <!-- DoB input -->
+            <LinearLayout
+                android:id="@+id/activity_add_patient_ll_dob"
+                android:background="@drawable/text_border_gray"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_txt_dob"
                 android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginStart="@dimen/marginNormal"
-                android:inputType="date"
-                android:hint="@string/date_of_birth_format"
-                android:maxLength="10"/>
+                android:layout_marginBottom="@dimen/marginSize2"
+                android:layout_below="@+id/activity_add_patient_txt_dob"
+                android:elevation="@dimen/elevationNormal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/activity_add_patient_ic_dob"
+                    android:scaleType="fitCenter"
+                    android:tint="@color/colorPrimary"
+                    android:layout_width="@dimen/loginIconSize"
+                    android:layout_height="@dimen/loginIconSize"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/marginVerySmall"
+                    android:contentDescription="@string/ic_calendar"
+                    android:src="@drawable/ic_calendar"/>
+
+                <EditText
+                    android:id="@+id/activity_add_patient_et_dob"
+                    android:inputType="date"
+                    android:fontFamily="@font/segoe_ui_light"
+                    android:hint="@string/date_of_birth_format"
+                    android:autofillHints="@string/date_of_birth"
+                    tools:targetApi="o"
+                    android:maxLength="10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/marginSmall"
+                    android:paddingEnd="0dp"
+                    android:paddingTop="@dimen/marginSmaller"
+                    android:paddingBottom="@dimen/marginSmaller"
+                    android:background="@null"/>
+            </LinearLayout>
 
             <!-- E-Mail -->
             <TextView
@@ -203,20 +286,48 @@
                 android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_et_dob"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginStart="@dimen/marginNormal"/>
+                android:layout_below="@+id/activity_add_patient_ll_dob"
+                android:layout_marginTop="@dimen/marginNormal"/>
 
-            <EditText
-                android:id="@+id/activity_add_patient_et_email"
-                android:inputType="textEmailAddress"
-                android:hint="@string/email"
-                android:maxLength="40"
-                android:layout_width="300dp"
+            <!-- Email input -->
+            <LinearLayout
+                android:id="@+id/activity_add_patient_ll_email"
+                android:background="@drawable/text_border_gray"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_txt_email"
                 android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginStart="@dimen/marginNormal" />
+                android:layout_marginBottom="@dimen/marginSize2"
+                android:layout_below="@+id/activity_add_patient_txt_email"
+                android:elevation="@dimen/elevationNormal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/activity_add_patient_ic_email"
+                    android:scaleType="fitCenter"
+                    android:tint="@color/colorPrimary"
+                    android:layout_width="@dimen/loginIconSize"
+                    android:layout_height="@dimen/loginIconSize"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/marginVerySmall"
+                    android:contentDescription="@string/ic_mail"
+                    android:src="@drawable/ic_mail"/>
+
+                <EditText
+                    android:id="@+id/activity_add_patient_et_email"
+                    android:inputType="textEmailAddress"
+                    android:fontFamily="@font/segoe_ui_light"
+                    android:hint="@string/email"
+                    android:autofillHints="@string/email"
+                    tools:targetApi="o"
+                    android:maxLength="64"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/marginSmall"
+                    android:paddingEnd="0dp"
+                    android:paddingTop="@dimen/marginSmaller"
+                    android:paddingBottom="@dimen/marginSmaller"
+                    android:background="@null"/>
+            </LinearLayout>
 
             <!-- Password -->
             <TextView
@@ -227,20 +338,48 @@
                 android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_et_email"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginStart="@dimen/marginNormal"/>
+                android:layout_below="@+id/activity_add_patient_ll_email"
+                android:layout_marginTop="@dimen/marginNormal"/>
 
-            <EditText
-                android:id="@+id/activity_add_patient_et_password"
-                android:inputType="textPassword"
-                android:hint="@string/password"
-                android:maxLength="30"
-                android:layout_width="300dp"
+            <!-- Password input -->
+            <LinearLayout
+                android:id="@+id/activity_add_patient_ll_password"
+                android:background="@drawable/text_border_gray"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_txt_password"
                 android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginStart="@dimen/marginNormal" />
+                android:layout_marginBottom="@dimen/marginSize2"
+                android:layout_below="@+id/activity_add_patient_txt_password"
+                android:elevation="@dimen/elevationNormal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/activity_add_patient_ic_password"
+                    android:scaleType="fitCenter"
+                    android:tint="@color/colorPrimary"
+                    android:layout_width="@dimen/loginIconSize"
+                    android:layout_height="@dimen/loginIconSize"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/marginVerySmall"
+                    android:contentDescription="@string/ic_lock"
+                    android:src="@drawable/ic_lock"/>
+
+                <EditText
+                    android:id="@+id/activity_add_patient_et_password"
+                    android:inputType="textPassword"
+                    android:fontFamily="@font/segoe_ui_light"
+                    android:hint="@string/password"
+                    android:autofillHints="@string/password"
+                    tools:targetApi="o"
+                    android:maxLength="64"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/marginSmall"
+                    android:paddingEnd="0dp"
+                    android:paddingTop="@dimen/marginSmaller"
+                    android:paddingBottom="@dimen/marginSmaller"
+                    android:background="@null"/>
+            </LinearLayout>
 
             <!-- Confirm password -->
             <TextView
@@ -251,20 +390,48 @@
                 android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_et_password"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginStart="@dimen/marginNormal"/>
+                android:layout_below="@+id/activity_add_patient_ll_password"
+                android:layout_marginTop="@dimen/marginNormal"/>
 
-            <EditText
-                android:id="@+id/activity_add_patient_et_password_confirm"
-                android:inputType="textPassword"
-                android:hint="@string/password_confirm"
-                android:maxLength="30"
-                android:layout_width="300dp"
+            <!-- Confirm Password input -->
+            <LinearLayout
+                android:id="@+id/activity_add_patient_ll_passwordConfirm"
+                android:background="@drawable/text_border_gray"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_txt_password_confirm"
                 android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginStart="@dimen/marginNormal" />
+                android:layout_marginBottom="@dimen/marginSize2"
+                android:layout_below="@+id/activity_add_patient_txt_password_confirm"
+                android:elevation="@dimen/elevationNormal"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/activity_add_patient_ic_passwordConfirm"
+                    android:scaleType="fitCenter"
+                    android:tint="@color/colorPrimary"
+                    android:layout_width="@dimen/loginIconSize"
+                    android:layout_height="@dimen/loginIconSize"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/marginVerySmall"
+                    android:contentDescription="@string/ic_lock"
+                    android:src="@drawable/ic_lock"/>
+
+                <EditText
+                    android:id="@+id/activity_add_patient_et_passwordConfirm"
+                    android:inputType="textPassword"
+                    android:fontFamily="@font/segoe_ui_light"
+                    android:hint="@string/password_confirm"
+                    android:autofillHints="@string/password_confirm"
+                    tools:targetApi="o"
+                    android:maxLength="64"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/marginSmall"
+                    android:paddingEnd="0dp"
+                    android:paddingTop="@dimen/marginSmaller"
+                    android:paddingBottom="@dimen/marginSmaller"
+                    android:background="@null"/>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/activity_add_patient_txt_gender"
@@ -274,9 +441,8 @@
                 android:fontFamily="@font/segoe_ui_semibold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_et_password_confirm"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginStart="@dimen/marginNormal"/>
+                android:layout_below="@+id/activity_add_patient_ll_passwordConfirm"
+                android:layout_marginTop="@dimen/marginNormal"/>
 
             <RadioGroup
                 android:id="@+id/activity_add_patient_rg_gender"
@@ -284,8 +450,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_below="@+id/activity_add_patient_txt_gender"
-                android:layout_marginTop="@dimen/marginNormal"
-                android:layout_marginStart="@dimen/marginNormal">
+                android:layout_marginTop="@dimen/marginNormal">
 
                 <RadioButton
                     android:id="@+id/activity_add_patient_rb_male"
