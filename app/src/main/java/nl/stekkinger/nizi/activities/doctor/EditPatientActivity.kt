@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi.activities.doctor
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -48,9 +49,9 @@ class EditPatientActivity : AppCompatActivity() {
 
         // Hide password
         activity_add_patient_txt_password.visibility = View.GONE
-        activity_add_patient_et_password.visibility = View.GONE
+        activity_add_patient_ll_password.visibility = View.GONE
         activity_add_patient_txt_password_confirm.visibility = View.GONE
-        activity_add_patient_et_password_confirm.visibility = View.GONE
+        activity_add_patient_ll_passwordConfirm.visibility = View.GONE
 
         if (patientData.patient.gender == activity_add_patient_rb_male.text.toString())
             activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
@@ -61,11 +62,15 @@ class EditPatientActivity : AppCompatActivity() {
 
             tryEditPatient(activity_add_patient_et_firstName, activity_add_patient_et_lastName,
                 activity_add_patient_et_dob, activity_add_patient_et_email, activity_add_patient_et_password,
-                activity_add_patient_et_password_confirm)
+                activity_add_patient_et_passwordConfirm)
         }
 
         // Get doctorId
         doctorId = intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 0)
+
+        // Standard on canceled
+        val returnIntent = Intent()
+        setResult(Activity.RESULT_CANCELED, returnIntent)
     }
 
     private fun tryEditPatient(firstNameET: EditText, lastNameET: EditText, dobET: EditText, emailET:
@@ -109,15 +114,17 @@ class EditPatientActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            // In case we wanna return something
+            val returnIntent = Intent()
+            setResult(RESULT_OK, returnIntent)
             finish()
         }
     }
 
     override fun finish() {
-        // In case we wanna return something
-        val returnIntent = Intent()
-        setResult(RESULT_OK, returnIntent)
+
         super.finish()
     }
 

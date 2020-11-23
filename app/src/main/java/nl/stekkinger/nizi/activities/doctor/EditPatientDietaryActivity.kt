@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi.activities.doctor
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
@@ -102,6 +103,10 @@ class EditPatientDietaryActivity : AppCompatActivity() {
 
         // Get doctorId
         doctorId = intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 0)
+
+        // Standard on canceled
+        val returnIntent = Intent()
+        setResult(Activity.RESULT_CANCELED, returnIntent)
 
         // Get DietaryRestrictions
         getDietaryRestrictionsAsyncTask().execute()
@@ -325,8 +330,12 @@ class EditPatientDietaryActivity : AppCompatActivity() {
             // Remove from list
             checkList.removeAt(0)
 
-            if (checkList.isEmpty())
+            if (checkList.isEmpty()) {
+                // In case we wanna return something
+                val returnIntent = Intent()
+                setResult(RESULT_OK, returnIntent)
                 finish()
+            }
         }
     }
     //endregion
@@ -361,8 +370,12 @@ class EditPatientDietaryActivity : AppCompatActivity() {
             // Remove from list
             checkList.removeAt(0)
 
-            if (checkList.isEmpty())
+            if (checkList.isEmpty()) {
+                // In case we wanna return something
+                val returnIntent = Intent()
+                setResult(RESULT_OK, returnIntent)
                 finish()
+            }
         }
     }
     //endregion
@@ -403,17 +416,18 @@ class EditPatientDietaryActivity : AppCompatActivity() {
             // Remove from list
             checkList.removeAt(0)
 
-            if (checkList.isEmpty())
+            if (checkList.isEmpty()) {
+                // In case we wanna return something
+                val returnIntent = Intent()
+                setResult(RESULT_OK, returnIntent)
                 finish()
+            }
         }
     }
     //endregion
 
 
     override fun finish() {
-        // In case we wanna return something
-        val returnIntent = Intent()
-        setResult(RESULT_OK, returnIntent)
         super.finish()
     }
 

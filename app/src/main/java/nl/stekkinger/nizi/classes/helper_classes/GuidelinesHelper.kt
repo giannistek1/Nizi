@@ -1,17 +1,19 @@
 package nl.stekkinger.nizi.classes.helper_classes
 
-import android.R.attr.*
 import android.content.res.ColorStateList
+import android.graphics.Typeface
 import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getColor
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.ImageViewCompat
 import androidx.fragment.app.FragmentActivity
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
+import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 
@@ -26,18 +28,20 @@ object GuidelinesHelper {
         layout.removeAllViews()
 
         // Description                  // Amount
-        // Min
-        // Max
+        // Min  // MinVariable TODO
+        // Max  // MaxVariable TODO
         // Feedback
 
         val circleSize = cont!!.resources.getDimensionPixelSize(R.dimen.guidelineCircleSize)
         val iconSize = cont.resources.getDimensionPixelSize(R.dimen.guidelineIconSize)
+        val smallTextSize = 12f
+        val textColor = getColor(cont, R.color.black)
 
         // Loop for every dietary restriction/guideline
         dietaryGuidelineList!!.forEachIndexed { _, dietaryGuideline ->
 
             // Create elements
-            // Layouts
+            /// Layouts
             // Root of the item
             val horizontalLayout = LinearLayout(cont)
             horizontalLayout.orientation = LinearLayout.HORIZONTAL
@@ -46,7 +50,7 @@ object GuidelinesHelper {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            params.setMargins(20,0,20,20)
+            params.setMargins(20,0,20,40)
             horizontalLayout.setPadding(15,10,15,10)
             horizontalLayout.layoutParams = params
 
@@ -60,18 +64,12 @@ object GuidelinesHelper {
             params.setMargins(20, 10,0,10)
             verticalLayout1.layoutParams = params
 
-            /*val verticalLayout2 = LinearLayout(cont)
-            verticalLayout2.orientation = LinearLayout.VERTICAL
-            verticalLayout2.gravity = Gravity.CENTER_HORIZONTAL
-            verticalLayout2.layoutParams = LinearLayout.LayoutParams(0,
-                LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f)*/
-
             val verticalLayout2 = RelativeLayout(cont)
             verticalLayout2.gravity = Gravity.CENTER_HORIZONTAL
             verticalLayout2.layoutParams = LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f)
 
-            // Views
+            /// Views
             val icon = ImageView(cont)
             val descriptionTextView = TextView(cont)
             val minimumTextView = TextView(cont)
@@ -80,8 +78,29 @@ object GuidelinesHelper {
             val amountTextView = TextView(cont)
             val progressBar = ProgressBar(cont, null, R.style.Widget_AppCompat_ProgressBar_Horizontal)
 
+            // Set fonts
+            var typeFace: Typeface? = ResourcesCompat.getFont(cont, R.font.helvetica_neue_bold)
+            descriptionTextView.typeface = typeFace
+            typeFace = ResourcesCompat.getFont(cont, R.font.helvetica_neue_medium)
+            feedbackTextView.typeface = typeFace
+            amountTextView.typeface = typeFace
+
+            // Set colors
+            descriptionTextView.setTextColor(textColor)
+            minimumTextView.setTextColor(textColor)
+            maximumTextView.setTextColor(textColor)
+            amountTextView.setTextColor(textColor)
+
+            // Set text sizes
+            descriptionTextView.textSize = 14f
+            minimumTextView.textSize = smallTextSize
+            maximumTextView.textSize = smallTextSize
+            feedbackTextView.textSize = smallTextSize
+            amountTextView.textSize = smallTextSize
+
             // Icon
             if (dietaryGuideline.description.contains("Calorie")) {
+                // Also a possible way to change to red
                 ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(getColor(cont, R.color.red)))
                 icon.setImageResource(R.drawable.ic_calories)
             }
@@ -112,7 +131,6 @@ object GuidelinesHelper {
             iconParams.setMargins(0, 8, 15, 0)
             icon.layoutParams = iconParams
 
-            descriptionTextView.textSize = 16f
             descriptionTextView.text = dietaryGuideline.plural.capitalize()
             params = LinearLayout.LayoutParams(400, LinearLayout.LayoutParams.WRAP_CONTENT)
             params.setMargins(0,0,0,20)
@@ -122,15 +140,15 @@ object GuidelinesHelper {
             params.setMargins(0,0,0,20)
             maximumTextView.layoutParams = params
 
-            minimumTextView.text = "${cont.getString(R.string.min)} ${dietaryGuideline.minimum} ${dietaryGuideline.weightUnit}"
+            minimumTextView.text = "${cont.getString(R.string.min)}  ${dietaryGuideline.minimum} ${dietaryGuideline.weightUnit}"
             if (dietaryGuideline.minimum == 0)
                 minimumTextView.visibility = View.GONE
 
-            maximumTextView.text = "${cont.getString(R.string.max)} ${dietaryGuideline.maximum} ${dietaryGuideline.weightUnit}"
+            maximumTextView.text = "${cont.getString(R.string.max)}  ${dietaryGuideline.maximum} ${dietaryGuideline.weightUnit}"
             if (dietaryGuideline.maximum == 0)
                 maximumTextView.visibility = View.INVISIBLE
 
-            // Amount Text View
+            /// Amount Text View
             // Center align text
             amountTextView.gravity = Gravity.CENTER
             val amountTextViewParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
@@ -158,19 +176,21 @@ object GuidelinesHelper {
             progressBar.layoutParams = progressBarParams
             progressBar.isIndeterminate = false
 
-            // if ate too much
+            // if ate too much -> red progress
             if (progress > 100 && dietaryGuideline.maximum != 0)
                 progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar_red)
-            else
+            else // green progress
                 progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar)
+
             if (dietaryGuideline.minimum != 0)
                 progressBar.background = ContextCompat.getDrawable(cont, R.drawable.circle_shape_yellow)
             else
                 progressBar.background = ContextCompat.getDrawable(cont, R.drawable.circle_shape)
+
             progressBar.max = 100
             progressBar.progress = progress
 
-            // FEEDBACK
+            /// FEEDBACK
             // if filled && maximum not set
             if (progress >= 100 && dietaryGuideline.maximum == 0) {
                 feedbackTextView.text = cont.getString(R.string.feedback_positive)
@@ -178,12 +198,12 @@ object GuidelinesHelper {
             }
             // If has maximum and bar more than full
             else if (progress > 100 && dietaryGuideline.maximum > 0) {
-                feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.plural)
+                feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.description)
                 feedbackTextView.setTextColor(getColor(cont, R.color.red))
             }
             // If has minimum and bar less than full
             else if (progress <= 100 && dietaryGuideline.minimum != 0) {
-                feedbackTextView.text = cont.getString(R.string.feedback_encouraging, dietaryGuideline.plural)
+                feedbackTextView.text = cont.getString(R.string.feedback_encouraging, dietaryGuideline.plural.toLowerCase(Locale.ROOT))
                 feedbackTextView.setTextColor(getColor(cont, R.color.yellow))
             }
             // If only has maximum and bar lower than full (100)
