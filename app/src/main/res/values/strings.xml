@@ -102,8 +102,8 @@
 
     <!-- Dashboard -->
     <string name="statistics">Statistieken</string>
-    <string name="minimum">Minimaal</string>
-    <string name="maximum">Maximaal</string>
+    <string name="minimum">Minimum</string>
+    <string name="maximum">Maximum</string>
     <string name="min">Min</string>
     <string name="max">Max</string>
 

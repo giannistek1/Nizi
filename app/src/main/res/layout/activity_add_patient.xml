@@ -27,10 +27,9 @@
 
             <TextView
                 android:id="@+id/activity_add_patient_txt_step_1"
+                android:fontFamily="@font/helvetica_neue_bold"
+                android:textColor="@color/darkGray"
                 android:text="@string/step_1"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -44,10 +43,9 @@
 
             <TextView
                 android:id="@+id/activity_add_patient_txt_personal_info"
+                android:fontFamily="@font/helvetica_neue_bold"
+                android:textColor="@color/darkGray"
                 android:text="@string/personal_info"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -82,8 +80,7 @@
                 android:id="@+id/activity_add_patient_txt_step_2"
                 android:text="@string/step_2"
                 android:textColor="@color/darkGray"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
+                android:fontFamily="@font/helvetica_neue"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -100,8 +97,7 @@
                 android:id="@+id/activity_add_patient_txt_guidelines"
                 android:text="@string/guidelines"
                 android:textColor="@color/darkGray"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
+                android:fontFamily="@font/helvetica_neue"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>

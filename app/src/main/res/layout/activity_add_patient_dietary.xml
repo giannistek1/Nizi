@@ -29,7 +29,6 @@
                 android:id="@+id/activity_add_patient_dietary_txt_step_1"
                 android:text="@string/step_1"
                 android:textColor="@color/darkGray"
-                android:textSize="@dimen/h3"
                 android:fontFamily="@font/segoe_ui_semibold"
                 android:gravity="center"
                 android:layout_width="match_parent"
@@ -45,9 +44,8 @@
 
             <TextView
                 android:id="@+id/activity_add_patient_dietary_txt_personal_info"
-                android:text="@string/personal_info"
+                android:text="@string/personal_info_short"
                 android:textColor="@color/darkGray"
-                android:textSize="@dimen/h3"
                 android:fontFamily="@font/segoe_ui_semibold"
                 android:gravity="center"
                 android:layout_width="match_parent"
@@ -81,13 +79,12 @@
 
             <TextView
                 android:id="@+id/activity_add_patient_dietary_txt_step_2"
-                android:text="@string/step_2"
+                android:fontFamily="@font/helvetica_neue_bold"
                 android:textColor="@color/darkGray"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
+                android:text="@string/step_2"
                 android:gravity="center"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
             <ImageView
                 android:layout_width="30dp"
@@ -99,10 +96,9 @@
 
             <TextView
                 android:id="@+id/activity_add_patient_dietary_txt_guidelines"
-                android:text="@string/guidelines"
+                android:fontFamily="@font/helvetica_neue_bold"
                 android:textColor="@color/darkGray"
-                android:textSize="@dimen/h3"
-                android:fontFamily="@font/segoe_ui_semibold"
+                android:text="@string/guidelines"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
