@@ -9,5 +9,5 @@ data class ConsumptionShort (
     val meal_time: String,
     val patient: Int,
     val weight_unit: Int,
-    val food_meal_component: ArrayList<FoodMealComponent> = arrayListOf()
+    val food_meal_component: FoodMealComponent
 )
