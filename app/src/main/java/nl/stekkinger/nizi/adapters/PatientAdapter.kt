@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.item_patient.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.patient.PatientItem
 
-class PatientAdapter(val context: Context, val items: ArrayList<PatientItem>, val listener: PatientAdapterListener) : RecyclerView.Adapter<PatientAdapter.MyViewHolder>() {
+class PatientAdapter(val context: Context, val items: MutableList<PatientItem>, val listener: PatientAdapterListener) : RecyclerView.Adapter<PatientAdapter.MyViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_patient, parent, false)
         return MyViewHolder(view)
