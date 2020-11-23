@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_food.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.Food
+import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.fragments.DiaryFragment
 
 class FoodSearchAdapter(
@@ -46,9 +46,9 @@ class FoodSearchAdapter(
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var food: Food = mDataset[position]
-        Picasso.get().load(food.Picture).resize(40, 40).into(holder.image)
-        holder.title.text = food.Name
-        holder.summary.text = food.PortionSize.toString() + " " + food.WeightUnit
+        Picasso.get().load(food.image_url).resize(40, 40).into(holder.image)
+        holder.title.text = food.name
+        holder.summary.text = food.portion_size.toString() + " " + food.weight_unit
 
         if (fragment == "food") {
             holder.addBtn.setOnClickListener {
@@ -61,7 +61,7 @@ class FoodSearchAdapter(
             }
             holder.favBtn.setOnClickListener {
                 // do somthing in model
-                model.addFavorite(food.FoodId)
+                model.addFavorite(food.id)
                 // show toast of success (there is no way to get visual representation of liked foods)
                 Toast.makeText(activity, "Toegevoegd aan favorieten", Toast.LENGTH_SHORT).show()
             }
@@ -85,7 +85,7 @@ class FoodSearchAdapter(
             }
             holder.deleteBtn.setOnClickListener {
                 // do something in model
-                model.deleteFavorite(food.FoodId)
+                model.deleteFavorite(food.my_food)
                 mDataset.removeAt(holder.adapterPosition)
                 notifyDataSetChanged()
             }

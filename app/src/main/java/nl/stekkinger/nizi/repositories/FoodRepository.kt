@@ -3,7 +3,11 @@ package nl.stekkinger.nizi.repositories
 import android.util.Log
 import android.util.Log.d
 import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
 import nl.stekkinger.nizi.classes.*
+import nl.stekkinger.nizi.classes.diary.*
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,12 +17,17 @@ class FoodRepository : Repository() {
 
     private val TAG = "FoodRepository"
 
-    fun getDiary(startDate: String, endDate: String): MutableLiveData<Consumptions.Result> {
-        val result = MutableLiveData<Consumptions.Result>()
-        d("logV", authHeader + " " + preferences.getInt("patient", 0).toString() + " " + startDate + " " + endDate)
-
-        service.fetchConsumptions(authHeader = authHeader, patientId = preferences.getInt("patient", 0), startDate = startDate, endDate = endDate ).enqueue(object: Callback<Consumptions.Result> {
-            override fun onResponse(call: Call<Consumptions.Result>, response: Response<Consumptions.Result>) {
+    fun getDiary(startDate: String, endDate: String): MutableLiveData<ArrayList<ConsumptionResponse>> {
+        val result = MutableLiveData<ArrayList<ConsumptionResponse>>()
+        val date: String = startDate + "T11:00:00.000Z"
+        // todo: fix date
+//        d("logV", GeneralHelper.getUser().patient?.id.toString() + " " +authHeader + " " + preferences.getInt("patient", 0).toString() + " " + startDate + " " + endDate)
+        val gson = Gson()
+        val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
+        val weightUnitHolder: WeightUnitHolder = gson.fromJson(json, WeightUnitHolder::class.java)
+        d("log weight", "derp" + weightUnitHolder.weightUnits[3].unit)
+        service.fetchConsumptions(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id, date = date).enqueue(object: Callback<ArrayList<ConsumptionResponse>> {
+            override fun onResponse(call: Call<ArrayList<ConsumptionResponse>>, response: Response<ArrayList<ConsumptionResponse>>) {
                 if (response.isSuccessful) {
                     result.value = response.body()
                     d("succ", response.code().toString())
@@ -28,8 +37,8 @@ class FoodRepository : Repository() {
                     d("rene", "response, not succesfull: ${response}")
                 }
             }
-            override fun onFailure(call: Call<Consumptions.Result>, t: Throwable) {
-                d("rene", "onFailure")
+            override fun onFailure(call: Call<ArrayList<ConsumptionResponse>>, t: Throwable) {
+                d("rene", t.toString())
             }
         })
         return result
@@ -55,11 +64,28 @@ class FoodRepository : Repository() {
         var foodList: ArrayList<Food> = arrayListOf()
         val result = MutableLiveData<ArrayList<Food>?>()
 
-        service.searchFoodDB(authHeader = authHeader, foodName = search, count = 10).enqueue(object: Callback<ArrayList<Food>> {
-            override fun onResponse(call: Call<ArrayList<Food>>, response: Response<ArrayList<Food>>) {
+        service.searchFoodDB(authHeader = authHeader, foodName = search).enqueue(object: Callback<ArrayList<FoodResponse>> {
+            override fun onResponse(call: Call<ArrayList<FoodResponse>>, response: Response<ArrayList<FoodResponse>>) {
                 if (response.isSuccessful && response.body() != null) {
-                    for (food: Food in response.body()!!) {
-                        Log.i("onResponse", food.toString())
+
+                    for (foodResponse: FoodResponse in response.body()!!) {
+                        Log.i("onResponse", foodResponse.toString())
+
+                        val food = Food(
+                            id = foodResponse.id,
+                            name = foodResponse.name,
+                            description = foodResponse.food_meal_component.description,
+                            kcal = foodResponse.food_meal_component.kcal,
+                            protein = foodResponse.food_meal_component.protein,
+                            potassium = foodResponse.food_meal_component.potassium,
+                            sodium = foodResponse.food_meal_component.sodium,
+                            water = foodResponse.food_meal_component.water,
+                            fiber = foodResponse.food_meal_component.fiber,
+                            portion_size = foodResponse.food_meal_component.portion_size,
+                            weight_unit = foodResponse.weight_unit,
+                            weight_amount = foodResponse.food_meal_component.portion_size, // Todo: there is no amount yet
+                            image_url = foodResponse.food_meal_component.image_url
+                        )
                         foodList.add(food)
                     }
                     result.value = foodList
@@ -67,7 +93,7 @@ class FoodRepository : Repository() {
                     d("rene", "response, not succesfull: ${response.body()}")
                 }
             }
-            override fun onFailure(call: Call<ArrayList<Food>>, t: Throwable) {
+            override fun onFailure(call: Call<ArrayList<FoodResponse>>, t: Throwable) {
                 d("rene", "onFailure")
             }
         })
@@ -90,12 +116,17 @@ class FoodRepository : Repository() {
         return service.getMeals(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().body()
     }
 
-    fun getFavorites(): ArrayList<Food>? {
-        return service.getFavoriteFood(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().body()
+    fun getFavorites(): ArrayList<MyFoodResponse>? {
+        d("tess", "tess")
+        return service.getFavoriteFood(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id).execute().body()
     }
 
     fun addFavorite(id: Int) {
-        service.addFavoriteFood(authHeader = authHeader, patientId = preferences.getInt("patient", 0), foodId = id).enqueue(object : Callback<Unit> {
+        val myFoodRequest = MyFoodRequest(
+            food = id,
+            patients_ids = GeneralHelper.getUser().patient!!.id
+        )
+        service.addFavoriteFood(authHeader = authHeader, body = myFoodRequest).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
 
             }
@@ -107,7 +138,7 @@ class FoodRepository : Repository() {
     }
 
     fun deleteFavorite(id: Int) {
-        service.deleteFavoriteFood(authHeader = authHeader, patientId = preferences.getInt("patient", 0), foodId = id).enqueue(object : Callback<Unit> {
+        service.deleteFavoriteFood(authHeader = authHeader, id = id).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 d("succ", response.toString())
             }

@@ -1,11 +1,8 @@
 package nl.stekkinger.nizi.fragments
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -14,7 +11,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_food_view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.Food
+import nl.stekkinger.nizi.classes.diary.Food
 
 class FoodViewFragment : Fragment() {
     private lateinit var model: DiaryViewModel
@@ -39,15 +36,15 @@ class FoodViewFragment : Fragment() {
 
         model.selected.observe(this, Observer<Food> { food ->
             // Update the UI
-            title_food_view.text = food.Name
-            Picasso.get().load(food.Picture).into(image_food_view)
-            serving_size_value.text = food.PortionSize.toString() + " " + food.WeightUnit
-            calories_value_food_view.text = food.KCal.toString() + " Kcal"
-            fiber_value_food_view.text = food.Fiber.toString() + " g"
-            protein_value_food_view.text = food.Protein.toString() + " g"
-            water_value_food_view.text = "10 g" // TODO update API with water input
-            sodium_value_food_view.text = (food.Sodium * 1000).toString() + " mg"
-            calcium_value_food_view.text = (food.Calcium * 1000).toString() + " mg"
+            title_food_view.text = food.name
+            Picasso.get().load(food.image_url).into(image_food_view)
+            serving_size_value.text = food.portion_size.toString() + " " + food.weight_unit
+            calories_value_food_view.text = food.kcal.toString() + " Kcal"
+            fiber_value_food_view.text = food.fiber.toString() + " g"
+            protein_value_food_view.text = food.protein.toString() + " g"
+            water_value_food_view.text = food.water.toString() + "ml"
+            sodium_value_food_view.text = (food.sodium).toString() + " mg"
+            calcium_value_food_view.text = (food.sodium).toString() + " mg"
 
             // store food product
             mFood = food

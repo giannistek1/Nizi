@@ -19,6 +19,7 @@ import nl.stekkinger.nizi.adapters.ConsumptionAdapter
 import nl.stekkinger.nizi.classes.Consumption
 import nl.stekkinger.nizi.classes.Consumptions
 import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import java.lang.Math.round
 import java.text.SimpleDateFormat
 import java.util.*
@@ -67,14 +68,15 @@ class DiaryFragment: Fragment() {
         // get the results of food search
         model.getDiary().observe(viewLifecycleOwner, Observer { result ->
 
-            val breakfastList = ArrayList<Consumption>()
-            val lunchList = ArrayList<Consumption>()
-            val dinnerList = ArrayList<Consumption>()
-            val snackList = ArrayList<Consumption>()
+            val breakfastList = ArrayList<ConsumptionResponse>()
+            val lunchList = ArrayList<ConsumptionResponse>()
+            val dinnerList = ArrayList<ConsumptionResponse>()
+            val snackList = ArrayList<ConsumptionResponse>()
 
             //sorting consumptions
-            for (c in result.Consumptions) {
-                when (c.MealTime) {
+            // todo: from consumptions to consumptionsresponse
+            for (c in result) {
+                when (c.meal_time) {
                     "Ontbijt" -> breakfastList.add(c)
                     "Lunch" -> lunchList.add(c)
                     "Avondeten" -> dinnerList.add(c)

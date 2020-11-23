@@ -1,6 +1,7 @@
 package nl.stekkinger.nizi
 
 import nl.stekkinger.nizi.classes.*
+import nl.stekkinger.nizi.classes.diary.*
 import nl.stekkinger.nizi.classes.login.LoginRequest
 import nl.stekkinger.nizi.classes.login.LoginResponse
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
@@ -77,19 +78,18 @@ interface ApiService {
     //endregion
 
     //region consumptions
-    @POST("v1/consumptions")
+    @POST("consumptions")
     fun addConsumption(
         @Header("Authorization") authHeader : String,
         @Body body: Consumption
     ) : Call<Unit>
 
-    @GET("v1/consumptions")
+    @GET("consumptions")
     fun fetchConsumptions(
         @Header("Authorization") authHeader : String,
-        @Query("patientId") patientId: Int,
-        @Query("startDate") startDate: String,
-        @Query("endDate") endDate: String
-    ) : Call<Consumptions.Result>
+        @Query("patient.id") patientId: Int,
+        @Query("date") date: String
+    ) : Call<ArrayList<ConsumptionResponse>>
 
     @GET("v1/consumption/{consumptionId}")
     fun fetchConsumptionById(
@@ -101,19 +101,18 @@ interface ApiService {
         @Path("consumptionId") consumptionId: Int
     ) : Call<Unit>
 
-    @DELETE("v1/consumption/{consumptionId}")
+    @DELETE("consumptions/{id}")
     fun deleteConsumption(
         @Header("Authorization") authHeader : String,
-        @Path("consumptionId") consumptionId: Int
+        @Path("id") consumptionId: Int
     ) : Call<Unit>
     //endregion
 
     //region foods
-    @POST("v1/food/favorite")
+    @POST("my-foods")
     fun addFavoriteFood(
         @Header("Authorization") authHeader : String,
-        @Query("patientId") patientId: Int,
-        @Query("foodId") foodId: Int
+        @Body body: MyFoodRequest
     ) : Call<Unit>
 
     @GET("v1/food/{foodId}")
@@ -122,24 +121,29 @@ interface ApiService {
     ) : Call<Unit>
 
     @GET("v1/food/partial/{foodName}/{count}")
-    fun searchFoodDB(
+    fun searchFoodDBBU(
         @Header("Authorization") authHeader : String,
         @Path("foodName") foodName: String,
         @Path("count") count: Int
     ) : Call<ArrayList<Food>>
 
-    @GET("v1/food/favorite/{patientId}")
+    @GET("foods")
+    fun searchFoodDB(
+        @Header("Authorization") authHeader : String,
+        @Query("name_contains") foodName: String
+    ) : Call<ArrayList<FoodResponse>>
+
+    @GET("my-foods")
     fun getFavoriteFood(
         @Header("Authorization") authHeader : String,
-        @Path("patientId") patientId: Int
-    ) : Call<ArrayList<Food>>
+        @Query("patients_ids.id") patientId: Int
+    ) : Call<ArrayList<MyFoodResponse>>
 
     // Staat hier ook een fout in bij swagger
-    @DELETE("v1/food/favorite")
+    @DELETE("my-foods/{id}")
     fun deleteFavoriteFood(
         @Header("Authorization") authHeader : String,
-        @Query("patientId") patientId: Int,
-        @Query("foodId") foodId: Int
+        @Path("id") id: Int
     ) : Call<Unit>
     //endregion
 

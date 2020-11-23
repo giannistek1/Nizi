@@ -1,29 +1,22 @@
 package nl.stekkinger.nizi.classes
 
-import android.app.Activity
-import android.app.Application
-import android.app.PendingIntent.getActivity
 import android.content.Context
-import android.os.AsyncTask
-import android.util.Log
 import android.util.Log.d
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.activities.MainActivity
-import nl.stekkinger.nizi.adapters.MealAdapter
 import nl.stekkinger.nizi.adapters.MealProductAdapter
 import nl.stekkinger.nizi.fragments.FoodViewFragment
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.text.SimpleDateFormat
-import nl.stekkinger.nizi.classes.Consumption
-import nl.stekkinger.nizi.fragments.ConsumptionViewFragment
+import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
+import nl.stekkinger.nizi.classes.diary.Food
+import nl.stekkinger.nizi.classes.diary.FoodMealComponent
+import nl.stekkinger.nizi.classes.diary.WeightUnit
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.fragments.MealFoodViewFragment
-import java.text.DateFormat.getDateInstance
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -42,11 +35,11 @@ class DiaryViewModel(
     }
 
     // diary/consumption area
-    private var mDiary: LiveData<Consumptions.Result> = Transformations.switchMap<String, Consumptions.Result>(
+    private var mDiary: LiveData<ArrayList<ConsumptionResponse>> = Transformations.switchMap<String, ArrayList<ConsumptionResponse>>(
         mDate
     ) { date ->  diary(date) }
 
-    private fun diary(date: String): MutableLiveData<Consumptions.Result> {
+    private fun diary(date: String): MutableLiveData<ArrayList<ConsumptionResponse>> {
         d("t", date)
         val endDate: String = date.substringAfter("/")
         val startDate: String = date.substringBefore("/")
@@ -58,7 +51,7 @@ class DiaryViewModel(
         mCurrentDay = date.substringBefore("/")
     }
 
-    fun getDiary(): LiveData<Consumptions.Result> {
+    fun getDiary(): LiveData<ArrayList<ConsumptionResponse>> {
         return mDiary
     }
 
@@ -106,21 +99,37 @@ class DiaryViewModel(
     val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
     fun addFood(food: Food, portion: Double = 1.0) {
 
+        d("log mt", mMealTime)
 
+        val foodItem = FoodMealComponent(
+            id = food.id,
+            name = food.name,
+            description = food.description,
+            kcal = (food.kcal * portion).toFloat(),
+            protein = (food.protein * portion).toFloat(),
+            potassium = (food.potassium * portion).toFloat(),
+            sodium = (food.sodium * portion).toFloat(),
+            water = (food.water * portion).toFloat(),
+            fiber = (food.fiber * portion).toFloat(),
+            portion_size = food.portion_size,
+            image_url = food.image_url
+        )
+        val weightUnit = WeightUnit(
+            id = food.weight_unit.id,
+            unit = food.weight_unit.unit,
+            short = food.weight_unit.short
+        )
+        d("conunit", weightUnit.toString())
+        // the foodMealComponent has to be in array in strapi
+        val foodMealArray: ArrayList<FoodMealComponent> = arrayListOf()
+        foodMealArray.add(foodItem)
         val consumption = Consumption(
-            FoodName = food.Name,
-            KCal = (food.KCal * portion).toFloat(),
-            Protein = (food.Protein * portion).toFloat(),
-            Fiber = (food.Fiber * portion).toFloat(),
-            Calium = (food.Calcium * portion).toFloat(),
-            Sodium = (food.Sodium * portion).toFloat(),
-            Water = (food.Water * portion).toFloat(),
-            Amount = (food.PortionSize * portion).toInt(),
-            MealTime = mMealTime,
-            WeightUnitId = 1,
-            Date = mCurrentDay,
-            PatientId = preferences.getInt("patient", 0),
-            ConsumptionId = 0
+            amount = (food.portion_size * portion).toFloat(),
+            date = mCurrentDay+"T11:00:00.000Z",
+            meal_time = mMealTime,
+            patient = GeneralHelper.getUser().patient!!.id,
+            weight_unit = weightUnit,
+            food_meal_component = foodMealArray
         )
         d("conmod", consumption.toString())
         mRepository.addConsumption(consumption)
@@ -131,15 +140,15 @@ class DiaryViewModel(
     private var mealProducts: ArrayList<MealProduct> = ArrayList()
     fun addMealProduct(food: Food, portion: Double = 1.toDouble()) {
         val mealProduct = MealProduct (
-            Name = food.Name,
-            KCal = (food.KCal * portion).toFloat(),
-            Protein = (food.Protein * portion).toFloat(),
-            Fiber = (food.Fiber * portion).toFloat(),
-            Calcium = (food.Calcium * portion).toFloat(),
-            Sodium = (food.Sodium * portion).toFloat(),
-            Water = (food.Water * portion).toFloat(),
-            PortionSize = (food.PortionSize * portion).toInt(),
-            WeightUnit = food.WeightUnit
+            Name = food.name,
+            KCal = (food.kcal * portion).toFloat(),
+            Protein = (food.protein * portion).toFloat(),
+            Fiber = (food.fiber * portion).toFloat(),
+            Calcium = (food.fiber * portion).toFloat(),
+            Sodium = (food.fiber * portion).toFloat(),
+            Water = (food.fiber * portion).toFloat(),
+            PortionSize = (food.portion_size * portion).toInt(),
+            WeightUnit = food.weight_unit.unit
         )
         mealProducts.add(mealProduct)
         adapter.setMealProductList(mealProducts)
@@ -200,22 +209,22 @@ class DiaryViewModel(
     fun addMeal(meal: Meal) {
         // TODO: add overview for portions later
         val portion = 1.toFloat()
-        val consumption = Consumption(
-            FoodName = meal.Name,
-            KCal = (meal.KCal * portion).toFloat(),
-            Protein = (meal.Protein * portion).toFloat(),
-            Fiber = (meal.Fiber * portion).toFloat(),
-            Calium = (meal.Calcium * portion).toFloat(),
-            Sodium = (meal.Sodium * portion).toFloat(),
-            Amount = (meal.PortionSize * portion).toInt(),
-            MealTime = mMealTime,
-            Water = (meal.Water * portion).toFloat(),
-            WeightUnitId = 1,
-            Date = mCurrentDay,
-            PatientId = preferences.getInt("patient", 0),
-            ConsumptionId = 0
-        )
-        mRepository.addConsumption(consumption)
+//        val consumption = Consumption(
+//            FoodName = meal.Name,
+//            KCal = (meal.KCal * portion).toFloat(),
+//            Protein = (meal.Protein * portion).toFloat(),
+//            Fiber = (meal.Fiber * portion).toFloat(),
+//            Calium = (meal.Calcium * portion).toFloat(),
+//            Sodium = (meal.Sodium * portion).toFloat(),
+//            Amount = (meal.PortionSize * portion).toInt(),
+//            MealTime = mMealTime,
+//            Water = (meal.Water * portion).toFloat(),
+//            WeightUnitId = 1,
+//            Date = mCurrentDay,
+//            PatientId = preferences.getInt("patient", 0),
+//            ConsumptionId = 0
+//        )
+//        mRepository.addConsumption(consumption)
     }
 
     fun deleteMeal(id: Int){

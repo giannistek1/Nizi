@@ -57,7 +57,7 @@ class AddFoodFragment: Fragment() {
             queryTextListener = object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String): Boolean {
                     Log.i("onQueryTextChange", newText)
-
+                    model.setFoodSearch(newText)
                     return true
                 }
 

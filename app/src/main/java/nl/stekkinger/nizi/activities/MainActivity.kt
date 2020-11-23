@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.fragments.HomeFragment
@@ -21,6 +22,7 @@ import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.AuthRepository
@@ -167,6 +169,13 @@ class MainActivity : AppCompatActivity() {
 
             // Feedback
             Toast.makeText(baseContext, R.string.fetched_weight_units, Toast.LENGTH_SHORT).show()
+
+            // Save weightUnits
+            val gson = Gson()
+            val weightUnitHolder = WeightUnitHolder()
+            weightUnitHolder.weightUnits = result
+            val json = gson.toJson(weightUnitHolder)
+            GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_WEIGHT_UNIT, json).apply()
 
             weightUnits = result
 
