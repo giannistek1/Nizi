@@ -2,6 +2,7 @@ package nl.stekkinger.nizi.fragments
 
 import android.os.AsyncTask
 import android.os.Bundle
+import android.text.format.DateUtils
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -43,10 +44,10 @@ class HomeFragment: Fragment() {
     private lateinit var consumptions: ArrayList<ConsumptionResponse>
     private var dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
     private var supplements: ArrayList<Int> = arrayListOf()
-    private lateinit var mCurrentDate: String
-    private lateinit var mCurrentDateAsCreateDate: String
+    private lateinit var mCurrentDate: Date
     private lateinit var model: DiaryViewModel
     private val sdf = GeneralHelper.getDateFormat()
+    private val sdfDB = GeneralHelper.getCreateDateFormat()
 
     private lateinit var loader: View
 
@@ -68,53 +69,73 @@ class HomeFragment: Fragment() {
         weightUnits = weightUnitHolder.weightUnits
         user = GeneralHelper.getUser()
 
-        // Setting date for diary
-        mCurrentDate = sdf.format(Date())
-        val sdfDB = GeneralHelper.getCreateDateFormat()
-        mCurrentDateAsCreateDate = sdfDB.format(Date())
-        val startDate: String = getDay(mCurrentDate, 0) // Wat is startDate?
-        val endDate: String = getDay(mCurrentDate, 1) // Wat is endDate?
-        model.setDiaryDate(startDate + "/" + endDate)
+
+        val calendar: Calendar = Calendar.getInstance()
+        // set the calendar to start of today
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        mCurrentDate = calendar.time
+        val today = calendar.time
+
+        // Setting date for diary (Idk what this does -Gianni)
+        calendar.time = mCurrentDate
+        calendar.add(Calendar.DATE, 0)
+        val startDate = calendar.time
+
+        calendar.time = mCurrentDate
+        calendar.add(Calendar.DATE, 1)
+        val endDate = calendar.time
+        model.setDiaryDate(sdf.format(startDate) + "/" + sdf.format(endDate))
 
         // Gianni
-        val today: String = getDay(mCurrentDate, 0)
-        val yesterday: String = getDay(mCurrentDate, -1)
+        calendar.time = today
+        calendar.add(Calendar.DATE, -1)
+        val yesterday = calendar.time
 
         view.fragment_home_btn_yesterday.setOnClickListener {
-            val newDate = sdf.parse(getDay(mCurrentDate, -1))
-            mCurrentDate = sdf.format(newDate!!)
+            calendar.time = mCurrentDate
+            calendar.add(Calendar.DATE, -1)
+            val newDate = calendar.time
 
-            if(sdf.format(newDate) == yesterday) {
+            mCurrentDate = newDate
+
+            if(newDate == yesterday) {
                 view.fragment_home_txt_day.text = getString(R.string.yesterday)
             } else {
-                view.fragment_home_txt_day.text = mCurrentDate
+                view.fragment_home_txt_day.text = sdf.format(mCurrentDate)
             }
 
-            refreshGuidelines()
+            //refreshGuidelines()
+            getConsumptionsAsyncTask().execute()
 
             // Update UI
             view.fragment_home_btn_tomorrow.imageAlpha = 255
         }
 
         view.fragment_home_btn_tomorrow.setOnClickListener {
-            val newDate = sdf.parse(getDay(mCurrentDate, 1))
+            calendar.time = mCurrentDate
+            calendar.add(Calendar.DATE, 1)
+            val newDate = calendar.time
 
             // Guard: if new date after today
-            if (newDate!!.after(Date())) return@setOnClickListener
+            if (newDate.after(today)) return@setOnClickListener
 
-            mCurrentDate = sdf.format(newDate)
+            mCurrentDate = newDate
 
-            if (sdf.format(newDate) == today) {
+            if (newDate == today) {
                 // Update UI
                 view.fragment_home_txt_day.text = getString(R.string.today)
                 view.fragment_home_btn_tomorrow.imageAlpha = 20
-            } else if(sdf.format(newDate) == yesterday) {
+            } else if(newDate == yesterday) {
                 view.fragment_home_txt_day.text = getString(R.string.yesterday)
             } else {
-                view.fragment_home_txt_day.text = mCurrentDate
+                view.fragment_home_txt_day.text = sdf.format(mCurrentDate)
             }
 
-            refreshGuidelines()
+            getConsumptionsAsyncTask().execute()
+            //refreshGuidelines()
         }
 
         // Update UI
@@ -139,17 +160,6 @@ class HomeFragment: Fragment() {
         GuidelinesHelper.initializeGuidelines(activity, fragment_home_ll_guidelines, dietaryGuidelines)
     }
 
-    fun getDay(date: String, daysAdded: Int): String {
-        Log.d("AAAAAA", "BBBBB")
-        var newDate = date
-        val c = Calendar.getInstance()
-        c.time = sdf.parse(newDate)!!
-        c.add(Calendar.DATE, daysAdded)
-        val resultdate = Date(c.timeInMillis)
-        newDate = sdf.format(resultdate)
-        return newDate
-    }
-
     //region Get Consumptions
     inner class getConsumptionsAsyncTask() : AsyncTask<Void, Void, ArrayList<ConsumptionResponse>>()
     {
@@ -162,7 +172,7 @@ class HomeFragment: Fragment() {
 
         override fun doInBackground(vararg p0: Void?): ArrayList<ConsumptionResponse>? {
             return try {
-                foodRepository.getConsumptionsForDietary(mCurrentDateAsCreateDate, patientId = user.patient!!.id)
+                foodRepository.getConsumptionsForDietary(sdfDB.format(mCurrentDate), patientId = user.patient!!.id)
             } catch(e: Exception) {
                 GeneralHelper.apiIsDown = true
                 print("Server offline!"); print(e.message)
@@ -182,17 +192,13 @@ class HomeFragment: Fragment() {
                 return }
 
             // Feedback
-            Toast.makeText(activity, R.string.fetched_consumptions, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(activity, R.string.fetched_consumptions, Toast.LENGTH_SHORT).show()
 
             consumptions = result
 
             supplements.clear()
 
             // Should be based on amount of dietaryRestrictions
-            /*dietaryGuidelines.forEachIndexed { index, element ->
-                supplements.add(0)
-            }*/
-
             for (i in 0..5)
                 supplements.add(0)
 
@@ -242,7 +248,7 @@ class HomeFragment: Fragment() {
                 return }
 
             // Feedback
-            Toast.makeText(activity, R.string.fetched_dietary, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(activity, R.string.fetched_dietary, Toast.LENGTH_SHORT).show()
 
             dietaryGuidelines.clear()
 
