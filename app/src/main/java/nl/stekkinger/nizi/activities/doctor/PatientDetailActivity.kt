@@ -34,7 +34,6 @@ class PatientDetailActivity : BaseActivity() {
 
     private val patientRepository: PatientRepository = PatientRepository()
     private val weightUnitRepository: WeightUnitRepository = WeightUnitRepository()
-    private val dietaryRepository: DietaryRepository = DietaryRepository()
 
     // For activity result
     private val EDIT_PATIENT_REQUEST_CODE = 0
@@ -163,61 +162,6 @@ class PatientDetailActivity : BaseActivity() {
 
             weightUnits = result
 
-            getDietaryManagementsAsyncTask().execute()
-        }
-    }
-    //endregion
-
-    // Double in Main but this one is for the week and is an average
-    //region getDietary
-    inner class getDietaryManagementsAsyncTask() : AsyncTask<Void, Void, ArrayList<DietaryManagement>>()
-    {
-        override fun onPreExecute() {
-            super.onPreExecute()
-
-            // Loader
-            loader.visibility = View.VISIBLE
-        }
-
-        override fun doInBackground(vararg p0: Void?): ArrayList<DietaryManagement>? {
-            return dietaryRepository.getDietaryManagements(patientData.patient.id)
-        }
-
-        override fun onPostExecute(result: ArrayList<DietaryManagement>?) {
-            super.onPostExecute(result)
-
-            // Loader
-            loader.visibility = View.GONE
-
-            // Guard
-            if (result == null) { Toast.makeText(baseContext, R.string.get_dietary_fail, Toast.LENGTH_SHORT).show()
-                return }
-
-            Toast.makeText(baseContext, R.string.fetched_dietary, Toast.LENGTH_SHORT).show()
-
-            val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
-
-            result.forEachIndexed { _, resultDietary ->
-
-                val dietaryGuideline =
-                    DietaryGuideline(
-                        id = resultDietary.id!!,
-                        description = resultDietary.dietary_restriction.description,
-                        plural = resultDietary.dietary_restriction.plural,
-                        minimum = resultDietary.minimum, maximum = resultDietary.maximum, amount = 0,
-                        weightUnit = ""
-                    )
-
-                val weightUnit = weightUnits.find { it.id == resultDietary.dietary_restriction.weight_unit }
-                dietaryGuideline.weightUnit = weightUnit!!.short
-
-                dietaryGuidelines.add(dietaryGuideline)
-            }
-
-            // Save dietaries for editPage
-            patientData.diets = dietaryGuidelines
-
-            // get patient
             getPatientAsyncTask().execute()
         }
     }

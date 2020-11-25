@@ -49,6 +49,11 @@ class FoodRepository : Repository() {
         return service.fetchConsumptions(authHeader = authHeader, patientId = patientId, date = date).execute().body()
     }
 
+    fun getConsumptionsForDietaryByWeek(startDate: String, endDate: String, patientId: Int): ArrayList<ConsumptionResponse>? {
+        return service.fetchConsumptionsByWeek(authHeader = authHeader, patientId = patientId, startDate = startDate,
+        endDate = endDate).execute().body()
+    }
+
     fun deleteConsumption(id: Int) {
         service.deleteConsumption(authHeader = authHeader, consumptionId = id).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {

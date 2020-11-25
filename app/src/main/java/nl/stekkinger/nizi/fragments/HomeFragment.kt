@@ -2,17 +2,13 @@ package nl.stekkinger.nizi.fragments
 
 import android.os.AsyncTask
 import android.os.Bundle
-import android.text.format.DateUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import nl.stekkinger.nizi.R
@@ -22,15 +18,11 @@ import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
-import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.login.UserLogin
-import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.FoodRepository
-import java.lang.Math.round
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
@@ -45,7 +37,9 @@ class HomeFragment: Fragment() {
     private var dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
     private var supplements: ArrayList<Int> = arrayListOf()
     private lateinit var mCurrentDate: Date
+
     private lateinit var model: DiaryViewModel
+
     private val sdf = GeneralHelper.getDateFormat()
     private val sdfDB = GeneralHelper.getCreateDateFormat()
 

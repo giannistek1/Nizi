@@ -97,6 +97,14 @@ interface ApiService {
         @Query("date") date: String
     ) : Call<ArrayList<ConsumptionResponse>>
 
+    @GET("consumptions")
+    fun fetchConsumptionsByWeek(
+        @Header("Authorization") authHeader : String,
+        @Query("patient.id") patientId: Int,
+        @Query("date_gte") startDate: String,
+        @Query("date_lte") endDate: String
+    ) : Call<ArrayList<ConsumptionResponse>>
+
     @GET("v1/consumption/{consumptionId}")
     fun fetchConsumptionById(
         @Path("consumptionId") consumptionId: Int
