@@ -139,11 +139,13 @@
     <string name="week">Week</string>
     <string name="trends">Trends</string>
     <string name="fetched_weight_units">Gewichtseenheden opgehaald</string>
-    <string name="get_weight_unit_fail">Gewichtseenheden opgehaald</string>
+    <string name="get_weight_unit_fail">Gewichtseenheden ophalen mislukt</string>
     <string name="fetched_patient">Patiënt opgehaald</string>
     <string name="get_patient_fail">Patiënt ophalen mislukt</string>
     <string name="fetched_dietary">Richtlijnen opgehaald</string>
     <string name="get_dietary_fail">Richtlijnen ophalen mislukt</string>
+    <string name="fetched_consumptions">Consumpties opgehaald</string>
+    <string name="get_consumptions_fail">Consumpties ophalen mislukt</string>
 
     <!-- Patient profile -->
     <string name="profile">Profiel</string>
@@ -276,7 +278,4 @@
         <item>Vezelbeperking</item> <!-- new -->
         <item>Vezelverrijking</item>
     </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

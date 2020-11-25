@@ -42,16 +42,16 @@ class ConsumptionViewFragment : Fragment() {
             mConsumption = food
 
             // Update the UI
-            view.title_food_view.text = mConsumption.food_meal_component[0].name
-            Picasso.get().load(mConsumption.food_meal_component[0].image_url).into(image_food_view)
+            view.title_food_view.text = mConsumption.food_meal_component.name
+            Picasso.get().load(mConsumption.food_meal_component.image_url).into(image_food_view)
             serving_input.setText(mConsumption.amount.toString(), TextView.BufferType.EDITABLE)
-            serving_size_value.text = mConsumption.food_meal_component[0].portion_size.toString() + " " + mConsumption.weight_unit.unit
-            calories_value_food_view.text = mConsumption.food_meal_component[0].kcal.toString() + " Kcal"
-            protein_value_food_view.text = mConsumption.food_meal_component[0].protein.toString() + " g"
-            potassium_value_food_view.text = mConsumption.food_meal_component[0].potassium.toString() + " g"
-            sodium_value_food_view.text = (mConsumption.food_meal_component[0].sodium * 1000).toString() + " mg"
-            fiber_value_food_view.text = mConsumption.food_meal_component[0].fiber.toString() + " g"
-            water_value_food_view.text = mConsumption.food_meal_component[0].water.toString() + "ml"
+            serving_size_value.text = mConsumption.food_meal_component.portion_size.toString() + " " + mConsumption.weight_unit.unit
+            calories_value_food_view.text = mConsumption.food_meal_component.kcal.toString() + " Kcal"
+            protein_value_food_view.text = mConsumption.food_meal_component.protein.toString() + " g"
+            potassium_value_food_view.text = mConsumption.food_meal_component.potassium.toString() + " g"
+            sodium_value_food_view.text = (mConsumption.food_meal_component.sodium * 1000).toString() + " mg"
+            fiber_value_food_view.text = mConsumption.food_meal_component.fiber.toString() + " g"
+            water_value_food_view.text = mConsumption.food_meal_component.water.toString() + "ml"
         })
 
 

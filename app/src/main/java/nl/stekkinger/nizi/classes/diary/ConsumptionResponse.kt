@@ -9,5 +9,5 @@ data class ConsumptionResponse (
     val meal_time: String,
     val patient: PatientDiary,
     val weight_unit: WeightUnit,
-    val food_meal_component: ArrayList<FoodMealComponent> = arrayListOf()
+    val food_meal_component: FoodMealComponent
 )

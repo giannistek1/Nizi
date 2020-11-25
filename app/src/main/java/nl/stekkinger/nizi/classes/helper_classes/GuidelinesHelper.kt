@@ -14,6 +14,7 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 import kotlin.random.Random
 
 
@@ -156,16 +157,23 @@ object GuidelinesHelper {
             amountTextViewParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE)
             amountTextView.layoutParams = amountTextViewParams
 
-            val randomProgress = Random.nextInt(150)
-            val progress = randomProgress
-            var amount = 0
+            //val randomProgress = Random.nextInt(150)
+            //var progress = randomProgress
+            val progress: Int
+            var amount = dietaryGuideline.amount
 
-            if (dietaryGuideline.maximum != 0)
-                //progress = dietaryGuideline.amount/dietaryGuideline.maximum * 100
-                amount = (progress*dietaryGuideline.maximum/100)
+            //
+            if (dietaryGuideline.maximum != 0) {
+                //amount = (progress*dietaryGuideline.maximum/100)
+                if (dietaryGuideline.minimum != 0 && dietaryGuideline.amount >= dietaryGuideline.minimum)
+                    progress = 100
+                else
+                    progress = (dietaryGuideline.amount.toFloat() / dietaryGuideline.maximum.toFloat() * 100).roundToInt()
+
+            }
             else
-                //progress = dietaryGuideline.amount/dietaryGuideline.minimum * 100
-                amount = (progress*dietaryGuideline.minimum/100)
+                progress = (dietaryGuideline.amount.toFloat()/dietaryGuideline.minimum.toFloat() * 100).roundToInt()
+                //amount = (progress*dietaryGuideline.minimum/100)
 
             amountTextView.text = amount.toString() + " " + dietaryGuideline.weightUnit
 
@@ -198,7 +206,7 @@ object GuidelinesHelper {
             }
             // If has maximum and bar more than full
             else if (progress > 100 && dietaryGuideline.maximum > 0) {
-                feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.description)
+                feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.description.toLowerCase(Locale.ROOT))
                 feedbackTextView.setTextColor(getColor(cont, R.color.red))
             }
             // If has minimum and bar less than full
