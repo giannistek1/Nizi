@@ -210,7 +210,7 @@ object GuidelinesHelper {
                 feedbackTextView.setTextColor(getColor(cont, R.color.red))
             }
             // If has minimum and bar less than full
-            else if (progress <= 100 && dietaryGuideline.minimum != 0) {
+            else if (progress < 100 && dietaryGuideline.minimum != 0) {
                 feedbackTextView.text = cont.getString(R.string.feedback_encouraging, dietaryGuideline.plural.toLowerCase(Locale.ROOT))
                 feedbackTextView.setTextColor(getColor(cont, R.color.yellow))
             }
