@@ -163,7 +163,8 @@ interface ApiService {
     @GET("feedbacks")
     fun fetchFeedbacks(
         @Header("Authorization") authHeader : String,
-        @Query("patient.id") patientId: Int
+        @Query("patient.id") patientId: Int,
+        @Query("_sort") sortProp: String
     ) : Call<ArrayList<Feedback>>
     //endregion
 

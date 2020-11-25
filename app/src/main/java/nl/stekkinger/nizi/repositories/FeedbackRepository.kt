@@ -13,6 +13,6 @@ class FeedbackRepository : Repository() {
     }
 
     fun getFeedbacks(patientId: Int): ArrayList<Feedback>? {
-        return service.fetchFeedbacks(authHeader = authHeader, patientId = patientId).execute().body()
+        return service.fetchFeedbacks(authHeader = authHeader, patientId = patientId, sortProp = "date:ASC").execute().body()
     }
 }
