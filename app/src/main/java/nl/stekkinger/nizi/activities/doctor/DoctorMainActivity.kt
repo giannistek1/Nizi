@@ -165,7 +165,8 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
                 }
             }
         }
-        activity_doctor_main_rv.adapter!!.notifyDataSetChanged()
+        if (activity_doctor_main_rv.adapter != null)
+            activity_doctor_main_rv.adapter!!.notifyDataSetChanged()
     }
     //endregion
 

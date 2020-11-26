@@ -34,9 +34,17 @@
     <string name="username">Gebruikersnaam</string>
     <string name="password">Wachtwoord</string>
     <string name="password_forgotten">Wachtwoord vergeten</string>
+    <string name="password_forgotten_capitalized">WACHTWOORD VERGETEN</string>
     <string name="username_cant_be_empty">Gebruikersnaam mag niet leeg zijn</string>
     <string name="password_cant_be_empty">Wachtwoord mag niet leeg zijn</string>
     <string name="credentials_wrong">Gebruikersnaam of wachtwoord klopt niet</string>
+    <string name="send">Verstuur</string>
+    <string name="reset_password">Reset wachtwoord</string>
+    <string name="reset">Reset</string>
+    <string name="email_cant_be_empty">Email mag niet leeg zijn</string>
+    <string name="mail_sent">Mail verzonden</string>
+    <string name="mail_sent_fail">Mail verzenden mislukt</string>
+
 
     <!-- contact -->
     <string name="contact">Contact</string>

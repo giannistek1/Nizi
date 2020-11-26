@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activities.BaseActivity"></activity>
+
+        <activity android:name=".activities.BaseActivity" />
+
         <activity
             android:name=".activities.doctor.AddPatientDietaryActivity"
             android:parentActivityName=".activities.doctor.AddPatientActivity" />
@@ -35,6 +37,9 @@
             android:parentActivityName=".activities.doctor.EditPatientActivity" />
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.doctor.DoctorMainActivity" />
+        <activity android:name=".activities.ForgotPasswordActivity"
+            android:parentActivityName=".activities.LoginActivity"/>
+
         <activity
             android:name=".activities.LoginActivity"
             android:launchMode="singleTask">

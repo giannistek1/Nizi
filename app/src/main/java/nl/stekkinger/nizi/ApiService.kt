@@ -2,17 +2,15 @@ package nl.stekkinger.nizi
 
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.diary.*
-import nl.stekkinger.nizi.classes.login.LoginRequest
-import nl.stekkinger.nizi.classes.login.LoginResponse
+import nl.stekkinger.nizi.classes.login.*
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.dietary.DietaryRestriction
 import nl.stekkinger.nizi.classes.patient.*
-import nl.stekkinger.nizi.classes.login.User
-import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.feedback.FeedbackShort
+import nl.stekkinger.nizi.classes.password.*
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import retrofit2.Call
 import retrofit2.http.*
@@ -36,6 +34,16 @@ interface ApiService {
         @Header("Authorization") authHeader : String,
         @Body body: User
     ) : Call<UserLogin>
+
+    @POST("auth/forgot-password")
+    fun forgotPassword(
+        @Body body: ForgotPasswordRequest
+    ) : Call<ForgotPasswordResponse>
+
+    @POST("auth/reset-password")
+    fun resetPassword(
+        @Body body: ResetPasswordRequest
+    ) : Call<ResetPasswordResponse>
     //endregion
 
     //region patients
