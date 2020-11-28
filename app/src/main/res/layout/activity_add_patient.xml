@@ -253,6 +253,7 @@
 
                 <EditText
                     android:id="@+id/activity_add_patient_et_dob"
+                    android:focusable="false"
                     android:inputType="date"
                     android:fontFamily="@font/helvetica_neue_light"
                     android:hint="@string/date_of_birth_format"
@@ -268,6 +269,16 @@
                     android:background="@null"/>
             </LinearLayout>
 
+            <DatePicker
+                android:id="@+id/activity_add_patient_dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_add_patient_ll_dob"
+                android:datePickerMode="spinner"
+                android:calendarViewShown="false"
+                android:layout_centerInParent="true"
+                android:visibility="gone"/>
+
             <!-- E-Mail -->
             <TextView
                 android:id="@+id/activity_add_patient_txt_email"
@@ -275,7 +286,7 @@
                 android:text="@string/email_req"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_ll_dob"
+                android:layout_below="@+id/activity_add_patient_dp"
                 android:layout_marginTop="@dimen/marginNormal"/>
 
             <!-- Email input -->

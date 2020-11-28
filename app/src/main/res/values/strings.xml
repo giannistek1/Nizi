@@ -5,7 +5,7 @@
     <!-- Sample data -->
     <string name="sample_first_name">Jaap</string>
     <string name="sample_last_name">van Steen</string>
-    <string name="sample_dob">1995-01-01</string>
+    <string name="sample_dob">01-01-1990</string>
     <string name="sample_email">jaapvansteen@hotmail.com</string>
     <string name="sample_password">Welkom123</string>
 

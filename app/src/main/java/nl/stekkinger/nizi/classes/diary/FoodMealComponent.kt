@@ -1,5 +1,7 @@
 package nl.stekkinger.nizi.classes.diary
 
+import java.io.Serializable
+
 data class FoodMealComponent(
     val id: Int,
     val name: String,
@@ -12,4 +14,4 @@ data class FoodMealComponent(
     val fiber: Float,
     val portion_size: Float,
     val image_url: String
-)
+) : Serializable

@@ -3,6 +3,7 @@ package nl.stekkinger.nizi.activities.doctor
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -10,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add_patient.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -19,6 +21,7 @@ import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
 import nl.stekkinger.nizi.classes.patient.PatientShort
+import java.util.*
 
 
 class AddPatientActivity : AppCompatActivity() {
@@ -28,10 +31,14 @@ class AddPatientActivity : AppCompatActivity() {
     // For activity result
     private val REQUEST_CODE = 1
 
-    private lateinit var loader: View
+    private lateinit var date: Date
+    val sdfDB = GeneralHelper.getCreateDateFormat()
 
     private var doctorId: Int? = null
 
+    private lateinit var loader: View
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Setup UI
@@ -40,6 +47,36 @@ class AddPatientActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar_txt_back.text = getString(R.string.patient_overview)
         loader = activity_add_patient_progressbar
+
+        // Date of Birth
+        activity_add_patient_et_dob.setOnClickListener {
+
+            if (activity_add_patient_dp.visibility == View.VISIBLE)
+                activity_add_patient_dp.visibility = View.GONE
+            else
+                activity_add_patient_dp.visibility = View.VISIBLE
+
+
+            /*val datePickerDialog = DatePickerDialog(this,
+                DatePickerDialog.OnDateSetListener { view, mYear, mMonth, mDay ->
+                    activity_add_patient_et_dob.setText("${mYear}-${mMonth}-${mDay}")
+                }, year, month, day)
+
+            datePickerDialog.show()*/
+        }
+
+        activity_add_patient_dp.updateDate(2000, 1, 1)
+        activity_add_patient_dp.setOnDateChangedListener { view, mYear, mMonth, mDay ->
+
+            val calendar = Calendar.getInstance()
+            calendar.set(mYear, mMonth, mDay, 0, 0)
+            date = calendar.time
+
+            val sdf = GeneralHelper.getFeedbackDateFormat()
+
+            activity_add_patient_et_dob.setText("${sdf.format(date)}")
+
+        }
 
         activity_add_patient_btn_to_guidelines.setOnClickListener {
             tryCreatePatient(activity_add_patient_et_firstName, activity_add_patient_et_lastName,
@@ -104,7 +141,7 @@ class AddPatientActivity : AppCompatActivity() {
             // Update corresponding user later when its made
             patient = PatientShort(
                 gender = selectedRadioButton.text.toString(),
-                date_of_birth = dobET.text.toString().trim(),
+                date_of_birth = sdfDB.format(date),
                 doctor = doctorId!!
             )
         )
