@@ -99,10 +99,12 @@ class EditPatientDietaryActivity : BaseActivity() {
         loader = activity_add_patient_dietary_loader
 
         activity_add_patient_dietary_btn_save.setOnClickListener {
+
             // (Guard) Check internet connection
             if (!GeneralHelper.hasInternetConnection(this)) return@setOnClickListener
 
-            updatePatientAsyncTask().execute()
+            if (updatePatientAsyncTask().status != AsyncTask.Status.RUNNING)
+                updatePatientAsyncTask().execute()
         }
 
         // Get doctorId

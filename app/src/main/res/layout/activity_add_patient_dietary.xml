@@ -16,37 +16,40 @@
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:background="@color/gray"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        android:paddingHorizontal="@dimen/marginNormal"
+        android:paddingVertical="@dimen/marginVerySmall">
 
         <!-- Step 1 -->
         <LinearLayout
-            android:layout_width="10dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="0.4">
+            android:layout_weight="9">
 
             <TextView
                 android:id="@+id/activity_add_patient_dietary_txt_step_1"
                 android:text="@string/step_1"
                 android:textColor="@color/darkGray"
-                android:fontFamily="@font/segoe_ui_semibold"
+                android:fontFamily="@font/helvetica_neue_light"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/patientStepIconSize"
+                android:layout_height="@dimen/patientStepIconSize"
                 android:layout_gravity="center"
                 android:tint="@color/lime"
                 android:src="@drawable/ic_user"
-                android:contentDescription="@string/user"/>
+                android:contentDescription="@string/user"
+                android:layout_marginVertical="@dimen/marginVerySmall"/>
 
             <TextView
                 android:id="@+id/activity_add_patient_dietary_txt_personal_info"
                 android:text="@string/personal_info_short"
                 android:textColor="@color/darkGray"
-                android:fontFamily="@font/segoe_ui_semibold"
+                android:fontFamily="@font/helvetica_neue_light"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -58,12 +61,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="0.2"
+            android:layout_weight="2"
             android:layout_gravity="center">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_arrow_r"
                 android:contentDescription="@string/arrow_right"/>
@@ -72,10 +75,10 @@
 
         <!-- Step 2 -->
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_weight="0.4">
+            android:layout_weight="9">
 
             <TextView
                 android:id="@+id/activity_add_patient_dietary_txt_step_2"
@@ -87,12 +90,13 @@
                 android:layout_height="wrap_content"/>
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/patientStepIconSize"
+                android:layout_height="@dimen/patientStepIconSize"
                 android:layout_gravity="center"
                 android:tint="@color/colorPrimary"
                 android:src="@drawable/ic_culinary"
-                android:contentDescription="@string/guidelines"/>
+                android:contentDescription="@string/guidelines"
+                android:layout_marginVertical="@dimen/marginVerySmall"/>
 
             <TextView
                 android:id="@+id/activity_add_patient_dietary_txt_guidelines"
@@ -110,10 +114,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/activity_add_patient_dietary_ll_steps"
-        android:layout_marginBottom="@dimen/marginNormal"
+        android:paddingHorizontal="@dimen/marginDouble"
+        android:paddingTop="@dimen/marginNormal"
         android:orientation="vertical"
-        android:background="@color/white"
-        android:elevation="@dimen/elevationNormal">
+        android:background="@color/white">
 
         <!-- Calories -->
         <LinearLayout
@@ -123,29 +127,32 @@
 
             <!-- 1st part -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/marginSmall">
 
                 <ImageView
                     android:id="@+id/activity_add_patient_dietary_img_calories"
                     android:src="@drawable/ic_calories"
                     android:contentDescription="@string/calories"
                     android:tint="@color/red"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
+                    android:layout_width="@dimen/patientDietaryIconSize"
+                    android:layout_height="@dimen/patientDietaryIconSize"
+                    android:layout_marginEnd="@dimen/marginSmall"/>
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_calories"
                     android:text="@string/calories_in_kcal"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"/>
+
             </LinearLayout>
 
             <!-- 2nd part -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
@@ -158,6 +165,7 @@
 
                     <TextView
                         android:id="@+id/activity_add_patient_dietary_txt_cal_min"
+                        android:textSize="@dimen/textSize12"
                         android:text="@string/minimum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -165,20 +173,27 @@
 
                     <EditText
                         android:id="@+id/activity_add_patient_dietary_et_cal_min"
+                        android:background="@drawable/text_border_gray"
+                        android:textSize="@dimen/textSize12"
                         android:inputType="number"
                         android:hint="@string/minimum"
+                        android:autofillHints="@string/minimum"
                         android:maxLength="7"
-                        android:layout_width="120dp"
+                        android:layout_width="@dimen/dietaryInputSize"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/marginSmall"/>
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="@dimen/marginSmall"
+                        android:layout_marginEnd="@dimen/marginNormal"/>
                 </LinearLayout>
 
                 <!-- Calories max -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/activity_add_patient_dietary_txt_cal_max"
+                        android:textSize="@dimen/textSize12"
                         android:text="@string/maximum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -186,13 +201,26 @@
 
                     <EditText
                         android:id="@+id/activity_add_patient_dietary_et_cal_max"
+                        android:background="@drawable/text_border_gray"
+                        android:textSize="@dimen/textSize12"
                         android:inputType="number"
                         android:hint="@string/maximum"
+                        android:autofillHints="@string/maximum"
                         android:maxLength="7"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="@dimen/dietaryInputSize"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="@dimen/marginSmall"/>
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/darkGray"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_marginBottom="@dimen/marginNormal"/>
+
         </LinearLayout>
 
         <!-- Water -->
@@ -203,9 +231,10 @@
 
             <!-- 1st part -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/marginSmall">
 
                 <ImageView
                     android:id="@+id/activity_add_patient_dietary_img_water"
@@ -213,20 +242,21 @@
                     android:contentDescription="@string/water"
                     android:tint="@color/blue"
                     android:scaleType="fitCenter"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
+                    android:layout_width="@dimen/patientDietaryIconSize"
+                    android:layout_height="@dimen/patientDietaryIconSize"
+                    android:layout_marginEnd="@dimen/marginSmall"/>
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_water"
                     android:text="@string/water_in_ml"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"/>
             </LinearLayout>
 
             <!-- 2nd part -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
@@ -239,6 +269,7 @@
 
                     <TextView
                         android:id="@+id/activity_add_patient_dietary_txt_water_min"
+                        android:textSize="@dimen/textSize12"
                         android:text="@string/minimum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -246,20 +277,27 @@
 
                     <EditText
                         android:id="@+id/activity_add_patient_dietary_et_water_min"
+                        android:background="@drawable/text_border_gray"
+                        android:textSize="@dimen/textSize12"
                         android:inputType="number"
                         android:hint="@string/minimum"
+                        android:autofillHints="@string/minimum"
                         android:maxLength="7"
-                        android:layout_width="120dp"
+                        android:layout_width="@dimen/dietaryInputSize"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/marginSmall"/>
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="@dimen/marginSmall"
+                        android:layout_marginEnd="@dimen/marginNormal"/>
                 </LinearLayout>
 
                 <!-- Water max -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/activity_add_patient_dietary_txt_water_max"
+                        android:textSize="@dimen/textSize12"
                         android:text="@string/maximum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -267,13 +305,26 @@
 
                     <EditText
                         android:id="@+id/activity_add_patient_dietary_et_water_max"
+                        android:background="@drawable/text_border_gray"
+                        android:textSize="@dimen/textSize12"
                         android:inputType="number"
                         android:hint="@string/maximum"
+                        android:autofillHints="@string/maximum"
                         android:maxLength="7"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="@dimen/dietaryInputSize"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="@dimen/marginSmall"/>
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/darkGray"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_marginBottom="@dimen/marginNormal"/>
+
         </LinearLayout>
 
         <!-- Sodium -->
@@ -284,29 +335,31 @@
 
             <!-- 1st part -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/marginSmall">
 
                 <ImageView
                     android:id="@+id/activity_add_patient_dietary_img_sodium"
                     android:src="@drawable/ic_salt"
                     android:contentDescription="@string/sodium"
                     android:tint="@color/darkGray"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
+                    android:layout_width="@dimen/patientDietaryIconSize"
+                    android:layout_height="@dimen/patientDietaryIconSize"
+                    android:layout_marginEnd="@dimen/marginSmall"/>
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_sodium"
                     android:text="@string/sodium_in_mg"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"/>
             </LinearLayout>
 
             <!-- 2nd part -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
@@ -319,6 +372,7 @@
 
                     <TextView
                         android:id="@+id/activity_add_patient_dietary_txt_sodium_min"
+                        android:textSize="@dimen/textSize12"
                         android:text="@string/minimum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -326,20 +380,27 @@
 
                     <EditText
                         android:id="@+id/activity_add_patient_dietary_et_sodium_min"
+                        android:background="@drawable/text_border_gray"
+                        android:textSize="@dimen/textSize12"
                         android:inputType="number"
                         android:hint="@string/minimum"
+                        android:autofillHints="@string/minimum"
                         android:maxLength="7"
-                        android:layout_width="120dp"
+                        android:layout_width="@dimen/dietaryInputSize"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/marginSmall"/>
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="@dimen/marginSmall"
+                        android:layout_marginEnd="@dimen/marginNormal"/>
                 </LinearLayout>
 
                 <!-- Sodium max -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/activity_add_patient_dietary_txt_sodium_max"
+                        android:textSize="@dimen/textSize12"
                         android:text="@string/maximum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -347,13 +408,26 @@
 
                     <EditText
                         android:id="@+id/activity_add_patient_dietary_et_sodium_max"
+                        android:background="@drawable/text_border_gray"
+                        android:textSize="@dimen/textSize12"
                         android:inputType="number"
                         android:hint="@string/maximum"
+                        android:autofillHints="@string/maximum"
                         android:maxLength="7"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="@dimen/dietaryInputSize"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="@dimen/marginSmall"/>
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/darkGray"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_marginBottom="@dimen/marginNormal"/>
+
         </LinearLayout>
 
         <!-- Potassium (Kalium) -->
@@ -364,29 +438,31 @@
 
             <!-- 1st part -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/marginSmall">
 
                 <ImageView
                     android:id="@+id/activity_add_patient_dietary_img_potassium"
                     android:src="@drawable/ic_k"
                     android:contentDescription="@string/potassium"
                     android:tint="@color/blue"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
+                    android:layout_width="@dimen/patientDietaryIconSize"
+                    android:layout_height="@dimen/patientDietaryIconSize"
+                    android:layout_marginEnd="@dimen/marginSmall"/>
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_potassium"
                     android:text="@string/potassium_in_mg"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"/>
             </LinearLayout>
 
             <!-- 2nd part -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
@@ -399,6 +475,7 @@
 
                     <TextView
                         android:id="@+id/activity_add_patient_dietary_txt_potassium_min"
+                        android:textSize="@dimen/textSize12"
                         android:text="@string/minimum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -406,20 +483,27 @@
 
                     <EditText
                         android:id="@+id/activity_add_patient_dietary_et_potassium_min"
+                        android:background="@drawable/text_border_gray"
+                        android:textSize="@dimen/textSize12"
                         android:inputType="number"
                         android:hint="@string/minimum"
+                        android:autofillHints="@string/minimum"
                         android:maxLength="7"
-                        android:layout_width="120dp"
+                        android:layout_width="@dimen/dietaryInputSize"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/marginSmall"/>
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="@dimen/marginSmall"
+                        android:layout_marginEnd="@dimen/marginNormal"/>
                 </LinearLayout>
 
                 <!-- Calories max -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/activity_add_patient_dietary_txt_potassium_max"
+                        android:textSize="@dimen/textSize12"
                         android:text="@string/maximum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -427,13 +511,26 @@
 
                     <EditText
                         android:id="@+id/activity_add_patient_dietary_et_potassium_max"
+                        android:background="@drawable/text_border_gray"
+                        android:textSize="@dimen/textSize12"
                         android:inputType="number"
                         android:hint="@string/maximum"
+                        android:autofillHints="@string/maximum"
                         android:maxLength="7"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="@dimen/dietaryInputSize"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="@dimen/marginSmall"/>
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/darkGray"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_marginBottom="@dimen/marginNormal"/>
+
         </LinearLayout>
 
         <!-- Protein -->
@@ -444,29 +541,31 @@
 
             <!-- 1st part -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/marginSmall">
 
                 <ImageView
                     android:id="@+id/activity_add_patient_dietary_img_protein"
                     android:src="@drawable/ic_protein"
                     android:contentDescription="@string/proteins"
                     android:tint="@color/black"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
+                    android:layout_width="@dimen/patientDietaryIconSize"
+                    android:layout_height="@dimen/patientDietaryIconSize"
+                    android:layout_marginEnd="@dimen/marginSmall"/>
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_protein"
                     android:text="@string/protein_in_g"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"/>
             </LinearLayout>
 
             <!-- 2nd part -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
@@ -479,6 +578,7 @@
 
                     <TextView
                         android:id="@+id/activity_add_patient_dietary_txt_protein_min"
+                        android:textSize="@dimen/textSize12"
                         android:text="@string/minimum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -486,20 +586,27 @@
 
                     <EditText
                         android:id="@+id/activity_add_patient_dietary_et_protein_min"
+                        android:background="@drawable/text_border_gray"
+                        android:textSize="@dimen/textSize12"
                         android:inputType="number"
                         android:hint="@string/minimum"
+                        android:autofillHints="@string/minimum"
                         android:maxLength="7"
-                        android:layout_width="120dp"
+                        android:layout_width="@dimen/dietaryInputSize"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/marginSmall"/>
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="@dimen/marginSmall"
+                        android:layout_marginEnd="@dimen/marginNormal"/>
                 </LinearLayout>
 
                 <!-- Protein max -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/activity_add_patient_dietary_txt_protein_max"
+                        android:textSize="@dimen/textSize12"
                         android:text="@string/maximum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -507,13 +614,26 @@
 
                     <EditText
                         android:id="@+id/activity_add_patient_dietary_et_protein_max"
+                        android:background="@drawable/text_border_gray"
+                        android:textSize="@dimen/textSize12"
                         android:inputType="number"
                         android:hint="@string/maximum"
+                        android:autofillHints="@string/maximum"
                         android:maxLength="7"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="@dimen/dietaryInputSize"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="@dimen/marginSmall"/>
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/darkGray"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_marginBottom="@dimen/marginNormal"/>
+
         </LinearLayout>
 
         <!-- Fiber -->
@@ -524,23 +644,25 @@
 
             <!-- 1st part -->
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/marginSmall">
 
                 <ImageView
                     android:id="@+id/activity_add_patient_dietary_img_fiber"
                     android:src="@drawable/ic_grain"
                     android:tint="@color/yellow"
                     android:contentDescription="@string/fibers"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
+                    android:layout_width="@dimen/patientDietaryIconSize"
+                    android:layout_height="@dimen/patientDietaryIconSize"
+                    android:layout_marginEnd="@dimen/marginSmall"/>
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_fiber"
                     android:text="@string/fibers_in_g"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"/>
             </LinearLayout>
 
@@ -548,7 +670,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
                 android:orientation="horizontal">
 
                 <!-- Fiber min -->
@@ -559,6 +680,7 @@
 
                     <TextView
                         android:id="@+id/activity_add_patient_dietary_txt_fiber_min"
+                        android:textSize="@dimen/textSize12"
                         android:text="@string/minimum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -566,20 +688,27 @@
 
                     <EditText
                         android:id="@+id/activity_add_patient_dietary_et_fiber_min"
+                        android:background="@drawable/text_border_gray"
+                        android:textSize="@dimen/textSize12"
                         android:inputType="number"
                         android:hint="@string/minimum"
+                        android:autofillHints="@string/minimum"
                         android:maxLength="7"
-                        android:layout_width="120dp"
+                        android:layout_width="@dimen/dietaryInputSize"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/marginSmall"/>
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="@dimen/marginSmall"
+                        android:layout_marginEnd="@dimen/marginNormal"/>
                 </LinearLayout>
 
                 <!-- Fiber max -->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/activity_add_patient_dietary_txt_fiber_max"
+                        android:textSize="@dimen/textSize12"
                         android:text="@string/maximum"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -587,27 +716,50 @@
 
                     <EditText
                         android:id="@+id/activity_add_patient_dietary_et_fiber_max"
+                        android:background="@drawable/text_border_gray"
+                        android:textSize="@dimen/textSize12"
                         android:inputType="number"
                         android:hint="@string/maximum"
+                        android:autofillHints="@string/maximum"
                         android:maxLength="7"
-                        android:layout_width="120dp"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="@dimen/dietaryInputSize"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="@dimen/marginSmall"/>
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/darkGray"
+                android:layout_marginTop="@dimen/marginSmall"
+                android:layout_marginBottom="@dimen/marginNormal"/>
+
         </LinearLayout>
 
-        <Button
-            android:id="@+id/activity_add_patient_dietary_btn_save"
-            android:text="@string/save_patient"
-            android:background="@color/colorAccent"
-            android:textColor="@android:color/white"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
 
-        <ProgressBar
-            android:id="@+id/activity_add_patient_dietary_loader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
+            <Button
+                android:id="@+id/activity_add_patient_dietary_btn_save"
+                android:text="@string/save_patient"
+                android:background="@color/colorAccent"
+                android:textColor="@android:color/white"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:paddingVertical="@dimen/paddingButton"
+                android:minHeight="0dp"
+                android:minWidth="0dp"/>
+
+            <ProgressBar
+                android:id="@+id/activity_add_patient_dietary_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+        </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

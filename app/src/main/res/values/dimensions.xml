@@ -20,7 +20,10 @@
     <dimen name="contactIconSize">28dp</dimen>
     <dimen name="dateNavigationSize">20dp</dimen>
     <dimen name="guidelineIconSize">15dp</dimen>
+    <dimen name="patientStepIconSize">35dp</dimen>
+    <dimen name="patientDietaryIconSize">15dp</dimen>
 
+    <dimen name="dietaryInputSize">95dp</dimen>
 
     <!-- Button -->
     <dimen name="paddingButton">6dp</dimen>
@@ -33,6 +36,7 @@
     <dimen name="marginSmall">10dp</dimen>
     <dimen name="marginSmaller">8dp</dimen>
     <dimen name="marginVerySmall">6dp</dimen>
+    <dimen name="marginSize4">4dp</dimen>
     <dimen name="marginSize2">2dp</dimen>
 
     <!-- Shadow -->

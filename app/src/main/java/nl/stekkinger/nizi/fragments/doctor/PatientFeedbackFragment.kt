@@ -74,7 +74,8 @@ class PatientFeedbackFragment : Fragment() {
                 doctor = patientData.patient.doctor, date = sdf.format(Date())
             )
 
-            addFeedbackAsyncTask().execute()
+            if (addFeedbackAsyncTask().status != AsyncTask.Status.RUNNING)
+                addFeedbackAsyncTask().execute()
         }
 
         // Setup RV

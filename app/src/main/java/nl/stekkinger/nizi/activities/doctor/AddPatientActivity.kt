@@ -95,6 +95,9 @@ class AddPatientActivity : AppCompatActivity() {
         activity_add_patient_et_firstName.setText(getString(R.string.sample_first_name))
         activity_add_patient_et_lastName.setText(R.string.sample_last_name)
         activity_add_patient_et_dob.setText(R.string.sample_dob)
+        val calendar = Calendar.getInstance()
+        calendar.set(1990, 1, 1, 0, 0)
+        date = calendar.time
         activity_add_patient_et_email.setText(R.string.sample_email)
         activity_add_patient_et_password.setText(R.string.sample_password)
         activity_add_patient_et_passwordConfirm.setText(R.string.sample_password)

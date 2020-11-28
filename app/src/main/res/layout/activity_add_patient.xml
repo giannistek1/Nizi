@@ -16,14 +16,16 @@
         android:layout_height="wrap_content"
         android:baselineAligned="false"
         android:background="@color/gray"
-        android:layout_below="@+id/toolbar">
+        android:layout_below="@+id/toolbar"
+        android:paddingHorizontal="@dimen/marginNormal"
+        android:paddingVertical="@dimen/marginVerySmall">
 
         <!-- Step 1 -->
         <LinearLayout
-            android:layout_width="10dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="0.4">
+            android:layout_weight="9">
 
             <TextView
                 android:id="@+id/activity_add_patient_txt_step_1"
@@ -35,17 +37,18 @@
                 android:layout_height="wrap_content"/>
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/patientStepIconSize"
+                android:layout_height="@dimen/patientStepIconSize"
                 android:layout_gravity="center"
                 android:contentDescription="@string/ic_user"
-                android:src="@drawable/ic_user"/>
+                android:src="@drawable/ic_user"
+                android:layout_marginVertical="@dimen/marginVerySmall"/>
 
             <TextView
                 android:id="@+id/activity_add_patient_txt_personal_info"
                 android:fontFamily="@font/helvetica_neue_bold"
                 android:textColor="@color/darkGray"
-                android:text="@string/personal_info"
+                android:text="@string/personal_info_short"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -57,12 +60,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="0.2"
+            android:layout_weight="2"
             android:layout_gravity="center">
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/arrow_right"
                 android:src="@drawable/ic_arrow_r"/>
@@ -71,33 +74,34 @@
 
         <!-- Step 2 -->
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_weight="0.4">
+            android:layout_weight="9">
 
             <TextView
                 android:id="@+id/activity_add_patient_txt_step_2"
                 android:text="@string/step_2"
                 android:textColor="@color/darkGray"
-                android:fontFamily="@font/helvetica_neue"
+                android:fontFamily="@font/helvetica_neue_light"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/patientStepIconSize"
+                android:layout_height="@dimen/patientStepIconSize"
                 android:layout_gravity="center"
                 android:tint="@color/black"
                 android:contentDescription="@string/ic_culinary"
-                android:src="@drawable/ic_culinary"/>
+                android:src="@drawable/ic_culinary"
+                android:layout_marginVertical="@dimen/marginVerySmall"/>
 
             <TextView
                 android:id="@+id/activity_add_patient_txt_guidelines"
                 android:text="@string/guidelines"
                 android:textColor="@color/darkGray"
-                android:fontFamily="@font/helvetica_neue"
+                android:fontFamily="@font/helvetica_neue_light"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
@@ -106,14 +110,13 @@
 
     <!-- Patient data -->
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@+id/activity_add_patient_ll_steps">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/marginNormal"
             android:paddingStart="@dimen/marginDouble"
             android:paddingEnd="@dimen/marginDouble"
             android:background="@color/white">
@@ -439,51 +442,66 @@
                 android:layout_below="@+id/activity_add_patient_ll_passwordConfirm"
                 android:layout_marginTop="@dimen/marginNormal"/>
 
-            <RadioGroup
-                android:id="@+id/activity_add_patient_rg_gender"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@+id/activity_add_patient_txt_gender"
-                android:layout_marginTop="@dimen/marginNormal">
 
-                <RadioButton
-                    android:id="@+id/activity_add_patient_rb_male"
-                    android:textSize="@dimen/textSize12"
-                    android:text="@string/male"
-                    android:button="@null"
-                    android:drawableBottom="@android:drawable/btn_radio"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-                <RadioButton
-                    android:id="@+id/activity_add_patient_rb_female"
-                    android:textSize="@dimen/textSize12"
-                    android:text="@string/female"
-                    android:button="@null"
-                    android:drawableBottom="@android:drawable/btn_radio"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/marginNormal"/>
-            </RadioGroup>
-
-            <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/activity_add_patient_progressbar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_above="@+id/activity_add_patient_btn_to_guidelines"
-                android:visibility="gone"/>
-
-            <Button
-                android:id="@+id/activity_add_patient_btn_to_guidelines"
-                android:text="@string/to_guidelines"
-                android:background="@color/colorAccent"
-                android:textColor="@android:color/white"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_rg_gender"/>
+                android:layout_below="@+id/activity_add_patient_txt_gender">
+
+                <RadioGroup
+                    android:id="@+id/activity_add_patient_rg_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+
+                    android:layout_marginTop="@dimen/marginNormal">
+
+                    <RadioButton
+                        android:id="@+id/activity_add_patient_rb_male"
+                        android:textSize="@dimen/textSize12"
+                        android:text="@string/male"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/marginNormal"/>
+
+                    <RadioButton
+                        android:id="@+id/activity_add_patient_rb_female"
+                        android:textSize="@dimen/textSize12"
+                        android:text="@string/female"
+                        android:button="@null"
+                        android:drawableBottom="@android:drawable/btn_radio"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/marginNormal"/>
+
+
+                </RadioGroup>
+
+                <androidx.core.widget.ContentLoadingProgressBar
+                    android:id="@+id/activity_add_patient_progressbar"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_above="@+id/activity_add_patient_btn_to_guidelines"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/activity_add_patient_btn_to_guidelines"
+                    android:text="@string/to_guidelines"
+                    android:background="@color/colorAccent"
+                    android:textColor="@android:color/white"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:paddingVertical="@dimen/paddingButton"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"/>
+
+            </RelativeLayout>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

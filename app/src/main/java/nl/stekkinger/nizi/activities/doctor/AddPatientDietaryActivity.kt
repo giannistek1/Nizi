@@ -75,7 +75,8 @@ class AddPatientDietaryActivity : BaseActivity() {
             // if all empty, toast: dietaries_empty, return
             //checkValidInputs()
 
-            registerPatientAsyncTask().execute()
+            if (registerPatientAsyncTask().status != AsyncTask.Status.RUNNING)
+                registerPatientAsyncTask().execute()
         }
 
         // Get patient data
