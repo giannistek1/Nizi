@@ -44,7 +44,6 @@ class PatientDetailActivity : BaseActivity() {
     private lateinit var patientData: PatientData                       // User, Patient, Doctor, Dietary
 
     private var savedInstanceState: Bundle? = null
-    private lateinit var diaryModel: DiaryViewModel
 
     private lateinit var loader: View
 
@@ -58,12 +57,6 @@ class PatientDetailActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar_txt_back.text = getString(R.string.patient_overview)
         loader = activity_patient_detail_loader
-
-        diaryModel = ViewModelProviders.of(this)[DiaryViewModel::class.java]
-
-        diaryModel.getDiary().observe(this, Observer { result ->
-
-        })
 
         // Checks if fragment state is null and save it
         if (savedInstanceState != null)

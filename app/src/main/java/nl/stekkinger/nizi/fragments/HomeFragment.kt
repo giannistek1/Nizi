@@ -39,8 +39,6 @@ class HomeFragment: Fragment() {
     private lateinit var mCurrentDate: Date
     private lateinit var mEndDate: Date
 
-    private lateinit var model: DiaryViewModel
-
     private val sdf = GeneralHelper.getDateFormat()
     private val sdfDB = GeneralHelper.getCreateDateFormat()
 
@@ -49,10 +47,6 @@ class HomeFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View =  inflater.inflate(R.layout.fragment_home, container, false)
         loader = view.fragment_home_loader
-
-        model = activity?.run {
-            ViewModelProviders.of(this)[DiaryViewModel::class.java]
-        } ?: throw Exception("Invalid Activity")
 
         // Get dietary list from bundle
         //val bundle: Bundle = this.arguments!!
@@ -71,22 +65,12 @@ class HomeFragment: Fragment() {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
+        
         mCurrentDate = calendar.time
         val today = calendar.time
         calendar.add(Calendar.DATE, 1)
         mEndDate = calendar.time
 
-        // Setting date for diary (Idk what this does -Gianni)
-        calendar.time = mCurrentDate
-        calendar.add(Calendar.DATE, 0)
-        val startDate = calendar.time
-
-        calendar.time = mCurrentDate
-        calendar.add(Calendar.DATE, 1)
-        val endDate = calendar.time
-        model.setDiaryDate(sdf.format(startDate) + "/" + sdf.format(endDate))
-
-        // Gianni
         calendar.time = today
         calendar.add(Calendar.DATE, -1)
         val yesterday = calendar.time

@@ -44,8 +44,6 @@ class PatientHomeFragment : Fragment() {
     private lateinit var consumptions: ArrayList<ConsumptionResponse>
     private var supplements: ArrayList<Int> = arrayListOf()
 
-    private lateinit var model: DiaryViewModel
-
     private val sdf = GeneralHelper.getDateFormat()
     private val sdfDB = GeneralHelper.getCreateDateFormat()
 
@@ -54,9 +52,6 @@ class PatientHomeFragment : Fragment() {
     // Gets called one time, you CANT use view references in here
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        model = activity?.run {
-            ViewModelProviders.of(this)[DiaryViewModel::class.java]
-        } ?: throw Exception("Invalid Activity")
 
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_patient_home, container, false)
@@ -122,7 +117,6 @@ class PatientHomeFragment : Fragment() {
             view.fragment_patient_home_btn_nextWeek.imageAlpha = 255
 
             getConsumptionsAsyncTask().execute()
-            //refreshGuidelines()
         }
 
         view.fragment_patient_home_btn_nextWeek.setOnClickListener {
@@ -143,7 +137,6 @@ class PatientHomeFragment : Fragment() {
                 view.fragment_patient_home_btn_nextWeek.imageAlpha = 20
             }
 
-            //refreshGuidelines()
             getConsumptionsAsyncTask().execute()
         }
 
@@ -151,8 +144,6 @@ class PatientHomeFragment : Fragment() {
         view.fragment_patient_home_btn_nextWeek.imageAlpha = 20
 
         getConsumptionsAsyncTask().execute()
-
-        //refreshGuidelines(view)
 
         return view
     }
