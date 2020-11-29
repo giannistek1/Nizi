@@ -45,6 +45,7 @@ class DiaryFragment: Fragment() {
         dinnerRv.layoutManager = LinearLayoutManager(activity)
         val snackRv: RecyclerView = view.findViewById(R.id.diary_snack_rv)
         snackRv.layoutManager = LinearLayoutManager(activity)
+        d("wtf?", "test")
 
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
