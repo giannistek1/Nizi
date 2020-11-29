@@ -181,7 +181,7 @@ class PatientHomeFragment : Fragment() {
 
         override fun doInBackground(vararg p0: Void?): ArrayList<ConsumptionResponse>? {
             return try {
-                foodRepository.getConsumptionsForDietaryByWeek(startDate = sdfDB.format(selectedFirstDayOfWeek),
+                foodRepository.getConsumptionsByRange(startDate = sdfDB.format(selectedFirstDayOfWeek),
                     endDate = sdfDB.format(selectedLastDayOfWeek), patientId = patientData.patient.id)
             } catch(e: Exception) {
                 GeneralHelper.apiIsDown = true

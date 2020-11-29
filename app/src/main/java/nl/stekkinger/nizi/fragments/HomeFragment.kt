@@ -37,6 +37,7 @@ class HomeFragment: Fragment() {
     private var dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
     private var supplements: ArrayList<Int> = arrayListOf()
     private lateinit var mCurrentDate: Date
+    private lateinit var mEndDate: Date
 
     private lateinit var model: DiaryViewModel
 
@@ -72,6 +73,8 @@ class HomeFragment: Fragment() {
         calendar.set(Calendar.MILLISECOND, 0);
         mCurrentDate = calendar.time
         val today = calendar.time
+        calendar.add(Calendar.DATE, 1)
+        mEndDate = calendar.time
 
         // Setting date for diary (Idk what this does -Gianni)
         calendar.time = mCurrentDate
@@ -94,6 +97,8 @@ class HomeFragment: Fragment() {
             val newDate = calendar.time
 
             mCurrentDate = newDate
+            calendar.add(Calendar.DATE, 1)
+            mEndDate = calendar.time
 
             if(newDate == yesterday) {
                 view.fragment_home_txt_day.text = getString(R.string.yesterday)
@@ -117,6 +122,8 @@ class HomeFragment: Fragment() {
             if (newDate.after(today)) return@setOnClickListener
 
             mCurrentDate = newDate
+            calendar.add(Calendar.DATE, 1)
+            mEndDate = calendar.time
 
             if (newDate == today) {
                 // Update UI
@@ -129,7 +136,6 @@ class HomeFragment: Fragment() {
             }
 
             getConsumptionsAsyncTask().execute()
-            //refreshGuidelines()
         }
 
         // Update UI
@@ -166,7 +172,8 @@ class HomeFragment: Fragment() {
 
         override fun doInBackground(vararg p0: Void?): ArrayList<ConsumptionResponse>? {
             return try {
-                foodRepository.getConsumptionsForDietary(sdfDB.format(mCurrentDate), patientId = user.patient!!.id)
+                foodRepository.getConsumptionsByRange(sdfDB.format(mCurrentDate), sdfDB.format(mEndDate),
+                    patientId = user.patient!!.id)
             } catch(e: Exception) {
                 GeneralHelper.apiIsDown = true
                 print("Server offline!"); print(e.message)
@@ -274,7 +281,6 @@ class HomeFragment: Fragment() {
 
                 dietaryGuidelines.add(dietaryGuideline)
             }
-
 
             refreshGuidelines()
         }

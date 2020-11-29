@@ -84,7 +84,12 @@ class PatientDetailActivity : BaseActivity() {
             diets = arrayListOf()
         )
 
-
+        // Update user with patientId (because its used for getting Diary)
+        val doctorUser = GeneralHelper.getUser()
+        doctorUser.patient = PatientShort(id = patientItem.id, gender = "", date_of_birth = "", doctor = 0)
+        val gson = Gson()
+        val json = gson.toJson(doctorUser)
+        GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_USER, json).apply()
 
         activity_patient_detail_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
 

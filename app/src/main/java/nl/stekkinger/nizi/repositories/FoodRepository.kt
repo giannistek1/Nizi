@@ -7,7 +7,6 @@ import com.google.gson.Gson
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.diary.*
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
-import nl.stekkinger.nizi.classes.patient.PatientShort
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import retrofit2.Call
 import retrofit2.Callback
@@ -45,12 +44,8 @@ class FoodRepository : Repository() {
         return result
     }
 
-    fun getConsumptionsForDietary(date: String, patientId: Int): ArrayList<ConsumptionResponse>? {
-        return service.fetchConsumptions(authHeader = authHeader, patientId = patientId, date = date).execute().body()
-    }
-
-    fun getConsumptionsForDietaryByWeek(startDate: String, endDate: String, patientId: Int): ArrayList<ConsumptionResponse>? {
-        return service.fetchConsumptionsByWeek(authHeader = authHeader, patientId = patientId, startDate = startDate,
+    fun getConsumptionsByRange(startDate: String, endDate: String, patientId: Int): ArrayList<ConsumptionResponse>? {
+        return service.fetchConsumptionsByRange(authHeader = authHeader, patientId = patientId, startDate = startDate,
         endDate = endDate).execute().body()
     }
 
