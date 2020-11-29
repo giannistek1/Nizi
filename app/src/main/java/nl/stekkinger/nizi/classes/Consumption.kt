@@ -12,7 +12,7 @@ data class Consumption (
     val meal_time: String,
     val patient: Int,
     val weight_unit: WeightUnit,
-    val food_meal_component: ArrayList<FoodMealComponent> = arrayListOf()
+    val food_meal_component: FoodMealComponent
 )
 // Todo remove old code
 //data class Consumption (

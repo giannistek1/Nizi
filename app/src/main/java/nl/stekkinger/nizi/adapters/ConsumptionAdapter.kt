@@ -39,8 +39,8 @@ class ConsumptionAdapter(
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var consumption : ConsumptionResponse = mDataset[position]
-        holder.title.text = consumption.food_meal_component[0].name
-        holder.summary.text = (consumption.food_meal_component[0].portion_size * consumption.amount).toString() + " " + consumption.weight_unit.short
+        holder.title.text = consumption.food_meal_component.name
+        holder.summary.text = (consumption.food_meal_component.portion_size * consumption.amount).toString() + " " + consumption.weight_unit.short
 
         holder.itemView.btn_delete.setOnClickListener {
             model.deleteConsumption(consumption.id)

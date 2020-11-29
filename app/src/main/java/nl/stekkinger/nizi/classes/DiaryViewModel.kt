@@ -125,15 +125,15 @@ class DiaryViewModel(
         )
         d("conunit", weightUnit.toString())
         // the foodMealComponent has to be in array in strapi
-        val foodMealArray: ArrayList<FoodMealComponent> = arrayListOf()
-        foodMealArray.add(foodItem)
+//        val foodMealArray: ArrayList<FoodMealComponent> = arrayListOf()
+//        foodMealArray.add(foodItem)
         val consumption = Consumption(
             amount = portion.toFloat(),
             date = mCurrentDay+"T11:00:00.000Z",
             meal_time = mMealTime,
             patient = GeneralHelper.getUser().patient!!.id,
             weight_unit = weightUnit,
-            food_meal_component = foodMealArray
+            food_meal_component = foodItem
         )
         d("conmod", consumption.toString())
         mRepository.addConsumption(consumption)
@@ -141,17 +141,17 @@ class DiaryViewModel(
 
     fun editFood(consumptionResponse: ConsumptionResponse, portion: Float) {
         val foodItem = FoodMealComponent(
-            id = consumptionResponse.food_meal_component[0].id,
-            name = consumptionResponse.food_meal_component[0].name,
-            description = consumptionResponse.food_meal_component[0].description,
-            kcal = (consumptionResponse.food_meal_component[0].kcal * portion).toFloat(),
-            protein = (consumptionResponse.food_meal_component[0].protein * portion).toFloat(),
-            potassium = (consumptionResponse.food_meal_component[0].potassium * portion).toFloat(),
-            sodium = (consumptionResponse.food_meal_component[0].sodium * portion).toFloat(),
-            water = (consumptionResponse.food_meal_component[0].water * portion).toFloat(),
-            fiber = (consumptionResponse.food_meal_component[0].fiber * portion).toFloat(),
-            portion_size = consumptionResponse.food_meal_component[0].portion_size,
-            image_url = consumptionResponse.food_meal_component[0].image_url
+            id = consumptionResponse.food_meal_component.id,
+            name = consumptionResponse.food_meal_component.name,
+            description = consumptionResponse.food_meal_component.description,
+            kcal = (consumptionResponse.food_meal_component.kcal * portion).toFloat(),
+            protein = (consumptionResponse.food_meal_component.protein * portion).toFloat(),
+            potassium = (consumptionResponse.food_meal_component.potassium * portion).toFloat(),
+            sodium = (consumptionResponse.food_meal_component.sodium * portion).toFloat(),
+            water = (consumptionResponse.food_meal_component.water * portion).toFloat(),
+            fiber = (consumptionResponse.food_meal_component.fiber * portion).toFloat(),
+            portion_size = consumptionResponse.food_meal_component.portion_size,
+            image_url = consumptionResponse.food_meal_component.image_url
         )
         val weightUnit = WeightUnit(
             id = consumptionResponse.weight_unit.id,
@@ -160,15 +160,15 @@ class DiaryViewModel(
         )
         d("conunit", weightUnit.toString())
         // the foodMealComponent has to be in array in strapi
-        val foodMealArray: ArrayList<FoodMealComponent> = arrayListOf()
-        foodMealArray.add(foodItem)
+//        val foodMealArray: ArrayList<FoodMealComponent> = arrayListOf()
+//        foodMealArray.add(foodItem)
         val consumption = Consumption(
             amount = portion,
             date = mCurrentDay+"T11:00:00.000Z",
             meal_time = mMealTime,
             patient = GeneralHelper.getUser().patient!!.id,
             weight_unit = weightUnit,
-            food_meal_component = foodMealArray
+            food_meal_component = foodItem
         )
         mRepository.editConsumption(consumption)
     }
