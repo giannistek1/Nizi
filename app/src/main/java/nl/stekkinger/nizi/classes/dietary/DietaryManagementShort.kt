@@ -4,7 +4,7 @@ import java.io.Serializable
 
 // Used for POST, PUT or as child from another object
 data class DietaryManagementShort(
-    val id: Int? = null,
+    var id: Int? = null,
     val dietary_restriction: Int,
     var minimum: Int,
     var maximum: Int,

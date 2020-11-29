@@ -37,7 +37,7 @@ class AuthRepository : Repository() {
     }
 
     fun updateUser(user: User) : UserLogin? {
-        return service.updateUser(authHeader, user).execute().body()
+        return service.updateUser(authHeader, user.id, user).execute().body()
     }
 
     // Forgot password

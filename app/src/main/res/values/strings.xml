@@ -216,13 +216,13 @@
     <string name="dietary_added">Richtlijn toegevoegd</string>
     <string name="dietary_add_fail">Richtlijn toevoegen mislukt</string>
     <string name="dietary_changed">Richtlijn gewijzigd</string>
-    <string name="dietary_change_fail">Richtlijn veranderend mislukt</string>
+    <string name="dietary_change_fail">Richtlijn veranderen mislukt</string>
     <string name="dietary_deleted">Richtlijn verwijderd</string>
     <string name="dietary_delete_fail">Richtlijn verwijderen mislukt</string>
     <string name="user_added">Gebruiker  toegevoegd</string>
     <string name="user_add_fail">Gebruiker toevoegen mislukt</string>
     <string name="user_edited">Gebruiker gewijzigd</string>
-    <string name="used_edit_fail">Gebruiker wijzigen mislukt</string>
+    <string name="user_edit_fail">Gebruiker wijzigen mislukt</string>
 
     <!-- Oher (image content description, and other stuff that cant be placed) -->
     <string name="ready">Gereed</string>

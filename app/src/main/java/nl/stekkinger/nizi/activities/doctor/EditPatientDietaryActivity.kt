@@ -175,13 +175,15 @@ class EditPatientDietaryActivity : BaseActivity() {
                 textViewList[maxIndex].setText(textViewList[maxIndex].text.toString()
                     .replaceFirst("^0+(?!$)", ""))
 
-                currentDietaryList.add(DietaryManagementShort(
+                val dietaryManagementShort = DietaryManagementShort(
                     dietary_restriction = dietaryRestriction!!.id,
                     is_active = true, // Since there is no way to deactivate it anyways
                     minimum = textViewList[minIndex].text.toString().toInt(),
                     maximum = textViewList[maxIndex].text.toString().toInt(),
                     patient = patientData.patient.id
-                ))
+                )
+                dietaryManagementShort.id = patientData.patient.dietary_managements?.find { it.dietary_restriction == dietaryManagementShort.dietary_restriction}?.id
+                currentDietaryList.add(dietaryManagementShort)
             }
         }
     }
@@ -246,8 +248,12 @@ class EditPatientDietaryActivity : BaseActivity() {
             // Loader
             loader.visibility = View.GONE
 
+            // Guard
+            if (result == null) { Toast.makeText(baseContext, R.string.user_edit_fail, Toast.LENGTH_SHORT).show()
+                return }
+
             // Feedback
-            Toast.makeText(baseContext, R.string.patient_edited, Toast.LENGTH_SHORT).show()
+            Toast.makeText(baseContext, R.string.user_edited, Toast.LENGTH_SHORT).show()
 
             newDietaryList = arrayListOf()
 
@@ -269,13 +275,16 @@ class EditPatientDietaryActivity : BaseActivity() {
                 textViewList[maxIndex].setText(textViewList[maxIndex].text.toString()
                     .replaceFirst("^0+(?!$)", ""))
 
-                newDietaryList.add(DietaryManagementShort(
+                val dietaryManagementShort = DietaryManagementShort(
                     dietary_restriction = dietaryRestriction!!.id,
                     is_active = true, // Since there is no way to deactivate it anyways
                     minimum = textViewList[minIndex].text.toString().toInt(),
                     maximum = textViewList[maxIndex].text.toString().toInt(),
                     patient = patientData.patient.id
-                ))
+                )
+
+                dietaryManagementShort.id = patientData.patient.dietary_managements?.find { it.dietary_restriction == dietaryManagementShort.dietary_restriction}?.id
+                newDietaryList.add(dietaryManagementShort)
             }
 
             checkList = arrayListOf()

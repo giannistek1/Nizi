@@ -40,9 +40,6 @@ class PatientDetailActivity : BaseActivity() {
     private val patientRepository: PatientRepository = PatientRepository()
     private val weightUnitRepository: WeightUnitRepository = WeightUnitRepository()
 
-    // For activity result
-    private val EDIT_PATIENT_REQUEST_CODE = 0
-
     private lateinit var weightUnits: ArrayList<WeightUnit>             // WeightUnits
     private lateinit var patientData: PatientData                       // User, Patient, Doctor, Dietary
 
@@ -224,7 +221,7 @@ class PatientDetailActivity : BaseActivity() {
                 doctor = result.doctor.id!!,
                 user = result.user.id,
                 feedbacks = result.feedbacks,
-                dietary_managements = arrayListOf(), // Empty because we use a list of DietaryViews for everything
+                dietary_managements = result.dietary_managements,
                 my_foods = result.my_foods,
                 consumptions = result.consumptions
             )
@@ -246,13 +243,4 @@ class PatientDetailActivity : BaseActivity() {
         }
     }
     //endregion
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == EDIT_PATIENT_REQUEST_CODE && resultCode == RESULT_OK) {
-            // refresh activity
-            recreate()
-        }
-    }
 }

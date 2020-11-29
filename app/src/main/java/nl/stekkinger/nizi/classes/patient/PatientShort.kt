@@ -3,6 +3,7 @@ package nl.stekkinger.nizi.classes.patient
 import nl.stekkinger.nizi.classes.MyFood
 import nl.stekkinger.nizi.classes.diary.ConsumptionShort
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
+import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.feedback.FeedbackShort
 import java.io.Serializable
 
@@ -14,7 +15,7 @@ data class PatientShort (
 
     val user: Int? = null,
     val feedbacks: ArrayList<FeedbackShort>? = arrayListOf(),
-    val dietary_managements: ArrayList<DietaryManagement>? = arrayListOf(),
+    val dietary_managements: ArrayList<DietaryManagementShort>? = arrayListOf(),
     val my_foods: ArrayList<MyFood>? = arrayListOf(),
     val consumptions: ArrayList<ConsumptionShort>? = arrayListOf(),
 

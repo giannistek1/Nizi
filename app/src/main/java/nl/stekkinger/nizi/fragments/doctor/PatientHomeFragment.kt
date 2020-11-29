@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
@@ -34,7 +35,7 @@ class PatientHomeFragment : Fragment() {
     private val foodRepository: FoodRepository = FoodRepository()
 
     // For activity result
-    private val REQUEST_CODE = 0
+    private val EDIT_PATIENT_REQUEST_CODE = 0
 
     private lateinit var selectedFirstDayOfWeek: Date
     private lateinit var selectedLastDayOfWeek: Date
@@ -84,7 +85,7 @@ class PatientHomeFragment : Fragment() {
 
             intent.putExtra(GeneralHelper.EXTRA_PATIENT, patientData)
             intent.putExtra(GeneralHelper.EXTRA_DOCTOR_ID, intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 1))
-            startActivityForResult(intent, REQUEST_CODE)
+            startActivityForResult(intent, EDIT_PATIENT_REQUEST_CODE)
         }
 
         // Preparation
@@ -305,4 +306,13 @@ class PatientHomeFragment : Fragment() {
         }
     }
     //endregion
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == EDIT_PATIENT_REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK) {
+            // refresh activity
+            activity!!.recreate()
+        }
+    }
 }

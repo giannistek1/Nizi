@@ -52,17 +52,16 @@ class EditPatientActivity : BaseActivity() {
         // Fill patient
         patientData = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientData
 
-
         activity_add_patient_et_firstName.setText(patientData.user.first_name)
         activity_add_patient_et_lastName.setText(patientData.user.last_name)
+        activity_add_patient_et_email.setText(patientData.user.email)
 
+        // Date of Birth
         date = SimpleDateFormat("yyyy-MM-dd").parse(patientData.patient.date_of_birth)
         val calendar = Calendar.getInstance()
         calendar.time = date
         activity_add_patient_et_dob.setText("${sdf.format(date)}")
-        activity_add_patient_et_email.setText(patientData.user.email)
 
-        // Date of Birth
         activity_add_patient_et_dob.setOnClickListener {
 
             if (activity_add_patient_dp.visibility == View.VISIBLE)
@@ -71,7 +70,6 @@ class EditPatientActivity : BaseActivity() {
                 activity_add_patient_dp.visibility = View.VISIBLE
         }
 
-        // Date of Birth
         activity_add_patient_dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
         activity_add_patient_dp.setOnDateChangedListener { _, mYear, mMonth, mDay ->
 
@@ -125,9 +123,9 @@ class EditPatientActivity : BaseActivity() {
         // Update fields with new inputs once you click btn
         patientData.user.first_name = firstNameET.text.toString().trim()
         patientData.user.last_name = lastNameET.text.toString().trim()
-        patientData.patient.date_of_birth = dobET.text.toString().trim()
+        patientData.patient.date_of_birth = sdfDB.format(date)
         patientData.user.email = emailET.text.toString().trim()
-        patientData.user.password = passwordConfirmET.text.toString().trim()
+        //patientData.user.password = passwordConfirmET.text.toString().trim()
         //model.patient.weight = activity_add_patient_et_weight.text.toString().toFloat()
 
         val selectedRadioButton: RadioButton = activity_add_patient_rg_gender.findViewById(checkedGenderRadioButtonId)

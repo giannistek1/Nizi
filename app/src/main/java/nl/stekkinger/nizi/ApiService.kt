@@ -29,9 +29,10 @@ interface ApiService {
         @Body body: User
     ) : Call<UserLogin>
 
-    @PUT("users")
+    @PUT("users/{userId}")
     fun updateUser(
         @Header("Authorization") authHeader : String,
+        @Path("userId") userId: Int,
         @Body body: User
     ) : Call<UserLogin>
 
@@ -236,8 +237,8 @@ interface ApiService {
     @PUT("dietary-managements/{dietaryManagementId}")
     fun updateDietaryManagement(
         @Header("Authorization") authHeader : String,
-        @Body body: DietaryManagementShort,
-        @Path("dietaryManagementId") dietaryManagementId: Int
+        @Path("dietaryManagementId") dietaryManagementId: Int,
+        @Body body: DietaryManagementShort
     ) : Call<DietaryManagement>
 
     @DELETE("dietary-managements/{dietaryManagementId}")
