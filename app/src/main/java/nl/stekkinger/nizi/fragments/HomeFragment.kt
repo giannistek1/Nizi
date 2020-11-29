@@ -65,7 +65,7 @@ class HomeFragment: Fragment() {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        
+
         mCurrentDate = calendar.time
         val today = calendar.time
         calendar.add(Calendar.DATE, 1)
