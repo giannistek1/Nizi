@@ -86,7 +86,7 @@ class PatientDetailActivity : BaseActivity() {
 
         // Update user with patientId (because its used for getting Diary)
         val doctorUser = GeneralHelper.getUser()
-        doctorUser.patient = PatientShort(id = patientItem.id, gender = "", date_of_birth = "", doctor = 0)
+        doctorUser.patient = PatientShort(id = patientItem.patient_id, gender = "", date_of_birth = "", doctor = 0)
         val gson = Gson()
         val json = gson.toJson(doctorUser)
         GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_USER, json).apply()

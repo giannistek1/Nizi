@@ -180,9 +180,13 @@ class PatientHomeFragment : Fragment() {
         }
 
         override fun doInBackground(vararg p0: Void?): ArrayList<ConsumptionResponse>? {
-            return try {
-                foodRepository.getConsumptionsByRange(startDate = sdfDB.format(selectedFirstDayOfWeek),
-                    endDate = sdfDB.format(selectedLastDayOfWeek), patientId = patientData.patient.id)
+            try {
+                val calendar = Calendar.getInstance()
+                calendar.time = selectedFirstDayOfWeek
+                calendar.add(Calendar.DATE, 7)
+                val firstDayOfNextWeek = calendar.time
+                return foodRepository.getConsumptionsByRange(startDate = sdfDB.format(selectedFirstDayOfWeek),
+                    endDate = sdfDB.format(firstDayOfNextWeek), patientId = patientData.patient.id)
             } catch(e: Exception) {
                 GeneralHelper.apiIsDown = true
                 print("Server offline!"); print(e.message)
@@ -222,7 +226,8 @@ class PatientHomeFragment : Fragment() {
             }
 
             val calendar: Calendar = Calendar.getInstance()
-            val dayOfWeek: Int = calendar.get(Calendar.DAY_OF_WEEK)
+            //val dayOfWeek: Int = calendar.get(Calendar.DAY_OF_WEEK) // Makes Sunday day 1
+            val dayOfWeek: Int = Calendar.DAY_OF_WEEK
 
             supplements.forEachIndexed { index, element ->
                 supplements[index] = (element.toFloat()/dayOfWeek).roundToInt()
