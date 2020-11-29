@@ -2,17 +2,15 @@ package nl.stekkinger.nizi
 
 import nl.stekkinger.nizi.classes.*
 import nl.stekkinger.nizi.classes.diary.*
-import nl.stekkinger.nizi.classes.login.LoginRequest
-import nl.stekkinger.nizi.classes.login.LoginResponse
+import nl.stekkinger.nizi.classes.login.*
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.dietary.DietaryRestriction
 import nl.stekkinger.nizi.classes.patient.*
-import nl.stekkinger.nizi.classes.login.User
-import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.feedback.FeedbackShort
+import nl.stekkinger.nizi.classes.password.*
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import retrofit2.Call
 import retrofit2.http.*
@@ -36,13 +34,23 @@ interface ApiService {
         @Header("Authorization") authHeader : String,
         @Body body: User
     ) : Call<UserLogin>
+
+    @POST("auth/forgot-password")
+    fun forgotPassword(
+        @Body body: ForgotPasswordRequest
+    ) : Call<ForgotPasswordResponse>
+
+    @POST("auth/reset-password")
+    fun resetPassword(
+        @Body body: ResetPasswordRequest
+    ) : Call<ResetPasswordResponse>
     //endregion
 
     //region patients
     @POST("patients")
     fun registerPatient(
         @Header("Authorization") authHeader : String,
-        @Body body: PatientLogin
+        @Body body: PatientShort
     ) : Call<Patient>
 
     @GET("patients")
@@ -68,7 +76,7 @@ interface ApiService {
     fun updatePatient(
         @Header("Authorization") authHeader : String,
         @Path("patientId") patientId: Int,
-        @Body body: PatientLogin
+        @Body body: PatientShort
     ) : Call<Patient>
 
     @DELETE("v1/patient/{patientId}")
@@ -95,6 +103,14 @@ interface ApiService {
         @Header("Authorization") authHeader : String,
         @Query("patient.id") patientId: Int,
         @Query("date") date: String
+    ) : Call<ArrayList<ConsumptionResponse>>
+
+    @GET("consumptions")
+    fun fetchConsumptionsByWeek(
+        @Header("Authorization") authHeader : String,
+        @Query("patient.id") patientId: Int,
+        @Query("date_gte") startDate: String,
+        @Query("date_lte") endDate: String
     ) : Call<ArrayList<ConsumptionResponse>>
 
     @GET("v1/consumption/{consumptionId}")
@@ -163,16 +179,10 @@ interface ApiService {
     @GET("feedbacks")
     fun fetchFeedbacks(
         @Header("Authorization") authHeader : String,
-        @Query("patient.id") patientId: Int
+        @Query("patient.id") patientId: Int,
+        @Query("_sort") sortProp: String
     ) : Call<ArrayList<Feedback>>
-
-    /*@GET("v1/waterconsumption/period/{patientId}")
-    fun fetchConversations(
-        @Header("Authorization") authHeader : String,
-        @Path("patientId") patientId: Int,
-        @Query("beginDate") beginDate: String,
-        @Query("endDate") endDate: String
-    ) : Call<ArrayList<Conversation>>*/
+    //endregion
 
     //region meals
     @POST("v1/meal/{patientId}")

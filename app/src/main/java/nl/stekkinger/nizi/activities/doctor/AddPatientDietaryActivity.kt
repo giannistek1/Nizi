@@ -1,23 +1,18 @@
 package nl.stekkinger.nizi.activities.doctor
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
-import nl.stekkinger.nizi.classes.dietary.DietaryManagement
-import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
-import nl.stekkinger.nizi.classes.dietary.DietaryRestriction
+import nl.stekkinger.nizi.classes.dietary.*
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.patient.Patient
@@ -26,7 +21,7 @@ import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 import java.lang.Exception
 
-class AddPatientDietaryActivity : AppCompatActivity() {
+class AddPatientDietaryActivity : BaseActivity() {
 
     private var TAG = "AddPatientDietary"
 
@@ -73,14 +68,15 @@ class AddPatientDietaryActivity : AppCompatActivity() {
 
         activity_add_patient_dietary_btn_save.setOnClickListener {
 
-            // (Guard) Check connection
+            // (Guard) Check internet connection
             if (!GeneralHelper.hasInternetConnection(this)) return@setOnClickListener
 
             // TODO: Check if anything is notEmpty first
             // if all empty, toast: dietaries_empty, return
             //checkValidInputs()
 
-            registerPatientAsyncTask().execute()
+            if (registerPatientAsyncTask().status != AsyncTask.Status.RUNNING)
+                registerPatientAsyncTask().execute()
         }
 
         // Get patient data
@@ -320,22 +316,6 @@ class AddPatientDietaryActivity : AppCompatActivity() {
             setResult(RESULT_OK, returnIntent)
             finish()
         }
-    }
-    //endregion
-
-    override fun finish() {
-
-
-        super.finish()
-    }
-
-    //region Hides Keyboard on touch
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-        return super.dispatchTouchEvent(ev)
     }
     //endregion
 }

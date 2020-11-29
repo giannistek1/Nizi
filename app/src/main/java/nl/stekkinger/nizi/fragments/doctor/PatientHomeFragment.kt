@@ -2,37 +2,53 @@ package nl.stekkinger.nizi.fragments.doctor
 
 
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import kotlinx.android.synthetic.main.fragment_home.view.*
+import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_patient_home.*
 import kotlinx.android.synthetic.main.fragment_patient_home.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.EditPatientActivity
 import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
+import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
+import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import nl.stekkinger.nizi.classes.patient.PatientData
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
+import nl.stekkinger.nizi.repositories.DietaryRepository
+import nl.stekkinger.nizi.repositories.FoodRepository
 import java.util.*
+import kotlin.math.roundToInt
 
 class PatientHomeFragment : Fragment() {
+    private val dietaryRepository: DietaryRepository = DietaryRepository()
+    private val foodRepository: FoodRepository = FoodRepository()
 
     // For activity result
     private val REQUEST_CODE = 0
 
-    // Does not work in fragments
-    /*private var weekNumber by Delegates.observable(0) { property, oldValue, newValue ->
-        fragment_patient_home_week.text = "Week ${newValue}"
-    }*/
-
-    private lateinit var mCurrentDate: String
+    private lateinit var selectedFirstDayOfWeek: Date
+    private lateinit var selectedLastDayOfWeek: Date
     private lateinit var patientData: PatientData
+    private lateinit var weightUnits: ArrayList<WeightUnit>
+    private lateinit var consumptions: ArrayList<ConsumptionResponse>
+    private var supplements: ArrayList<Int> = arrayListOf()
+
     private lateinit var model: DiaryViewModel
+
     private val sdf = GeneralHelper.getDateFormat()
+    private val sdfDB = GeneralHelper.getCreateDateFormat()
+
+    private lateinit var loader: View
 
     // Gets called one time, you CANT use view references in here
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -43,10 +59,17 @@ class PatientHomeFragment : Fragment() {
 
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_patient_home, container, false)
+        loader = view.fragment_patient_home_loader
 
         // Get patient data from bundle
         val bundle: Bundle = this.arguments!!
         patientData = bundle.getSerializable(GeneralHelper.EXTRA_PATIENT) as PatientData
+
+        // TODO: Refactor
+        val gson = Gson()
+        val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
+        val weightUnitHolder: WeightUnitHolder = gson.fromJson(json, WeightUnitHolder::class.java)
+        weightUnits = weightUnitHolder.weightUnits
 
         // Header
         val fullName = "${patientData!!.user.first_name} ${patientData.user.last_name}"
@@ -76,14 +99,15 @@ class PatientHomeFragment : Fragment() {
         // Get first day of week and save it
         calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek)
         val currentFirstDayOfWeek = calendar.time
-        var selectedFirstDayOfWeek = currentFirstDayOfWeek
+        selectedFirstDayOfWeek = currentFirstDayOfWeek
 
         // Get last day of week and save it
         calendar.set(Calendar.DAY_OF_WEEK, calendar.firstDayOfWeek+6);
         val currentLastDayOfWeek = calendar.time
-        var selectedLastDayOfWeek = currentLastDayOfWeek
+        selectedLastDayOfWeek = currentLastDayOfWeek
 
         view.fragment_patient_home_btn_previousWeek.setOnClickListener {
+            // Set calendar date to first day of selected week,  substract 7, get date
             calendar.time = selectedFirstDayOfWeek
             calendar.add(Calendar.DATE, -7)
             selectedFirstDayOfWeek = calendar.time
@@ -96,7 +120,8 @@ class PatientHomeFragment : Fragment() {
             view.fragment_patient_home_week.text = "${sdf.format(selectedFirstDayOfWeek)} - ${sdf.format(selectedLastDayOfWeek)}"
             view.fragment_patient_home_btn_nextWeek.imageAlpha = 255
 
-            refreshGuidelines(view)
+            getConsumptionsAsyncTask().execute()
+            //refreshGuidelines()
         }
 
         view.fragment_patient_home_btn_nextWeek.setOnClickListener {
@@ -117,18 +142,16 @@ class PatientHomeFragment : Fragment() {
                 view.fragment_patient_home_btn_nextWeek.imageAlpha = 20
             }
 
-            refreshGuidelines(view)
+            //refreshGuidelines()
+            getConsumptionsAsyncTask().execute()
         }
-
-        /*// setting date for diary
-        val startDate: String = getDay(mCurrentDate, 0)
-        val endDate: String = getDay(mCurrentDate, 1)
-        model.setDiaryDate(startDate + "/" + endDate)*/
 
         view.fragment_patient_home_week.text = "${sdf.format(selectedFirstDayOfWeek)} - ${sdf.format(selectedLastDayOfWeek)}"
         view.fragment_patient_home_btn_nextWeek.imageAlpha = 20
 
-        refreshGuidelines(view)
+        getConsumptionsAsyncTask().execute()
+
+        //refreshGuidelines(view)
 
         return view
     }
@@ -137,66 +160,144 @@ class PatientHomeFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        /*model.getDiary().observe(viewLifecycleOwner, Observer { result ->
-            // update total intake values of the day (guidelines)
-            dietaryGuidelines?.forEachIndexed { index, element ->
-                if (element.description.contains("Calorie"))
-                    dietaryGuidelines[index].amount = result.KCalTotal.toInt()
-                else if (element.description.contains("Vocht"))
-                    dietaryGuidelines[index].amount = (round(result.WaterTotal * 100) / 100)
-                else if (element.description.contains("Natrium"))
-                    dietaryGuidelines[index].amount = (round(result.SodiumTotal * 100) / 100)
-                else if (element.description.contains("Kalium"))
-                    dietaryGuidelines[index].amount = (round(result.CaliumTotal * 100) / 100)
-                else if (element.description.contains("Eiwit"))
-                    dietaryGuidelines[index].amount = (round(result.ProteinTotal * 100) / 100)
-                else if (element.description.contains("Vezel"))
-                    dietaryGuidelines[index].amount = (round(result.FiberTotal * 100) / 100)
-            }
-
-
-        })*/
-        /*fragment_home_btn_yesterday.setOnClickListener {
-            val sdf = SimpleDateFormat("yyyy-MM-dd")
-            val newDate = sdf.parse(getDay(mCurrentDate, -1))
-            mCurrentDate = sdf.format(newDate)
-
-            fragment_home_txt_day.text = mCurrentDate
-            refreshGuidelines()
-        }
-
-        fragment_home_btn_tomorrow.setOnClickListener {
-            val sdf = SimpleDateFormat("yyyy-MM-dd")
-            val newDate = sdf.parse(getDay(mCurrentDate, 1))
-            // if new date is NOT after Today
-            if (!newDate.after(Date())) {
-                mCurrentDate = sdf.format(newDate)
-
-                fragment_home_txt_day.text = mCurrentDate
-                refreshGuidelines()
-            }
-        }
-
-        fragment_home_txt_day.text = mCurrentDate*/
-
-
     }
 
-    fun refreshGuidelines(view: View)
+    fun refreshGuidelines()
     {
         if (patientData != null) {
-            GuidelinesHelper.initializeGuidelines(activity, view.fragment_patient_home_ll_guidelines, patientData.diets)
+            GuidelinesHelper.initializeGuidelines(activity, fragment_patient_home_ll_guidelines, patientData.diets)
         }
     }
 
-    fun getDay(date: String, daysAdded: Int): String {
-        Log.d("AAAAAA", "BBBBB")
-        var newDate = date
-        val c = Calendar.getInstance()
-        c.time = sdf.parse(newDate)
-        c.add(Calendar.DATE, daysAdded)
-        val resultdate = Date(c.timeInMillis)
-        newDate = sdf.format(resultdate)
-        return newDate
+    //region Get Consumptions
+    inner class getConsumptionsAsyncTask() : AsyncTask<Void, Void, ArrayList<ConsumptionResponse>>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            // Loader
+            loader.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): ArrayList<ConsumptionResponse>? {
+            return try {
+                foodRepository.getConsumptionsForDietaryByWeek(startDate = sdfDB.format(selectedFirstDayOfWeek),
+                    endDate = sdfDB.format(selectedLastDayOfWeek), patientId = patientData.patient.id)
+            } catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
+        }
+
+        override fun onPostExecute(result: ArrayList<ConsumptionResponse>?) {
+            super.onPostExecute(result)
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(activity, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
+            if (result == null) { Toast.makeText(activity, R.string.get_consumptions_fail, Toast.LENGTH_SHORT).show()
+                return }
+
+            // Feedback
+            //Toast.makeText(activity, R.string.fetched_consumptions, Toast.LENGTH_SHORT).show()
+
+            consumptions = result
+
+            supplements.clear()
+
+            // TODO: Should be based on amount of dietaryRestrictions
+            for (i in 0..5)
+                supplements.add(0)
+
+            consumptions.forEach {
+                supplements[0] += (it.food_meal_component.kcal * it.amount).roundToInt()
+                supplements[1] += (it.food_meal_component.water * it.amount).roundToInt()
+                supplements[2] += (it.food_meal_component.sodium * 1000 * it.amount).roundToInt()
+                supplements[3] += (it.food_meal_component.potassium * 1000 * it.amount).roundToInt()
+                supplements[4] += (it.food_meal_component.protein * it.amount).roundToInt()
+                supplements[5] += (it.food_meal_component.fiber * it.amount).roundToInt()
+            }
+
+            val calendar: Calendar = Calendar.getInstance()
+            val dayOfWeek: Int = calendar.get(Calendar.DAY_OF_WEEK)
+
+            supplements.forEachIndexed { index, element ->
+                supplements[index] = (element.toFloat()/dayOfWeek).roundToInt()
+            }
+
+            getDietaryManagementsAsyncTask().execute()
+        }
     }
+    //endregion
+
+    // Double in Main but this one is for the week and is an average
+    //region getDietary
+    inner class getDietaryManagementsAsyncTask() : AsyncTask<Void, Void, ArrayList<DietaryManagement>>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            // Loader
+            loader.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): ArrayList<DietaryManagement>? {
+            return dietaryRepository.getDietaryManagements(patientData.patient.id)
+        }
+
+        override fun onPostExecute(result: ArrayList<DietaryManagement>?) {
+            super.onPostExecute(result)
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guard
+            if (result == null) { Toast.makeText(activity, R.string.get_dietary_fail, Toast.LENGTH_SHORT).show()
+                return }
+
+            // Feedback
+            Toast.makeText(activity, R.string.fetched_dietary, Toast.LENGTH_SHORT).show()
+
+            val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
+
+            result.forEachIndexed { _, resultDietary ->
+                var index = 0
+                if (resultDietary.dietary_restriction.description.contains("Calorie"))
+                    index = 0
+                else if (resultDietary.dietary_restriction.description.contains("Vocht"))
+                    index = 1
+                else if (resultDietary.dietary_restriction.description.contains("Natrium"))
+                    index = 2
+                else if (resultDietary.dietary_restriction.description.contains("Kalium"))
+                    index = 3
+                else if (resultDietary.dietary_restriction.description.contains("Eiwit"))
+                    index = 4
+                else if (resultDietary.dietary_restriction.description.contains("Vezel"))
+                    index = 5
+
+                val dietaryGuideline =
+                    DietaryGuideline(
+                        id = resultDietary.id!!,
+                        description = resultDietary.dietary_restriction.description,
+                        plural = resultDietary.dietary_restriction.plural,
+                        minimum = resultDietary.minimum, maximum = resultDietary.maximum, amount = supplements[index],
+                        weightUnit = ""
+                    )
+
+                val weightUnit = weightUnits.find { it.id == resultDietary.dietary_restriction.weight_unit }
+                dietaryGuideline.weightUnit = weightUnit!!.short
+
+                dietaryGuidelines.add(dietaryGuideline)
+            }
+
+            // Save dietaries for editPage
+            patientData.diets = dietaryGuidelines
+
+            refreshGuidelines()
+        }
+    }
+    //endregion
 }

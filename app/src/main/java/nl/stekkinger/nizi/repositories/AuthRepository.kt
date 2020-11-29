@@ -3,9 +3,14 @@ package nl.stekkinger.nizi.repositories
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
+import nl.stekkinger.nizi.activities.ForgotPasswordActivity
 import nl.stekkinger.nizi.activities.LoginActivity
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.*
+import nl.stekkinger.nizi.classes.password.ForgotPasswordRequest
+import nl.stekkinger.nizi.classes.password.ForgotPasswordResponse
+import nl.stekkinger.nizi.classes.password.ResetPasswordRequest
+import nl.stekkinger.nizi.classes.password.ResetPasswordResponse
 
 class AuthRepository : Repository() {
 
@@ -34,4 +39,15 @@ class AuthRepository : Repository() {
     fun updateUser(user: User) : UserLogin? {
         return service.updateUser(authHeader, user).execute().body()
     }
+
+    // Forgot password
+    fun forgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse? {
+        return service.forgotPassword(forgotPasswordRequest).execute().body()
+    }
+
+    // Reset password
+    fun resetPassword(resetPasswordRequest: ResetPasswordRequest): ResetPasswordResponse? {
+        return service.resetPassword(resetPasswordRequest).execute().body()
+    }
+
 }

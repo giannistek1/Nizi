@@ -5,7 +5,7 @@
     <!-- Sample data -->
     <string name="sample_first_name">Jaap</string>
     <string name="sample_last_name">van Steen</string>
-    <string name="sample_dob">1995-01-01</string>
+    <string name="sample_dob">01-01-1990</string>
     <string name="sample_email">jaapvansteen@hotmail.com</string>
     <string name="sample_password">Welkom123</string>
 
@@ -34,9 +34,17 @@
     <string name="username">Gebruikersnaam</string>
     <string name="password">Wachtwoord</string>
     <string name="password_forgotten">Wachtwoord vergeten</string>
+    <string name="password_forgotten_capitalized">WACHTWOORD VERGETEN</string>
     <string name="username_cant_be_empty">Gebruikersnaam mag niet leeg zijn</string>
     <string name="password_cant_be_empty">Wachtwoord mag niet leeg zijn</string>
     <string name="credentials_wrong">Gebruikersnaam of wachtwoord klopt niet</string>
+    <string name="send">Verstuur</string>
+    <string name="reset_password">Reset wachtwoord</string>
+    <string name="reset">Reset</string>
+    <string name="email_cant_be_empty">Email mag niet leeg zijn</string>
+    <string name="mail_sent">Mail verzonden</string>
+    <string name="mail_sent_fail">Mail verzenden mislukt</string>
+
 
     <!-- contact -->
     <string name="contact">Contact</string>
@@ -139,11 +147,13 @@
     <string name="week">Week</string>
     <string name="trends">Trends</string>
     <string name="fetched_weight_units">Gewichtseenheden opgehaald</string>
-    <string name="get_weight_unit_fail">Gewichtseenheden opgehaald</string>
+    <string name="get_weight_unit_fail">Gewichtseenheden ophalen mislukt</string>
     <string name="fetched_patient">Patiënt opgehaald</string>
     <string name="get_patient_fail">Patiënt ophalen mislukt</string>
     <string name="fetched_dietary">Richtlijnen opgehaald</string>
     <string name="get_dietary_fail">Richtlijnen ophalen mislukt</string>
+    <string name="fetched_consumptions">Consumpties opgehaald</string>
+    <string name="get_consumptions_fail">Consumpties ophalen mislukt</string>
 
     <!-- Patient profile -->
     <string name="profile">Profiel</string>
@@ -160,7 +170,7 @@
     <string name="last_name">Achternaam</string>
     <string name="date_of_birth_req">Geboortedatum*</string>
     <string name="date_of_birth">Geboortedatum</string>
-    <string name="date_of_birth_format">YYYY-MM-DD</string>
+    <string name="date_of_birth_format">DD-MM-YYYY</string>
     <string name="weight_req">Gewicht*</string>
     <string name="weight">Gewicht</string>
     <string name="gender">Geslacht*</string>
@@ -276,7 +286,4 @@
         <item>Vezelbeperking</item> <!-- new -->
         <item>Vezelverrijking</item>
     </string-array>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

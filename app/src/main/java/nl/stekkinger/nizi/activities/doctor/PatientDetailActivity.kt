@@ -11,6 +11,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_patient_detail.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -18,7 +19,7 @@ import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.classes.patient.PatientItem
-import nl.stekkinger.nizi.classes.patient.PatientLogin
+import nl.stekkinger.nizi.classes.patient.PatientShort
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.fragments.doctor.PatientDiaryFragment
@@ -29,11 +30,10 @@ import nl.stekkinger.nizi.repositories.PatientRepository
 import nl.stekkinger.nizi.repositories.WeightUnitRepository
 
 
-class PatientDetailActivity : AppCompatActivity() {
+class PatientDetailActivity : BaseActivity() {
 
     private val patientRepository: PatientRepository = PatientRepository()
     private val weightUnitRepository: WeightUnitRepository = WeightUnitRepository()
-    private val dietaryRepository: DietaryRepository = DietaryRepository()
 
     // For activity result
     private val EDIT_PATIENT_REQUEST_CODE = 0
@@ -63,7 +63,7 @@ class PatientDetailActivity : AppCompatActivity() {
         val patientItem = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientItem
 
         patientData = PatientData(
-            patient = PatientLogin(id = patientItem.patient_id, date_of_birth = patientItem.date_of_birth,
+            patient = PatientShort(id = patientItem.patient_id, date_of_birth = patientItem.date_of_birth,
                 gender = patientItem.gender, doctor = patientItem.doctor_id),
 
             user = User(first_name = patientItem.first_name, last_name = patientItem.last_name,
@@ -73,6 +73,9 @@ class PatientDetailActivity : AppCompatActivity() {
         )
 
         activity_patient_detail_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
+
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(this)) return
 
         getWeightUnitsAsyncTask().execute()
     }
@@ -159,61 +162,6 @@ class PatientDetailActivity : AppCompatActivity() {
 
             weightUnits = result
 
-            getDietaryManagementsAsyncTask().execute()
-        }
-    }
-    //endregion
-
-    // Double in Main but this one is for the week and is an average
-    //region getDietary
-    inner class getDietaryManagementsAsyncTask() : AsyncTask<Void, Void, ArrayList<DietaryManagement>>()
-    {
-        override fun onPreExecute() {
-            super.onPreExecute()
-
-            // Loader
-            loader.visibility = View.VISIBLE
-        }
-
-        override fun doInBackground(vararg p0: Void?): ArrayList<DietaryManagement>? {
-            return dietaryRepository.getDietaryManagements(patientData.patient.id)
-        }
-
-        override fun onPostExecute(result: ArrayList<DietaryManagement>?) {
-            super.onPostExecute(result)
-
-            // Loader
-            loader.visibility = View.GONE
-
-            // Guard
-            if (result == null) { Toast.makeText(baseContext, R.string.get_dietary_fail, Toast.LENGTH_SHORT).show()
-                return }
-
-            Toast.makeText(baseContext, R.string.fetched_dietary, Toast.LENGTH_SHORT).show()
-
-            val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
-
-            result.forEachIndexed { _, resultDietary ->
-
-                val dietaryGuideline =
-                    DietaryGuideline(
-                        id = resultDietary.id!!,
-                        description = resultDietary.dietary_restriction.description,
-                        plural = resultDietary.dietary_restriction.plural,
-                        minimum = resultDietary.minimum, maximum = resultDietary.maximum, amount = 0,
-                        weightUnit = ""
-                    )
-
-                val weightUnit = weightUnits.find { it.id == resultDietary.dietary_restriction.weight_unit }
-                dietaryGuideline.weightUnit = weightUnit!!.short
-
-                dietaryGuidelines.add(dietaryGuideline)
-            }
-
-            // Save dietaries for editPage
-            patientData.diets = dietaryGuidelines
-
-            // get patient
             getPatientAsyncTask().execute()
         }
     }
@@ -247,7 +195,7 @@ class PatientDetailActivity : AppCompatActivity() {
 
             // Make PatientData because patient does not have descriptions of dietaryRestrictions
             patientData.user = result.user!!
-            patientData.patient = PatientLogin(
+            patientData.patient = PatientShort(
                 id = result.id!!,
                 gender = result.gender,
                 date_of_birth = result.date_of_birth,

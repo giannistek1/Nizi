@@ -5,7 +5,7 @@ import nl.stekkinger.nizi.classes.login.User
 import java.io.Serializable
 
 data class PatientData (
-    var patient: PatientLogin,
+    var patient: PatientShort,
     var user: User,
     var diets: ArrayList<DietaryGuideline>
 ) : Serializable

@@ -3,6 +3,7 @@ package nl.stekkinger.nizi.activities.doctor
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
@@ -11,25 +12,34 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import kotlinx.android.synthetic.main.activity_add_patient.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.patient.PatientData
+import java.text.SimpleDateFormat
+import java.util.*
 
-class EditPatientActivity : AppCompatActivity() {
+class EditPatientActivity : BaseActivity() {
 
     private var TAG = "EditPatient"
 
     // For activity result
     private val REQUEST_CODE = 0
 
-    private lateinit var loader: View
-
     private var doctorId: Int? = null
     private lateinit var patientData: PatientData
+    private lateinit var date: Date
 
+    val sdf = GeneralHelper.getFeedbackDateFormat()
+    val sdfDB = GeneralHelper.getCreateDateFormat()
+
+    private lateinit var loader: View
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Setup UI Same layout as add patient
@@ -42,10 +52,34 @@ class EditPatientActivity : AppCompatActivity() {
         // Fill patient
         patientData = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientData
 
+
         activity_add_patient_et_firstName.setText(patientData.user.first_name)
         activity_add_patient_et_lastName.setText(patientData.user.last_name)
-        activity_add_patient_et_dob.setText(patientData.patient.date_of_birth)
+
+        date = SimpleDateFormat("yyyy-MM-dd").parse(patientData.patient.date_of_birth)
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        activity_add_patient_et_dob.setText("${sdf.format(date)}")
         activity_add_patient_et_email.setText(patientData.user.email)
+
+        // Date of Birth
+        activity_add_patient_et_dob.setOnClickListener {
+
+            if (activity_add_patient_dp.visibility == View.VISIBLE)
+                activity_add_patient_dp.visibility = View.GONE
+            else
+                activity_add_patient_dp.visibility = View.VISIBLE
+        }
+
+        // Date of Birth
+        activity_add_patient_dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+        activity_add_patient_dp.setOnDateChangedListener { _, mYear, mMonth, mDay ->
+
+            calendar.set(mYear, mMonth, mDay, 0, 0)
+            date = calendar.time
+
+            activity_add_patient_et_dob.setText("${sdf.format(date)}")
+        }
 
         // Hide password
         activity_add_patient_txt_password.visibility = View.GONE
@@ -122,19 +156,4 @@ class EditPatientActivity : AppCompatActivity() {
             finish()
         }
     }
-
-    override fun finish() {
-
-        super.finish()
-    }
-
-    //region Hides Keyboard on touch
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-        return super.dispatchTouchEvent(ev)
-    }
-    //endregion
 }

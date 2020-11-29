@@ -60,7 +60,6 @@ class PatientFeedbackFragment : Fragment() {
         view.fragment_patient_feedback_txt_adviceFor.text = getString(R.string.advice_from, patientName)
 
         view.fragment_patient_feedback_btn_addAdvice.setOnClickListener {
-
             hideKeyboard()
 
             // Guard
@@ -75,7 +74,8 @@ class PatientFeedbackFragment : Fragment() {
                 doctor = patientData.patient.doctor, date = sdf.format(Date())
             )
 
-            addFeedbackAsyncTask().execute()
+            if (addFeedbackAsyncTask().status != AsyncTask.Status.RUNNING)
+                addFeedbackAsyncTask().execute()
         }
 
         // Setup RV
@@ -83,6 +83,9 @@ class PatientFeedbackFragment : Fragment() {
         mFeedbackRV.layoutManager = LinearLayoutManager(activity)
         adapter = ConversationAdapter()
         mFeedbackRV.adapter = adapter
+
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(context!!)) return view
 
         // Get feedback
         getConversationsAsyncTask().execute()
@@ -185,6 +188,7 @@ class PatientFeedbackFragment : Fragment() {
         imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
+    // For Bundle
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context

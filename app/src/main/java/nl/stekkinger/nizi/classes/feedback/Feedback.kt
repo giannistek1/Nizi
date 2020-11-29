@@ -1,7 +1,7 @@
 package nl.stekkinger.nizi.classes.feedback
 
 import nl.stekkinger.nizi.classes.doctor.DoctorShort
-import nl.stekkinger.nizi.classes.patient.PatientLogin
+import nl.stekkinger.nizi.classes.patient.PatientShort
 import java.io.Serializable
 import java.util.*
 
@@ -11,7 +11,7 @@ data class Feedback(
     val comment: String,
     val date: Date,
     val is_read: Boolean = false,
-    val patient: PatientLogin,
+    val patient: PatientShort,
     val doctorShort: DoctorShort,
 
     // Unimportant stuff

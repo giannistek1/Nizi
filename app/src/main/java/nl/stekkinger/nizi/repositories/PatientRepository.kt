@@ -6,7 +6,7 @@ class PatientRepository : Repository() {
 
     private val TAG = "PatientRepository"
 
-    fun registerPatient(patient: PatientLogin) : Patient?
+    fun registerPatient(patient: PatientShort) : Patient?
     {
         return service.registerPatient(authHeader, patient).execute().body()
     }
@@ -28,7 +28,7 @@ class PatientRepository : Repository() {
         return service.updatePatientUserId(authHeader, patientId, PatientUpdateUserIdRequest(userId)).execute().body()
     }
 
-    fun updatePatient(patient: PatientLogin) : Patient?
+    fun updatePatient(patient: PatientShort) : Patient?
     {
         return service.updatePatient(authHeader, patient.id, patient).execute().body()
     }

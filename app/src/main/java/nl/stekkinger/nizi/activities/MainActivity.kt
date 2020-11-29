@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.fragments.HomeFragment
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.*
+import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.doctor.Doctor
@@ -25,20 +26,16 @@ import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
-import nl.stekkinger.nizi.repositories.AuthRepository
-import nl.stekkinger.nizi.repositories.DietaryRepository
-import nl.stekkinger.nizi.repositories.DoctorRepository
-import nl.stekkinger.nizi.repositories.WeightUnitRepository
+import nl.stekkinger.nizi.repositories.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private var TAG = "Main"
 
     // Repositories
     private val authRepository: AuthRepository = AuthRepository()
     private val weightUnitRepository: WeightUnitRepository = WeightUnitRepository()
-    private val dietaryRepository: DietaryRepository = DietaryRepository()
     private val doctorRepository: DoctorRepository = DoctorRepository()
 
     private lateinit var user: UserLogin                                // Userdata
@@ -73,8 +70,36 @@ class MainActivity : AppCompatActivity() {
         // Get User
         user = GeneralHelper.getUser()
 
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(this)) return
+
         getWeightUnits().execute()
+        getDoctorAsyncTask().execute()
     }
+
+    //region Toolbar
+    // Inflates toolbar
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_toolbar, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId)
+        {
+            R.id.menu_toolbar_logout -> {
+                authRepository.logout(this, this)
+            }
+            R.id.confirm_btn -> {
+                return false
+            }
+            R.id.back_btn -> {
+                return false
+            }
+        }
+        return true
+    }
+    //endregion
 
     //region Bottom Nav
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener {  menuItem ->
@@ -109,30 +134,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
         false
-    }
-    //endregion
-
-    //region Toolbar
-    // Inflates toolbar
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_toolbar, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId)
-        {
-            R.id.menu_toolbar_logout -> {
-                authRepository.logout(this, this)
-            }
-            R.id.confirm_btn -> {
-                return false
-            }
-            R.id.back_btn -> {
-                return false
-            }
-        }
-        return true
     }
     //endregion
 
@@ -179,12 +180,59 @@ class MainActivity : AppCompatActivity() {
 
             weightUnits = result
 
-            getDietaryAsyncTask().execute()
+            // Checks if fragment state is null, then start with homeFragment
+            if (savedInstanceState == null) {
+                val fragment = HomeFragment()
+
+                val bundle = Bundle()
+                bundle.putSerializable(GeneralHelper.EXTRA_DIETARY, dietaryGuidelines)
+                fragment.arguments = bundle
+
+                supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id, fragment,
+                    fragment.javaClass.simpleName).commit()
+            }
         }
     }
     //endregion
 
-    //region Get Dietary
+    /*//region Get Consumptions
+    inner class getConsumptionsAsyncTask() : AsyncTask<Void, Void, ArrayList<ConsumptionResponse>>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            // Loader
+            loader.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): ArrayList<ConsumptionResponse>? {
+            return try {
+                foodRepository.getConsumptionsForDietary()
+            } catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
+        }
+
+        override fun onPostExecute(result: ArrayList<ConsumptionResponse>?) {
+            super.onPostExecute(result)
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
+            if (result == null) { Toast.makeText(baseContext, R.string.get_weight_unit_fail, Toast.LENGTH_SHORT).show()
+                return }
+
+            // Feedback
+            Toast.makeText(baseContext, R.string.fetched_weight_units, Toast.LENGTH_SHORT).show()
+        }
+    }
+    //endregion*/
+
+    /*//region Get Dietary
     inner class getDietaryAsyncTask() : AsyncTask<Void, Void, ArrayList<DietaryManagement>>()
     {
         override fun onPreExecute() {
@@ -220,12 +268,12 @@ class MainActivity : AppCompatActivity() {
 
             result.forEachIndexed { index, resultDietary ->
                 val dietaryGuideline = DietaryGuideline(
-                        id = resultDietary.id!!,
-                        description = resultDietary.dietary_restriction.description,
-                        plural = resultDietary.dietary_restriction.plural,
-                        minimum = resultDietary.minimum, maximum = resultDietary.maximum, amount = 0,
-                        weightUnit = ""
-                    )
+                    id = resultDietary.id!!,
+                    description = resultDietary.dietary_restriction.description,
+                    plural = resultDietary.dietary_restriction.plural,
+                    minimum = resultDietary.minimum, maximum = resultDietary.maximum, amount = 0,
+                    weightUnit = ""
+                )
 
                 val weightUnit = weightUnits.find { it.id == resultDietary.dietary_restriction.weight_unit }
                 dietaryGuideline.weightUnit = weightUnit!!.short
@@ -248,9 +296,9 @@ class MainActivity : AppCompatActivity() {
             getDoctorAsyncTask().execute()
         }
     }
-    //endregion
+    //endregion */
 
-    //region Get Doctor
+    //region Get Doctor (One time for Feedback)
     inner class getDoctorAsyncTask() : AsyncTask<Void, Void, Doctor>()
     {
         override fun onPreExecute() {

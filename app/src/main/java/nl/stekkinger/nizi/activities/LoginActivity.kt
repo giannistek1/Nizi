@@ -6,12 +6,17 @@ import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableString
+import android.text.TextPaint
 import android.text.TextWatcher
+import android.text.style.URLSpan
+import android.text.util.Linkify
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
@@ -19,6 +24,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.DoctorMainActivity
+import nl.stekkinger.nizi.activities.doctor.PatientDetailActivity
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.LoginRequest
@@ -26,7 +32,7 @@ import nl.stekkinger.nizi.classes.login.LoginResponse
 import nl.stekkinger.nizi.repositories.AuthRepository
 
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
 
     private var TAG = "Login"
 
@@ -47,6 +53,12 @@ class LoginActivity : AppCompatActivity() {
         // Show app title by hiding the bar overlayed on the toolbar
         toolbar_bar.visibility = View.GONE
         loader = activity_login_loader
+        Linkify.addLinks(activity_login_txt_nierstichtingUrl, Linkify.WEB_URLS)
+        Linkify.addLinks(activity_login_txt_nierstichtingPhonenumber, Linkify.PHONE_NUMBERS)
+        Linkify.addLinks(activity_login_txt_nierstichtingEmail, Linkify.EMAIL_ADDRESSES)
+        activity_login_txt_nierstichtingUrl.removeLinksUnderline()
+        activity_login_txt_nierstichtingPhonenumber.removeLinksUnderline()
+        activity_login_txt_nierstichtingEmail.removeLinksUnderline()
 
         activity_login_et_username.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -69,6 +81,11 @@ class LoginActivity : AppCompatActivity() {
                     activity_login_btn_login)
             }
         })
+
+        activity_login_txt_password_forgotten.setOnClickListener {
+            val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
+            startActivity(intent)
+        }
 
         activity_login_btn_login.setOnClickListener {
             // Give EditTexts so you can change them
@@ -99,7 +116,13 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun toggleLoginButtonIfNotEmpty(usernameET: EditText, passwordET: EditText, loginButton: Button) {
-        loginButton.isEnabled = (usernameET.text.toString().length > 3 && passwordET.text.toString().length > 3)
+        if (usernameET.text.toString().length > 3 && passwordET.text.toString().length > 3) {
+            loginButton.isEnabled = true
+            loginButton.alpha = 1f
+        } else {
+            loginButton.isEnabled = false
+            loginButton.alpha = 0.2f
+        }
     }
 
     private fun doLogin(usernameET: EditText, passwordET: EditText) {
@@ -117,11 +140,25 @@ class LoginActivity : AppCompatActivity() {
             loginAsyncTask(loginRequest).execute()
     }
 
+    fun TextView.removeLinksUnderline() {
+        val spannable = SpannableString(text)
+        for (u in spannable.getSpans(0, spannable.length, URLSpan::class.java)) {
+            spannable.setSpan(object : URLSpan(u.url) {
+                override fun updateDrawState(ds: TextPaint) {
+                    super.updateDrawState(ds)
+                    ds.isUnderlineText = false
+                }
+            }, spannable.getSpanStart(u), spannable.getSpanEnd(u), 0)
+        }
+        text = spannable
+    }
+
     //region Login
     inner class loginAsyncTask(private val loginRequest: LoginRequest) : AsyncTask<Void, Void, LoginResponse>()
     {
         override fun onPreExecute() {
             super.onPreExecute()
+
             // Loader
             loader.visibility = View.VISIBLE
         }
@@ -139,6 +176,7 @@ class LoginActivity : AppCompatActivity() {
         // Result must be nullable
         override fun onPostExecute(result: LoginResponse?) {
             super.onPostExecute(result)
+
             // Loader
             loader.visibility = View.INVISIBLE
 
@@ -171,16 +209,6 @@ class LoginActivity : AppCompatActivity() {
 
             showNextActivity()
         }
-    }
-    //endregion
-
-    //region Hides Keyboard on touch
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-        return super.dispatchTouchEvent(ev)
     }
     //endregion
 }

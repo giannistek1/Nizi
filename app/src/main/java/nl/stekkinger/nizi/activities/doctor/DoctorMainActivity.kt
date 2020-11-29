@@ -5,6 +5,8 @@ import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.MotionEvent
@@ -17,18 +19,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_doctor_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.adapters.PatientAdapter
 import nl.stekkinger.nizi.adapters.PatientAdapterListener
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.patient.PatientItem
-import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
-import java.lang.Exception
+import java.util.*
+import kotlin.collections.ArrayList
 
 
-class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener  {
+class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
 
     private var TAG = "DoctorMain"
 
@@ -44,7 +48,8 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
     private lateinit var user: UserLogin
 
-    var patientList = ArrayList<PatientItem>()
+    private var patientList: MutableList<PatientItem> = arrayListOf()
+    private var filteredList: MutableList<PatientItem> = arrayListOf()
     private var doctorId: Int = 1
 
     private lateinit var loader: View
@@ -63,6 +68,16 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         // Get User and doctorId
         user = GeneralHelper.getUser()
         doctorId = GeneralHelper.getDoctorId()
+
+        activity_doctor_main_et_searchPatients.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filter(activity_doctor_main_et_searchPatients.text.toString())
+            }
+        })
 
         // Add patient button
         activity_doctor_main_btn_addPatient.setOnClickListener {
@@ -128,12 +143,34 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
         }
 
         // Create adapter (data)
-        activity_doctor_main_rv.adapter = PatientAdapter(this, patientList, listener)
+        activity_doctor_main_rv.adapter = PatientAdapter(this, filteredList, listener)
 
         // Create Linear Layout Manager
         activity_doctor_main_rv.layoutManager = LinearLayoutManager(this)
     }
 
+    // region Filter
+    fun filter(text: String) {
+        var text = text
+
+        filteredList.clear()
+
+        if (text.isEmpty()) {
+            filteredList.addAll(patientList)
+        } else {
+            text = text.toLowerCase(Locale.getDefault())
+            for (item in patientList) {
+                if (item.name.toLowerCase(Locale.getDefault()).contains(text)) {
+                    filteredList.add(item)
+                }
+            }
+        }
+        if (activity_doctor_main_rv.adapter != null)
+            activity_doctor_main_rv.adapter!!.notifyDataSetChanged()
+    }
+    //endregion
+
+    //region getPatients
     inner class getPatientsForDoctorAsyncTask() : AsyncTask<Void, Void, ArrayList<Patient>>()
     {
         override fun onPreExecute() {
@@ -168,6 +205,7 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
 
             // Clear
             patientList.clear()
+            filteredList.clear()
 
             // TODO: Change forEach into for so you can continue instead of return
             // Fill
@@ -190,9 +228,12 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
                 patientList.add(pi)
             }
 
+            filteredList.addAll(patientList)
+
             setupRecyclerView()
         }
     }
+    //endregion
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -211,16 +252,6 @@ class DoctorMainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListen
     private fun Context.hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-    //endregion
-
-    //region Hides Keyboard on touch
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-        return super.dispatchTouchEvent(ev)
     }
     //endregion
 }

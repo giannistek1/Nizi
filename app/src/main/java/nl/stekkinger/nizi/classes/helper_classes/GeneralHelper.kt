@@ -1,9 +1,13 @@
 package nl.stekkinger.nizi.classes.helper_classes
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.google.gson.Gson
 import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
@@ -68,14 +72,25 @@ object GeneralHelper {
         return SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     }
 
+    @SuppressLint("NewApi")
     fun hasInternetConnection(context: Context) : Boolean
     {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-        val hasConnection = connectivityManager?.activeNetworkInfo?.isConnectedOrConnecting() ?: false
-
-        if (!hasConnection)
-            Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
-
-        return hasConnection
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    return true
+                }
+            }
+        }
+        Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
+        return false
     }
 }
