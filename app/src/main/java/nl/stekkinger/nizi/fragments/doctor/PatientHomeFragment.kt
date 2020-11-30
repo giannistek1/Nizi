@@ -209,12 +209,12 @@ class PatientHomeFragment : Fragment() {
                 supplements.add(0)
 
             consumptions.forEach {
-                supplements[0] += (it.food_meal_component.kcal * it.amount).roundToInt()
-                supplements[1] += (it.food_meal_component.water * it.amount).roundToInt()
-                supplements[2] += (it.food_meal_component.sodium * 1000 * it.amount).roundToInt()
-                supplements[3] += (it.food_meal_component.potassium * 1000 * it.amount).roundToInt()
-                supplements[4] += (it.food_meal_component.protein * it.amount).roundToInt()
-                supplements[5] += (it.food_meal_component.fiber * it.amount).roundToInt()
+                supplements[0] += (it.food_meal_component.kcal).roundToInt()
+                supplements[1] += (it.food_meal_component.water).roundToInt()
+                supplements[2] += (it.food_meal_component.sodium * 1000).roundToInt()
+                supplements[3] += (it.food_meal_component.potassium * 1000).roundToInt()
+                supplements[4] += (it.food_meal_component.protein).roundToInt()
+                supplements[5] += (it.food_meal_component.fiber).roundToInt()
             }
 
             val calendar: Calendar = Calendar.getInstance()

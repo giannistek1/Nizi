@@ -185,7 +185,7 @@ object GuidelinesHelper {
             progressBar.isIndeterminate = false
 
             // if ate too much -> red progress
-            if (progress >= 100 && dietaryGuideline.maximum != 0)
+            if (progress >= 100 && dietaryGuideline.maximum != 0  && dietaryGuideline.amount > dietaryGuideline.maximum)
                 progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar_red)
             else // green progress
                 progressBar.progressDrawable = ContextCompat.getDrawable(cont, R.drawable.circular_progress_bar)
@@ -205,7 +205,7 @@ object GuidelinesHelper {
                 feedbackTextView.setTextColor(getColor(cont, R.color.lime))
             }
             // If has maximum and bar more than full
-            else if (progress >= 100 && dietaryGuideline.maximum > 0) {
+            else if (progress >= 100 && dietaryGuideline.maximum > 0 && dietaryGuideline.amount > dietaryGuideline.maximum) {
                 feedbackTextView.text = cont.getString(R.string.feedback_negative, dietaryGuideline.description.toLowerCase(Locale.ROOT))
                 feedbackTextView.setTextColor(getColor(cont, R.color.red))
             }
