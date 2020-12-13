@@ -4,152 +4,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="2dp"
-    app:cardCornerRadius="2dp">
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp">
 
-<!--    <RelativeLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@color/lightGray">-->
+    <LinearLayout
+        android:background="@color/lightGray"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/marginSmall"
+        android:orientation="horizontal">
 
+        <TextView
+            android:id="@+id/amount"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textSizeNormal"
+            tools:text="1x" />
 
-<!--        <RelativeLayout-->
-<!--            android:id="@+id/food_info"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_marginStart="5dp"-->
-<!--            android:layout_toEndOf="@+id/food_image"-->
-<!--            android:layout_toStartOf="@+id/btn_add"-->
-<!--            android:orientation="horizontal">-->
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:layout_marginStart="@dimen/marginSmall"
+            android:maxWidth="210dp"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textSizeNormal"
+            tools:text="Title" />
 
-<!--            <TextView-->
-<!--                android:id="@+id/title"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="50dp"-->
-<!--                android:layout_alignParentLeft="true"-->
-<!--                android:maxLines="1"-->
-<!--                android:textColor="@android:color/black"-->
-<!--                android:textSize="18sp"-->
-<!--                android:textStyle="bold"-->
-<!--                tools:text="Title" />-->
-
-<!--            <TextView-->
-<!--                android:id="@+id/summary"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:maxLines="1"-->
-<!--                android:textSize="18sp"-->
-<!--                android:layout_marginEnd="70dp"-->
-<!--                android:layout_alignParentRight="true"-->
-<!--                tools:text="Summary" />-->
-
-<!--        </RelativeLayout>-->
-
-<!--&lt;!&ndash;        <ImageButton&ndash;&gt;-->
-<!--&lt;!&ndash;            android:id="@+id/btn_edit"&ndash;&gt;-->
-<!--&lt;!&ndash;            style="?android:attr/borderlessButtonStyle"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_width="25dp"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_height="25dp"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_row="4"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_column="0"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_toStartOf="@+id/btn_delete"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:src="@drawable/ic_edit"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:contentDescription="add button" />&ndash;&gt;-->
+        <TextView
+            android:id="@+id/portion_size"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/textSizeNormal"
+            tools:text="0 gr" />
 
 <!--        <ImageButton-->
 <!--            android:id="@+id/btn_delete"-->
 <!--            style="?android:attr/borderlessButtonStyle"-->
-<!--            android:layout_width="30dp"-->
+<!--            android:layout_width="20dp"-->
+<!--            android:layout_height="20dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:src="@drawable/ic_delete"-->
+<!--            android:contentDescription="@string/content_delete" />-->
+
+    </LinearLayout>
+
+
+<!--    <LinearLayout-->
+<!--        android:layout_marginTop="200dp"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:weightSum="12">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/title"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="10dp"-->
+<!--            android:layout_alignParentLeft="true"-->
+<!--            android:maxLines="1"-->
+<!--            android:layout_weight="8"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            tools:text="Title" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/summary"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:maxLines="1"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_weight="3"-->
+<!--            android:textSize="18sp"-->
+<!--            android:layout_marginEnd="70dp"-->
+<!--            tools:text="Summary" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/btn_delete"-->
+<!--            android:layout_width="0dp"-->
+<!--            style="?android:attr/borderlessButtonStyle"-->
 <!--            android:layout_height="30dp"-->
-<!--            android:layout_row="4"-->
+<!--            android:layout_weight="1"-->
 <!--            android:layout_column="0"-->
-<!--            android:layout_alignParentRight="true"-->
 <!--            android:src="@drawable/ic_delete"-->
 <!--            android:contentDescription="add button" />-->
 
-<!--    </RelativeLayout>-->
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:weightSum="12">
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_alignParentLeft="true"
-                        android:maxLines="1"
-                        android:layout_weight="8"
-                        android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        tools:text="Title" />
-
-                    <TextView
-                        android:id="@+id/summary"
-                        android:layout_height="wrap_content"
-                        android:maxLines="1"
-                        android:layout_width="0dp"
-                        android:layout_weight="3"
-                        android:textSize="18sp"
-                        android:layout_marginEnd="70dp"
-                        tools:text="Summary" />
-                <ImageButton
-                    android:id="@+id/btn_delete"
-                    android:layout_width="0dp"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_height="30dp"
-                    android:layout_weight="1"
-                    android:layout_column="0"
-                    android:src="@drawable/ic_delete"
-                    android:contentDescription="add button" />
-
-<!--        <TextView-->
-<!--            android:id="@+id/activity_add_food"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:background="@color/white"-->
-<!--            android:gravity="center"-->
-<!--            android:paddingLeft="20dp"-->
-<!--            android:paddingTop="10dp"-->
-<!--            android:paddingBottom="10dp"-->
-<!--            android:text="voeding"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="14sp" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/activity_add_meal"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:background="@color/white"-->
-<!--            android:gravity="center"-->
-<!--            android:paddingLeft="20dp"-->
-<!--            android:paddingTop="10dp"-->
-<!--            android:paddingBottom="10dp"-->
-<!--            android:text="Maaltijden"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="14sp" />-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/activity_favorites"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_weight="1"-->
-<!--            android:background="@color/white"-->
-<!--            android:gravity="center"-->
-<!--            android:paddingLeft="20dp"-->
-<!--            android:paddingTop="10dp"-->
-<!--            android:paddingBottom="10dp"-->
-<!--            android:text="Favorieten"-->
-<!--            android:textColor="@color/black"-->
-<!--            android:textSize="14sp" />-->
-
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
 </androidx.cardview.widget.CardView>

@@ -66,7 +66,7 @@
                     android:id="@+id/sunrise"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/marginSmall"
                     android:contentDescription="@string/content_sunrise"
                     android:src="@drawable/ic_sunrise" />
 
@@ -74,9 +74,9 @@
                     android:id="@+id/diary_breakfast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="@dimen/marginSmall"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSmall"
                     android:layout_toEndOf="@+id/sunrise"
                     android:text="@string/breakfast"
                     android:textColor="@color/black"
@@ -86,8 +86,8 @@
                     android:id="@+id/diary_add_breakfast"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSmall"
                     android:layout_toStartOf="@+id/diary_add_breakfast_btn"
                     android:text="@string/add"
                     android:textColor="@color/black"
@@ -114,7 +114,6 @@
                     android:layout_below="@+id/diary_breakfast"
                     android:layout_marginTop="2dp"
                     android:background="@android:color/white"
-                    android:padding="2dp"
                     android:scrollbars="vertical" />
 
             </RelativeLayout>
@@ -130,7 +129,7 @@
                     android:id="@+id/sun"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/marginSmall"
                     android:contentDescription="@string/content_sun"
                     android:src="@drawable/ic_sun" />
 
@@ -138,9 +137,9 @@
                     android:id="@+id/diary_lunch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="@dimen/marginSmall"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSmall"
                     android:layout_toEndOf="@+id/sun"
                     android:text="@string/lunch"
                     android:textColor="@color/black"
@@ -150,8 +149,8 @@
                     android:id="@+id/diary_add_lunch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSmall"
                     android:layout_toStartOf="@+id/diary_add_lunch_btn"
                     android:text="@string/add"
                     android:textColor="@color/black"
@@ -164,9 +163,9 @@
                     android:layout_height="50dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/marginSmall"
                     android:layout_marginTop="1dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="@dimen/marginSmall"
                     android:contentDescription="@string/content_add_lunch"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_add_xs" />
@@ -178,7 +177,6 @@
                     android:layout_below="@+id/diary_lunch"
                     android:layout_marginTop="2dp"
                     android:background="@android:color/white"
-                    android:padding="2dp"
                     android:scrollbars="vertical" />
 
             </RelativeLayout>
@@ -194,7 +192,7 @@
                     android:id="@+id/sunset"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/marginSmall"
                     android:contentDescription="@string/content_sunset"
                     android:src="@drawable/ic_sunset" />
 
@@ -202,9 +200,9 @@
                     android:id="@+id/diary_dinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="@dimen/marginSmall"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSmall"
                     android:layout_toEndOf="@+id/sunset"
                     android:text="@string/dinner"
                     android:textColor="@color/black"
@@ -214,8 +212,8 @@
                     android:id="@+id/diary_add_dinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSmall"
                     android:layout_toStartOf="@+id/diary_add_dinner_btn"
                     android:text="@string/add"
                     android:textColor="@color/black"
@@ -228,9 +226,9 @@
                     android:layout_height="50dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/marginSmall"
                     android:layout_marginTop="1dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="@dimen/marginSmall"
                     android:contentDescription="@string/content_add_dinner"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_add_xs" />
@@ -242,7 +240,6 @@
                     android:layout_below="@+id/diary_dinner"
                     android:layout_marginTop="2dp"
                     android:background="@android:color/white"
-                    android:padding="2dp"
                     android:scrollbars="vertical" />
 
             </RelativeLayout>
@@ -258,7 +255,7 @@
                     android:id="@+id/snack"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/marginSmall"
                     android:contentDescription="@string/content_sun"
                     android:src="@drawable/ic_snack" />
 
@@ -266,9 +263,9 @@
                     android:id="@+id/diary_snack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="@dimen/marginSmall"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSmall"
                     android:layout_toEndOf="@+id/snack"
                     android:text="@string/snack"
                     android:textColor="@color/black"
@@ -278,8 +275,8 @@
                     android:id="@+id/diary_add_snack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSmall"
                     android:layout_toStartOf="@+id/diary_add_snack_btn"
                     android:text="@string/add"
                     android:textColor="@color/black"
@@ -292,9 +289,9 @@
                     android:layout_height="50dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="@dimen/marginSmall"
                     android:layout_marginTop="1dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="@dimen/marginSmall"
                     android:contentDescription="@string/content_add_snack"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_add_xs" />
@@ -306,7 +303,6 @@
                     android:layout_below="@+id/diary_snack"
                     android:layout_marginTop="2dp"
                     android:background="@android:color/white"
-                    android:padding="2dp"
                     android:scrollbars="vertical" />
 
             </RelativeLayout>

@@ -10,17 +10,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_diary.*
 import kotlinx.android.synthetic.main.fragment_diary.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConsumptionAdapter
-import nl.stekkinger.nizi.classes.Consumption
-import nl.stekkinger.nizi.classes.Consumptions
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
-import java.lang.Math.round
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,8 +33,6 @@ class DiaryFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
 
-//        val recyclerView: RecyclerView = view.findViewById(R.id.diary_recycler_view)
-//        recyclerView.layoutManager = LinearLayoutManager(activity)
         val breakfastRv: RecyclerView = view.findViewById(R.id.diary_breakfast_rv)
         breakfastRv.layoutManager = LinearLayoutManager(activity)
         val lunchRv: RecyclerView = view.findViewById(R.id.diary_lunch_rv)
@@ -74,7 +70,6 @@ class DiaryFragment: Fragment() {
             val snackList = ArrayList<ConsumptionResponse>()
 
             //sorting consumptions
-            // todo: from consumptions to consumptionsresponse
             for (c in result) {
                 when (c.meal_time) {
                     "Ontbijt" -> breakfastList.add(c)
@@ -90,6 +85,8 @@ class DiaryFragment: Fragment() {
             lunchAdapter.setConsumptionList(lunchList)
             dinnerAdapter.setConsumptionList(dinnerList)
             snackAdapter.setConsumptionList(snackList)
+
+            ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(breakfastRv)
         })
 
         // click events
@@ -200,6 +197,25 @@ class DiaryFragment: Fragment() {
 
         return view
     }
+
+    private val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(
+                viewHolder: RecyclerView.ViewHolder,
+                direction: Int
+            ) {
+                breakfastAdapter.removeItem(viewHolder.adapterPosition)
+            }
+        }
+
     fun getDay(date: String, daysAdded: Int): String {
         d("AAAAAA", "BBBBB")
         var newDate = date

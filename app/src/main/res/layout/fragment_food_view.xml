@@ -2,259 +2,356 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="5dp">
+    android:layout_height="match_parent">
 
+<!--    instead of textvew title, a tool bar?-->
     <TextView
+        android:background="@color/lightGray"
         android:id="@+id/title_food_view"
         android:textColor="@color/black"
         android:textSize="@dimen/h2"
-        android:layout_marginTop="@dimen/marginNormal"
-        android:layout_marginBottom="@dimen/marginNormal"
+        android:padding="@dimen/marginNormal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:text="Title"/>
 
-    <ImageView
-        android:id="@+id/image_food_view"
+    <LinearLayout
+        android:id="@+id/img_and_save"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_below="@+id/title_food_view"
-        android:src="@drawable/ic_food"/>
+        android:layout_height="wrap_content"
+        android:gravity="center|bottom"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_below="@id/title_food_view">
+
+        <LinearLayout
+            android:id="@+id/img_and_save_col1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+<!--            empty to center image-->
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/img_and_save_col2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/image_food_view"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_below="@+id/title_food_view"
+                android:src="@drawable/ic_food"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/img_and_save_col3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:gravity="bottom"
+                    android:id="@+id/title_food_view2"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/textSizeNormal"
+                    android:textStyle="bold"
+                    android:padding="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_below="@+id/title_food_view"
+                    android:layout_alignRight="@+id/image_food_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save" />
+
+                <ImageButton
+                    android:id="@+id/save_btn"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:adjustViewBounds="true"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="@string/content_add_breakfast"
+                    android:src="@drawable/ic_save" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/serving_size_section"
+        android:background="@color/lightGray"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/image_food_view">
+        android:orientation="vertical"
+        android:layout_below="@id/img_and_save">
 
         <TextView
             android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_width="wrap_content"
+            android:textSize="@dimen/textSize12"
+            android:layout_margin="@dimen/marginSmall"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:text="@string/servings" />
+
+        <LinearLayout
+            android:id="@+id/serving_size_control_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_below="@id/image_food_view">
+
+            <ImageButton
+                android:id="@+id/decrease_portion"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="@dimen/marginSmall"
+                android:layout_marginEnd="@dimen/marginSmall"
+                android:contentDescription="@string/content_remove_portion"
+                android:src="@drawable/ic_remove" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:background="@color/white"
+                app:hintEnabled="false"
+                android:id="@+id/serving_input_value"
+                android:layout_width="125dp"
+                android:padding="@dimen/marginVerySmall"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/serving_input"
+                    android:textSize="@dimen/textSizeNormal"
+                    android:background="@android:color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:inputType="numberDecimal"
+                    android:digits="0123456789."
+                    android:maxLength="3"
+                    android:text="1"
+                    android:textColorHighlight="@color/colorPrimary" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/increase_portion"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginStart="@dimen/marginSmall"
+                android:layout_marginEnd="@dimen/marginSmall"
+                android:contentDescription="@string/content_add_portion"
+                android:src="@drawable/ic_add" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/serving_size_value"
             android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_width="wrap_content"
+            android:textSize="@dimen/textSize12"
+            android:layout_margin="@dimen/marginSmall"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="0 gram"/>
+            android:gravity="center"
+            tools:text="200 ml"/>
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/serving_input_section"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/serving_size_section">
 
-        <TextView
-            android:id="@+id/serving_input_label"
-            android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:layout_marginTop="@dimen/marginNormal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/nr_servings" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_marginLeft="@dimen/marginHorizontal"
-            android:id="@+id/serving_input_value"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/serving_input"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1"
-                android:inputType="number"
-                android:maxLength="3"
-                android:textColorHighlight="@color/colorPrimary" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/food_view_nutrition"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/h1"
-        android:text="@string/nutrition_values"
-        android:textColor="@color/black"
-        android:layout_marginTop="@dimen/marginNormal"
-        android:layout_marginBottom="@dimen/marginNormal"
-        android:layout_below="@+id/serving_input_section"/>
 
     <!-- All nutricien values -->
     <LinearLayout
+        android:layout_margin="@dimen/marginNormal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/food_view_nutrition"
+        android:layout_below="@id/serving_size_section"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/food_view_nutrition"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:orientation="vertical">
+            android:textSize="@dimen/h1"
+            android:text="@string/nutrition_values"
+            android:textColor="@color/black"
+            android:layout_marginBottom="@dimen/marginSmall"/>
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/marginVerySmall">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:layout_alignParentLeft="true"
+                android:textSize="@dimen/textSize12"
                 android:text="@string/calories"
-                android:textColor="@color/black"
-                android:layout_marginTop="10dp" />
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/calories_value_food_view"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/textSize12"
                 android:gravity="center"
                 android:textColor="@color/black"
                 tools:text="0 kcal"/>
-            
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:orientation="vertical">
+        </RelativeLayout>
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/marginVerySmall">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:layout_alignParentLeft="true"
+                android:textSize="@dimen/textSize12"
                 android:text="@string/fibers"
-                android:textColor="@color/black"
-                android:layout_marginTop="10dp" />
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/fiber_value_food_view"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/textSize12"
                 android:gravity="center"
                 android:textColor="@color/black"
-                tools:text="0 kcal"/>
+                tools:text="0 g"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:orientation="vertical">
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/marginVerySmall">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:layout_alignParentLeft="true"
+                android:textSize="@dimen/textSize12"
                 android:text="@string/proteins"
-                android:textColor="@color/black"
-                android:layout_marginTop="10dp" />
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/protein_value_food_view"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/textSize12"
                 android:gravity="center"
                 android:textColor="@color/black"
-                tools:text="0 kcal"/>
+                tools:text="0 g"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:orientation="vertical">
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/marginVerySmall">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14dp"
+                android:layout_alignParentLeft="true"
+                android:textSize="@dimen/textSize12"
                 android:text="@string/water"
-                android:textColor="@color/black"
-                android:layout_marginTop="10dp" />
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/water_value_food_view"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14dp"
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/textSize12"
                 android:gravity="center"
                 android:textColor="@color/black"
-                tools:text="0 kcal"/>
+                tools:text="0 g"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:paddingLeft="5dp"
-            android:paddingRight="5dp"
-            android:orientation="vertical">
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/marginVerySmall">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14dp"
+                android:layout_alignParentLeft="true"
+                android:textSize="@dimen/textSize12"
                 android:text="@string/sodium"
-                android:textColor="@color/black"
-                android:layout_marginTop="10dp" />
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/sodium_value_food_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14dp"
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/textSize12"
                 android:gravity="center"
                 android:textColor="@color/black"
-                tools:text="0 kcal"/>
+                tools:text="0 g"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:orientation="vertical">
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="@dimen/marginVerySmall">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14dp"
+                android:layout_alignParentLeft="true"
+                android:textSize="@dimen/textSize12"
                 android:text="@string/potassium"
-                android:textColor="@color/black"
-                android:layout_marginTop="10dp" />
+                android:textColor="@color/black"/>
 
             <TextView
                 android:id="@+id/potassium_value_food_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14dp"
+                android:layout_alignParentRight="true"
+                android:textSize="@dimen/textSize12"
                 android:gravity="center"
                 android:textColor="@color/black"
-                tools:text="0 kcal"/>
+                tools:text="0 g"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 

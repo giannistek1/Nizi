@@ -39,10 +39,10 @@ class MealProductAdapter(
         holder.title.text = meal.Name
         holder.summary.text = meal.PortionSize.toString() + " " + meal.WeightUnit
 
-        holder.itemView.btn_delete.setOnClickListener {
-            model.deleteMealProduct(meal)
-            notifyDataSetChanged()
-        }
+//        holder.itemView.btn_delete.setOnClickListener {
+//            model.deleteMealProduct(meal)
+//            notifyDataSetChanged()
+//        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
