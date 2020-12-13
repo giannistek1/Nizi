@@ -2,6 +2,7 @@ package nl.stekkinger.nizi.activities.doctor
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.util.Patterns
@@ -106,6 +107,13 @@ class AddPatientActivity : BaseActivity() {
 
     private fun tryCreatePatient(firstNameET: EditText, lastNameET: EditText, dobET: EditText, emailET:
     EditText, passwordET: EditText, passwordConfirmET: EditText) {
+        firstNameET.setBackgroundColor(Color.TRANSPARENT)
+        lastNameET.setBackgroundColor(Color.TRANSPARENT)
+        dobET.setBackgroundColor(Color.TRANSPARENT)
+        emailET.setBackgroundColor(Color.TRANSPARENT)
+        passwordET.setBackgroundColor(Color.TRANSPARENT)
+        passwordConfirmET.setBackgroundColor(Color.TRANSPARENT)
+
         // Guards/Checks
         if (InputHelper.inputIsEmpty(this, firstNameET, R.string.empty_first_name)) return
         if (InputHelper.inputIsEmpty(this, lastNameET, R.string.empty_last_name)) return

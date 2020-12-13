@@ -261,10 +261,10 @@ class PatientHomeFragment : Fragment() {
             val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
 
             result.forEachIndexed { _, resultDietary ->
+                if (!resultDietary.is_active) return@forEachIndexed
+
                 var index = 0
-                if (resultDietary.dietary_restriction.description.contains("Calorie"))
-                    index = 0
-                else if (resultDietary.dietary_restriction.description.contains("Vocht"))
+                if (resultDietary.dietary_restriction.description.contains("Vocht"))
                     index = 1
                 else if (resultDietary.dietary_restriction.description.contains("Natrium"))
                     index = 2
