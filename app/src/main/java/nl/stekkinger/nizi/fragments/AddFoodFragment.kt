@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.content.Context.SEARCH_SERVICE
 import android.util.Log
 import android.util.Log.d
-import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager

@@ -1,14 +1,22 @@
 package nl.stekkinger.nizi.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log.d
 import android.view.*
+import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_add_food.view.*
 import kotlinx.android.synthetic.main.fragment_food_view.*
+import kotlinx.android.synthetic.main.fragment_food_view.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Food
@@ -16,7 +24,8 @@ import nl.stekkinger.nizi.classes.diary.Food
 class FoodViewFragment : Fragment() {
     private lateinit var model: DiaryViewModel
     private lateinit var mFood: Food
-    private lateinit var mServingInput: TextInputLayout
+    private lateinit var mServingInput: TextInputEditText
+    private lateinit var mDecreaseBtn: ImageButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,7 +36,7 @@ class FoodViewFragment : Fragment() {
         setHasOptionsMenu(true)
 
 
-        mServingInput = view.findViewById(R.id.serving_input_value)
+//        mServingInput = view.findViewById(R.id.serving_input_value)
 
         // get the DiaryViewModel
         model = activity?.run {
@@ -38,20 +47,84 @@ class FoodViewFragment : Fragment() {
             // Update the UI
             title_food_view.text = food.name
             Picasso.get().load(food.image_url).into(image_food_view)
-            // todo: amount not properly used in consumption/food
             serving_size_value.text = food.portion_size.toString() + " " + food.weight_unit.unit
             calories_value_food_view.text = food.kcal.toString() + " Kcal"
             fiber_value_food_view.text = food.fiber.toString() + " g"
             protein_value_food_view.text = food.protein.toString() + " g"
-            water_value_food_view.text = food.water.toString() + "ml"
-            sodium_value_food_view.text = (food.sodium *1000).toString() + " mg"
+            water_value_food_view.text = food.water.toString() + " ml"
+            sodium_value_food_view.text = (food.sodium * 1000).toString() + " mg"
             potassium_value_food_view.text = (food.potassium * 1000).toString() + " mg"
 
             // store food product
             mFood = food
         })
+        mDecreaseBtn = view.decrease_portion
+        mServingInput = view.findViewById(R.id.serving_input) as TextInputEditText
+
+        mServingInput.addTextChangedListener(textWatcher)
+
+        // click listeners
+        view.increase_portion.setOnClickListener {
+            if (mServingInput.text.toString() != "") {
+                var portion: Float = mServingInput.text.toString().toFloat() + 0.5f
+                mServingInput.setText(portion.toString())
+            } else {
+                mServingInput.setText("0.5")
+            }
+        }
+
+        view.decrease_portion.setOnClickListener {
+            if (mServingInput.text.toString() != "") {
+                var portion: Float = mServingInput.text.toString().toFloat()
+                if(portion > 0.5) {
+                    mServingInput.setText((portion - 0.5f).toString())
+                }
+            }
+        }
 
         return view
+    }
+
+    private val textWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+        }
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            // first char cannot be a dot
+            if (count != 0) {
+                val firstChar: String? = s?.get(0).toString()
+                if(firstChar == ".") {
+                    mServingInput.setText("")
+                } else {
+                    val food: Food = mFood
+                    val amount: Float = s.toString().toFloat()
+                    // Update the UI, show new nutrition totals
+                    serving_size_value.text = "%.2f".format(food.portion_size * amount) + " " + food.weight_unit.unit
+                    calories_value_food_view.text = "%.2f".format(food.kcal * amount) + " Kcal"
+                    fiber_value_food_view.text = "%.2f".format(food.fiber * amount) + " g"
+                    protein_value_food_view.text = "%.2f".format(food.protein * amount) + " g"
+                    water_value_food_view.text = "%.2f".format(food.water * amount) + "ml"
+                    sodium_value_food_view.text = "%.2f".format(food.sodium * 1000 * amount) + " mg"
+                    potassium_value_food_view.text = "%.2f".format(food.potassium * 1000 * amount) + " mg"
+                }
+            }
+
+            // disable/enable decrease button if needed
+            if (mServingInput.text.toString() != "") {
+                var portion: Float = mServingInput.text.toString().toFloat()
+                if(portion > 0.5f) {
+                    mDecreaseBtn.isEnabled = true
+                    mDecreaseBtn.isClickable = true
+                } else {
+                    mDecreaseBtn.isEnabled = false
+                    mDecreaseBtn.isClickable = false
+                }
+            } else {
+                mDecreaseBtn.isEnabled = false
+                mDecreaseBtn.isClickable = false
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -62,9 +135,9 @@ class FoodViewFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.confirm_btn -> {
-                Toast.makeText(this.context, "toegevoegd", Toast.LENGTH_LONG).show()
+                Toast.makeText(this.context, R.string.add_food_success, Toast.LENGTH_LONG).show()
 
-                val portion = mServingInput.editText?.text.toString().trim().toDouble()
+                val portion = mServingInput.text.toString().trim().toFloat()
                 model.addFood(mFood, portion)
 
                 (activity)!!.supportFragmentManager.beginTransaction().replace(

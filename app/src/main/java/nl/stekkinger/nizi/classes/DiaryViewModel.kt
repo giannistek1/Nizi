@@ -101,7 +101,7 @@ class DiaryViewModel(
     }
 
     val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-    fun addFood(food: Food, portion: Double = 1.0) {
+    fun addFood(food: Food, portion: Float = 1.0F) {
 
         d("log mt", mMealTime)
 
@@ -109,12 +109,12 @@ class DiaryViewModel(
             id = food.id,
             name = food.name,
             description = food.description,
-            kcal = (food.kcal * portion).toFloat(),
-            protein = (food.protein * portion).toFloat(),
-            potassium = (food.potassium * portion).toFloat(),
-            sodium = (food.sodium * portion).toFloat(),
-            water = (food.water * portion).toFloat(),
-            fiber = (food.fiber * portion).toFloat(),
+            kcal = food.kcal * portion,
+            protein = food.protein * portion,
+            potassium = food.potassium * portion,
+            sodium = food.sodium * portion,
+            water = food.water * portion,
+            fiber = food.fiber * portion,
             portion_size = food.portion_size,
             image_url = food.image_url
         )

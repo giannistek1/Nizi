@@ -146,7 +146,7 @@
                     android:gravity="center"
                     android:inputType="numberDecimal"
                     android:digits="0123456789."
-                    android:maxLength="3"
+                    android:maxLength="5"
                     android:text="1"
                     android:textColorHighlight="@color/colorPrimary" />
 

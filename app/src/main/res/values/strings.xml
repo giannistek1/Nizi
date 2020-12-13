@@ -101,6 +101,10 @@
     <string name="did_not_add_food">U heeft nog geen voeding toegevoegd</string>
     <string name="import_food_diary">Importeren uit voedingsdagboek</string>
 
+    <string name="add_food_success">Voeding toegevoegd aan dagboek</string>
+    <string name="add_meal_success">Maaltijd toegevoegd aan dagboek</string>
+    <string name="update_food_success">Voeding is aangepast in het dagboek</string>
+
     <string name="feedback_positive">Goed gedaan</string>
     <string name="feedback_negative">Beperk uw %1$sinname</string>
     <string name="feedback_encouraging">Neem meer %1$s in</string>

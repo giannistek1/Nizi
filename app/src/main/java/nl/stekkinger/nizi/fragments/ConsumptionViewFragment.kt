@@ -2,7 +2,6 @@ package nl.stekkinger.nizi.fragments
 
 import android.os.Bundle
 import android.view.*
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -42,20 +41,18 @@ class ConsumptionViewFragment : Fragment() {
             mConsumption = food
 
             // Update the UI
+            val amount: Float = mConsumption.amount
             view.title_food_view.text = mConsumption.food_meal_component.name
             Picasso.get().load(mConsumption.food_meal_component.image_url).into(image_food_view)
             serving_input.setText(mConsumption.amount.toString(), TextView.BufferType.EDITABLE)
             serving_size_value.text = mConsumption.food_meal_component.portion_size.toString() + " " + mConsumption.weight_unit.unit
             calories_value_food_view.text = mConsumption.food_meal_component.kcal.toString() + " Kcal"
             protein_value_food_view.text = mConsumption.food_meal_component.protein.toString() + " g"
-            potassium_value_food_view.text = mConsumption.food_meal_component.potassium.toString() + " g"
+            potassium_value_food_view.text = (mConsumption.food_meal_component.potassium * 1000).toString() + " g"
             sodium_value_food_view.text = (mConsumption.food_meal_component.sodium * 1000).toString() + " mg"
             fiber_value_food_view.text = mConsumption.food_meal_component.fiber.toString() + " g"
             water_value_food_view.text = mConsumption.food_meal_component.water.toString() + "ml"
         })
-
-
-        //calcium_value_food_view.text = (mConsumption.food_meal_component[0].water * 1000).toString() + " mg"
 
         return view
     }
@@ -67,10 +64,9 @@ class ConsumptionViewFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.confirm_btn -> {
-                Toast.makeText(this.context, "toegevoegd", Toast.LENGTH_LONG).show()
+                Toast.makeText(this.context, R.string.update_food_success, Toast.LENGTH_LONG).show()
 
-                val portion = mServingInput.editText?.text.toString().trim().toFloat()
-//                mConsumption.amount = portion
+                val portion: Float = mConsumption.amount
                 model.editFood(mConsumption, portion)
 
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
