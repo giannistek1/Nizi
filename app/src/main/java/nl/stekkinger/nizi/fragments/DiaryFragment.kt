@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_diary.*
 import kotlinx.android.synthetic.main.fragment_diary.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConsumptionAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,6 +31,8 @@ class DiaryFragment: Fragment() {
     private lateinit var lunchAdapter: ConsumptionAdapter
     private lateinit var dinnerAdapter: ConsumptionAdapter
     private lateinit var snackAdapter: ConsumptionAdapter
+
+    private val sdf = GeneralHelper.getDateFormat()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
@@ -166,34 +170,41 @@ class DiaryFragment: Fragment() {
             }
         }
 
+        // TODO: Change date formatting
         view.diary_prev_date.setOnClickListener {
             endDate = mCurrentDate
             startDate = getDay(mCurrentDate, -1)
             model.setDiaryDate(startDate + "/" + endDate)
             mCurrentDate = startDate
-            if(SimpleDateFormat("yyyy-MM-dd").format(Date()) == endDate) {
-                activity_main_txt_header.text = "Gisteren"
+            if (SimpleDateFormat("yyyy-MM-dd").format(Date()) == endDate) {
+                fragment_diary_date.text = getString(R.string.yesterday)
             } else {
-                activity_main_txt_header.text = startDate
+                fragment_diary_date.text = startDate
             }
+
+            // Update UI
+            diary_next_date.imageAlpha = 255
         }
 
         view.diary_next_date.setOnClickListener {
-            if(SimpleDateFormat("yyyy-MM-dd").format(Date()) != mCurrentDate) {
+            if (SimpleDateFormat("yyyy-MM-dd").format(Date()) != mCurrentDate) {
                 startDate= getDay(mCurrentDate, 1)
                 endDate = getDay(mCurrentDate, 2)
                 model.setDiaryDate(startDate + "/" + endDate)
                 mCurrentDate = startDate
-                if(SimpleDateFormat("yyyy-MM-dd").format(Date()) == startDate) {
-                    activity_main_txt_header.text = "Vandaag"
-                } else if(SimpleDateFormat("yyyy-MM-dd").format(Date()) == endDate) {
-                    activity_main_txt_header.text = "Gisteren"
+                if (SimpleDateFormat("yyyy-MM-dd").format(Date()) == startDate) {
+                    // Update UI
+                    fragment_diary_date.text = getString(R.string.today)
+                    diary_next_date.imageAlpha = 20
+                } else if (SimpleDateFormat("yyyy-MM-dd").format(Date()) == endDate) {
+                    fragment_diary_date.text = getString(R.string.yesterday)
                 } else {
-                    activity_main_txt_header.text = startDate
+                    fragment_diary_date.text = startDate
                 }
             }
         }
 
+        view.diary_next_date.imageAlpha = 20
 
         return view
     }

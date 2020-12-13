@@ -4,50 +4,67 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <RelativeLayout
-        android:id="@+id/activity_main_header_background"
+    <LinearLayout
+        android:id="@+id/fragment_diary_rl_day"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/diary_prev_date"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:layout_toStartOf="@+id/activity_main_txt_header"
-            android:src="@drawable/ic_left_key" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <ImageView
+                android:id="@+id/diary_prev_date"
+                android:layout_width="@dimen/dateNavigationSize"
+                android:layout_height="@dimen/dateNavigationSize"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/yesterday"
+                android:src="@drawable/ic_back"
+                android:tint="@color/black"/>
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/activity_main_txt_header"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="13dp"
-            android:fontFamily="@font/segoe_ui_semibold"
+            android:id="@+id/fragment_diary_date"
             android:text="@string/today"
-            android:textColor="@color/white"
-            android:textSize="@dimen/h1" />
+            android:textColor="@color/black"
+            android:textSize="@dimen/h2"
+            android:gravity="center"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/marginSmall"
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginEnd="@dimen/marginSmall"
+            android:layout_marginBottom="@dimen/marginNormal" />
 
-        <ImageButton
-            android:id="@+id/diary_next_date"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="10dp"
-            android:layout_toEndOf="@+id/activity_main_txt_header"
-            android:src="@drawable/ic_right_key" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="start">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/diary_next_date"
+                android:layout_width="@dimen/dateNavigationSize"
+                android:layout_height="@dimen/dateNavigationSize"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@string/tomorrow"
+                android:src="@drawable/ic_next"
+                android:tint="@color/black"/>
+        </LinearLayout>
+    </LinearLayout>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/activity_main_header_background">
+        android:layout_below="@+id/fragment_diary_rl_day">
 
         <!-- Nutrition -->
         <RelativeLayout
@@ -62,56 +79,61 @@
                 android:layout_height="wrap_content"
                 android:background="@color/gray">
 
-                <ImageView
-                    android:id="@+id/sunrise"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="@dimen/marginSmall"
-                    android:contentDescription="@string/content_sunrise"
-                    android:src="@drawable/ic_sunrise" />
+                <RelativeLayout
+                    android:id="@+id/fragment_diary_rl_breakfastHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/diary_breakfast"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/marginSmall"
-                    android:layout_marginTop="@dimen/marginSmall"
-                    android:layout_marginBottom="@dimen/marginSmall"
-                    android:layout_toEndOf="@+id/sunrise"
-                    android:text="@string/breakfast"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h2" />
+                    <ImageView
+                        android:id="@+id/sunrise"
+                        android:layout_width="@dimen/mealTimeIconSize"
+                        android:layout_height="@dimen/mealTimeIconSize"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/content_sunrise"
+                        android:src="@drawable/ic_sunrise" />
 
-                <TextView
-                    android:id="@+id/diary_add_breakfast"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/marginSmall"
-                    android:layout_marginBottom="@dimen/marginSmall"
-                    android:layout_toStartOf="@+id/diary_add_breakfast_btn"
-                    android:text="@string/add"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h2" />
+                    <TextView
+                        android:id="@+id/diary_breakfast"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/marginDouble"
+                        android:layout_toEndOf="@+id/sunrise"
+                        android:layout_centerVertical="true"
+                        android:text="@string/breakfast"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12"/>
 
-                <ImageButton
-                    android:id="@+id/diary_add_breakfast_btn"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginEnd="10dp"
-                    android:contentDescription="@string/content_add_breakfast"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_add_xs" />
+                    <TextView
+                        android:id="@+id/diary_add_breakfast"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/diary_add_breakfast_btn"
+                        android:layout_centerVertical="true"
+                        android:text="@string/add"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
+
+                    <ImageView
+                        android:id="@+id/diary_add_breakfast_btn"
+                        android:layout_width="@dimen/mealTimeAddIconSize"
+                        android:layout_height="@dimen/mealTimeAddIconSize"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/content_add_breakfast"
+                        android:scaleType="fitXY"
+                        android:tint="@color/colorPrimary"
+                        android:src="@drawable/ic_add" />
+
+                </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/diary_breakfast_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/diary_breakfast"
+                    android:layout_below="@+id/fragment_diary_rl_breakfastHeader"
                     android:layout_marginTop="2dp"
                     android:background="@android:color/white"
                     android:scrollbars="vertical" />
@@ -125,56 +147,60 @@
                 android:layout_below="@+id/fragment_diary_breakfast"
                 android:background="@color/gray">
 
-                <ImageView
-                    android:id="@+id/sun"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="@dimen/marginSmall"
-                    android:contentDescription="@string/content_sun"
-                    android:src="@drawable/ic_sun" />
+                <RelativeLayout
+                    android:id="@+id/fragment_diary_rl_lunchHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/diary_lunch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/marginSmall"
-                    android:layout_marginTop="@dimen/marginSmall"
-                    android:layout_marginBottom="@dimen/marginSmall"
-                    android:layout_toEndOf="@+id/sun"
-                    android:text="@string/lunch"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h2" />
+                    <ImageView
+                        android:id="@+id/sun"
+                        android:layout_width="@dimen/mealTimeIconSize"
+                        android:layout_height="@dimen/mealTimeIconSize"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:contentDescription="@string/content_sun"
+                        android:src="@drawable/ic_sun" />
 
-                <TextView
-                    android:id="@+id/diary_add_lunch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/marginSmall"
-                    android:layout_marginBottom="@dimen/marginSmall"
-                    android:layout_toStartOf="@+id/diary_add_lunch_btn"
-                    android:text="@string/add"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h2" />
+                    <TextView
+                        android:id="@+id/diary_lunch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/marginDouble"
+                        android:layout_marginTop="@dimen/marginSmall"
+                        android:layout_marginBottom="@dimen/marginSmall"
+                        android:layout_toEndOf="@+id/sun"
+                        android:text="@string/lunch"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
 
-                <ImageButton
-                    android:id="@+id/diary_add_lunch_btn"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginStart="@dimen/marginSmall"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginEnd="@dimen/marginSmall"
-                    android:contentDescription="@string/content_add_lunch"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_add_xs" />
+                    <TextView
+                        android:id="@+id/diary_add_lunch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/diary_add_lunch_btn"
+                        android:text="@string/add"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
+
+                    <ImageView
+                        android:id="@+id/diary_add_lunch_btn"
+                        android:layout_width="@dimen/mealTimeAddIconSize"
+                        android:layout_height="@dimen/mealTimeAddIconSize"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/marginSmall"
+                        android:layout_marginEnd="@dimen/marginSmall"
+                        android:contentDescription="@string/content_add_lunch"
+                        android:scaleType="fitXY"
+                        android:tint="@color/colorPrimary"
+                        android:src="@drawable/ic_add" />
+
+                </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/diary_lunch_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/diary_lunch"
+                    android:layout_below="@+id/fragment_diary_rl_lunchHeader"
                     android:layout_marginTop="2dp"
                     android:background="@android:color/white"
                     android:scrollbars="vertical" />
@@ -188,56 +214,60 @@
                 android:layout_below="@+id/fragment_diary_lunch"
                 android:background="@color/gray">
 
-                <ImageView
-                    android:id="@+id/sunset"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="@dimen/marginSmall"
-                    android:contentDescription="@string/content_sunset"
-                    android:src="@drawable/ic_sunset" />
+                <RelativeLayout
+                    android:id="@+id/fragment_diary_rl_dinnerHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/diary_dinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/marginSmall"
-                    android:layout_marginTop="@dimen/marginSmall"
-                    android:layout_marginBottom="@dimen/marginSmall"
-                    android:layout_toEndOf="@+id/sunset"
-                    android:text="@string/dinner"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h2" />
+                    <ImageView
+                        android:id="@+id/sunset"
+                        android:layout_width="@dimen/mealTimeIconSize"
+                        android:layout_height="@dimen/mealTimeIconSize"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:contentDescription="@string/content_sunset"
+                        android:src="@drawable/ic_sunset" />
 
-                <TextView
-                    android:id="@+id/diary_add_dinner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/marginSmall"
-                    android:layout_marginBottom="@dimen/marginSmall"
-                    android:layout_toStartOf="@+id/diary_add_dinner_btn"
-                    android:text="@string/add"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h2" />
+                    <TextView
+                        android:id="@+id/diary_dinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/marginDouble"
+                        android:layout_marginTop="@dimen/marginSmall"
+                        android:layout_marginBottom="@dimen/marginSmall"
+                        android:layout_toEndOf="@+id/sunset"
+                        android:text="@string/dinner"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
 
-                <ImageButton
-                    android:id="@+id/diary_add_dinner_btn"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginStart="@dimen/marginSmall"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginEnd="@dimen/marginSmall"
-                    android:contentDescription="@string/content_add_dinner"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_add_xs" />
+                    <TextView
+                        android:id="@+id/diary_add_dinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/diary_add_dinner_btn"
+                        android:text="@string/add"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
+
+                    <ImageView
+                        android:id="@+id/diary_add_dinner_btn"
+                        android:layout_width="@dimen/mealTimeAddIconSize"
+                        android:layout_height="@dimen/mealTimeAddIconSize"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/marginSmall"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/marginSmall"
+                        android:contentDescription="@string/content_add_dinner"
+                        android:scaleType="fitXY"
+                        android:tint="@color/colorPrimary"
+                        android:src="@drawable/ic_add" />
+                </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/diary_dinner_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/diary_dinner"
+                    android:layout_below="@+id/fragment_diary_rl_dinnerHeader"
                     android:layout_marginTop="2dp"
                     android:background="@android:color/white"
                     android:scrollbars="vertical" />
@@ -251,56 +281,60 @@
                 android:layout_below="@+id/fragment_diary_dinner"
                 android:background="@color/gray">
 
-                <ImageView
-                    android:id="@+id/snack"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
-                    android:layout_marginStart="@dimen/marginSmall"
-                    android:contentDescription="@string/content_sun"
-                    android:src="@drawable/ic_snack" />
+                <RelativeLayout
+                    android:id="@+id/fragment_diary_rl_snackHeader"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/diary_snack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/marginSmall"
-                    android:layout_marginTop="@dimen/marginSmall"
-                    android:layout_marginBottom="@dimen/marginSmall"
-                    android:layout_toEndOf="@+id/snack"
-                    android:text="@string/snack"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h2" />
+                    <ImageView
+                        android:id="@+id/snack"
+                        android:layout_width="@dimen/mealTimeIconSize"
+                        android:layout_height="@dimen/mealTimeIconSize"
+                        android:layout_marginStart="@dimen/marginNormal"
+                        android:contentDescription="@string/content_sun"
+                        android:src="@drawable/ic_snack" />
 
-                <TextView
-                    android:id="@+id/diary_add_snack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/marginSmall"
-                    android:layout_marginBottom="@dimen/marginSmall"
-                    android:layout_toStartOf="@+id/diary_add_snack_btn"
-                    android:text="@string/add"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/h2" />
+                    <TextView
+                        android:id="@+id/diary_snack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/marginDouble"
+                        android:layout_centerVertical="true"
+                        android:layout_toEndOf="@+id/snack"
+                        android:text="@string/snack"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
 
-                <ImageButton
-                    android:id="@+id/diary_add_snack_btn"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginStart="@dimen/marginSmall"
-                    android:layout_marginTop="1dp"
-                    android:layout_marginEnd="@dimen/marginSmall"
-                    android:contentDescription="@string/content_add_snack"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_add_xs" />
+                    <TextView
+                        android:id="@+id/diary_add_snack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/diary_add_snack_btn"
+                        android:text="@string/add"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
+
+                    <ImageView
+                        android:id="@+id/diary_add_snack_btn"
+                        android:layout_width="@dimen/mealTimeAddIconSize"
+                        android:layout_height="@dimen/mealTimeAddIconSize"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/marginSmall"
+                        android:layout_marginEnd="@dimen/marginSmall"
+                        android:contentDescription="@string/content_add_snack"
+                        android:scaleType="fitXY"
+                        android:tint="@color/colorPrimary"
+                        android:src="@drawable/ic_add" />
+
+                </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/diary_snack_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/diary_snack"
+                    android:layout_below="@+id/fragment_diary_rl_snackHeader"
                     android:layout_marginTop="2dp"
                     android:background="@android:color/white"
                     android:scrollbars="vertical" />

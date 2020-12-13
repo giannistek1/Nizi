@@ -21,7 +21,7 @@
             android:maxLines="1"
             android:gravity="center"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/textSizeNormal"
+            android:textSize="@dimen/textSize12"
             tools:text="1x" />
 
         <TextView
@@ -29,20 +29,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:layout_marginStart="@dimen/marginSmall"
+            android:layout_marginStart="@dimen/marginNormal"
             android:maxWidth="210dp"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/textSizeNormal"
+            android:textSize="@dimen/textSize12"
             tools:text="Title" />
 
         <TextView
             android:id="@+id/portion_size"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:gravity="end"
             android:maxLines="1"
+            android:layout_marginEnd="@dimen/marginNormal"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/textSizeNormal"
+            android:textSize="@dimen/textSize12"
             tools:text="0 gr" />
 
 <!--        <ImageButton-->
