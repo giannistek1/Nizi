@@ -68,7 +68,7 @@ class PatientHomeFragment : Fragment() {
         weightUnits = weightUnitHolder.weightUnits
 
         // Header
-        val fullName = "${patientData!!.user.first_name} ${patientData.user.last_name}"
+        val fullName = "${patientData.user.first_name} ${patientData.user.last_name}"
         view.fragment_patient_home_average_of_patient.text = getString(R.string.average_of, fullName)
 
         // Edit Button

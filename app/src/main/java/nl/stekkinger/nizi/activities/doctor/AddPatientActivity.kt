@@ -1,30 +1,29 @@
 package nl.stekkinger.nizi.activities.doctor
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.view.MotionEvent
+import android.util.Patterns
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_add_patient.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
 import nl.stekkinger.nizi.classes.patient.PatientShort
 import java.util.*
+import java.util.regex.Pattern
 
 
-class AddPatientActivity : AppCompatActivity() {
+class AddPatientActivity : BaseActivity() {
 
     private var TAG = "AddPatient"
 
@@ -92,7 +91,7 @@ class AddPatientActivity : AppCompatActivity() {
         setResult(Activity.RESULT_CANCELED, returnIntent)
 
         //region Testing
-        activity_add_patient_et_firstName.setText(getString(R.string.sample_first_name))
+        /*activity_add_patient_et_firstName.setText(getString(R.string.sample_first_name))
         activity_add_patient_et_lastName.setText(R.string.sample_last_name)
         activity_add_patient_et_dob.setText(R.string.sample_dob)
         val calendar = Calendar.getInstance()
@@ -101,7 +100,7 @@ class AddPatientActivity : AppCompatActivity() {
         activity_add_patient_et_email.setText(R.string.sample_email)
         activity_add_patient_et_password.setText(R.string.sample_password)
         activity_add_patient_et_passwordConfirm.setText(R.string.sample_password)
-        activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
+        activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)*/
         //endregion
     }
 
@@ -117,6 +116,10 @@ class AddPatientActivity : AppCompatActivity() {
 
         val checkedGenderRadioButtonId: Int = activity_add_patient_rg_gender.checkedRadioButtonId
         if (checkedGenderRadioButtonId == -1) { return }
+
+        // Check if email is valid
+        if (!InputHelper.isValidEmail(emailET.text.toString())) {
+            Toast.makeText(baseContext, R.string.email_invalid, Toast.LENGTH_SHORT).show(); return }
 
         // Check if not matching passwords
         else if (passwordET.text.toString() != passwordConfirmET.text.toString()) {
@@ -166,19 +169,4 @@ class AddPatientActivity : AppCompatActivity() {
             finish()
         }
     }
-
-    override fun finish() {
-
-        super.finish()
-    }
-
-    //region Hides Keyboard on touch
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if (currentFocus != null) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-        }
-        return super.dispatchTouchEvent(ev)
-    }
-    //endregion
 }

@@ -48,10 +48,6 @@ class HomeFragment: Fragment() {
         val view: View =  inflater.inflate(R.layout.fragment_home, container, false)
         loader = view.fragment_home_loader
 
-        // Get dietary list from bundle
-        //val bundle: Bundle = this.arguments!!
-        //dietaryGuidelines = bundle.getSerializable(GeneralHelper.EXTRA_DIETARY) as ArrayList<DietaryGuideline>
-
         val gson = Gson()
         val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
         val weightUnitHolder: WeightUnitHolder = gson.fromJson(json, WeightUnitHolder::class.java)

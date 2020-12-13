@@ -116,6 +116,10 @@ class EditPatientActivity : BaseActivity() {
         val checkedGenderRadioButtonId: Int = activity_add_patient_rg_gender.checkedRadioButtonId
         if (checkedGenderRadioButtonId == -1) { return }
 
+        // Check if email is valid
+        if (!InputHelper.isValidEmail(emailET.text.toString())) {
+            Toast.makeText(baseContext, R.string.email_invalid, Toast.LENGTH_SHORT).show(); return }
+
         // Check if not matching passwords
         else if (passwordET.text.toString() != passwordConfirmET.text.toString()) {
             Toast.makeText(baseContext, R.string.passwords_dont_match, Toast.LENGTH_SHORT).show(); return }

@@ -12,6 +12,8 @@ import nl.stekkinger.nizi.R
 /**
  * A simple [Fragment] subclass.
  */
+
+// Not used
 class PatientDiaryFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
