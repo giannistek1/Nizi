@@ -89,8 +89,7 @@ class HomeFragment: Fragment() {
             } else {
                 view.fragment_home_txt_day.text = sdf.format(mCurrentDate)
             }
-
-            //refreshGuidelines()
+            
             getConsumptionsAsyncTask().execute()
 
             // Update UI

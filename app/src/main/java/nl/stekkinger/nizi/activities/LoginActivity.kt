@@ -196,6 +196,7 @@ class LoginActivity : BaseActivity() {
             isDoctor = (result.user!!.role.name == "Doctor")
             GeneralHelper.prefs.edit().putBoolean(GeneralHelper.PREF_IS_DOCTOR, isDoctor).apply()
 
+
             // Save Patient/Doctor Id
             if (isDoctor)
                 GeneralHelper.prefs.edit().putInt(GeneralHelper.PREF_DOCTOR_ID, result.user.doctor!!.id!!).apply()
