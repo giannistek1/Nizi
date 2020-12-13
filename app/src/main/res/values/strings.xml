@@ -205,6 +205,7 @@
     <string name="empty_email">Vul een e-mailadres in</string>
     <string name="empty_password">Vul een wachtwoord in</string>
     <string name="empty_password_confirm">Vul een bevestigend wachtwoord in</string>
+    <string name="email_invalid">Vul een geldig emailadres in</string>
     <string name="passwords_dont_match">Wachtwoorden komen niet overeen</string>
 
     <string name="patient_added">Patiënt is toegevoegd</string>

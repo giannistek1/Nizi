@@ -48,10 +48,6 @@ class HomeFragment: Fragment() {
         val view: View =  inflater.inflate(R.layout.fragment_home, container, false)
         loader = view.fragment_home_loader
 
-        // Get dietary list from bundle
-        //val bundle: Bundle = this.arguments!!
-        //dietaryGuidelines = bundle.getSerializable(GeneralHelper.EXTRA_DIETARY) as ArrayList<DietaryGuideline>
-
         val gson = Gson()
         val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
         val weightUnitHolder: WeightUnitHolder = gson.fromJson(json, WeightUnitHolder::class.java)
@@ -237,10 +233,10 @@ class HomeFragment: Fragment() {
             dietaryGuidelines.clear()
 
             result.forEachIndexed { _, resultDietary ->
-                var index = 0
-                if (resultDietary.dietary_restriction.description.contains("Calorie"))
-                    index = 0
-                else if (resultDietary.dietary_restriction.description.contains("Vocht"))
+                if (!resultDietary.is_active) return@forEachIndexed
+
+                var index = 0 // Kcal
+                if (resultDietary.dietary_restriction.description.contains("Vocht"))
                     index = 1
                 else if (resultDietary.dietary_restriction.description.contains("Natrium"))
                     index = 2

@@ -90,8 +90,8 @@ class AddPatientDietaryActivity : BaseActivity() {
         setResult(Activity.RESULT_CANCELED, returnIntent)
 
         // Testing
-        activity_add_patient_dietary_et_water_min.setText("1969")
-        activity_add_patient_dietary_et_water_max.setText("3696")
+        /*activity_add_patient_dietary_et_water_min.setText("1969")
+        activity_add_patient_dietary_et_water_max.setText("3696")*/
 
         // Check connection
         if (!GeneralHelper.hasInternetConnection(this)) return

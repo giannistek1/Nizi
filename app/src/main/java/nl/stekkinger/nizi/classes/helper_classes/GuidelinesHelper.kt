@@ -22,7 +22,7 @@ object GuidelinesHelper {
 
     // This Class is for displaying the guidelines
 
-    // Should be a recyclerview
+    // Should be a recyclerview?
 
     fun initializeGuidelines(cont: FragmentActivity?, layout: LinearLayout, dietaryGuidelineList: ArrayList<DietaryGuideline>?)
     {
