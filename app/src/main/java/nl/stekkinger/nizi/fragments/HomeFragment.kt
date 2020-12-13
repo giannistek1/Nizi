@@ -235,7 +235,7 @@ class HomeFragment: Fragment() {
             result.forEachIndexed { _, resultDietary ->
                 if (!resultDietary.is_active) return@forEachIndexed
 
-                var index = 0
+                var index = 0 // Kcal
                 if (resultDietary.dietary_restriction.description.contains("Vocht"))
                     index = 1
                 else if (resultDietary.dietary_restriction.description.contains("Natrium"))
