@@ -22,6 +22,7 @@ class FoodViewFragment : Fragment() {
     private lateinit var mFood: Food
     private lateinit var mServingInput: TextInputEditText
     private lateinit var mDecreaseBtn: ImageButton
+    private lateinit var mSaveBtn: ImageButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,6 +45,7 @@ class FoodViewFragment : Fragment() {
             Picasso.get().load(food.image_url).into(image_food_view)
             updateUI()
         })
+        mSaveBtn = view.save_btn
         mDecreaseBtn = view.decrease_portion
         mServingInput = view.findViewById(R.id.serving_input) as TextInputEditText
 
@@ -67,6 +69,19 @@ class FoodViewFragment : Fragment() {
                 }
             }
         }
+
+        view.save_btn.setOnClickListener {
+            Toast.makeText(this.context, R.string.add_food_success, Toast.LENGTH_LONG).show()
+
+            val portion = mServingInput.text.toString().trim().toFloat()
+            model.addFood(mFood, portion)
+
+            (activity)!!.supportFragmentManager.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                DiaryFragment()
+            ).commit()
+        }
+
         mServingInput.setOnKeyListener { v, keyCode, _ ->
             if (keyCode == KeyEvent.KEYCODE_DEL) {
                 updateUI()
@@ -82,6 +97,24 @@ class FoodViewFragment : Fragment() {
         if (mServingInput.text.toString() != "") {
             amount = mServingInput.text.toString().toFloat()
         }
+
+        // enabling/disabeling save or decrease btn
+        if(amount <= 0) {
+            mSaveBtn.isEnabled = false
+            mSaveBtn.isClickable = false
+        } else {
+            mSaveBtn.isEnabled = true
+            mSaveBtn.isClickable = true
+        }
+        if(amount <= 0.5) {
+            mDecreaseBtn.isEnabled = false
+            mDecreaseBtn.isClickable = false
+        } else {
+            mDecreaseBtn.isEnabled = true
+            mDecreaseBtn.isClickable = true
+        }
+
+        // updating nutrition values
         val food: Food = mFood
         serving_size_value.text = "%.2f".format(food.portion_size * amount) + " " + food.weight_unit.unit
         calories_value_food_view.text = "%.2f".format(food.kcal * amount) + " Kcal"
@@ -100,29 +133,13 @@ class FoodViewFragment : Fragment() {
         }
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             // first char cannot be a dot
-            if (count != 0) {
-                val firstChar: String? = s?.get(0).toString()
-                if(firstChar == ".") {
-                    mServingInput.setText("")
-                } else {
-                    updateUI()
-                }
-            }
-
-            // disable/enable decrease button if needed
             if (mServingInput.text.toString() != "") {
-                var portion: Float = mServingInput.text.toString().toFloat()
-                if(portion > 0.5f) {
-                    mDecreaseBtn.isEnabled = true
-                    mDecreaseBtn.isClickable = true
-                } else {
-                    mDecreaseBtn.isEnabled = false
-                    mDecreaseBtn.isClickable = false
+                var input: String = mServingInput.text.toString()
+                if (input[0] == '.') {
+                    mServingInput.setText(input.drop(0))
                 }
-            } else {
-                mDecreaseBtn.isEnabled = false
-                mDecreaseBtn.isClickable = false
             }
+            updateUI()
         }
     }
 
