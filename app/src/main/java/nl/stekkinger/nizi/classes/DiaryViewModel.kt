@@ -103,8 +103,6 @@ class DiaryViewModel(
     val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
     fun addFood(food: Food, portion: Float = 1.0F) {
 
-        d("log mt", mMealTime)
-
         val foodItem = FoodMealComponent(
             id = food.id,
             name = food.name,
@@ -123,10 +121,7 @@ class DiaryViewModel(
             unit = food.weight_unit.unit,
             short = food.weight_unit.short
         )
-        d("conunit", weightUnit.toString())
-        // the foodMealComponent has to be in array in strapi
-//        val foodMealArray: ArrayList<FoodMealComponent> = arrayListOf()
-//        foodMealArray.add(foodItem)
+
         val consumption = Consumption(
             amount = portion.toFloat(),
             date = mCurrentDay+"T11:00:00.000Z",
@@ -135,7 +130,6 @@ class DiaryViewModel(
             weight_unit = weightUnit,
             food_meal_component = foodItem
         )
-        d("conmod", consumption.toString())
         mRepository.addConsumption(consumption)
     }
 
@@ -158,10 +152,7 @@ class DiaryViewModel(
             unit = consumptionResponse.weight_unit.unit,
             short = consumptionResponse.weight_unit.short
         )
-        d("conunit", weightUnit.toString())
-        // the foodMealComponent has to be in array in strapi
-//        val foodMealArray: ArrayList<FoodMealComponent> = arrayListOf()
-//        foodMealArray.add(foodItem)
+
         val consumption = Consumption(
             amount = portion,
             date = mCurrentDay+"T11:00:00.000Z",
