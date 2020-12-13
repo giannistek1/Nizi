@@ -3,18 +3,14 @@ package nl.stekkinger.nizi.fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log.d
 import android.view.*
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_add_food.view.*
 import kotlinx.android.synthetic.main.fragment_food_view.*
 import kotlinx.android.synthetic.main.fragment_food_view.view.*
 import nl.stekkinger.nizi.R
@@ -35,28 +31,18 @@ class FoodViewFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_food_view, container, false)
         setHasOptionsMenu(true)
 
-
-//        mServingInput = view.findViewById(R.id.serving_input_value)
-
         // get the DiaryViewModel
         model = activity?.run {
             ViewModelProviders.of(this).get(DiaryViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         model.selected.observe(this, Observer<Food> { food ->
+            // store food product
+            mFood = food
             // Update the UI
             title_food_view.text = food.name
             Picasso.get().load(food.image_url).into(image_food_view)
-            serving_size_value.text = food.portion_size.toString() + " " + food.weight_unit.unit
-            calories_value_food_view.text = food.kcal.toString() + " Kcal"
-            fiber_value_food_view.text = food.fiber.toString() + " g"
-            protein_value_food_view.text = food.protein.toString() + " g"
-            water_value_food_view.text = food.water.toString() + " ml"
-            sodium_value_food_view.text = (food.sodium * 1000).toString() + " mg"
-            potassium_value_food_view.text = (food.potassium * 1000).toString() + " mg"
-
-            // store food product
-            mFood = food
+            updateUI()
         })
         mDecreaseBtn = view.decrease_portion
         mServingInput = view.findViewById(R.id.serving_input) as TextInputEditText
@@ -81,11 +67,33 @@ class FoodViewFragment : Fragment() {
                 }
             }
         }
+        mServingInput.setOnKeyListener { v, keyCode, _ ->
+            if (keyCode == KeyEvent.KEYCODE_DEL) {
+                updateUI()
+            }
+            false
+        }
 
         return view
     }
 
-    private val textWatcher = object : TextWatcher {
+    private fun updateUI() {
+        var amount: Float = 0f
+        if (mServingInput.text.toString() != "") {
+            amount = mServingInput.text.toString().toFloat()
+        }
+        val food: Food = mFood
+        serving_size_value.text = "%.2f".format(food.portion_size * amount) + " " + food.weight_unit.unit
+        calories_value_food_view.text = "%.2f".format(food.kcal * amount) + " Kcal"
+        fiber_value_food_view.text = "%.2f".format(food.fiber * amount) + " g"
+        protein_value_food_view.text = "%.2f".format(food.protein * amount) + " g"
+        water_value_food_view.text = "%.2f".format(food.water * amount) + "ml"
+        sodium_value_food_view.text = "%.2f".format(food.sodium * 1000 * amount) + " mg"
+        potassium_value_food_view.text = "%.2f".format(food.potassium * 1000 * amount) + " mg"
+
+    }
+
+    private val textWatcher: TextWatcher = object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
         }
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -97,16 +105,7 @@ class FoodViewFragment : Fragment() {
                 if(firstChar == ".") {
                     mServingInput.setText("")
                 } else {
-                    val food: Food = mFood
-                    val amount: Float = s.toString().toFloat()
-                    // Update the UI, show new nutrition totals
-                    serving_size_value.text = "%.2f".format(food.portion_size * amount) + " " + food.weight_unit.unit
-                    calories_value_food_view.text = "%.2f".format(food.kcal * amount) + " Kcal"
-                    fiber_value_food_view.text = "%.2f".format(food.fiber * amount) + " g"
-                    protein_value_food_view.text = "%.2f".format(food.protein * amount) + " g"
-                    water_value_food_view.text = "%.2f".format(food.water * amount) + "ml"
-                    sodium_value_food_view.text = "%.2f".format(food.sodium * 1000 * amount) + " mg"
-                    potassium_value_food_view.text = "%.2f".format(food.potassium * 1000 * amount) + " mg"
+                    updateUI()
                 }
             }
 
