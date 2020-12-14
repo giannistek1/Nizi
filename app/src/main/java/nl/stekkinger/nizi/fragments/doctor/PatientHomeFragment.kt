@@ -310,6 +310,7 @@ class PatientHomeFragment : Fragment() {
         if (requestCode == EDIT_PATIENT_REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK) {
             // refresh activity
             activity!!.recreate()
+
         }
     }
 }

@@ -223,7 +223,6 @@ class PatientDetailActivity : BaseActivity() {
 
             // Checks if fragment state is null, then start with homeFragment
             if (savedInstanceState == null) {
-
                 val fragment = PatientHomeFragment()
                 val bundle = Bundle()
                 bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)

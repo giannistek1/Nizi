@@ -311,6 +311,14 @@ class EditPatientDietaryActivity : BaseActivity() {
                 else // Values are just different --> UPDATE
                     updateDietaryAsyncTask(newDietaryList[i]).execute()
             }
+
+            // Finish if nothing is changed
+            if (checkList.isEmpty()) {
+                // In case we wanna return something
+                val returnIntent = Intent()
+                setResult(RESULT_OK, returnIntent)
+                finish()
+            }
         }
     }
     //endregion
