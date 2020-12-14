@@ -32,7 +32,6 @@ class DiaryFragment: Fragment() {
     private lateinit var snackAdapter: ConsumptionAdapter
     private lateinit var mNextDayBtn: ImageView
 
-    private var isToday: Boolean = true
     private val sdf = GeneralHelper.getDateFormat()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -184,7 +183,22 @@ class DiaryFragment: Fragment() {
             setNewDate(1, view)
         }
 
-        view.diary_next_date.imageAlpha = 20
+        view.diary_next_date.isEnabled = false
+        view.diary_next_date.isClickable = false
+        view.diary_next_date.alpha = 0.2f
+
+        // Hide patient things if isDoctor
+        val isDoctor = GeneralHelper.prefs.getBoolean(GeneralHelper.PREF_IS_DOCTOR, false)
+        if (isDoctor) {
+            view.diary_add_breakfast.visibility = GONE
+            view.diary_add_breakfast_btn.visibility = GONE
+            view.diary_add_lunch.visibility = GONE
+            view.diary_add_lunch_btn.visibility = GONE
+            view.diary_add_dinner.visibility = GONE
+            view.diary_add_dinner_btn.visibility = GONE
+            view.diary_add_snack.visibility = GONE
+            view.diary_add_snack_btn.visibility = GONE
+        }
 
         return view
     }
@@ -200,11 +214,13 @@ class DiaryFragment: Fragment() {
                 v.fragment_diary_date.text = getString(R.string.today)
                 mNextDayBtn.isEnabled = false
                 mNextDayBtn.isClickable = false
+                mNextDayBtn.alpha = 0.2f
             }
             "yesterday" -> {
                 v.fragment_diary_date.text = getString(R.string.yesterday)
                 mNextDayBtn.isEnabled = true
                 mNextDayBtn.isClickable = true
+                mNextDayBtn.alpha = 1f
             }
             else -> {
                 v.fragment_diary_date.text = sdf.format(cal.time)

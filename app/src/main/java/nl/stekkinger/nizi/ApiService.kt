@@ -23,6 +23,11 @@ interface ApiService {
         @Body body: LoginRequest
     ) : Call<LoginResponse>
 
+    @GET("users")
+    fun getUsers(
+        @Header("Authorization") authHeader : String
+    ) : Call<ArrayList<UserLogin>>
+
     @POST("users")
     fun registerUser(
         @Header("Authorization") authHeader : String,
@@ -34,6 +39,12 @@ interface ApiService {
         @Header("Authorization") authHeader : String,
         @Path("userId") userId: Int,
         @Body body: User
+    ) : Call<UserLogin>
+
+    @DELETE("users/{userId}")
+    fun deleteUser(
+        @Header("Authorization") authHeader : String,
+        @Path("userId") userId: Int
     ) : Call<UserLogin>
 
     @POST("auth/forgot-password")
@@ -80,10 +91,11 @@ interface ApiService {
         @Body body: PatientShort
     ) : Call<Patient>
 
-    @DELETE("v1/patient/{patientId}")
+    @DELETE("patients/{patientId}")
     fun deletePatient(
+        @Header("Authorization") authHeader : String,
         @Path("patientId") patientId: Int
-    ) : Call<Unit>
+    ) : Call<Patient>
     //endregion
 
     //region consumptions

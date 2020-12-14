@@ -114,7 +114,9 @@ class PatientHomeFragment : Fragment() {
 
             // Update UI
             view.fragment_patient_home_week.text = "${sdf.format(selectedFirstDayOfWeek)} - ${sdf.format(selectedLastDayOfWeek)}"
-            view.fragment_patient_home_btn_nextWeek.imageAlpha = 255
+            view.fragment_patient_home_btn_nextWeek.isEnabled = true
+            view.fragment_patient_home_btn_nextWeek.isClickable = true
+            view.fragment_patient_home_btn_nextWeek.alpha = 1f
 
             getConsumptionsAsyncTask().execute()
         }
@@ -134,14 +136,18 @@ class PatientHomeFragment : Fragment() {
             if (selectedFirstDayOfWeek == currentFirstDayOfWeek) {
                 // Update UI
                 view.fragment_patient_home_week.text = "${sdf.format(selectedFirstDayOfWeek)} - ${sdf.format(selectedLastDayOfWeek)}"
-                view.fragment_patient_home_btn_nextWeek.imageAlpha = 20
+                view.fragment_patient_home_btn_nextWeek.isEnabled = false
+                view.fragment_patient_home_btn_nextWeek.isClickable = false
+                view.fragment_patient_home_btn_nextWeek.alpha = 0.2f
             }
 
             getConsumptionsAsyncTask().execute()
         }
 
         view.fragment_patient_home_week.text = "${sdf.format(selectedFirstDayOfWeek)} - ${sdf.format(selectedLastDayOfWeek)}"
-        view.fragment_patient_home_btn_nextWeek.imageAlpha = 20
+        view.fragment_patient_home_btn_nextWeek.isEnabled = false
+        view.fragment_patient_home_btn_nextWeek.isClickable = false
+        view.fragment_patient_home_btn_nextWeek.alpha = 0.2f
 
         getConsumptionsAsyncTask().execute()
 

@@ -32,4 +32,9 @@ class PatientRepository : Repository() {
     {
         return service.updatePatient(authHeader, patient.id, patient).execute().body()
     }
+
+    fun deletePatient(patientId: Int) : Patient?
+    {
+        return service.deletePatient(authHeader, patientId).execute().body()
+    }
 }

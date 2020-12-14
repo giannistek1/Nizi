@@ -32,12 +32,20 @@ class AuthRepository : Repository() {
         activity.finish()
     }
 
+    fun getUsers() : ArrayList<UserLogin>? {
+        return service.getUsers(authHeader).execute().body()
+    }
+
     fun registerUser(user: User) : UserLogin? {
         return service.registerUser(authHeader, user).execute().body()
     }
 
     fun updateUser(user: User) : UserLogin? {
         return service.updateUser(authHeader, user.id, user).execute().body()
+    }
+
+    fun deleteUser(userId: Int) : UserLogin? {
+        return service.deleteUser(authHeader, userId).execute().body()
     }
 
     // Forgot password

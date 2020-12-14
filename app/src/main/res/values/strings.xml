@@ -158,6 +158,8 @@
     <string name="get_dietary_fail">Richtlijnen ophalen mislukt</string>
     <string name="fetched_consumptions">Consumpties opgehaald</string>
     <string name="get_consumptions_fail">Consumpties ophalen mislukt</string>
+    <string name="fetched_users">Gebruikers opgehaald</string>
+    <string name="get_users_fail">Gebruikers ophalen mislukt</string>
 
     <!-- Patient profile -->
     <string name="profile">Profiel</string>
@@ -205,6 +207,7 @@
     <string name="empty_email">Vul een e-mailadres in</string>
     <string name="empty_password">Vul een wachtwoord in</string>
     <string name="empty_password_confirm">Vul een bevestigend wachtwoord in</string>
+    <string name="email_already_exists">Emailadres bestaat al</string>
     <string name="email_invalid">Vul een geldig emailadres in</string>
     <string name="passwords_dont_match">Wachtwoorden komen niet overeen</string>
 
@@ -214,7 +217,9 @@
     <string name="patient_edit_fail">Patiënt wijzigen mislukt</string>
     <string name="patient_updated">Patiënt updatet</string>
     <string name="patient_update_fail">Patiënt updaten mislukt</string>
+    <string name="delete_patient_prompt">Weet u zeker dat u %1$s wilt verwijderen?</string>
     <string name="patient_deleted">Patiënt verwijderd</string>
+    <string name="patient_delete_fail">Patiënt verwijderen mislukt</string>
     <string name="fetched_dietary_restrictions">Richtlijnnamen opgehaald</string>
     <string name="fetch_dietary_restrictions_fail">Richtlijnnamen ophalen mislukt</string>
     <string name="dietaries_empty">Richtlijn(en) niet ingevuld</string>
@@ -228,6 +233,8 @@
     <string name="user_add_fail">Gebruiker toevoegen mislukt</string>
     <string name="user_edited">Gebruiker gewijzigd</string>
     <string name="user_edit_fail">Gebruiker wijzigen mislukt</string>
+    <string name="user_deleted">Gebruiker verwijderd</string>
+    <string name="user_delete_fail">Gebruiker verwijderen mislukt</string>
 
     <!-- Oher (image content description, and other stuff that cant be placed) -->
     <string name="ready">Gereed</string>

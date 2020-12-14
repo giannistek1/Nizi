@@ -18,11 +18,13 @@
             android:orientation="horizontal"
             android:gravity="end">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/diary_prev_date"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="@dimen/dateNavigationSize"
                 android:layout_height="@dimen/dateNavigationSize"
                 android:layout_gravity="center_vertical"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/yesterday"
                 android:src="@drawable/ic_back"
                 android:tint="@color/black"/>
@@ -50,11 +52,13 @@
             android:orientation="horizontal"
             android:gravity="start">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/diary_next_date"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="@dimen/dateNavigationSize"
                 android:layout_height="@dimen/dateNavigationSize"
                 android:layout_gravity="center_vertical"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/tomorrow"
                 android:src="@drawable/ic_next"
                 android:tint="@color/black"/>
