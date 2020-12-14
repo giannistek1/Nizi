@@ -7,15 +7,15 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_diary.*
 import kotlinx.android.synthetic.main.fragment_diary.view.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConsumptionAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
@@ -25,13 +25,14 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class DiaryFragment: Fragment() {
-    private lateinit var mCurrentDate: String
     private lateinit var model: DiaryViewModel
     private lateinit var breakfastAdapter: ConsumptionAdapter
     private lateinit var lunchAdapter: ConsumptionAdapter
     private lateinit var dinnerAdapter: ConsumptionAdapter
     private lateinit var snackAdapter: ConsumptionAdapter
+    private lateinit var mNextDayBtn: ImageView
 
+    private var isToday: Boolean = true
     private val sdf = GeneralHelper.getDateFormat()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -60,10 +61,13 @@ class DiaryFragment: Fragment() {
         snackRv.adapter = snackAdapter
 
         // setting date for diary
-        mCurrentDate = SimpleDateFormat("yyyy-MM-dd").format(Date())
-        var startDate: String = getDay(mCurrentDate, 0)
-        var endDate: String = getDay(mCurrentDate, 1)
-        model.setDiaryDate(startDate + "/" + endDate)
+        val cal: Calendar = Calendar.getInstance()
+        cal.set(Calendar.HOUR_OF_DAY, 0)
+        cal.clear(Calendar.MINUTE)
+        cal.clear(Calendar.SECOND)
+        cal.clear(Calendar.MILLISECOND)
+        cal.time = Date()
+        model.setDiaryDate(cal)
 
         // get the results of food search
         model.getDiary().observe(viewLifecycleOwner, Observer { result ->
@@ -92,6 +96,8 @@ class DiaryFragment: Fragment() {
 
             ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(breakfastRv)
         })
+
+        mNextDayBtn = view.diary_next_date
 
         // click events
         view.diary_add_breakfast_btn.setOnClickListener {
@@ -170,43 +176,40 @@ class DiaryFragment: Fragment() {
             }
         }
 
-        // TODO: Change date formatting
         view.diary_prev_date.setOnClickListener {
-            endDate = mCurrentDate
-            startDate = getDay(mCurrentDate, -1)
-            model.setDiaryDate(startDate + "/" + endDate)
-            mCurrentDate = startDate
-            if (SimpleDateFormat("yyyy-MM-dd").format(Date()) == endDate) {
-                fragment_diary_date.text = getString(R.string.yesterday)
-            } else {
-                fragment_diary_date.text = startDate
-            }
-
-            // Update UI
-            diary_next_date.imageAlpha = 255
+            setNewDate(-1, view)
         }
 
         view.diary_next_date.setOnClickListener {
-            if (SimpleDateFormat("yyyy-MM-dd").format(Date()) != mCurrentDate) {
-                startDate= getDay(mCurrentDate, 1)
-                endDate = getDay(mCurrentDate, 2)
-                model.setDiaryDate(startDate + "/" + endDate)
-                mCurrentDate = startDate
-                if (SimpleDateFormat("yyyy-MM-dd").format(Date()) == startDate) {
-                    // Update UI
-                    fragment_diary_date.text = getString(R.string.today)
-                    diary_next_date.imageAlpha = 20
-                } else if (SimpleDateFormat("yyyy-MM-dd").format(Date()) == endDate) {
-                    fragment_diary_date.text = getString(R.string.yesterday)
-                } else {
-                    fragment_diary_date.text = startDate
-                }
-            }
+            setNewDate(1, view)
         }
 
         view.diary_next_date.imageAlpha = 20
 
         return view
+    }
+
+    // function to set date in model, and return date as string for UI
+    private fun setNewDate(dayAdjustment: Int, v: View) {
+        var cal: Calendar = model.getSelectedDate()
+        cal.add(Calendar.DATE, dayAdjustment)
+        model.setDiaryDate(cal)
+
+        when (model.getDateString()) {
+            "today" -> {
+                v.fragment_diary_date.text = getString(R.string.today)
+                mNextDayBtn.isEnabled = false
+                mNextDayBtn.isClickable = false
+            }
+            "yesterday" -> {
+                v.fragment_diary_date.text = getString(R.string.yesterday)
+                mNextDayBtn.isEnabled = true
+                mNextDayBtn.isClickable = true
+            }
+            else -> {
+                v.fragment_diary_date.text = sdf.format(cal.time)
+            }
+        }
     }
 
     private val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
@@ -226,16 +229,4 @@ class DiaryFragment: Fragment() {
                 breakfastAdapter.removeItem(viewHolder.adapterPosition)
             }
         }
-
-    fun getDay(date: String, daysAdded: Int): String {
-        d("AAAAAA", "BBBBB")
-        var newDate = date
-        var sdf = SimpleDateFormat("yyyy-MM-dd")
-        val c = Calendar.getInstance()
-        c.time = sdf.parse(newDate)
-        c.add(Calendar.DATE, daysAdded)
-        val resultdate = Date(c.timeInMillis)
-        newDate = sdf.format(resultdate)
-        return newDate
-    }
 }

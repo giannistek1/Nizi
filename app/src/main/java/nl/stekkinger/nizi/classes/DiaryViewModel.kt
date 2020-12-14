@@ -25,8 +25,8 @@ import kotlin.collections.ArrayList
 
 class DiaryViewModel(
     private val mRepository: FoodRepository = FoodRepository(),
-    private var mDate: MutableLiveData<String> = MutableLiveData(),
-    private var mCurrentDay: String = SimpleDateFormat("yyyy-MM-dd").format(Date()),
+    private var mDate: MutableLiveData<Calendar> = MutableLiveData(),
+//    private var mCurrentDay: String = SimpleDateFormat("yyyy-MM-dd").format(Date()),
     private var mMealTime: String = "Ontbijt",
     private var mSearchText: MutableLiveData<String> = MutableLiveData()
 ) : ViewModel() {
@@ -35,25 +35,54 @@ class DiaryViewModel(
         mMealTime = time
     }
 
-    // diary/consumption area
-    private var mDiary: LiveData<ArrayList<ConsumptionResponse>> = Transformations.switchMap<String, ArrayList<ConsumptionResponse>>(
-        mDate
-    ) { date ->  diary(date) }
 
-    private fun diary(date: String): MutableLiveData<ArrayList<ConsumptionResponse>> {
-        d("t", date)
-        val endDate: String = date.substringAfter("/")
-        val startDate: String = date.substringBefore("/")
-        return mRepository.getDiary(startDate, endDate)
+    // diary/consumption area
+    private var mDiary: LiveData<ArrayList<ConsumptionResponse>> = Transformations.switchMap<Calendar, ArrayList<ConsumptionResponse>>(
+        mDate
+    ) { date: Calendar ->  diary(date) }
+
+    private fun diary(date: Calendar): MutableLiveData<ArrayList<ConsumptionResponse>> {
+        return mRepository.getDiary(sdfDb.format(date.time))
     }
 
-    fun setDiaryDate(date: String) {
-        mDate.value = date
-        mCurrentDay = date.substringBefore("/")
+    fun setDiaryDate(cal: Calendar) {
+        mDate.value = cal
     }
 
     fun getDiary(): LiveData<ArrayList<ConsumptionResponse>> {
         return mDiary
+    }
+
+    // Date format for views
+    private val sdf: SimpleDateFormat = GeneralHelper.getDateFormat()
+    // Date format for database
+    private val sdfDb: SimpleDateFormat = GeneralHelper.getCreateDateFormat()
+
+    fun getSelectedDate(): Calendar {
+        return mDate.value!!
+    }
+
+    fun getDateString(): String {
+        val date: String = sdf.format(mDate.value!!.time)
+        // create temporary calendar
+        val tmpCalendar: Calendar = Calendar.getInstance()
+        // set the calendar to start of today
+        tmpCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        tmpCalendar.set(Calendar.MINUTE, 0);
+        tmpCalendar.set(Calendar.SECOND, 0);
+        tmpCalendar.set(Calendar.MILLISECOND, 0);
+        // collect today/yesterday date
+        val today: String = sdf.format(tmpCalendar.time)
+        tmpCalendar.add(Calendar.DATE, -1)
+        val yesterday: String = sdf.format(tmpCalendar.time)
+        // compare to determine string for UI
+        return when (date) {
+            today ->  "today"
+            yesterday -> "yesterday"
+            else -> {
+                date
+            }
+        }
     }
 
     fun deleteConsumption(id: Int) {
@@ -103,6 +132,8 @@ class DiaryViewModel(
     val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
     fun addFood(food: Food, portion: Float = 1.0F) {
 
+        val date: String = sdfDb.format(mDate.value!!.time)
+
         val foodItem = FoodMealComponent(
             id = food.id,
             name = food.name,
@@ -124,7 +155,7 @@ class DiaryViewModel(
 
         val consumption = Consumption(
             amount = portion.toFloat(),
-            date = mCurrentDay+"T11:00:00.000Z",
+            date = date+"T11:00:00.000Z",
             meal_time = mMealTime,
             patient = GeneralHelper.getUser().patient!!.id,
             weight_unit = weightUnit,
@@ -134,6 +165,8 @@ class DiaryViewModel(
     }
 
     fun editFood(consumptionResponse: ConsumptionResponse, portion: Float) {
+        val date: String = sdfDb.format(mDate.value!!.time)
+
         val foodItem = FoodMealComponent(
             id = consumptionResponse.food_meal_component.id,
             name = consumptionResponse.food_meal_component.name,
@@ -155,7 +188,7 @@ class DiaryViewModel(
 
         val consumption = Consumption(
             amount = portion,
-            date = mCurrentDay+"T11:00:00.000Z",
+            date = date+"T11:00:00.000Z",
             meal_time = mMealTime,
             patient = GeneralHelper.getUser().patient!!.id,
             weight_unit = weightUnit,

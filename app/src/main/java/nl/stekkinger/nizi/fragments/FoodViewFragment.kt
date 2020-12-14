@@ -16,6 +16,7 @@ import kotlinx.android.synthetic.main.fragment_food_view.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Food
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 
 class FoodViewFragment : Fragment() {
     private lateinit var model: DiaryViewModel

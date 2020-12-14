@@ -17,28 +17,19 @@ class FoodRepository : Repository() {
 
     private val TAG = "FoodRepository"
 
-    fun getDiary(startDate: String, endDate: String): MutableLiveData<ArrayList<ConsumptionResponse>> {
+    fun getDiary(date: String): MutableLiveData<ArrayList<ConsumptionResponse>> {
         val result = MutableLiveData<ArrayList<ConsumptionResponse>>()
-        val date: String = startDate + "T11:00:00.000Z"
-        // todo: fix date
-//        d("logV", GeneralHelper.getUser().patient?.id.toString() + " " +authHeader + " " + preferences.getInt("patient", 0).toString() + " " + startDate + " " + endDate)
+        val newDate: String = date + "T11:00:00.000Z"
         val gson = Gson()
         val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
-        val weightUnitHolder: WeightUnitHolder = gson.fromJson(json, WeightUnitHolder::class.java)
-        d("log weight", "derp" + weightUnitHolder.weightUnits[3].unit)
-        service.fetchConsumptions(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id, date = date).enqueue(object: Callback<ArrayList<ConsumptionResponse>> {
+
+        service.fetchConsumptions(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id, date = newDate).enqueue(object: Callback<ArrayList<ConsumptionResponse>> {
             override fun onResponse(call: Call<ArrayList<ConsumptionResponse>>, response: Response<ArrayList<ConsumptionResponse>>) {
                 if (response.isSuccessful) {
                     result.value = response.body()
-                    d("succ", response.code().toString())
-                    d("succ", response.body().toString())
-                } else {
-                    d("resp", response.code().toString())
-                    d("rene", "response, not succesfull: ${response}")
                 }
             }
             override fun onFailure(call: Call<ArrayList<ConsumptionResponse>>, t: Throwable) {
-                d("rene", t.toString())
             }
         })
         return result
