@@ -6,16 +6,104 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--    instead of textvew title, a tool bar?-->
-    <TextView
-        android:background="@color/lightGray"
-        android:id="@+id/title_food_view"
-        android:textColor="@color/black"
-        android:textSize="@dimen/h2"
-        android:padding="@dimen/marginNormal"
-        android:layout_width="match_parent"
+    <TableLayout
+        android:id="@+id/menu_bar"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        tools:text="Title"/>
+        android:stretchColumns="1">
+        <TableRow
+            android:background="@color/lightGray"
+            android:gravity="center_vertical">
+            <TextView
+                android:paddingStart="@dimen/marginSmall"
+                android:background="@color/lightGray"
+                android:id="@+id/title_food_view"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSizeNormal"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                tools:text="Title"/>
+
+            <TextView
+                android:background="@color/lightGray"
+                android:id="@+id/date_food_view"
+                android:textColor="@color/black"
+                android:gravity="center|center_vertical"
+                android:textSize="@dimen/textSizeNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text=""/>
+
+            <LinearLayout
+                android:paddingEnd="@dimen/marginSmall"
+                android:id="@+id/fav_and_delete_btns"
+                android:layout_width="120dp"
+                android:layout_gravity="right"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/heart_food_view"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="@dimen/dateNavigationSize"
+                    android:layout_height="@dimen/dateNavigationSize"
+                    android:layout_gravity="right"
+                    android:contentDescription="@string/favorites"
+                    android:src="@drawable/ic_heart"/>
+                <ImageButton
+                    android:id="@+id/delete_food_view"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="@dimen/dateNavigationSize"
+                    android:layout_height="@dimen/dateNavigationSize"
+                    android:layout_gravity="right"
+                    android:contentDescription="@string/content_delete"
+                    android:src="@drawable/ic_trashcan"/>
+
+            </LinearLayout>
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="button1"-->
+<!--                android:id="@+id/button1button"></Button>-->
+<!--            <EditText-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/firstedittext"-->
+<!--                android:layout_width="wrap_content"></EditText>-->
+<!--            <Button-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="button2"-->
+<!--                android:id="@+id/button2button"></Button>-->
+        </TableRow>
+    </TableLayout>
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/menu_bar"-->
+<!--        android:layout_width="fill_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:padding="@dimen/marginSmall">-->
+
+<!--        <TextView-->
+<!--            android:background="@color/lightGray"-->
+<!--            android:id="@+id/title_food_view"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="@dimen/textSizeNormal"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            tools:text="Title"/>-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/diary_prev_date"-->
+<!--            style="@style/Widget.AppCompat.Button.Borderless"-->
+<!--            android:layout_width="@dimen/dateNavigationSize"-->
+<!--            android:layout_height="@dimen/dateNavigationSize"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:contentDescription="@string/yesterday"-->
+<!--            android:src="@drawable/ic_back"-->
+<!--            android:tint="@color/black"/>-->
+
+<!--    </LinearLayout>-->
 
     <LinearLayout
         android:id="@+id/img_and_save"
@@ -23,8 +111,8 @@
         android:layout_height="wrap_content"
         android:gravity="center|bottom"
         android:orientation="horizontal"
-        android:padding="10dp"
-        android:layout_below="@id/title_food_view">
+        android:padding="@dimen/marginSmall"
+        android:layout_below="@id/menu_bar">
 
         <LinearLayout
             android:id="@+id/img_and_save_col1"

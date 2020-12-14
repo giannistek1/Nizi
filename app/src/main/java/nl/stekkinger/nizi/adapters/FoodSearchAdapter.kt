@@ -64,7 +64,7 @@ class FoodSearchAdapter(
                 // do somthing in model
                 model.addFavorite(food.id)
                 // show toast of success (there is no way to get visual representation of liked foods)
-                Toast.makeText(activity, "Toegevoegd aan favorieten", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, R.string.added_favorite, Toast.LENGTH_SHORT).show()
             }
             // hide btns
             holder.deleteBtn.isVisible = false

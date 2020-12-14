@@ -91,6 +91,7 @@
     <string name="products">Producten</string>
     <string name="meals">Maaltijden</string>
     <string name="favorites">Favorieten</string>
+    <string name="added_favorite">Toegevoegd aan favorieten</string>
     <string name="search_product">Product zoeken</string>
     <string name="scan_product">Scan product</string>
     <string name="scan_barcode">Scan barcode</string>
