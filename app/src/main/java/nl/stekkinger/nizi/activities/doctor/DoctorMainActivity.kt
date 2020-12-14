@@ -1,6 +1,7 @@
 package nl.stekkinger.nizi.activities.doctor
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
@@ -15,7 +16,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_doctor_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
@@ -147,7 +150,44 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
 
         // Create Linear Layout Manager
         activity_doctor_main_rv.layoutManager = LinearLayoutManager(this)
+
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(activity_doctor_main_rv)
     }
+
+    //region SwipeToDelete
+    private val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT)
+    {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            return false
+        }
+
+        override fun onSwiped( viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val patient = filteredList[viewHolder.adapterPosition]
+
+            val builder = AlertDialog.Builder(this@DoctorMainActivity)
+            builder.setTitle(getString(R.string.delete_patient))
+            builder.setMessage(getString(R.string.delete_patient_prompt, patient.first_name))
+
+            builder.setPositiveButton(android.R.string.yes) { dialog, which ->
+                deletePatientAsyncTask(patient.patient_id).execute()
+                filteredList.removeAt(viewHolder.adapterPosition)
+                activity_doctor_main_rv.adapter!!.notifyDataSetChanged()
+            }
+
+            builder.setNegativeButton(android.R.string.no) { dialog, which ->
+                // Put patient back
+                activity_doctor_main_rv.adapter!!.notifyDataSetChanged()
+            }
+
+            builder.show()
+        }
+    }
+    //endregion
 
     // region Filter
     fun filter(text: String) {
@@ -231,6 +271,82 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
             filteredList.addAll(patientList)
 
             setupRecyclerView()
+        }
+    }
+    //endregion
+
+    //region deletePatient
+    inner class deletePatientAsyncTask(val patientId: Int) : AsyncTask<Void, Void, Patient>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            // Loader
+            loader.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): Patient? {
+            return try {
+                patientRepository.deletePatient(patientId)
+            }  catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
+        }
+
+        override fun onPostExecute(result: Patient?) {
+            super.onPostExecute(result)
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
+            if (result == null) { Toast.makeText(baseContext, R.string.patient_delete_fail, Toast.LENGTH_SHORT).show()
+                return }
+
+            // Feedback
+            Toast.makeText(baseContext, R.string.patient_deleted, Toast.LENGTH_SHORT).show()
+
+            deleteUserAsyncTask(result.user!!.id).execute()
+        }
+    }
+    //endregion
+
+    //region deleteUser
+    inner class deleteUserAsyncTask(val userId: Int) : AsyncTask<Void, Void, UserLogin>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            // Loader
+            loader.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): UserLogin? {
+            return try {
+                authRepository.deleteUser(userId)
+            }  catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
+        }
+
+        override fun onPostExecute(result: UserLogin?) {
+            super.onPostExecute(result)
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
+            if (result == null) { Toast.makeText(baseContext, R.string.user_delete_fail, Toast.LENGTH_SHORT).show()
+                return }
+
+            // Feedback
+            Toast.makeText(baseContext, R.string.user_deleted, Toast.LENGTH_SHORT).show()
         }
     }
     //endregion

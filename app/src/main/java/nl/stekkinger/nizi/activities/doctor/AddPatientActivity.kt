@@ -188,7 +188,7 @@ class AddPatientActivity : BaseActivity() {
         startActivityForResult(intent, REQUEST_CODE)
     }
 
-    //region getPatients
+    //region getUsers
     inner class getUsers : AsyncTask<Void, Void, ArrayList<UserLogin>>()
     {
         override fun onPreExecute() {

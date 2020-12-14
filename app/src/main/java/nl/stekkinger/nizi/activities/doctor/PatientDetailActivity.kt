@@ -163,7 +163,7 @@ class PatientDetailActivity : BaseActivity() {
                 return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.fetched_weight_units, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, R.string.fetched_weight_units, Toast.LENGTH_SHORT).show()
 
             // Save weightUnits
             val gson = Gson()
@@ -203,6 +203,7 @@ class PatientDetailActivity : BaseActivity() {
             if (result == null) { Toast.makeText(baseContext, R.string.get_patient_fail, Toast.LENGTH_SHORT).show()
                 return }
 
+            // Feedback
             Toast.makeText(baseContext, R.string.fetched_patient, Toast.LENGTH_SHORT).show()
 
             // Make PatientData because patient does not have descriptions of dietaryRestrictions

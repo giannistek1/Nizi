@@ -44,6 +44,10 @@ class AuthRepository : Repository() {
         return service.updateUser(authHeader, user.id, user).execute().body()
     }
 
+    fun deleteUser(userId: Int) : UserLogin? {
+        return service.deleteUser(authHeader, userId).execute().body()
+    }
+
     // Forgot password
     fun forgotPassword(forgotPasswordRequest: ForgotPasswordRequest): ForgotPasswordResponse? {
         return service.forgotPassword(forgotPasswordRequest).execute().body()

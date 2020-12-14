@@ -32,4 +32,6 @@ class PatientAdapter(val context: Context, val items: MutableList<PatientItem>, 
         val id: TextView = itemView.item_patient_id
         val name: TextView = itemView.item_patient_name
     }
+
+
 }
