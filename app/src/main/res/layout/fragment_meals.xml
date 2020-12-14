@@ -5,8 +5,8 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- Header (REUSEABLE BUT NOT IMPLEMENTED YET) -->
     <LinearLayout
+        android:id="@+id/fragment_meals_ll_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -19,24 +19,36 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="voeding"
+            android:paddingTop="@dimen/marginNormal"
+            android:paddingBottom="@dimen/marginNormal"
+            android:text="@string/products"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/activity_add_meal"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:background="@color/gray2"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="Maaltijden"
-            android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/activity_add_meal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:background="@color/gray2"
+                android:paddingTop="@dimen/marginNormal"
+                android:paddingBottom="@dimen/marginNormal"
+                android:text="@string/meals"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:background="@color/colorAccent"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/activity_favorites"
@@ -44,9 +56,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:text="Favorieten"
+            android:paddingTop="@dimen/marginNormal"
+            android:paddingBottom="@dimen/marginNormal"
+            android:text="@string/favorites"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
@@ -59,8 +71,7 @@
         android:id="@+id/fragment_diary_rl_nutrition"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_below="@+id/activity_main_header_background">
+        android:layout_below="@+id/fragment_meals_ll_navigation">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/meal_recycler_view"
@@ -69,7 +80,7 @@
             android:padding="2dp"
             android:layout_marginTop="2dp"
             android:scrollbars="vertical"
-            android:background="@android:color/darker_gray"
+            android:background="@android:color/white"
             android:layout_below="@+id/search_food"/>
 
     </RelativeLayout>
