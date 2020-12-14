@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_diary.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import nl.stekkinger.nizi.R
@@ -89,7 +90,9 @@ class HomeFragment: Fragment() {
             getConsumptionsAsyncTask().execute()
 
             // Update UI
-            view.fragment_home_btn_tomorrow.imageAlpha = 255
+            view.fragment_home_btn_tomorrow.isEnabled = true
+            view.fragment_home_btn_tomorrow.isClickable = true
+            view.fragment_home_btn_tomorrow.alpha = 1f
         }
 
         view.fragment_home_btn_tomorrow.setOnClickListener {
@@ -107,7 +110,9 @@ class HomeFragment: Fragment() {
             if (newDate == today) {
                 // Update UI
                 view.fragment_home_txt_day.text = getString(R.string.today)
-                view.fragment_home_btn_tomorrow.imageAlpha = 20
+                view.fragment_home_btn_tomorrow.isEnabled = false
+                view.fragment_home_btn_tomorrow.isClickable = false
+                view.fragment_home_btn_tomorrow.alpha = 0.2f
             } else if(newDate == yesterday) {
                 view.fragment_home_txt_day.text = getString(R.string.yesterday)
             } else {
@@ -119,7 +124,9 @@ class HomeFragment: Fragment() {
 
         // Update UI
         view.fragment_home_txt_day.text = getString(R.string.today)
-        view.fragment_home_btn_tomorrow.imageAlpha = 20
+        view.fragment_home_btn_tomorrow.isEnabled = false
+        view.fragment_home_btn_tomorrow.isClickable = false
+        view.fragment_home_btn_tomorrow.alpha = 0.2f
 
         getConsumptionsAsyncTask().execute()
 

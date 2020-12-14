@@ -183,7 +183,9 @@ class DiaryFragment: Fragment() {
             }
 
             // Update UI
-            diary_next_date.imageAlpha = 255
+            diary_next_date.isEnabled = true
+            diary_next_date.isClickable = true
+            diary_next_date.alpha = 1f
         }
 
         view.diary_next_date.setOnClickListener {
@@ -195,7 +197,9 @@ class DiaryFragment: Fragment() {
                 if (SimpleDateFormat("yyyy-MM-dd").format(Date()) == startDate) {
                     // Update UI
                     fragment_diary_date.text = getString(R.string.today)
-                    diary_next_date.imageAlpha = 20
+                    diary_next_date.isEnabled = false
+                    diary_next_date.isClickable = false
+                    diary_next_date.alpha = 0.2f
                 } else if (SimpleDateFormat("yyyy-MM-dd").format(Date()) == endDate) {
                     fragment_diary_date.text = getString(R.string.yesterday)
                 } else {
@@ -204,7 +208,9 @@ class DiaryFragment: Fragment() {
             }
         }
 
-        view.diary_next_date.imageAlpha = 20
+        view.diary_next_date.isEnabled = false
+        view.diary_next_date.isClickable = false
+        view.diary_next_date.alpha = 0.2f
 
         return view
     }
