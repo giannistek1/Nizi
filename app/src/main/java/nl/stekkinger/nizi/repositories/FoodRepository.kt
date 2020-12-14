@@ -109,13 +109,18 @@ class FoodRepository : Repository() {
     }
 
     fun editConsumption(consumption: Consumption) {
-        service.editConsumption(authHeader = authHeader, body = consumption).enqueue(object : Callback<Unit> {
+        service.editConsumption(authHeader = authHeader, body = consumption, consumptionId = consumption.id).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                d("con", response.toString())
+                if (response.isSuccessful && response.body() != null) {
+                    d("suc", response.toString())
+                } else {
+                    d("em", response.toString())
+                }
+
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-
+                d("fal", t.toString())
             }
         })
     }

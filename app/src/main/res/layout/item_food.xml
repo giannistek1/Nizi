@@ -9,46 +9,45 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:layout_margin="2dp">
 
         <ImageView
             android:id="@+id/food_image"
-            android:layout_width="50dp"
-            android:layout_height="40dp"
-            android:padding="2dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             tools:src="@drawable/ic_food"
-            android:contentDescription="food image" />
+            android:scaleType="fitCenter"
+            android:contentDescription="@string/content_food_image"/>
 
         <LinearLayout
             android:id="@+id/food_info"
-            android:layout_width="match_parent"
+            android:layout_width="230dp"
             android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
-            android:layout_marginRight="90dp"
             android:layout_toEndOf="@+id/food_image"
-            android:layout_toStartOf="@+id/btn_add"
+            android:paddingTop="@dimen/marginSmall"
+            android:paddingStart="@dimen/marginNormal"
+            android:paddingEnd="0dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_marginBottom="@dimen/marginSmall"
                 android:maxLines="1"
                 android:textColor="@android:color/black"
-                android:textSize="20sp"
+                android:textSize="@dimen/textSize12"
                 android:textStyle="bold"
-                tools:text="Title" />
+                tools:text="Title"/>
 
             <TextView
                 android:id="@+id/summary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/title"
                 android:maxLines="1"
-                android:textSize="16sp"
-                tools:text="Summary" />
+                android:textSize="@dimen/textSize10"
+                tools:text="Summary"/>
 
         </LinearLayout>
 
@@ -57,49 +56,46 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="5dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_toEndOf="@+id/food_info"
             android:orientation="horizontal">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:gravity="right" >
+                android:layout_height="match_parent"
+                android:gravity="end">
 
-            <ImageButton
-                android:id="@+id/fav_btn"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_row="4"
-                android:layout_column="0"
-                android:layout_toStartOf="@id/add_btn"
-                android:src="@drawable/ic_favorite"
-                android:contentDescription="favorite button" />
+                <ImageButton
+                    android:id="@+id/fav_btn"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_toStartOf="@id/add_btn"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_favorite"
+                    android:contentDescription="@string/content_favorite_food"/>
 
-            <ImageButton
-                android:id="@+id/add_btn"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_marginTop="-5dp"
-                android:layout_width="45dp"
-                android:layout_height="40dp"
-                android:layout_row="4"
-                android:layout_column="0"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_add_xs"
-                android:scaleType="fitXY"
-                android:contentDescription="add button" />
+                <ImageButton
+                    android:id="@+id/add_btn"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_add"
+                    android:scaleType="centerCrop"
+                    android:tint="@color/colorPrimary"
+                    android:contentDescription="@string/content_add_food"/>
 
-            <ImageButton
-                android:id="@+id/delete_btn"
-                style="?android:attr/borderlessButtonStyle"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_row="4"
-                android:layout_column="0"
-                android:layout_toStartOf="@id/fav_btn"
-                android:src="@drawable/ic_delete"
-                android:contentDescription="delete button" />
+                <ImageButton
+                    android:id="@+id/delete_btn"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_toStartOf="@id/fav_btn"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_delete"
+                    android:contentDescription="@string/content_delete_food" />
 
             </RelativeLayout>
 

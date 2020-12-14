@@ -3,7 +3,9 @@ package nl.stekkinger.nizi.fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log.d
 import android.view.*
+import android.view.View.GONE
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -52,7 +54,16 @@ class FoodViewFragment : Fragment() {
 
         mServingInput.addTextChangedListener(textWatcher)
 
+        // this view does not have a delete button
+        view.delete_food_view.visibility = GONE
+
         // click listeners
+        view.heart_food_view.setOnClickListener {
+            model.addFavorite(mFood.id)
+            //todo: toast on success response
+            Toast.makeText(activity, R.string.added_favorite, Toast.LENGTH_SHORT).show()
+        }
+
         view.increase_portion.setOnClickListener {
             if (mServingInput.text.toString() != "") {
                 var portion: Float = mServingInput.text.toString().toFloat() + 0.5f
@@ -72,9 +83,11 @@ class FoodViewFragment : Fragment() {
         }
 
         view.save_btn.setOnClickListener {
+            d("AAA", "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
             Toast.makeText(this.context, R.string.add_food_success, Toast.LENGTH_LONG).show()
 
             val portion = mServingInput.text.toString().trim().toFloat()
+            d("AAA", portion.toString())
             model.addFood(mFood, portion)
 
             (activity)!!.supportFragmentManager.beginTransaction().replace(
@@ -114,6 +127,8 @@ class FoodViewFragment : Fragment() {
             mDecreaseBtn.isEnabled = true
             mDecreaseBtn.isClickable = true
         }
+
+        d("myfood", mFood.my_food.toString())
 
         // updating nutrition values
         val food: Food = mFood
