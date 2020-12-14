@@ -1,13 +1,11 @@
 package nl.stekkinger.nizi.fragments
 
 import android.os.Bundle
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,7 +19,6 @@ import nl.stekkinger.nizi.adapters.ConsumptionAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
-import java.text.SimpleDateFormat
 import java.util.*
 
 class DiaryFragment: Fragment() {
@@ -36,6 +33,14 @@ class DiaryFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
+        val args: Bundle? = arguments
+        var refresh = false
+        if(args != null) {
+            refresh = args.getBoolean("refresh")
+        }
+        if (refresh) {
+            (activity)!!.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
+        }
 
         val breakfastRv: RecyclerView = view.findViewById(R.id.diary_breakfast_rv)
         breakfastRv.layoutManager = LinearLayoutManager(activity)

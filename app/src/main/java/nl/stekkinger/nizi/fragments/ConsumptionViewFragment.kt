@@ -166,9 +166,14 @@ class ConsumptionViewFragment : Fragment() {
                 val portion = mServingInput.text.toString().trim().toFloat()
                 model.editFood(mConsumption, portion)
 
+                val fragment: Fragment = DiaryFragment()
+                val bundle = Bundle()
+                bundle.putBoolean("refresh", true)
+                fragment.arguments = bundle
+
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
-                    DiaryFragment()
+                    fragment
                 ).commit()
                 true
             }

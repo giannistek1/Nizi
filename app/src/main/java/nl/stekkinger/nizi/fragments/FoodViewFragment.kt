@@ -9,6 +9,7 @@ import android.view.View.GONE
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.textfield.TextInputEditText
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_food_view.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Food
-import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+
 
 class FoodViewFragment : Fragment() {
     private lateinit var model: DiaryViewModel
@@ -172,9 +173,14 @@ class FoodViewFragment : Fragment() {
                 val portion = mServingInput.text.toString().trim().toFloat()
                 model.addFood(mFood, portion)
 
+                val fragment: Fragment = DiaryFragment()
+                val bundle = Bundle()
+                bundle.putBoolean("refresh", true)
+                fragment.arguments = bundle
+
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
-                    DiaryFragment()
+                    fragment
                 ).commit()
                 true
             }
