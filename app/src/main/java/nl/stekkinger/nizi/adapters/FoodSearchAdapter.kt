@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi.adapters
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,7 +50,9 @@ class FoodSearchAdapter(
         var food: Food = mDataset[position]
         Picasso.get().load(food.image_url).resize(40, 40).into(holder.image)
         holder.title.text = food.name
-        holder.summary.text = food.portion_size.toString() + " " + food.weight_unit.unit
+        // Todo: change into string with template
+        //holder.summary.text = Resources.getSystem().getString(R.string.portion_with_weightunit, food.portion_size.toString() + " " + food.weight_unit.unit)
+        holder.summary.text = "Portie " + food.portion_size.toString() + " " + food.weight_unit.unit
 
         if (fragment == "food") {
             holder.addBtn.setOnClickListener {

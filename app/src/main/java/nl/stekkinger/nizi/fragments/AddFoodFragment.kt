@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_add_food.*
 import kotlinx.android.synthetic.main.fragment_add_food.view.*
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
@@ -57,6 +58,7 @@ class AddFoodFragment: Fragment() {
                 override fun onQueryTextChange(newText: String): Boolean {
                     Log.i("onQueryTextChange", newText)
                     model.setFoodSearch(newText)
+                    fragment_add_food_txt_amount.text = getString(R.string.amount_of_products, recyclerView.adapter!!.itemCount)
                     return true
                 }
 
