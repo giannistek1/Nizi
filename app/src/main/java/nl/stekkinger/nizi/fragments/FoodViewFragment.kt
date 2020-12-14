@@ -3,6 +3,7 @@ package nl.stekkinger.nizi.fragments
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log.d
 import android.view.*
 import android.widget.ImageButton
 import android.widget.Toast
@@ -72,9 +73,11 @@ class FoodViewFragment : Fragment() {
         }
 
         view.save_btn.setOnClickListener {
+            d("AAA", "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
             Toast.makeText(this.context, R.string.add_food_success, Toast.LENGTH_LONG).show()
 
             val portion = mServingInput.text.toString().trim().toFloat()
+            d("AAA", portion.toString())
             model.addFood(mFood, portion)
 
             (activity)!!.supportFragmentManager.beginTransaction().replace(

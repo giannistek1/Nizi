@@ -105,9 +105,10 @@ interface ApiService {
         @Body body: Consumption
     ) : Call<Unit>
 
-    @PUT("consumptions")
+    @PUT("consumptions/{id}")
     fun editConsumption(
         @Header("Authorization") authHeader : String,
+        @Path("id") consumptionId: Int,
         @Body body: Consumption
     ) : Call<Unit>
 

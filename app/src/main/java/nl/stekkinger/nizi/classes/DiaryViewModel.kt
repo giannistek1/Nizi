@@ -1,6 +1,7 @@
 package nl.stekkinger.nizi.classes
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log.d
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
@@ -92,7 +93,7 @@ class DiaryViewModel(
     // foodSearch
     private var mFoodSearch: LiveData<ArrayList<Food>> = Transformations.switchMap<String, ArrayList<Food>>(
         mSearchText
-    ) { search ->  foodSearch(search) }
+    ) { search: String ->  foodSearch(search) }
 
     private fun foodSearch(searchText: String): MutableLiveData<ArrayList<Food>?> {
         return mRepository.searchFood(searchText)
@@ -120,7 +121,6 @@ class DiaryViewModel(
 
     val selectedEdit = MutableLiveData<ConsumptionResponse>()
 
-    // TODO: find fix for editing consumptions (impossible with current API)
     fun selectEdit(activity: AppCompatActivity, consumption: ConsumptionResponse) {
         (activity).supportFragmentManager.beginTransaction().replace(
             R.id.activity_main_fragment_container,
@@ -129,7 +129,7 @@ class DiaryViewModel(
         selectedEdit.value = consumption
     }
 
-    val preferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
+    val preferences: SharedPreferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
     fun addFood(food: Food, portion: Float = 1.0F) {
 
         val date: String = sdfDb.format(mDate.value!!.time)
@@ -144,7 +144,7 @@ class DiaryViewModel(
             sodium = food.sodium * portion,
             water = food.water * portion,
             fiber = food.fiber * portion,
-            portion_size = food.portion_size,
+            portion_size = food.portion_size * portion,
             image_url = food.image_url
         )
         val weightUnit = WeightUnit(
@@ -154,7 +154,7 @@ class DiaryViewModel(
         )
 
         val consumption = Consumption(
-            amount = portion.toFloat(),
+            amount = portion,
             date = date+"T11:00:00.000Z",
             meal_time = mMealTime,
             patient = GeneralHelper.getUser().patient!!.id,
@@ -164,30 +164,32 @@ class DiaryViewModel(
         mRepository.addConsumption(consumption)
     }
 
-    fun editFood(consumptionResponse: ConsumptionResponse, portion: Float) {
+    fun editFood(c: ConsumptionResponse, newPortion: Float) {
         val date: String = sdfDb.format(mDate.value!!.time)
+        val oldPortion: Float = c.amount
 
         val foodItem = FoodMealComponent(
-            id = consumptionResponse.food_meal_component.id,
-            name = consumptionResponse.food_meal_component.name,
-            description = consumptionResponse.food_meal_component.description,
-            kcal = (consumptionResponse.food_meal_component.kcal * portion).toFloat(),
-            protein = (consumptionResponse.food_meal_component.protein * portion).toFloat(),
-            potassium = (consumptionResponse.food_meal_component.potassium * portion).toFloat(),
-            sodium = (consumptionResponse.food_meal_component.sodium * portion).toFloat(),
-            water = (consumptionResponse.food_meal_component.water * portion).toFloat(),
-            fiber = (consumptionResponse.food_meal_component.fiber * portion).toFloat(),
-            portion_size = consumptionResponse.food_meal_component.portion_size,
-            image_url = consumptionResponse.food_meal_component.image_url
+            id = c.food_meal_component.id,
+            name = c.food_meal_component.name,
+            description = c.food_meal_component.description,
+            kcal = (c.food_meal_component.kcal / oldPortion * newPortion),
+            protein = (c.food_meal_component.protein / oldPortion * newPortion),
+            potassium = (c.food_meal_component.potassium / oldPortion * newPortion),
+            sodium = (c.food_meal_component.sodium / oldPortion * newPortion),
+            water = (c.food_meal_component.water / oldPortion * newPortion),
+            fiber = (c.food_meal_component.fiber / oldPortion * newPortion),
+            portion_size = (c.food_meal_component.portion_size / oldPortion * newPortion),
+            image_url = c.food_meal_component.image_url
         )
         val weightUnit = WeightUnit(
-            id = consumptionResponse.weight_unit.id,
-            unit = consumptionResponse.weight_unit.unit,
-            short = consumptionResponse.weight_unit.short
+            id = c.weight_unit.id,
+            unit = c.weight_unit.unit,
+            short = c.weight_unit.short
         )
 
         val consumption = Consumption(
-            amount = portion,
+            id = c.id,
+            amount = newPortion,
             date = date+"T11:00:00.000Z",
             meal_time = mMealTime,
             patient = GeneralHelper.getUser().patient!!.id,
