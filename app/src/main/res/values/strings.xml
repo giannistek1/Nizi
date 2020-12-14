@@ -87,11 +87,15 @@
     <string name="add">Toevoegen</string>
     <string name="add_food">Voeding toevoegen</string>
     <string name="food_added">Voeding toegevoegd</string>
+    <string name="food">Voeding</string>
     <string name="products">Producten</string>
     <string name="meals">Maaltijden</string>
     <string name="favorites">Favorieten</string>
     <string name="search_product">Product zoeken</string>
     <string name="scan_product">Scan product</string>
+    <string name="scan_barcode">Scan barcode</string>
+    <string name="amount_zero">Aantal (0)</string>
+    <string name="amount_of_products">Aantal (%1$d)</string>
     <string name="servings">Portie</string>
     <string name="nr_servings">Aantal porties: </string>
     <string name="meal_name_empty">Maaltijd naam is leeg </string>
@@ -254,10 +258,10 @@
     <string name="december">December</string>
 
     <!-- content description -->
-    <string name="content_sunrise">Sunrise image</string>
-    <string name="content_sun">Sun image</string>
-    <string name="content_sunset">Sunset image</string>
-    <string name="content_snack">Snack image</string>
+    <string name="content_sunrise">Sunrise afbeelding</string>
+    <string name="content_sun">Sun afbeelding</string>
+    <string name="content_sunset">Sunset afbeelding</string>
+    <string name="content_snack">Snack afbeelding</string>
     <string name="content_add_breakfast">Ontbijt toevoegen knop</string>
     <string name="content_add_lunch">Lunch toevoegen knop</string>
     <string name="content_add_dinner">Avondeten toevoegen knop</string>
@@ -277,6 +281,7 @@
     <string name="ic_home">Home icoontje</string>
     <string name="ic_culinary">Etensgerei icoontje</string>
     <string name="ic_conversation">Gesprekken icoontje</string>
+    <string name="ic_barcode">Barcode icoontje</string>
 
     <string name="food_diary">Voedingsdagboek</string>
     <string name="user">Gebruiker</string>
