@@ -100,9 +100,8 @@ class LoginActivity : BaseActivity() {
 
         // Testing
         //activity_login_et_username.setText("BramWenting") // Patient
-        activity_login_et_username.setText("HugoBrand") // Doctor
-        activity_login_et_password.setText("Welkom123")
-
+        //activity_login_et_username.setText("HugoBrand") // Doctor
+        //activity_login_et_password.setText("Welkom123")
     }
 
     private fun showNextActivity() {
