@@ -21,11 +21,13 @@
             android:orientation="horizontal"
             android:gravity="end">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/fragment_home_btn_yesterday"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="@dimen/dateNavigationSize"
                 android:layout_height="@dimen/dateNavigationSize"
                 android:layout_gravity="center_vertical"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/yesterday"
                 android:src="@drawable/ic_back"
                 android:tint="@color/black"/>
@@ -41,9 +43,9 @@
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/marginSmall"
-            android:layout_marginTop="@dimen/marginNormal"
             android:layout_marginEnd="@dimen/marginSmall"
-            android:layout_marginBottom="@dimen/marginNormal" />
+            android:layout_marginTop="@dimen/marginNormal"
+            android:layout_marginBottom="@dimen/marginNormal"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -52,11 +54,13 @@
             android:orientation="horizontal"
             android:gravity="start">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/fragment_home_btn_tomorrow"
+                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="@dimen/dateNavigationSize"
                 android:layout_height="@dimen/dateNavigationSize"
                 android:layout_gravity="center_vertical"
+                android:scaleType="centerCrop"
                 android:contentDescription="@string/tomorrow"
                 android:src="@drawable/ic_next"
                 android:tint="@color/black"/>
