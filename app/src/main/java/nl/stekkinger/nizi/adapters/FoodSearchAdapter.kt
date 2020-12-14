@@ -1,6 +1,7 @@
 package nl.stekkinger.nizi.adapters
 
 import android.content.res.Resources
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_food.view.*
@@ -82,9 +84,15 @@ class FoodSearchAdapter(
             holder.addBtn.setOnClickListener {
                 model.addFood(food)
                 notifyDataSetChanged()
-                (activity).supportFragmentManager.beginTransaction().replace(
+                
+                val fragment: Fragment = DiaryFragment()
+                val bundle = Bundle()
+                bundle.putBoolean("refresh", true)
+                fragment.arguments = bundle
+
+                (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
-                    DiaryFragment()
+                    fragment
                 ).commit()
             }
             holder.deleteBtn.setOnClickListener {
