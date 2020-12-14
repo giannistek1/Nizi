@@ -112,7 +112,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/fragment_add_food_ll_search"
             android:textColor="@color/black"
-            android:text="@string/amount"/>
+            android:text="@string/amount_zero"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/food_search_recycler_view"

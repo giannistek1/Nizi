@@ -94,7 +94,8 @@
     <string name="search_product">Product zoeken</string>
     <string name="scan_product">Scan product</string>
     <string name="scan_barcode">Scan barcode</string>
-    <string name="amount">Aantal (%1$d)</string>
+    <string name="amount_zero">Aantal (0)</string>
+    <string name="amount_of_products">Aantal (%1$d)</string>
     <string name="servings">Portie</string>
     <string name="nr_servings">Aantal porties: </string>
     <string name="meal_name_empty">Maaltijd naam is leeg </string>
