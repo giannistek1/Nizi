@@ -212,6 +212,19 @@ class DiaryFragment: Fragment() {
         view.diary_next_date.isClickable = false
         view.diary_next_date.alpha = 0.2f
 
+        // Hide patient things if isDoctor
+        val isDoctor = GeneralHelper.prefs.getBoolean(GeneralHelper.PREF_IS_DOCTOR, false)
+        if (isDoctor) {
+            view.diary_add_breakfast.visibility = GONE
+            view.diary_add_breakfast_btn.visibility = GONE
+            view.diary_add_lunch.visibility = GONE
+            view.diary_add_lunch_btn.visibility = GONE
+            view.diary_add_dinner.visibility = GONE
+            view.diary_add_dinner_btn.visibility = GONE
+            view.diary_add_snack.visibility = GONE
+            view.diary_add_snack_btn.visibility = GONE
+        }
+
         return view
     }
 
