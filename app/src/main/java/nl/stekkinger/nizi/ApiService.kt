@@ -23,6 +23,11 @@ interface ApiService {
         @Body body: LoginRequest
     ) : Call<LoginResponse>
 
+    @GET("users")
+    fun getUsers(
+        @Header("Authorization") authHeader : String
+    ) : Call<ArrayList<UserLogin>>
+
     @POST("users")
     fun registerUser(
         @Header("Authorization") authHeader : String,

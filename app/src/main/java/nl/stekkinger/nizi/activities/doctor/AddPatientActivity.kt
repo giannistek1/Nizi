@@ -3,6 +3,7 @@ package nl.stekkinger.nizi.activities.doctor
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.util.Patterns
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_add_patient.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
@@ -18,10 +20,15 @@ import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.User
+import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
+import nl.stekkinger.nizi.classes.patient.Patient
+import nl.stekkinger.nizi.classes.patient.PatientItem
 import nl.stekkinger.nizi.classes.patient.PatientShort
+import nl.stekkinger.nizi.repositories.AuthRepository
 import java.util.*
 import java.util.regex.Pattern
+import kotlin.collections.ArrayList
 
 
 class AddPatientActivity : BaseActivity() {
@@ -31,10 +38,13 @@ class AddPatientActivity : BaseActivity() {
     // For activity result
     private val REQUEST_CODE = 1
 
-    private lateinit var date: Date
-    val sdfDB = GeneralHelper.getCreateDateFormat()
+    private val authRepository: AuthRepository = AuthRepository()
 
+    private lateinit var date: Date
     private var doctorId: Int? = null
+    private var users: ArrayList<UserLogin> = arrayListOf()
+
+    val sdfDB = GeneralHelper.getCreateDateFormat() // Todo: Refactor getCreateDate to DBDate or something
 
     private lateinit var loader: View
 
@@ -91,6 +101,8 @@ class AddPatientActivity : BaseActivity() {
         val returnIntent = Intent()
         setResult(Activity.RESULT_CANCELED, returnIntent)
 
+        getUsers().execute()
+
         //region Testing
         /*activity_add_patient_et_firstName.setText(getString(R.string.sample_first_name))
         activity_add_patient_et_lastName.setText(R.string.sample_last_name)
@@ -125,9 +137,18 @@ class AddPatientActivity : BaseActivity() {
         val checkedGenderRadioButtonId: Int = activity_add_patient_rg_gender.checkedRadioButtonId
         if (checkedGenderRadioButtonId == -1) { return }
 
+        // Check if email already exists
+        val user = users.find { it.email ==  emailET.text.toString() }
+        if (user != null) {
+            Toast.makeText(baseContext, R.string.email_already_exists, Toast.LENGTH_SHORT).show()
+            emailET.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+            return }
+
         // Check if email is valid
         if (!InputHelper.isValidEmail(emailET.text.toString())) {
-            Toast.makeText(baseContext, R.string.email_invalid, Toast.LENGTH_SHORT).show(); return }
+            Toast.makeText(baseContext, R.string.email_invalid, Toast.LENGTH_SHORT).show()
+            emailET.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+            return }
 
         // Check if not matching passwords
         else if (passwordET.text.toString() != passwordConfirmET.text.toString()) {
@@ -166,6 +187,45 @@ class AddPatientActivity : BaseActivity() {
         // Start intent
         startActivityForResult(intent, REQUEST_CODE)
     }
+
+    //region getPatients
+    inner class getUsers : AsyncTask<Void, Void, ArrayList<UserLogin>>()
+    {
+        override fun onPreExecute() {
+            super.onPreExecute()
+
+            // Loader
+            loader.visibility = View.VISIBLE
+        }
+
+        override fun doInBackground(vararg p0: Void?): ArrayList<UserLogin>? {
+            return try {
+                authRepository.getUsers()
+            }  catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
+        }
+
+        override fun onPostExecute(result: ArrayList<UserLogin>?) {
+            super.onPostExecute(result)
+
+            // Loader
+            loader.visibility = View.GONE
+
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
+            if (result == null) { Toast.makeText(baseContext, R.string.get_users_fail, Toast.LENGTH_SHORT).show()
+                return }
+
+            // Feedback
+            Toast.makeText(baseContext, R.string.fetched_users, Toast.LENGTH_SHORT).show()
+
+            users = result
+        }
+    }
+    //endregion
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

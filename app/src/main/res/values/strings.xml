@@ -158,6 +158,8 @@
     <string name="get_dietary_fail">Richtlijnen ophalen mislukt</string>
     <string name="fetched_consumptions">Consumpties opgehaald</string>
     <string name="get_consumptions_fail">Consumpties ophalen mislukt</string>
+    <string name="fetched_users">Gebruikers opgehaald</string>
+    <string name="get_users_fail">Gebruikers ophalen mislukt</string>
 
     <!-- Patient profile -->
     <string name="profile">Profiel</string>
@@ -205,6 +207,7 @@
     <string name="empty_email">Vul een e-mailadres in</string>
     <string name="empty_password">Vul een wachtwoord in</string>
     <string name="empty_password_confirm">Vul een bevestigend wachtwoord in</string>
+    <string name="email_already_exists">Emailadres bestaat al</string>
     <string name="email_invalid">Vul een geldig emailadres in</string>
     <string name="passwords_dont_match">Wachtwoorden komen niet overeen</string>
 
