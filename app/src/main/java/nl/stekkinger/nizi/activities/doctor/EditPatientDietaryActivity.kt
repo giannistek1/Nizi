@@ -150,7 +150,7 @@ class EditPatientDietaryActivity : BaseActivity() {
                 Toast.LENGTH_SHORT).show(); return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.fetched_dietary_restrictions, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, R.string.fetched_dietary_restrictions, Toast.LENGTH_SHORT).show()
 
             // Save restrictions
             dietaryRestrictionList = result
@@ -253,7 +253,7 @@ class EditPatientDietaryActivity : BaseActivity() {
                 return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.user_edited, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, R.string.user_edited, Toast.LENGTH_SHORT).show()
 
             newDietaryList = arrayListOf()
 

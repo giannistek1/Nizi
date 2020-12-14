@@ -132,7 +132,7 @@ class AddPatientDietaryActivity : BaseActivity() {
                 Toast.LENGTH_SHORT).show(); return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.fetched_dietary_restrictions, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, R.string.fetched_dietary_restrictions, Toast.LENGTH_SHORT).show()
 
             dietaryRestrictionList = result
         }
@@ -274,7 +274,7 @@ class AddPatientDietaryActivity : BaseActivity() {
                 return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.user_added, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, R.string.user_added, Toast.LENGTH_SHORT).show()
 
             // Save userId for the patient that needs to be updated
             userId = result.id
@@ -309,7 +309,7 @@ class AddPatientDietaryActivity : BaseActivity() {
                 return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.patient_updated, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, R.string.patient_updated, Toast.LENGTH_SHORT).show()
 
             // In case we wanna return something
             val returnIntent = Intent()
