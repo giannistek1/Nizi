@@ -206,7 +206,13 @@ class MainActivity : BaseActivity() {
         }
 
         override fun doInBackground(vararg p0: Void?): Doctor? {
-            return doctorRepository.getDoctor(user.patient!!.doctor)
+            return try {
+                doctorRepository.getDoctor(user.patient!!.doctor)
+            } catch(e: Exception) {
+                GeneralHelper.apiIsDown = true
+                print("Server offline!"); print(e.message)
+                return null
+            }
         }
 
         override fun onPostExecute(result: Doctor?) {
@@ -215,7 +221,8 @@ class MainActivity : BaseActivity() {
             // Loader
             loader.visibility = View.GONE
 
-            // Guard
+            // Guards
+            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
             if (result == null) { Toast.makeText(baseContext, R.string.get_doctor_fail, Toast.LENGTH_SHORT).show()
                 return }
 
