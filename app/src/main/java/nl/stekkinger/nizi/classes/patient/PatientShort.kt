@@ -1,8 +1,7 @@
 package nl.stekkinger.nizi.classes.patient
 
-import nl.stekkinger.nizi.classes.MyFood
 import nl.stekkinger.nizi.classes.diary.ConsumptionShort
-import nl.stekkinger.nizi.classes.dietary.DietaryManagement
+import nl.stekkinger.nizi.classes.diary.MyFood
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.feedback.FeedbackShort
 import java.io.Serializable

@@ -4,24 +4,25 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log.d
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.MealProductAdapter
-import nl.stekkinger.nizi.fragments.FoodViewFragment
-import nl.stekkinger.nizi.repositories.FoodRepository
-import java.text.SimpleDateFormat
-import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
-import nl.stekkinger.nizi.classes.diary.Food
-import nl.stekkinger.nizi.classes.diary.FoodMealComponent
-import nl.stekkinger.nizi.classes.diary.WeightUnit
+import nl.stekkinger.nizi.classes.diary.*
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.fragments.ConsumptionViewFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
+import nl.stekkinger.nizi.fragments.FoodViewFragment
 import nl.stekkinger.nizi.fragments.MealFoodViewFragment
+import nl.stekkinger.nizi.repositories.FoodRepository
+import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
-
 
 
 class DiaryViewModel(
@@ -29,12 +30,33 @@ class DiaryViewModel(
     private var mDate: MutableLiveData<Calendar> = MutableLiveData(),
 //    private var mCurrentDay: String = SimpleDateFormat("yyyy-MM-dd").format(Date()),
     private var mMealTime: String = "Ontbijt",
+    private var mFavorites: ArrayList<MyFood> = ArrayList(),
     private var mSearchText: MutableLiveData<String> = MutableLiveData()
 ) : ViewModel() {
+
+    val diaryLiveData = mRepository.diaryUiState
+    fun getData(date: Calendar) { mRepository.getData(sdfDb.format(date.time)) }
+
+    val favoritesState = mRepository.favoritesState
+    fun fetchFavorites() { mRepository.getFavorites() }
+
+
+
+    // Favorites
+    val toggleFavoriteState = mRepository.toggleFavoriteState
+    fun resetToggleFavoriteState() { mRepository.resetToggleFavoriteState() }
+    fun addFavorite(id: Int) { mRepository.addFavorite(id) }
+    fun deleteFavorite(id: Int) { mRepository.deleteFavorite(id) }
+
+    // Easy access for ui to check favorites
+    fun getFavorites(): ArrayList<MyFood> { return mFavorites}
+    fun setFavorites(favorites: ArrayList<MyFood>) { mFavorites = favorites }
 
     fun setMealTime(time: String){
         mMealTime = time
     }
+
+
 
 
     // diary/consumption area
@@ -112,25 +134,25 @@ class DiaryViewModel(
 
     // load the food view fragment with the selected food
     fun select(activity: AppCompatActivity, food: Food) {
+        selected.value = food
         (activity).supportFragmentManager.beginTransaction().replace(
             R.id.activity_main_fragment_container,
             FoodViewFragment()
         ).commit()
-        selected.value = food
     }
 
     val selectedEdit = MutableLiveData<ConsumptionResponse>()
 
+    fun empty() {
+        mRepository.emptyS()
+    }
     fun selectEdit(activity: AppCompatActivity, consumption: ConsumptionResponse) {
-        (activity).supportFragmentManager.beginTransaction().replace(
-            R.id.activity_main_fragment_container,
-            ConsumptionViewFragment()
-        ).commit()
+
         selectedEdit.value = consumption
     }
 
     val preferences: SharedPreferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
-    fun addFood(food: Food, portion: Float = 1.0F) {
+    fun addConsumption(food: Food, portion: Float = 1.0F) {
 
         val date: String = sdfDb.format(mDate.value!!.time)
 
@@ -164,7 +186,9 @@ class DiaryViewModel(
         mRepository.addConsumption(consumption)
     }
 
-    fun editFood(c: ConsumptionResponse, newPortion: Float) {
+    val consumptionUiState = mRepository.consumptionState
+
+    fun editConsumption(c: ConsumptionResponse, newPortion: Float) {
         val date: String = sdfDb.format(mDate.value!!.time)
         val oldPortion: Float = c.amount
 
@@ -320,13 +344,5 @@ class DiaryViewModel(
 
     fun deleteMealProduct(mealProduct: MealProduct) {
         mealProducts.remove(mealProduct)
-    }
-
-    fun addFavorite(id: Int) {
-        mRepository.addFavorite(id)
-    }
-
-    fun deleteFavorite(id: Int) {
-        mRepository.deleteFavorite(id)
     }
 }

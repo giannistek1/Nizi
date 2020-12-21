@@ -7,18 +7,27 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
+import android.util.Log.d
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_diary.view.*
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConsumptionAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
+import nl.stekkinger.nizi.classes.diary.MyFood
+import nl.stekkinger.nizi.classes.diary.MyFoodResponse
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.repositories.FoodRepository
 import java.util.*
 
 class DiaryFragment: Fragment() {
@@ -28,8 +37,10 @@ class DiaryFragment: Fragment() {
     private lateinit var dinnerAdapter: ConsumptionAdapter
     private lateinit var snackAdapter: ConsumptionAdapter
     private lateinit var mNextDayBtn: ImageView
+    private lateinit var loader: View
 
     private val sdf = GeneralHelper.getDateFormat()
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
@@ -72,34 +83,79 @@ class DiaryFragment: Fragment() {
         cal.clear(Calendar.MILLISECOND)
         cal.time = Date()
         model.setDiaryDate(cal)
+        model.empty()
 
-        // get the results of food search
-        model.getDiary().observe(viewLifecycleOwner, Observer { result ->
+        lifecycleScope.launchWhenStarted {
+            model.diaryLiveData.collect {
+                when(it) {
+                    is FoodRepository.DiaryUiState.Success -> {
 
-            val breakfastList = ArrayList<ConsumptionResponse>()
-            val lunchList = ArrayList<ConsumptionResponse>()
-            val dinnerList = ArrayList<ConsumptionResponse>()
-            val snackList = ArrayList<ConsumptionResponse>()
+                        val breakfastList = ArrayList<ConsumptionResponse>()
+                        val lunchList = ArrayList<ConsumptionResponse>()
+                        val dinnerList = ArrayList<ConsumptionResponse>()
+                        val snackList = ArrayList<ConsumptionResponse>()
 
-            //sorting consumptions
-            for (c in result) {
-                when (c.meal_time) {
-                    "Ontbijt" -> breakfastList.add(c)
-                    "Lunch" -> lunchList.add(c)
-                    "Avondeten" -> dinnerList.add(c)
-                    "Snack" -> snackList.add(c)
-                    else -> breakfastList.add(c)
+                        //sorting consumptions
+                        for (c: ConsumptionResponse in it.data) {
+                            when (c.meal_time) {
+                                "Ontbijt" -> breakfastList.add(c)
+                                "Lunch" -> lunchList.add(c)
+                                "Avondeten" -> dinnerList.add(c)
+                                "Snack" -> snackList.add(c)
+                                else -> breakfastList.add(c)
+                            }
+                        }
+                        d("diaryfrag", breakfastList.toString())
+
+                        // pass list of consumptions to adapter
+                        breakfastAdapter.setConsumptionList(breakfastList)
+                        lunchAdapter.setConsumptionList(lunchList)
+                        dinnerAdapter.setConsumptionList(dinnerList)
+                        snackAdapter.setConsumptionList(snackList)
+                        view.fragment_diary_loader.visibility = GONE
+                    }
+                    is FoodRepository.DiaryUiState.Error -> {
+                        view.fragment_diary_loader.visibility = GONE
+                    }
+                    is FoodRepository.DiaryUiState.Loading -> {
+                        view.fragment_diary_loader.visibility = VISIBLE
+                    }
+                    else -> {
+                        view.fragment_diary_loader.visibility = GONE
+                    }
                 }
             }
+        }
+        model.fetchFavorites()
 
-            // pass list of consumptions to adapter
-            breakfastAdapter.setConsumptionList(breakfastList)
-            lunchAdapter.setConsumptionList(lunchList)
-            dinnerAdapter.setConsumptionList(dinnerList)
-            snackAdapter.setConsumptionList(snackList)
+        lifecycleScope.launchWhenStarted {
+            model.favoritesState.collect {
+                when(it) {
+                    is FoodRepository.FavoritesState.Success -> {
 
-            ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(breakfastRv)
-        })
+                        val favorites: ArrayList<MyFood> = ArrayList()
+                        for (fav in it.data) {
+                            val food = MyFood(id = fav.id, food = fav.food.id)
+                            favorites.add(food)
+                        }
+                        model.setFavorites(favorites)
+                    }
+                    is FoodRepository.FavoritesState.Error -> {
+                        // TODO: handle events below
+//                        Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
+                    }
+                    is FoodRepository.FavoritesState.Loading -> {
+//                        Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+        }
+        model.getData(cal)
+
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(breakfastRv)
 
         mNextDayBtn = view.diary_next_date
 
@@ -205,6 +261,10 @@ class DiaryFragment: Fragment() {
             view.diary_add_snack_btn.visibility = GONE
         }
 
+        loader = view.fragment_diary_loader
+
+
+
         return view
     }
 
@@ -213,6 +273,7 @@ class DiaryFragment: Fragment() {
         var cal: Calendar = model.getSelectedDate()
         cal.add(Calendar.DATE, dayAdjustment)
         model.setDiaryDate(cal)
+        model.getData(cal)
 
         when (model.getDateString()) {
             "today" -> {

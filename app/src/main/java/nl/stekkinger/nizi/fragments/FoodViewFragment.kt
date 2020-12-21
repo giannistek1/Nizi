@@ -1,24 +1,31 @@
 package nl.stekkinger.nizi.fragments
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log.d
 import android.view.*
 import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_food_view.*
 import kotlinx.android.synthetic.main.fragment_food_view.view.*
+import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Food
+import nl.stekkinger.nizi.classes.diary.MyFood
+import nl.stekkinger.nizi.repositories.FoodRepository
+import java.util.ArrayList
 
 
 class FoodViewFragment : Fragment() {
@@ -27,6 +34,9 @@ class FoodViewFragment : Fragment() {
     private lateinit var mServingInput: TextInputEditText
     private lateinit var mDecreaseBtn: ImageButton
     private lateinit var mSaveBtn: ImageButton
+    private lateinit var mFavBtn: ImageButton
+    private var mIsLiked = false
+    private var mFavoriteSelected = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,11 +54,58 @@ class FoodViewFragment : Fragment() {
         model.selected.observe(this, Observer<Food> { food ->
             // store food product
             mFood = food
+            val favorites = model.getFavorites()
+            mFavoriteSelected = 0
+            loop@ for (fav in favorites) {
+                if (fav.food == food.id) {
+                    mFavoriteSelected = fav.id
+                    break@loop
+                }
+            }
+            // set fav btns
+            if (mFavoriteSelected != 0) {
+                isLiked(true)
+            } else {
+                isLiked(false)
+            }
+
             // Update the UI
             title_food_view.text = food.name
             Picasso.get().load(food.image_url).into(image_food_view)
             updateUI()
         })
+
+        lifecycleScope.launchWhenStarted {
+            model.favoritesState.collect {
+                when(it) {
+                    is FoodRepository.FavoritesState.Success -> {
+                        val favorites: java.util.ArrayList<MyFood> = java.util.ArrayList()
+                        for (fav in it.data) {
+                            val food = MyFood(id = fav.id, food = fav.food.id)
+                            favorites.add(food)
+                            if (mFood.id == fav.food.id) mFavoriteSelected = fav.id
+                        }
+                        model.setFavorites(favorites)
+
+
+                    }
+                    is FoodRepository.FavoritesState.Error -> {
+                        // TODO: handle events below
+//                        wat gaan we hier doen?
+//                        Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
+                    }
+                    is FoodRepository.FavoritesState.Loading -> {
+//                        spinner toevoegen aan consumptionview?
+//                        Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+        }
+
+        mFavBtn = view.findViewById(R.id.heart_food_view)
         mSaveBtn = view.save_btn
         mDecreaseBtn = view.decrease_portion
         mServingInput = view.findViewById(R.id.serving_input) as TextInputEditText
@@ -58,11 +115,60 @@ class FoodViewFragment : Fragment() {
         // this view does not have a delete button
         view.delete_food_view.visibility = GONE
 
+        lifecycleScope.launchWhenStarted {
+            model.toggleFavoriteState.collect {
+                when(it) {
+                    is FoodRepository.State.Success -> {
+                        if(mIsLiked) {
+                            d("del", "del")
+                            // deleted
+                            isLiked(false)
+                            Toast.makeText(activity, R.string.deleted_favorite, Toast.LENGTH_SHORT).show()
+                            model.fetchFavorites()
+                            model.resetToggleFavoriteState()
+                        } else {
+                            d("add", "add")
+                            // added
+                            isLiked(true)
+                            Toast.makeText(activity, R.string.added_favorite, Toast.LENGTH_SHORT).show()
+                            model.fetchFavorites()
+                            model.resetToggleFavoriteState()
+                        }
+                        view.fragment_food_view_loader.visibility = GONE
+                        mFavBtn.isEnabled = true
+                        mFavBtn.isClickable = true
+                    }
+                    is FoodRepository.State.Error -> {
+                        if(mIsLiked) Toast.makeText(activity, R.string.error_delete_favorite, Toast.LENGTH_SHORT).show()
+                        else Toast.makeText(activity, R.string.error_add_favorite, Toast.LENGTH_SHORT).show()
+                        view.fragment_food_view_loader.visibility = GONE
+                        mFavBtn.isEnabled = true
+                        mFavBtn.isClickable = true
+                    }
+                    is FoodRepository.State.Loading -> {
+                        view.fragment_food_view_loader.visibility = VISIBLE
+                    }
+                    else -> {
+                        view.fragment_food_view_loader.visibility = GONE
+                        mFavBtn.isEnabled = true
+                        mFavBtn.isClickable = true
+                    }
+                }
+            }
+        }
+
         // click listeners
         view.heart_food_view.setOnClickListener {
-            model.addFavorite(mFood.id)
-            //todo: toast on success response
-            Toast.makeText(activity, R.string.added_favorite, Toast.LENGTH_SHORT).show()
+            // prevent button spamming until result
+            mFavBtn.isEnabled = false
+            mFavBtn.isClickable = false
+
+            if(mIsLiked) {
+                d("del", "del")
+                model.deleteFavorite(mFavoriteSelected)
+            } else {
+                model.addFavorite(mFood.id)
+            }
         }
 
         view.increase_portion.setOnClickListener {
@@ -84,12 +190,10 @@ class FoodViewFragment : Fragment() {
         }
 
         view.save_btn.setOnClickListener {
-            d("AAA", "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB")
             Toast.makeText(this.context, R.string.add_food_success, Toast.LENGTH_LONG).show()
 
             val portion = mServingInput.text.toString().trim().toFloat()
-            d("AAA", portion.toString())
-            model.addFood(mFood, portion)
+            model.addConsumption(mFood, portion)
 
             (activity)!!.supportFragmentManager.beginTransaction().replace(
                 R.id.activity_main_fragment_container,
@@ -129,8 +233,6 @@ class FoodViewFragment : Fragment() {
             mDecreaseBtn.isClickable = true
         }
 
-        d("myfood", mFood.my_food.toString())
-
         // updating nutrition values
         val food: Food = mFood
         serving_size_value.text = "%.2f".format(food.portion_size * amount) + " " + food.weight_unit.unit
@@ -140,7 +242,12 @@ class FoodViewFragment : Fragment() {
         water_value_food_view.text = "%.2f".format(food.water * amount) + "ml"
         sodium_value_food_view.text = "%.2f".format(food.sodium * 1000 * amount) + " mg"
         potassium_value_food_view.text = "%.2f".format(food.potassium * 1000 * amount) + " mg"
+    }
 
+    private fun isLiked(isLiked: Boolean) {
+        mIsLiked = isLiked
+        if (isLiked) mFavBtn.setImageResource(R.drawable.ic_heart_filled)
+        else mFavBtn.setImageResource(R.drawable.ic_heart)
     }
 
     private val textWatcher: TextWatcher = object : TextWatcher {
@@ -171,7 +278,7 @@ class FoodViewFragment : Fragment() {
                 Toast.makeText(this.context, R.string.add_food_success, Toast.LENGTH_LONG).show()
 
                 val portion = mServingInput.text.toString().trim().toFloat()
-                model.addFood(mFood, portion)
+                model.addConsumption(mFood, portion)
 
                 val fragment: Fragment = DiaryFragment()
                 val bundle = Bundle()

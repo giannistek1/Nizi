@@ -1,9 +1,8 @@
 package nl.stekkinger.nizi.classes.patient
 
-import nl.stekkinger.nizi.classes.Consumption
 import nl.stekkinger.nizi.classes.doctor.DoctorShort
-import nl.stekkinger.nizi.classes.MyFood
 import nl.stekkinger.nizi.classes.diary.ConsumptionShort
+import nl.stekkinger.nizi.classes.diary.MyFood
 import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.feedback.FeedbackShort
 import nl.stekkinger.nizi.classes.login.User

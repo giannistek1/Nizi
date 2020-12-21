@@ -92,6 +92,9 @@
     <string name="meals">Maaltijden</string>
     <string name="favorites">Favorieten</string>
     <string name="added_favorite">Toegevoegd aan favorieten</string>
+    <string name="deleted_favorite">Verwijderd van favorieten</string>
+    <string name="error_add_favorite">Kon product niet toevoegen aan favorieten</string>
+    <string name="error_delete_favorite">Kon product niet verwijderen van favorieten</string>
     <string name="search_product">Product zoeken</string>
     <string name="scan_product">Scan product</string>
     <string name="scan_barcode">Scan barcode</string>
@@ -110,6 +113,7 @@
     <string name="add_food_success">Voeding toegevoegd aan dagboek</string>
     <string name="add_meal_success">Maaltijd toegevoegd aan dagboek</string>
     <string name="update_food_success">Voeding is aangepast in het dagboek</string>
+    <string name="delete_food_success">Voeding is verwijderd uit het dagboek</string>
 
     <string name="feedback_positive">Goed gedaan</string>
     <string name="feedback_negative">Beperk uw %1$sinname</string>

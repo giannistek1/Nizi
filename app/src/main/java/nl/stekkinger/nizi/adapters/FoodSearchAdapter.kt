@@ -56,9 +56,10 @@ class FoodSearchAdapter(
         //holder.summary.text = Resources.getSystem().getString(R.string.portion_with_weightunit, food.portion_size.toString() + " " + food.weight_unit.unit)
         holder.summary.text = "Portie " + food.portion_size.toString() + " " + food.weight_unit.unit
 
+        // TODO: clean up, maybe per button to avoid dubble code
         if (fragment == "food") {
             holder.addBtn.setOnClickListener {
-                model.addFood(food)
+                model.addConsumption(food)
                 notifyDataSetChanged()
                 (activity).supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
@@ -82,17 +83,11 @@ class FoodSearchAdapter(
             holder.deleteBtn.isVisible = false
         } else if(fragment == "favorites") {
             holder.addBtn.setOnClickListener {
-                model.addFood(food)
+                model.addConsumption(food)
                 notifyDataSetChanged()
-                
-                val fragment: Fragment = DiaryFragment()
-                val bundle = Bundle()
-                bundle.putBoolean("refresh", true)
-                fragment.arguments = bundle
-
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
-                    fragment
+                    DiaryFragment()
                 ).commit()
             }
             holder.deleteBtn.setOnClickListener {

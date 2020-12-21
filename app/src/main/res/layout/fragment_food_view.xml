@@ -443,4 +443,11 @@
 
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/fragment_food_view_loader"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi.adapters
 
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
+import nl.stekkinger.nizi.fragments.ConsumptionViewFragment
 
 class ConsumptionAdapter(
     private var model: DiaryViewModel = DiaryViewModel(),
@@ -27,9 +29,15 @@ class ConsumptionAdapter(
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_diary_food, parent, false)
         return ViewHolder(view)
             .listen { pos, _ ->
+
                 var consumption = mDataset[pos]
+                d("conAdp", consumption.toString())
                 val activity = view.context as AppCompatActivity
                 model.selectEdit(activity, consumption)
+                (activity).supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    ConsumptionViewFragment()
+                ).commit()
             }
     }
 
@@ -38,7 +46,7 @@ class ConsumptionAdapter(
         var consumption : ConsumptionResponse = mDataset[position]
         holder.amount.text = consumption.amount.toString() + "x"
         holder.title.text = consumption.food_meal_component.name
-        holder.portion.text = "%.2f".format((consumption.amount * consumption.food_meal_component.portion_size)) + " " + consumption.weight_unit.short
+        holder.portion.text = "%.2f".format(consumption.food_meal_component.portion_size) + " " + consumption.weight_unit.short
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -58,7 +66,7 @@ class ConsumptionAdapter(
     fun removeItem(position: Int) {
         var consumption : ConsumptionResponse = mDataset[position]
         model.deleteConsumption(consumption.id)
-        mDataset.removeAt(position)
+        this.mDataset.removeAt(position)
         notifyDataSetChanged()
     }
 }

@@ -5,22 +5,28 @@ import android.text.Editable
 import android.view.*
 import android.text.TextWatcher
 import android.util.Log.d
+import android.view.View.GONE
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_diary.view.*
 import kotlinx.android.synthetic.main.fragment_food_view.*
 import kotlinx.android.synthetic.main.fragment_food_view.view.*
+import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.FoodMealComponent
+import nl.stekkinger.nizi.repositories.FoodRepository
+import java.util.ArrayList
 
 
 class ConsumptionViewFragment : Fragment() {
@@ -29,6 +35,7 @@ class ConsumptionViewFragment : Fragment() {
     private lateinit var mServingInput: TextInputEditText
     private lateinit var mDecreaseBtn: ImageButton
     private lateinit var mSaveBtn: ImageButton
+    private var mEdit = true // edit or delete
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +53,7 @@ class ConsumptionViewFragment : Fragment() {
         model.selectedEdit.observe(this, Observer<ConsumptionResponse> { food ->
             // store food product
             mConsumption = food
+            model.setMealTime(food.meal_time)
 
             // Update the UI
             val amount: Float = mConsumption.amount
@@ -54,6 +62,7 @@ class ConsumptionViewFragment : Fragment() {
             serving_input.setText(mConsumption.amount.toString(), TextView.BufferType.EDITABLE)
         })
 
+        view.heart_food_view.visibility = GONE
         mSaveBtn = view.save_btn
         mDecreaseBtn = view.decrease_portion
         mServingInput = view.findViewById(R.id.serving_input) as TextInputEditText
@@ -80,16 +89,14 @@ class ConsumptionViewFragment : Fragment() {
         }
 
         view.save_btn.setOnClickListener {
-            d("-----", "-------------------------")
-            Toast.makeText(this.context, R.string.update_food_success, Toast.LENGTH_LONG).show()
-
+            mEdit = true
             val portion: Float = mServingInput.text.toString().trim().toFloat()
-            model.editFood(mConsumption, portion)
+            model.editConsumption(mConsumption, portion)
+        }
 
-            (activity)!!.supportFragmentManager.beginTransaction().replace(
-                R.id.activity_main_fragment_container,
-                DiaryFragment()
-            ).commit()
+        view.delete_food_view.setOnClickListener {
+            mEdit = false
+            model.deleteConsumption(mConsumption.id)
         }
 
         mServingInput.setOnKeyListener { v, keyCode, _ ->
@@ -97,6 +104,33 @@ class ConsumptionViewFragment : Fragment() {
                 updateUI()
             }
             false
+        }
+
+        lifecycleScope.launchWhenStarted {
+            model.consumptionUiState.collect {
+                when(it) {
+                    is FoodRepository.State.Success -> {
+                        if(mEdit) Toast.makeText(activity, R.string.update_food_success, Toast.LENGTH_SHORT).show()
+                        else Toast.makeText(activity, R.string.delete_food_success, Toast.LENGTH_SHORT).show()
+                        (activity)!!.supportFragmentManager.beginTransaction().replace(
+                            R.id.activity_main_fragment_container,
+                            DiaryFragment()
+                        ).commit()
+                    }
+                    is FoodRepository.State.Error -> {
+                        // TODO: handle events below
+//                        wat gaan we hier doen?
+//                        Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
+                    }
+                    is FoodRepository.State.Loading -> {
+//                        spinner toevoegen aan consumptionview?
+//                        Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+
+                    }
+                }
+            }
         }
 
         return view
@@ -111,6 +145,7 @@ class ConsumptionViewFragment : Fragment() {
 
         // enabling/disabeling save or decrease btn
         if(amount <= 0) {
+            // TODO: make btn grey
             mSaveBtn.isEnabled = false
             mSaveBtn.isClickable = false
         } else {
@@ -151,33 +186,6 @@ class ConsumptionViewFragment : Fragment() {
                 }
             }
             updateUI()
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_confirm, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.confirm_btn -> {
-                Toast.makeText(this.context, R.string.update_food_success, Toast.LENGTH_LONG).show()
-
-                val portion = mServingInput.text.toString().trim().toFloat()
-                model.editFood(mConsumption, portion)
-
-                val fragment: Fragment = DiaryFragment()
-                val bundle = Bundle()
-                bundle.putBoolean("refresh", true)
-                fragment.arguments = bundle
-
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
-                    R.id.activity_main_fragment_container,
-                    fragment
-                ).commit()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 }
