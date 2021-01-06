@@ -167,7 +167,8 @@ class DiaryViewModel(
             water = food.water * portion,
             fiber = food.fiber * portion,
             portion_size = food.portion_size * portion,
-            image_url = food.image_url
+            image_url = food.image_url,
+            foodId = food.foodId
         )
         val weightUnit = WeightUnit(
             id = food.weight_unit.id,
@@ -203,7 +204,8 @@ class DiaryViewModel(
             water = (c.food_meal_component.water / oldPortion * newPortion),
             fiber = (c.food_meal_component.fiber / oldPortion * newPortion),
             portion_size = (c.food_meal_component.portion_size / oldPortion * newPortion),
-            image_url = c.food_meal_component.image_url
+            image_url = c.food_meal_component.image_url,
+            foodId = c.food_meal_component.foodId
         )
         val weightUnit = WeightUnit(
             id = c.weight_unit.id,

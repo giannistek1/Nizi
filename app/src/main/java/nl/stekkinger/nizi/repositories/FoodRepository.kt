@@ -244,7 +244,8 @@ class FoodRepository : Repository() {
                             portion_size = foodResponse.food_meal_component.portion_size,
                             weight_unit = foodResponse.weight_unit,
                             weight_amount = foodResponse.food_meal_component.portion_size, // Todo: there is no amount yet
-                            image_url = foodResponse.food_meal_component.image_url
+                            image_url = foodResponse.food_meal_component.image_url,
+                            foodId = foodResponse.food_meal_component.foodId
                         )
                         foodList.add(food)
                     }
@@ -254,7 +255,7 @@ class FoodRepository : Repository() {
                 }
             }
             override fun onFailure(call: Call<ArrayList<FoodResponse>>, t: Throwable) {
-                d("rene", "onFailure")
+                d("rene2", "onFailure")
             }
         })
         return result
@@ -290,7 +291,7 @@ class FoodRepository : Repository() {
     }
 
     fun getMeals(): ArrayList<Meal>? {
-        return service.getMeals(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().body()
+        return service.getMeals(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id).execute().body()
     }
 
 //    fun getFavorites(): ArrayList<MyFoodResponse>? {

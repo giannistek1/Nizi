@@ -77,7 +77,8 @@ class FavoritesFragment: Fragment() {
                                 portion_size = foodResponse.food.food_meal_component.portion_size,
                                 weight_unit = weightUnit,
                                 weight_amount = foodResponse.food.food_meal_component.portion_size,
-                                image_url = foodResponse.food.food_meal_component.image_url
+                                image_url = foodResponse.food.food_meal_component.image_url,
+                                foodId = foodResponse.food.food_meal_component.foodId
                             )
                             foodList.add(food)
                         }

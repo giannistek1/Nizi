@@ -206,10 +206,10 @@ interface ApiService {
         @Body body: Meal
     ) : Call<Unit>
 
-    @GET("v1/meal/{patientId}")
+    @GET("meals")
     fun getMeals(
         @Header("Authorization") authHeader : String,
-        @Path("patientId") patientId: Int
+        @Query("patient.id") patientId: Int
     ) : Call<ArrayList<Meal>>
 
     @PUT("v1/meal/{patientId}/{mealId}")

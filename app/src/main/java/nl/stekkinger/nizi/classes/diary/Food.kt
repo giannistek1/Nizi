@@ -14,5 +14,6 @@ data class Food (
     val portion_size: Float,
     val weight_unit: WeightUnit,
     val weight_amount: Float,
-    val image_url: String
+    val image_url: String,
+    val foodId: Int
 )
