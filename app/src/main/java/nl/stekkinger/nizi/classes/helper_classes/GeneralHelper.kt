@@ -13,6 +13,7 @@ import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.login.Role
 import nl.stekkinger.nizi.classes.login.UserLogin
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,6 +49,18 @@ object GeneralHelper {
                 role = Role(0, "", "", ""),
                 created_at = "", updated_at = ""
             )
+        }
+    }
+
+    fun getWeightUnits() : WeightUnitHolder?
+    {
+        return if (prefs.contains(PREF_WEIGHT_UNIT)) {
+            val json: String = prefs.getString(PREF_WEIGHT_UNIT, "")!!
+            val weightUnitHolder: WeightUnitHolder = gson.fromJson(json, WeightUnitHolder::class.java)
+
+            weightUnitHolder
+        } else {
+            return null
         }
     }
 

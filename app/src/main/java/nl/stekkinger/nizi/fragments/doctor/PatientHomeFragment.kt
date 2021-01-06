@@ -58,18 +58,18 @@ class PatientHomeFragment : Fragment() {
         loader = view.fragment_patient_home_loader
 
         // Get patient data from bundle
-        val bundle: Bundle = this.arguments!!
-        patientData = bundle.getSerializable(GeneralHelper.EXTRA_PATIENT) as PatientData
+        val bundle: Bundle? = this.arguments
 
-        // TODO: Refactor
-        val gson = Gson()
-        val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
-        val weightUnitHolder: WeightUnitHolder = gson.fromJson(json, WeightUnitHolder::class.java)
-        weightUnits = weightUnitHolder.weightUnits
+        if (bundle != null) {
+            patientData = bundle.getSerializable(GeneralHelper.EXTRA_PATIENT) as PatientData
 
-        // Header
-        val fullName = "${patientData.user.first_name} ${patientData.user.last_name}"
-        view.fragment_patient_home_average_of_patient.text = getString(R.string.average_of, fullName)
+            weightUnits = GeneralHelper.getWeightUnits()!!.weightUnits
+
+            // Header
+            val fullName = "${patientData.user.first_name} ${patientData.user.last_name}"
+            view.fragment_patient_home_average_of_patient.text =
+                getString(R.string.average_of, fullName)
+        }
 
         // Edit Button
         view.fragment_patient_home_btn_edit.setOnClickListener {
@@ -162,7 +162,8 @@ class PatientHomeFragment : Fragment() {
 
     fun refreshGuidelines()
     {
-        if (patientData != null) {
+        // Fragment patient home ll guidelines might be null because activity + fragment refresh after editing patient
+        if (patientData != null && fragment_patient_home_ll_guidelines != null) {
             GuidelinesHelper.initializeGuidelines(activity, fragment_patient_home_ll_guidelines, patientData.diets)
         }
     }
@@ -262,7 +263,7 @@ class PatientHomeFragment : Fragment() {
                 return }
 
             // Feedback
-            Toast.makeText(activity, R.string.fetched_dietary, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(activity, R.string.fetched_dietary, Toast.LENGTH_SHORT).show()
 
             val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
 

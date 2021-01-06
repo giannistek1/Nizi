@@ -105,9 +105,6 @@ class PatientDetailActivity : BaseActivity() {
             }
 
             R.id.nav_diary -> {
-//                val fragment = DiaryFragment()
-//                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.simpleName)
-//                    .commit()
                 val fragment = DiaryFragment()
                 supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
@@ -222,7 +219,7 @@ class PatientDetailActivity : BaseActivity() {
 
 
             // Checks if fragment state is null, then start with homeFragment
-            if (savedInstanceState == null) {
+            //if (savedInstanceState == null) {
                 val fragment = PatientHomeFragment()
                 val bundle = Bundle()
                 bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
@@ -232,7 +229,7 @@ class PatientDetailActivity : BaseActivity() {
                     fragment,
                     fragment.javaClass.simpleName)
                     .commit()
-            }
+            //}
         }
     }
     //endregion
