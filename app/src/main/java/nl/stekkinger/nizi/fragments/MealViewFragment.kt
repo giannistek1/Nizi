@@ -1,9 +1,12 @@
 package nl.stekkinger.nizi.fragments
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.view.*
 import android.text.TextWatcher
+import android.util.Base64
 import android.util.Log.d
 import android.view.View.GONE
 import android.widget.ImageButton
@@ -25,13 +28,14 @@ import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.FoodMealComponent
+import nl.stekkinger.nizi.classes.diary.Meal
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.util.ArrayList
 
 
-class ConsumptionViewFragment : Fragment() {
+class MealViewFragment : Fragment() {
     private lateinit var model: DiaryViewModel
-    private lateinit var mConsumption: ConsumptionResponse
+    private lateinit var mMeal: Meal
     private lateinit var mServingInput: TextInputEditText
     private lateinit var mDecreaseBtn: ImageButton
     private lateinit var mSaveBtn: ImageButton
@@ -50,19 +54,24 @@ class ConsumptionViewFragment : Fragment() {
             ViewModelProviders.of(this).get(DiaryViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        model.selectedEdit.observe(this, Observer<ConsumptionResponse> { food ->
+        model.selectedMeal.observe(this, Observer<Meal> { meal ->
             // store food product
-            mConsumption = food
-            model.setMealTime(food.meal_time)
+            mMeal = meal
 
             // Update the UI
-            val amount: Float = mConsumption.amount
-            view.title_food_view.text = mConsumption.food_meal_component.name
-            Picasso.get().load(mConsumption.food_meal_component.image_url).into(image_food_view)
-            serving_input.setText(mConsumption.amount.toString(), TextView.BufferType.EDITABLE)
+            title_food_view.text = meal.food_meal_component.name
+            if (meal.food_meal_component.image_url != "" && meal.food_meal_component.image_url != null) {
+                val decodedString: ByteArray = Base64.decode(meal.food_meal_component.image_url, Base64.DEFAULT)
+                val decodedByte: Bitmap? = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                if(decodedByte != null) {
+                    image_food_view.setImageBitmap(decodedByte)
+                }
+            } else {
+                image_food_view.setImageResource(R.drawable.ic_culinary)
+            }
+            updateUI()
         })
 
-        view.edit_food_view.visibility = GONE
         view.heart_food_view.visibility = GONE
         mSaveBtn = view.save_btn
         mDecreaseBtn = view.decrease_portion
@@ -90,14 +99,18 @@ class ConsumptionViewFragment : Fragment() {
         }
 
         view.save_btn.setOnClickListener {
-            mEdit = true
-            val portion: Float = mServingInput.text.toString().trim().toFloat()
-            model.editConsumption(mConsumption, portion)
+            val amount: Float = mServingInput.text.toString().trim().toFloat()
+            // add meal
+            model.addMeal(mMeal, amount)
+        }
+
+        view.edit_food_view.setOnClickListener {
+            model.editMeal(mMeal)
         }
 
         view.delete_food_view.setOnClickListener {
             mEdit = false
-            model.deleteConsumption(mConsumption.id)
+            model.deleteConsumption(mMeal.id)
         }
 
         mServingInput.setOnKeyListener { v, keyCode, _ ->
@@ -142,7 +155,6 @@ class ConsumptionViewFragment : Fragment() {
         if (mServingInput.text.toString() != "") {
             amount = mServingInput.text.toString().toFloat()
         }
-        d("lo", amount.toString())
 
         // enabling/disabeling save or decrease btn
         if(amount <= 0) {
@@ -162,15 +174,14 @@ class ConsumptionViewFragment : Fragment() {
         }
 
         // updating nutrition values
-        val oldAmount: Float = mConsumption.amount
-        val food: FoodMealComponent = mConsumption.food_meal_component
-        serving_size_value.text = "%.2f".format(food.portion_size / oldAmount * amount) + " " + mConsumption.weight_unit.unit
-        calories_value_food_view.text = "%.2f".format(food.kcal / oldAmount * amount) + " Kcal"
-        fiber_value_food_view.text = "%.2f".format(food.fiber / oldAmount * amount) + " g"
-        protein_value_food_view.text = "%.2f".format(food.protein / oldAmount * amount) + " g"
-        water_value_food_view.text = "%.2f".format(food.water / oldAmount * amount) + "ml"
-        sodium_value_food_view.text = "%.2f".format(food.sodium / oldAmount * 1000 * amount) + " mg"
-        potassium_value_food_view.text = "%.2f".format(food.potassium / oldAmount * 1000 * amount) + " mg"
+        val food: FoodMealComponent = mMeal.food_meal_component
+        serving_size_value.text = "%.0f".format(food.portion_size) + " " + mMeal.weight_unit!!.unit
+        calories_value_food_view.text = "%.2f".format(food.kcal) + " Kcal"
+        fiber_value_food_view.text = "%.2f".format(food.fiber) + " g"
+        protein_value_food_view.text = "%.2f".format(food.protein) + " g"
+        water_value_food_view.text = "%.2f".format(food.water) + "ml"
+        sodium_value_food_view.text = "%.2f".format(food.sodium * 1000) + " mg"
+        potassium_value_food_view.text = "%.2f".format(food.potassium * 1000) + " mg"
     }
 
     private val textWatcher: TextWatcher = object : TextWatcher {

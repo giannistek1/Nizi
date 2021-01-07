@@ -77,7 +77,7 @@ class CreateMealFinalFragment: Fragment() {
         }
 
         // get total nutrition values of the meal
-        var totalKcal = 1f
+        var totalKcal = 0f
         var totalProtein = 0f
         var totalPotassium = 0f
         var totalSodium = 0f
@@ -106,7 +106,7 @@ class CreateMealFinalFragment: Fragment() {
             model.mealState.collect {
                 when(it) {
                     is FoodRepository.MealState.Success -> {
-                        model.createMealFoods()
+                        model.createMealFoods(it.data.id)
                          view.fragment_create_meal_loader.visibility = View.GONE
                     }
                     is FoodRepository.MealState.Error -> {
@@ -144,7 +144,7 @@ class CreateMealFinalFragment: Fragment() {
             var totalSodium = 0f
             var totalWater = 0f
             var totalFiber = 0f
-            var totalPortionSize = 0f
+            var totalPortionSize = 1f
             val products: ArrayList<Food> = model.getMealProducts()
             for (p: Food in products) {
                 totalKcal += (p.kcal * p.amount)
@@ -172,7 +172,8 @@ class CreateMealFinalFragment: Fragment() {
 
             val meal = Meal(
                 food_meal_component = foodMealComponent,
-                patient = GeneralHelper.getUser().patient!!
+                patient = GeneralHelper.getUser().patient!!,
+                weight_unit = GeneralHelper.getWeightUnits()!!.weightUnits[7]
             )
 
             model.createMeal(meal)

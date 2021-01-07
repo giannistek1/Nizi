@@ -208,7 +208,7 @@ interface ApiService {
     @POST("meal-foods")
     fun createMealFood(
         @Header("Authorization") authHeader : String,
-        @Body body: Meal
+        @Body body: MealFood
     ) : Call<Unit>
 
     @GET("meals")

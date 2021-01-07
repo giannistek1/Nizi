@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi.classes
 
+import android.util.Log.d
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,6 +12,7 @@ import nl.stekkinger.nizi.classes.diary.*
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.fragments.FoodViewFragment
+import nl.stekkinger.nizi.fragments.MealViewFragment
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.text.SimpleDateFormat
 import java.util.*
@@ -251,26 +253,41 @@ class DiaryViewModel(
         mRepository.createMeal(meal)
     }
 
-    fun createMealFoods() {
-        for (m in mealProducts) {
-            mRepository.createMealFood(m.name)
+    fun createMealFoods(mealId: Int) {
+        for (food: Food in mealProducts) {
+            val mealFood = MealFood(
+                food = food.id,
+                amount = food.amount,
+                meal = mealId
+            )
+            mRepository.createMealFood(mealFood)
         }
     }
 
-    fun addMeal(meal: Meal) {
+    // load the food view fragment with the selected food
+    val selectedMeal = MutableLiveData<Meal>()
+    fun selectMeal(activity: AppCompatActivity, meal: Meal) {
+
+        selectedMeal.value = meal
+        (activity).supportFragmentManager.beginTransaction().replace(
+            R.id.activity_main_fragment_container,
+            MealViewFragment()
+        ).commit()
+    }
+
+    fun addMeal(meal: Meal, amount: Float = 1f) {
         // TODO: transform into consumption
         // mRepository.addConsumption(consumption)
     }
 
-    // TODO: select meal moet edit worden
-    fun selectMeal(activity: AppCompatActivity, meal: Meal) {
-//        addMeal(meal)
-//        (activity).supportFragmentManager.beginTransaction().replace(
-//            R.id.activity_main_fragment_container,
-//            DiaryFragment()
-//        ).commit()
-    }
+    fun editMeal(meal: Meal) {
+        // get the food items
+        if (meal.meal_foods!!.count() > 0)
+        for (mealFood: MealFood in meal.meal_foods) {
+//            mRepository.getFood
+        }
 
+    }
 
     fun getMealProducts(): ArrayList<Food> {
         return mealProducts

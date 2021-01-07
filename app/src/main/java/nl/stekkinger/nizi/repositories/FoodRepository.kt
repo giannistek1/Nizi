@@ -262,8 +262,7 @@ class FoodRepository : Repository() {
         object Empty: MealState()
     }
 
-    fun createMeal(meal: Meal): MutableStateFlow<MealState> {
-        d("repo", "creating meal")
+    fun createMeal(meal: Meal) {
         _mealState.value = MealState.Loading
 
         service.createMeal(authHeader = authHeader, body = meal).enqueue(object : Callback<Meal> {
@@ -279,11 +278,26 @@ class FoodRepository : Repository() {
                 _mealState.value = MealState.Error(t.message!!)
             }
         })
-        return _mealState
     }
 
-    fun createMealFood(m: String) {
-        // TODO: add whole functionality here
+//    private val _mealFoodState: MutableStateFlow<State> = MutableStateFlow(State.Empty)
+//    val mealFoodState: StateFlow<State> = _mealFoodState
+
+    fun createMealFood(mealFood: MealFood) {
+//        _mealFoodState.value = State.Loading
+        service.createMealFood(authHeader = authHeader, body = mealFood).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+//                if (response.isSuccessful && response.body() != null) {
+//                    _mealFoodState.value = State.Success
+//                } else {
+//                    _mealFoodState.value = State.Empty
+//                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+//                _mealFoodState.value = State.Error(t.message!!)
+            }
+        })
     }
 
     // TODO: update functionality, add stateflow

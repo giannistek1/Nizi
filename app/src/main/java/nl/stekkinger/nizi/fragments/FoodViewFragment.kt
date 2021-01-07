@@ -79,6 +79,8 @@ class FoodViewFragment : Fragment() {
             updateUI()
         })
 
+        view.edit_food_view.visibility = GONE
+
         lifecycleScope.launchWhenStarted {
             model.favoritesState.collect {
                 when(it) {
