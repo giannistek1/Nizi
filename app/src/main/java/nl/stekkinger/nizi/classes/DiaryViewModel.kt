@@ -1,27 +1,19 @@
 package nl.stekkinger.nizi.classes
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log.d
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.collect
-import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.MealProductAdapter
 import nl.stekkinger.nizi.classes.diary.*
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
-import nl.stekkinger.nizi.fragments.ConsumptionViewFragment
-import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.fragments.FoodViewFragment
-import nl.stekkinger.nizi.fragments.MealFoodViewFragment
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
 
@@ -34,7 +26,7 @@ class DiaryViewModel(
     private var mSearchText: MutableLiveData<String> = MutableLiveData()
 ) : ViewModel() {
 
-    val diaryLiveData = mRepository.diaryUiState
+    val diaryState = mRepository.diaryState
     fun getData(date: Calendar) { mRepository.getData(sdfDb.format(date.time)) }
 
     val favoritesState = mRepository.favoritesState
@@ -131,9 +123,14 @@ class DiaryViewModel(
 
     // for food view fragment
     val selected = MutableLiveData<Food>()
+    private var currentFragment = "food"
+    fun getCurrentFragment(): String {
+        return currentFragment
+    }
 
     // load the food view fragment with the selected food
-    fun select(activity: AppCompatActivity, food: Food) {
+    fun select(activity: AppCompatActivity, food: Food, fragment: String = "food") {
+        currentFragment = fragment
         selected.value = food
         (activity).supportFragmentManager.beginTransaction().replace(
             R.id.activity_main_fragment_container,
@@ -141,17 +138,16 @@ class DiaryViewModel(
         ).commit()
     }
 
-    val selectedEdit = MutableLiveData<ConsumptionResponse>()
-
-    fun empty() {
-        mRepository.emptyS()
+    fun emptyState() {
+        mRepository.emptyState()
     }
-    fun selectEdit(activity: AppCompatActivity, consumption: ConsumptionResponse) {
 
+    val selectedEdit = MutableLiveData<ConsumptionResponse>()
+    fun selectEdit(activity: AppCompatActivity, consumption: ConsumptionResponse) {
+        // TODO: remove activity?
         selectedEdit.value = consumption
     }
 
-    val preferences: SharedPreferences = NiziApplication.instance.getSharedPreferences("NIZI", Context.MODE_PRIVATE)
     fun addConsumption(food: Food, portion: Float = 1.0F) {
 
         val date: String = sdfDb.format(mDate.value!!.time)
@@ -187,7 +183,7 @@ class DiaryViewModel(
         mRepository.addConsumption(consumption)
     }
 
-    val consumptionUiState = mRepository.consumptionState
+    val consumptionState = mRepository.consumptionState
 
     fun editConsumption(c: ConsumptionResponse, newPortion: Float) {
         val date: String = sdfDb.format(mDate.value!!.time)
@@ -226,125 +222,61 @@ class DiaryViewModel(
     }
 
     // meals
-    private var adapter: MealProductAdapter = MealProductAdapter(this)
-    private var mealProducts: ArrayList<MealProduct> = ArrayList()
-    fun addMealProduct(food: Food, portion: Double = 1.toDouble()) {
-        val mealProduct = MealProduct (
-            Name = food.name,
-            KCal = (food.kcal * portion).toFloat(),
-            Protein = (food.protein * portion).toFloat(),
-            Fiber = (food.fiber * portion).toFloat(),
-            Calcium = (food.fiber * portion).toFloat(),
-            Sodium = (food.fiber * portion).toFloat(),
-            Water = (food.fiber * portion).toFloat(),
-            PortionSize = (food.portion_size * portion).toInt(),
-            WeightUnit = food.weight_unit.unit
-        )
-        mealProducts.add(mealProduct)
-        adapter.setMealProductList(mealProducts)
-    }
-
-    fun createMeal(name: String, photo: String?) {
-        // prep values for meal
-        var totalKCal: Double = 0.toDouble()
-        var totalProtein: Double = 0.toDouble()
-        var totalFiber: Double = 0.toDouble()
-        var totalCalcium: Double = 0.toDouble()
-        var totalSodium: Double = 0.toDouble()
-        var totalWater: Double = 0.toDouble()
-        var totalSize = 0
-        // fill in total values for meal
-        for (p in mealProducts) {
-            totalKCal += p.KCal
-            totalProtein += p.Protein
-            totalFiber += p.Fiber
-            totalCalcium += p.Calcium
-            totalSodium += p.Sodium
-            totalWater += p.Water
-            totalSize += p.PortionSize
-        }
-        var photoVal:String = ""
-        if(photo != null) {
-            // dit hier beneden werkt gewoon
-            photoVal = "/:1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" //""D/foto:" + photo
-
-            // dit niet??? :C
-            photoVal = photo.toString()
-
-            d("string foto", photoVal)
-        }
-
-        // create meal object
-        val meal = Meal(
-            MealId = 0,
-            Name = name,
-            PatientId = preferences.getInt("patient", 0),
-            KCal = totalKCal,
-            Protein = totalProtein,
-            Fiber = totalFiber,
-            Calcium = totalCalcium,
-            Sodium = totalSodium,
-            Water = totalWater,
-            PortionSize = totalSize,
-            WeightUnit = "g",
-            Picture = photoVal
-        )
-        d("MEALMEAL", meal.toString())
-        // create meal
-        mRepository.createMeal(meal)
-        mealProducts = ArrayList()
-    }
-
-    // adding meal to diary
-    fun addMeal(meal: Meal) {
-        // TODO: add overview for portions later
-        val portion = 1.toFloat()
-//        val consumption = Consumption(
-//            FoodName = meal.Name,
-//            KCal = (meal.KCal * portion).toFloat(),
-//            Protein = (meal.Protein * portion).toFloat(),
-//            Fiber = (meal.Fiber * portion).toFloat(),
-//            Calium = (meal.Calcium * portion).toFloat(),
-//            Sodium = (meal.Sodium * portion).toFloat(),
-//            Amount = (meal.PortionSize * portion).toInt(),
-//            MealTime = mMealTime,
-//            Water = (meal.Water * portion).toFloat(),
-//            WeightUnitId = 1,
-//            Date = mCurrentDay,
-//            PatientId = preferences.getInt("patient", 0),
-//            ConsumptionId = 0
-//        )
-//        mRepository.addConsumption(consumption)
-    }
-
     fun deleteMeal(id: Int){
         mRepository.deleteMeal(id)
     }
 
-    fun selectMealProduct(activity: AppCompatActivity, food: Food) {
-        // TODO: combine with select
-//        addMeal(meal)
-        (activity).supportFragmentManager.beginTransaction().replace(
-            R.id.activity_main_fragment_container,
-            MealFoodViewFragment()
-        ).commit()
-        selected.value = food
+    private var adapter: MealProductAdapter = MealProductAdapter(this)
+    private var mealProducts: ArrayList<Food> = ArrayList()
+    private var mealProductPosition: Int = 0
+
+    fun setMealProductPosition(pos: Int) {
+        mealProductPosition = pos
+    }
+    fun addMealProduct(food: Food, amount: Float = 1f) {
+        food.amount = amount
+        mealProducts.add(food)
+        adapter.setMealProductList(mealProducts)
     }
 
+
+    fun editMealProduct(amount: Float) {
+        mealProducts[mealProductPosition].amount = amount
+        adapter.setMealProductList(mealProducts)
+    }
+
+    val mealState = mRepository.mealState
+
+    fun createMeal(meal: Meal) {
+        mRepository.createMeal(meal)
+    }
+
+    fun createMealFoods() {
+        for (m in mealProducts) {
+            mRepository.createMealFood(m.name)
+        }
+    }
+
+    fun addMeal(meal: Meal) {
+        // TODO: transform into consumption
+        // mRepository.addConsumption(consumption)
+    }
+
+    // TODO: select meal moet edit worden
     fun selectMeal(activity: AppCompatActivity, meal: Meal) {
-        addMeal(meal)
-        (activity).supportFragmentManager.beginTransaction().replace(
-            R.id.activity_main_fragment_container,
-            DiaryFragment()
-        ).commit()
+//        addMeal(meal)
+//        (activity).supportFragmentManager.beginTransaction().replace(
+//            R.id.activity_main_fragment_container,
+//            DiaryFragment()
+//        ).commit()
     }
 
-    fun getMealProducts(): ArrayList<MealProduct> {
-        d("meal", mealProducts.count().toString())
+
+    fun getMealProducts(): ArrayList<Food> {
         return mealProducts
     }
 
-    fun deleteMealProduct(mealProduct: MealProduct) {
-        mealProducts.remove(mealProduct)
+    fun getMealProductAdapter(): MealProductAdapter {
+        return adapter
     }
 }

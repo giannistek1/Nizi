@@ -10,10 +10,14 @@ import android.util.Log
 import android.util.Log.d
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_create_meal.view.*
+import kotlinx.android.synthetic.main.fragment_diary.view.*
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.adapters.ConsumptionAdapter
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.adapters.MealProductAdapter
 import nl.stekkinger.nizi.repositories.FoodRepository
@@ -45,7 +49,8 @@ class CreateMealFragment: Fragment() {
         // adapters
         searchAdapter = FoodSearchAdapter(model, fragment = "meal")
         searchRV.adapter = searchAdapter
-        mealProductAdapter = MealProductAdapter(model)
+//        mealProductAdapter = MealProductAdapter(model)
+        mealProductAdapter = model.getMealProductAdapter()
         mealProductRV.adapter = mealProductAdapter
 
         if (searchView != null) {
@@ -56,13 +61,11 @@ class CreateMealFragment: Fragment() {
 
             queryTextListener = object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String): Boolean {
-                    Log.i("onQueryTextChange", newText)
-
+                    model.setFoodSearch(newText)
                     return true
                 }
 
                 override fun onQueryTextSubmit(query: String): Boolean {
-                    model.setFoodSearch(query)
                     return true
                 }
             }
@@ -71,16 +74,48 @@ class CreateMealFragment: Fragment() {
             model.setFoodSearch("")
         }
 
-        mealProductAdapter.setMealProductList(model.getMealProducts())
+         //TODO: do i need consumption response or something else to create a meal, what information do i send?
+//        mealProductAdapter.setMealProductList(model.getMealProducts())
 
         // get the results of food search
         model.getFoodSearch().observe(viewLifecycleOwner, Observer { foodList ->
-            d("LOGLIST", model.getMealProducts().toString())
             searchAdapter.setFoodList(foodList)
         })
 
+        mealProductAdapter.setMealProductList(model.getMealProducts())
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mealProductRV)
+
+        // click events
+        view.save_btn.setOnClickListener {
+            fragmentManager!!
+                .beginTransaction()
+                .replace(
+                    R.id.activity_main_fragment_container,
+                    CreateMealFinalFragment()
+                )
+                .commit()
+        }
+
         return view
     }
+
+    private val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(
+                viewHolder: RecyclerView.ViewHolder,
+                direction: Int
+            ) {
+                mealProductAdapter.removeItem(viewHolder.adapterPosition)
+            }
+        }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_back, menu)

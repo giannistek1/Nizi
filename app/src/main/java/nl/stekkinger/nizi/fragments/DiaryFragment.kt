@@ -44,14 +44,6 @@ class DiaryFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
-        val args: Bundle? = arguments
-        var refresh = false
-        if(args != null) {
-            refresh = args.getBoolean("refresh")
-        }
-        if (refresh) {
-            (activity)!!.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
-        }
 
         val breakfastRv: RecyclerView = view.findViewById(R.id.diary_breakfast_rv)
         breakfastRv.layoutManager = LinearLayoutManager(activity)
@@ -83,12 +75,12 @@ class DiaryFragment: Fragment() {
         cal.clear(Calendar.MILLISECOND)
         cal.time = Date()
         model.setDiaryDate(cal)
-        model.empty()
+        model.emptyState()
 
         lifecycleScope.launchWhenStarted {
-            model.diaryLiveData.collect {
+            model.diaryState.collect {
                 when(it) {
-                    is FoodRepository.DiaryUiState.Success -> {
+                    is FoodRepository.DiaryState.Success -> {
 
                         val breakfastList = ArrayList<ConsumptionResponse>()
                         val lunchList = ArrayList<ConsumptionResponse>()
@@ -105,7 +97,6 @@ class DiaryFragment: Fragment() {
                                 else -> breakfastList.add(c)
                             }
                         }
-                        d("diaryfrag", breakfastList.toString())
 
                         // pass list of consumptions to adapter
                         breakfastAdapter.setConsumptionList(breakfastList)
@@ -114,10 +105,32 @@ class DiaryFragment: Fragment() {
                         snackAdapter.setConsumptionList(snackList)
                         view.fragment_diary_loader.visibility = GONE
                     }
-                    is FoodRepository.DiaryUiState.Error -> {
+                    is FoodRepository.DiaryState.Error -> {
                         view.fragment_diary_loader.visibility = GONE
                     }
-                    is FoodRepository.DiaryUiState.Loading -> {
+                    is FoodRepository.DiaryState.Loading -> {
+                        view.fragment_diary_loader.visibility = VISIBLE
+                    }
+                    else -> {
+                        view.fragment_diary_loader.visibility = GONE
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            model.consumptionState.collect {
+                when(it) {
+                    is FoodRepository.State.Success -> {
+                        // Somthing has been updated. get new diary data
+                        model.getData(cal)
+                        view.fragment_diary_loader.visibility = GONE
+                        model.emptyState()
+                    }
+                    is FoodRepository.State.Error -> {
+                        view.fragment_diary_loader.visibility = GONE
+                    }
+                    is FoodRepository.State.Loading -> {
                         view.fragment_diary_loader.visibility = VISIBLE
                     }
                     else -> {
@@ -266,6 +279,10 @@ class DiaryFragment: Fragment() {
 
 
         return view
+    }
+    private fun refresh() {
+        d("re", "fresh")
+        (activity)!!.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
     }
 
     // function to set date in model, and return date as string for UI

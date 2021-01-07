@@ -107,7 +107,7 @@ class ConsumptionViewFragment : Fragment() {
         }
 
         lifecycleScope.launchWhenStarted {
-            model.consumptionUiState.collect {
+            model.consumptionState.collect {
                 when(it) {
                     is FoodRepository.State.Success -> {
                         if(mEdit) Toast.makeText(activity, R.string.update_food_success, Toast.LENGTH_SHORT).show()

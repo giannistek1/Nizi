@@ -35,6 +35,7 @@ class FoodViewFragment : Fragment() {
     private lateinit var mDecreaseBtn: ImageButton
     private lateinit var mSaveBtn: ImageButton
     private lateinit var mFavBtn: ImageButton
+    private lateinit var mCurrentFragment: String
     private var mIsLiked = false
     private var mFavoriteSelected = 0
 
@@ -46,10 +47,13 @@ class FoodViewFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_food_view, container, false)
         setHasOptionsMenu(true)
 
+
         // get the DiaryViewModel
         model = activity?.run {
             ViewModelProviders.of(this).get(DiaryViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+
+        mCurrentFragment = model.getCurrentFragment()
 
         model.selected.observe(this, Observer<Food> { food ->
             // store food product
@@ -190,15 +194,37 @@ class FoodViewFragment : Fragment() {
         }
 
         view.save_btn.setOnClickListener {
-            Toast.makeText(this.context, R.string.add_food_success, Toast.LENGTH_LONG).show()
 
-            val portion = mServingInput.text.toString().trim().toFloat()
-            model.addConsumption(mFood, portion)
+            when (mCurrentFragment) {
+                "food" -> {
+                    val amount: Float = mServingInput.text.toString().trim().toFloat()
+                    model.addConsumption(mFood, amount)
 
-            (activity)!!.supportFragmentManager.beginTransaction().replace(
-                R.id.activity_main_fragment_container,
-                DiaryFragment()
-            ).commit()
+                    (activity)!!.supportFragmentManager.beginTransaction().replace(
+                        R.id.activity_main_fragment_container,
+                        DiaryFragment()
+                    ).commit()
+                }
+                "meal" -> {
+                    val amount: Float = mServingInput.text.toString().trim().toFloat()
+                    model.addMealProduct(mFood, amount)
+
+                    (activity)!!.supportFragmentManager.beginTransaction().replace(
+                        R.id.activity_main_fragment_container,
+                        CreateMealFragment()
+                    ).commit()
+                }
+                "mealEdit" -> {
+                    val amount: Float = mServingInput.text.toString().trim().toFloat()
+                    model.editMealProduct(amount)
+
+                    (activity)!!.supportFragmentManager.beginTransaction().replace(
+                        R.id.activity_main_fragment_container,
+                        CreateMealFragment()
+                    ).commit()
+                }
+            }
+
         }
 
         mServingInput.setOnKeyListener { v, keyCode, _ ->

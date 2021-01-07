@@ -2,6 +2,7 @@ package nl.stekkinger.nizi.adapters
 
 import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +44,7 @@ class FoodSearchAdapter(
                 var food = mDataset[pos]
                 if(fragment == "food") { model.select(activity, food) }
                 if(fragment == "favorites") { model.select(activity, food) }
-                if(fragment == "meal") { model.selectMealProduct(activity, food) }
+                if(fragment == "meal") { model.select(activity, food, fragment) }
             }
     }
 
@@ -60,7 +61,7 @@ class FoodSearchAdapter(
         if (fragment == "food") {
             holder.addBtn.setOnClickListener {
                 model.addConsumption(food)
-                notifyDataSetChanged()
+
                 (activity).supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     DiaryFragment()
@@ -84,7 +85,7 @@ class FoodSearchAdapter(
         } else if(fragment == "favorites") {
             holder.addBtn.setOnClickListener {
                 model.addConsumption(food)
-                notifyDataSetChanged()
+
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     DiaryFragment()

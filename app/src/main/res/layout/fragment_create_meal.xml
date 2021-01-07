@@ -44,10 +44,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/save" />
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/meal_food_list_holder"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             app:layout_constraintHeight_default="wrap"
             app:layout_constraintHeight_max="450px"
             android:layout_below="@+id/current_products">
@@ -85,9 +92,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/food_search_holder"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="wrap_content"
             app:layout_constraintHeight_default="wrap"
-            app:layout_constraintHeight_max="450px"
+            app:layout_constraintHeight_min="300dp"
             android:layout_below="@+id/search_food">
 
             <androidx.recyclerview.widget.RecyclerView

@@ -1,8 +1,11 @@
 package nl.stekkinger.nizi.classes.diary
 
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
+
 data class Food (
     val id: Int,
     val my_food: Int = 0,
+    var amount: Float = 1f,
     val name: String,
     val description: String,
     val kcal: Float,

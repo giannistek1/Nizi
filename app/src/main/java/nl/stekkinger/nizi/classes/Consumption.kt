@@ -1,7 +1,7 @@
 package nl.stekkinger.nizi.classes
 
 import nl.stekkinger.nizi.classes.diary.FoodMealComponent
-import nl.stekkinger.nizi.classes.diary.WeightUnit
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import java.io.Serializable
 import java.text.SimpleDateFormat
 
