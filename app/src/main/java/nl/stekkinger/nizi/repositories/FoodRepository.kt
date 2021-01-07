@@ -23,37 +23,33 @@ import kotlin.collections.ArrayList
 class FoodRepository : Repository() {
 
     private val TAG = "FoodRepository"
-    // stateflow code
-    private val _diaryUiState: MutableStateFlow<DiaryUiState> = MutableStateFlow(DiaryUiState.Empty)
-    val diaryUiState: StateFlow<DiaryUiState> = _diaryUiState
 
-    sealed class DiaryUiState {
-        data class Success(val data: ArrayList<ConsumptionResponse>) : DiaryUiState()
-        data class Error(val message: String) : DiaryUiState()
-        object Loading: DiaryUiState()
-        object Empty: DiaryUiState()
+    private val _diaryState: MutableStateFlow<DiaryState> = MutableStateFlow(DiaryState.Empty)
+    val diaryState: StateFlow<DiaryState> = _diaryState
+
+    sealed class DiaryState {
+        data class Success(val data: ArrayList<ConsumptionResponse>) : DiaryState()
+        data class Error(val message: String) : DiaryState()
+        object Loading: DiaryState()
+        object Empty: DiaryState()
     }
 
-    fun getData(date: String): MutableStateFlow<DiaryUiState> {
-        _diaryUiState.value = DiaryUiState.Loading
-        val result: MutableStateFlow<DiaryUiState> = MutableStateFlow(DiaryUiState.Empty)
+    fun getData(date: String) {
+        _diaryState.value = DiaryState.Loading
         val newDate: String = date + "T11:00:00.000Z"
-        val gson = Gson()
-        val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
 
         service.fetchConsumptions(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id, date = newDate).enqueue(object: Callback<ArrayList<ConsumptionResponse>> {
             override fun onResponse(call: Call<ArrayList<ConsumptionResponse>>, response: Response<ArrayList<ConsumptionResponse>>) {
                 if (response.isSuccessful && response.body() != null) {
-                    _diaryUiState.value = DiaryUiState.Success(response.body()!!)
+                    _diaryState.value = DiaryState.Success(response.body()!!)
                 } else {
-                    _diaryUiState.value = DiaryUiState.Empty
+                    _diaryState.value = DiaryState.Empty
                 }
             }
             override fun onFailure(call: Call<ArrayList<ConsumptionResponse>>, t: Throwable) {
-                _diaryUiState.value = DiaryUiState.Error(t.message!!)
+                _diaryState.value = DiaryState.Error(t.message!!)
             }
         })
-        return _diaryUiState
     }
 
     sealed class State {
@@ -62,10 +58,11 @@ class FoodRepository : Repository() {
         object Loading: State()
         object Empty: State()
     }
+
     private val _consumptionState: MutableStateFlow<State> = MutableStateFlow(State.Empty)
     val consumptionState: StateFlow<State> = _consumptionState
 
-    fun emptyS() {
+    fun emptyState() {
         _consumptionState.value = State.Empty
     }
 
@@ -171,32 +168,6 @@ class FoodRepository : Repository() {
         })
     }
 
-    fun stateFlow(date: String): MutableStateFlow<DiaryUiState> {
-        val result: MutableStateFlow<DiaryUiState> = MutableStateFlow(DiaryUiState.Empty)
-        val newDate: String = date + "T11:00:00.000Z"
-        val gson = Gson()
-        val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
-
-        service.fetchConsumptions(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id, date = newDate).enqueue(object: Callback<ArrayList<ConsumptionResponse>> {
-            override fun onResponse(call: Call<ArrayList<ConsumptionResponse>>, response: Response<ArrayList<ConsumptionResponse>>) {
-                if (response.isSuccessful && response.body() != null) {
-                    _diaryUiState.value = DiaryUiState.Success(response.body()!!)
-                } else {
-                    _diaryUiState.value = DiaryUiState.Empty
-                }
-            }
-            override fun onFailure(call: Call<ArrayList<ConsumptionResponse>>, t: Throwable) {
-                _diaryUiState.value = DiaryUiState.Error(t.message!!)
-            }
-        })
-        return _diaryUiState
-    }
-    // i think this needs to happen in the repo. that
-//    fun getNewDiary(date: Calendar) = viewModelScope.launch {
-//        _diaryUiState.value = DiaryUiState.Loading
-//        diaryUiState = mRepository.stateFlow(sdfDb.format(date.time))
-//    }
-
     fun getDiary(date: String): MutableLiveData<ArrayList<ConsumptionResponse>> {
         val result = MutableLiveData<ArrayList<ConsumptionResponse>>()
         val newDate: String = date + "T11:00:00.000Z"
@@ -244,77 +215,92 @@ class FoodRepository : Repository() {
                             portion_size = foodResponse.food_meal_component.portion_size,
                             weight_unit = foodResponse.weight_unit,
                             weight_amount = foodResponse.food_meal_component.portion_size, // Todo: there is no amount yet
-                            image_url = foodResponse.food_meal_component.image_url
+                            image_url = foodResponse.food_meal_component.image_url,
+                            foodId = foodResponse.food_meal_component.foodId
                         )
                         foodList.add(food)
                     }
                     result.value = foodList
                 } else {
-                    d("rene", "response, not succesfull: ${response.body()}")
+
                 }
             }
             override fun onFailure(call: Call<ArrayList<FoodResponse>>, t: Throwable) {
-                d("rene", "onFailure")
+
             }
         })
         return result
     }
 
     fun addConsumption(consumption: Consumption) {
+        _consumptionState.value = State.Loading
         service.addConsumption(authHeader = authHeader, body = consumption).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                d("con", response.toString())
-            }
-
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-
-            }
-        })
-    }
-
-    fun editConsumption2(consumption: Consumption) {
-        service.editConsumption(authHeader = authHeader, body = consumption, consumptionId = consumption.id).enqueue(object : Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                if (response.isSuccessful && response.body() != null) {
-                    d("suc", response.toString())
+                if (response.isSuccessful) {
+                    _consumptionState.value = State.Success
                 } else {
-                    d("em", response.toString())
+                    _consumptionState.value = State.Empty
                 }
-
             }
-
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-                d("fal", t.toString())
+                _consumptionState.value = State.Error(t.message!!)
             }
         })
     }
 
     fun getMeals(): ArrayList<Meal>? {
-        return service.getMeals(authHeader = authHeader, patientId = preferences.getInt("patient", 0)).execute().body()
+        return service.getMeals(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id).execute().body()
     }
 
-//    fun getFavorites(): ArrayList<MyFoodResponse>? {
-//        d("tess", "tess")
-//        return service.getFavoriteFood(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id).execute().body()
-//    }
+    private val _mealState: MutableStateFlow<MealState> = MutableStateFlow(MealState.Empty)
+    val mealState: StateFlow<MealState> = _mealState
 
-
-
+    sealed class MealState {
+        data class Success(val data: Meal) : MealState()
+        data class Error(val message: String) : MealState()
+        object Loading: MealState()
+        object Empty: MealState()
+    }
 
     fun createMeal(meal: Meal) {
-        service.createMeal(authHeader = authHeader, patientId = preferences.getInt("patient", 0), body = meal).enqueue(object : Callback<Unit> {
-            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                d("SMEAL", response.toString())
-                d("SMEAL", response.message())
-                d("SMEAL", response.isSuccessful.toString())
+        _mealState.value = MealState.Loading
+
+        service.createMeal(authHeader = authHeader, body = meal).enqueue(object : Callback<Meal> {
+            override fun onResponse(call: Call<Meal>, response: Response<Meal>) {
+                if (response.isSuccessful && response.body() != null) {
+                    _mealState.value = MealState.Success(response.body()!!)
+                } else {
+                    _mealState.value = MealState.Empty
+                }
             }
 
-            override fun onFailure(call: Call<Unit>, t: Throwable) {
-                d("SMEAL", "fail")
+            override fun onFailure(call: Call<Meal>, t: Throwable) {
+                _mealState.value = MealState.Error(t.message!!)
             }
         })
     }
 
+//    private val _mealFoodState: MutableStateFlow<State> = MutableStateFlow(State.Empty)
+//    val mealFoodState: StateFlow<State> = _mealFoodState
+
+    fun createMealFood(mealFood: MealFood) {
+//        _mealFoodState.value = State.Loading
+        service.createMealFood(authHeader = authHeader, body = mealFood).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+//                if (response.isSuccessful && response.body() != null) {
+//                    _mealFoodState.value = State.Success
+//                } else {
+//                    _mealFoodState.value = State.Empty
+//                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+//                _mealFoodState.value = State.Error(t.message!!)
+            }
+        })
+    }
+
+    // TODO: update functionality, add stateflow
     fun deleteMeal(id: Int) {
         service.deleteMeal(authHeader = authHeader, patientId = preferences.getInt("patient", 0), mealId = id).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {

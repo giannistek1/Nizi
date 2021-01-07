@@ -43,6 +43,14 @@
                 android:orientation="horizontal">
 
                 <ImageButton
+                    android:id="@+id/edit_food_view"
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="@dimen/dateNavigationSize"
+                    android:layout_height="@dimen/dateNavigationSize"
+                    android:layout_gravity="right"
+                    android:contentDescription="@string/favorites"
+                    android:src="@drawable/ic_edit"/>
+                <ImageButton
                     android:id="@+id/heart_food_view"
                     style="@style/Widget.AppCompat.Button.Borderless"
                     android:layout_width="@dimen/dateNavigationSize"

@@ -1,6 +1,6 @@
 package nl.stekkinger.nizi.classes.diary
 
-import nl.stekkinger.nizi.classes.patient.Patient
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 
 data class ConsumptionResponse (
     val id: Int = 0,

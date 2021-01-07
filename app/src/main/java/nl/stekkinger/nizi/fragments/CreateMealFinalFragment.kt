@@ -16,15 +16,23 @@ import android.util.Log.d
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
 import kotlinx.android.synthetic.main.fragment_create_meal_final.*
+import kotlinx.android.synthetic.main.fragment_create_meal_final.image_food_view
 import kotlinx.android.synthetic.main.fragment_create_meal_final.view.*
+import kotlinx.android.synthetic.main.fragment_diary.view.*
+import kotlinx.android.synthetic.main.fragment_food_view.*
+import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.adapters.MealProductAdapter
+import nl.stekkinger.nizi.classes.diary.*
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.io.ByteArrayOutputStream
 
@@ -49,6 +57,17 @@ class CreateMealFinalFragment: Fragment() {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
+        // rv's
+        val mealProductRV: RecyclerView = view.findViewById(R.id.create_meal_list_recycler_view)
+        mealProductRV.layoutManager = LinearLayoutManager(activity)
+
+        // adapters
+        mealProductAdapter = model.getMealProductAdapter()
+        mealProductRV.adapter = mealProductAdapter
+
+        // fill the adapter
+        mealProductAdapter.setMealProductList(model.getMealProducts())
+
         view.meal_camera_btn.setOnClickListener {
             val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             val packageManager = activity!!.packageManager
@@ -57,20 +76,111 @@ class CreateMealFinalFragment: Fragment() {
             }
         }
 
+        // get total nutrition values of the meal
+        var totalKcal = 0f
+        var totalProtein = 0f
+        var totalPotassium = 0f
+        var totalSodium = 0f
+        var totalWater = 0f
+        var totalFiber = 0f
+        val products: ArrayList<Food> = model.getMealProducts()
+        for (p: Food in products) {
+            totalKcal += (p.kcal * p.amount)
+            totalProtein += (p.protein * p.amount)
+            totalPotassium += (p.potassium * p.amount)
+            totalSodium += (p.sodium * p.amount)
+            totalWater += (p.water * p.amount)
+            totalFiber += (p.fiber * p.amount)
+        }
+
+        // update UI
+        view.calories_value_meal_view.text = "%.2f".format(totalKcal) + " Kcal"
+        view.fiber_value_meal_view.text = "%.2f".format(totalFiber) + " g"
+        view.protein_value_meal_view.text = "%.2f".format(totalProtein) + " g"
+        view.water_value_meal_view.text = "%.2f".format(totalWater) + "ml"
+        view.sodium_value_meal_view.text = "%.2f".format(totalSodium * 1000) + " mg"
+        view.potassium_value_meal_view.text = "%.2f".format(totalPotassium * 1000) + " mg"
+
+
+        lifecycleScope.launchWhenStarted {
+            model.mealState.collect {
+                when(it) {
+                    is FoodRepository.MealState.Success -> {
+                        model.createMealFoods(it.data.id)
+                         view.fragment_create_meal_loader.visibility = View.GONE
+                    }
+                    is FoodRepository.MealState.Error -> {
+                        // TODO: add Error msg toast
+                         view.fragment_create_meal_loader.visibility = View.GONE
+                    }
+                    is FoodRepository.MealState.Loading -> {
+                         view.fragment_create_meal_loader.visibility = View.VISIBLE
+                    }
+                    else -> {
+                         view.fragment_create_meal_loader.visibility = View.GONE
+                    }
+                }
+            }
+        }
+
         return view
     }
 
     private fun createMeal(){
-        if (validateMealName() == false) {
-            // failed
+        if (!validateMealName()) {
+            // validate failed
             return
-        } else {
-            // validate success
-            model.createMeal(mMealName, mPhoto)
-            (activity)!!.supportFragmentManager.beginTransaction().replace(
-                R.id.activity_main_fragment_container,
-                AddMealFragment()
-            ).commit()
+        } else { // validate success
+            // prep photo
+            var photoString:String = ""
+            if(mPhoto != null) {
+                photoString = mPhoto.toString()
+            }
+
+            // get total nutrition values of the meal
+            var totalKcal = 0f
+            var totalProtein = 0f
+            var totalPotassium = 0f
+            var totalSodium = 0f
+            var totalWater = 0f
+            var totalFiber = 0f
+            var totalPortionSize = 1f
+            val products: ArrayList<Food> = model.getMealProducts()
+            for (p: Food in products) {
+                totalKcal += (p.kcal * p.amount)
+                totalProtein += (p.protein * p.amount)
+                totalPotassium += (p.potassium * p.amount)
+                totalSodium += (p.sodium * p.amount)
+                totalWater += (p.water * p.amount)
+                totalFiber += (p.fiber * p.amount)
+            }
+
+            // create meal object
+            val foodMealComponent = FoodMealComponent(
+                name = mMealName,
+                description = "beschrijving",
+                kcal = totalKcal,
+                protein = totalProtein,
+                potassium = totalPotassium,
+                sodium = totalSodium,
+                water = totalWater,
+                fiber = totalFiber,
+                portion_size = totalPortionSize,
+                image_url = photoString,
+                foodId = 0
+            )
+
+            val meal = Meal(
+                food_meal_component = foodMealComponent,
+                patient = GeneralHelper.getUser().patient!!,
+                weight_unit = GeneralHelper.getWeightUnits()!!.weightUnits[7]
+            )
+
+            model.createMeal(meal)
+//            (activity)!!.supportFragmentManager.beginTransaction().replace(
+//                R.id.activity_main_fragment_container,
+//                AddMealFragment()
+//            ).commit()
         }
 
     }
@@ -129,11 +239,10 @@ class CreateMealFinalFragment: Fragment() {
 
                     val encodedImage: String = Base64.encodeToString(b, Base64.DEFAULT)
                     mPhoto = encodedImage
-                    d("foto", encodedImage)
                 }
             }
             else -> {
-                Toast.makeText(this.activity, "Foto mislukt", Toast.LENGTH_SHORT)
+                Toast.makeText(this.activity, R.string.photo_error, Toast.LENGTH_SHORT)
             }
         }
     }

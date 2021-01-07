@@ -17,6 +17,7 @@ import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.classes.diary.*
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.repositories.FoodRepository
@@ -77,7 +78,8 @@ class FavoritesFragment: Fragment() {
                                 portion_size = foodResponse.food.food_meal_component.portion_size,
                                 weight_unit = weightUnit,
                                 weight_amount = foodResponse.food.food_meal_component.portion_size,
-                                image_url = foodResponse.food.food_meal_component.image_url
+                                image_url = foodResponse.food.food_meal_component.image_url,
+                                foodId = foodResponse.food.food_meal_component.foodId
                             )
                             foodList.add(food)
                         }

@@ -21,7 +21,7 @@ import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.adapters.MealAdapter
-import nl.stekkinger.nizi.classes.Meal
+import nl.stekkinger.nizi.classes.diary.Meal
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 

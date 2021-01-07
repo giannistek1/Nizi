@@ -199,17 +199,22 @@ interface ApiService {
     //endregion
 
     //region meals
-    @POST("v1/meal/{patientId}")
+    @POST("meals")
     fun createMeal(
         @Header("Authorization") authHeader : String,
-        @Path("patientId") patientId: Int,
         @Body body: Meal
+    ) : Call<Meal>
+
+    @POST("meal-foods")
+    fun createMealFood(
+        @Header("Authorization") authHeader : String,
+        @Body body: MealFood
     ) : Call<Unit>
 
-    @GET("v1/meal/{patientId}")
+    @GET("meals")
     fun getMeals(
         @Header("Authorization") authHeader : String,
-        @Path("patientId") patientId: Int
+        @Query("patient.id") patientId: Int
     ) : Call<ArrayList<Meal>>
 
     @PUT("v1/meal/{patientId}/{mealId}")
