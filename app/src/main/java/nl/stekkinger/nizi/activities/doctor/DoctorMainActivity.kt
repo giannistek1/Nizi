@@ -8,18 +8,19 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_doctor_main.*
+import kotlinx.android.synthetic.main.custom_toast.*
+import kotlinx.android.synthetic.main.custom_toast.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
@@ -32,7 +33,6 @@ import nl.stekkinger.nizi.classes.patient.PatientItem
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
@@ -57,6 +57,7 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
 
     private lateinit var loader: View
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         /// setup UI
@@ -66,7 +67,6 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
         setSupportActionBar(toolbar)
         toolbar_title.text = getString(R.string.patients)
         loader = activity_doctor_main_loader
-
 
         // Get User and doctorId
         user = GeneralHelper.getUser()
@@ -241,7 +241,12 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
             if (result == null) { Toast.makeText(baseContext, R.string.get_patients_fail, Toast.LENGTH_SHORT).show()
                 return }
 
-            Toast.makeText(baseContext, R.string.get_patients_success, Toast.LENGTH_SHORT).show()
+            // Feedback
+            val toast: Toast = Toast.makeText(baseContext, "", Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.BOTTOM, 0, 0)
+            customToastLayout.toast_text.text = getString(R.string.get_patients_success)
+            toast.view = customToastLayout
+            toast.show()
 
             // Clear
             patientList.clear()
@@ -306,7 +311,13 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
                 return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.patient_deleted, Toast.LENGTH_SHORT).show()
+            val toast: Toast = Toast.makeText(baseContext, "", Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.BOTTOM, 0, 0)
+            customToastLayout.toast_text.text = getString(R.string.patient_deleted)
+            toast.view = customToastLayout
+            toast.show()
+
+
 
             deleteUserAsyncTask(result.user!!.id).execute()
         }
@@ -345,7 +356,7 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
                 return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.user_deleted, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, R.string.user_deleted, Toast.LENGTH_SHORT).show()
         }
     }
     //endregion

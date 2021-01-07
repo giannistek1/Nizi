@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -13,6 +14,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
+import kotlinx.android.synthetic.main.custom_toast.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
@@ -221,7 +223,11 @@ class EditPatientDietaryActivity : BaseActivity() {
                 return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.patient_edited, Toast.LENGTH_SHORT).show()
+            val toast: Toast = Toast.makeText(baseContext, "", Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.BOTTOM, 0, 0)
+            customToastLayout.toast_text.text = getString(R.string.patient_edited)
+            toast.view = customToastLayout
+            toast.show()
 
             updateUserAsyncTask().execute()
         }

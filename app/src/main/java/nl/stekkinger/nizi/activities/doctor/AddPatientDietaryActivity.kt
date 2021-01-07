@@ -4,10 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
+import kotlinx.android.synthetic.main.custom_toast.*
+import kotlinx.android.synthetic.main.custom_toast.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
@@ -37,6 +40,7 @@ class AddPatientDietaryActivity : BaseActivity() {
     private lateinit var dietaryManagementList: ArrayList<DietaryManagementShort>
     private lateinit var textViewList: ArrayList<EditText>
     private lateinit var loader: View
+    //private lateinit var customToastLayout: View
 
     private var userId: Int? = null
 
@@ -55,6 +59,8 @@ class AddPatientDietaryActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar_txt_back.text = getString(R.string.personal_info_short)
         loader = activity_add_patient_dietary_loader
+
+        //customToastLayout = layoutInflater.inflate(R.layout.custom_toast, ll_custom_toast_wrapper)
 
         // Ideally dynamic inputs
         // Add inputs to list
@@ -90,8 +96,8 @@ class AddPatientDietaryActivity : BaseActivity() {
         setResult(Activity.RESULT_CANCELED, returnIntent)
 
         // Testing
-        /*activity_add_patient_dietary_et_water_min.setText("1969")
-        activity_add_patient_dietary_et_water_max.setText("3696")*/
+        activity_add_patient_dietary_et_water_min.setText("1969")
+        activity_add_patient_dietary_et_water_max.setText("3696")
 
         // Check connection
         if (!GeneralHelper.hasInternetConnection(this)) return
@@ -164,7 +170,11 @@ class AddPatientDietaryActivity : BaseActivity() {
                 return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.patient_added, Toast.LENGTH_SHORT).show()
+            val toast: Toast = Toast.makeText(baseContext, "", Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.BOTTOM, 0, 0)
+            customToastLayout.toast_text.text = getString(R.string.patient_added)
+            toast.view = customToastLayout
+            toast.show()
 
             // Update patientId which you get after making patient (two places)
             addPatientViewModel.patient.id = result.id!!

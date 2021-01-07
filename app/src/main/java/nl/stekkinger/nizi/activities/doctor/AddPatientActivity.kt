@@ -65,14 +65,6 @@ class AddPatientActivity : BaseActivity() {
                 activity_add_patient_dp.visibility = View.GONE
             else
                 activity_add_patient_dp.visibility = View.VISIBLE
-
-
-            /*val datePickerDialog = DatePickerDialog(this,
-                DatePickerDialog.OnDateSetListener { view, mYear, mMonth, mDay ->
-                    activity_add_patient_et_dob.setText("${mYear}-${mMonth}-${mDay}")
-                }, year, month, day)
-
-            datePickerDialog.show()*/
         }
 
         activity_add_patient_dp.updateDate(2000, 1, 1)
@@ -104,7 +96,7 @@ class AddPatientActivity : BaseActivity() {
         getUsers().execute()
 
         //region Testing
-        /*activity_add_patient_et_firstName.setText(getString(R.string.sample_first_name))
+        activity_add_patient_et_firstName.setText(getString(R.string.sample_first_name))
         activity_add_patient_et_lastName.setText(R.string.sample_last_name)
         activity_add_patient_et_dob.setText(R.string.sample_dob)
         val calendar = Calendar.getInstance()
@@ -113,7 +105,7 @@ class AddPatientActivity : BaseActivity() {
         activity_add_patient_et_email.setText(R.string.sample_email)
         activity_add_patient_et_password.setText(R.string.sample_password)
         activity_add_patient_et_passwordConfirm.setText(R.string.sample_password)
-        activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)*/
+        activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
         //endregion
     }
 
