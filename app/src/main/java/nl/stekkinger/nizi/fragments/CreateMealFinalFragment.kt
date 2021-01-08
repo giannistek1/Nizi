@@ -1,30 +1,22 @@
 package nl.stekkinger.nizi.fragments
 
 import android.app.Activity
-import android.app.SearchManager
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.content.Context.SEARCH_SERVICE
 import android.content.Intent
 import android.graphics.Bitmap
 import android.provider.MediaStore
 import android.util.Base64
-import android.util.Log
-import android.util.Log.d
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.fragment_create_meal_final.*
 import kotlinx.android.synthetic.main.fragment_create_meal_final.image_food_view
 import kotlinx.android.synthetic.main.fragment_create_meal_final.view.*
-import kotlinx.android.synthetic.main.fragment_diary.view.*
-import kotlinx.android.synthetic.main.fragment_food_view.*
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
@@ -32,7 +24,6 @@ import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.adapters.MealProductAdapter
 import nl.stekkinger.nizi.classes.diary.*
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
-import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.io.ByteArrayOutputStream
 
@@ -173,7 +164,7 @@ class CreateMealFinalFragment: Fragment() {
             val meal = Meal(
                 food_meal_component = foodMealComponent,
                 patient = GeneralHelper.getUser().patient!!,
-                weight_unit = GeneralHelper.getWeightUnits()!!.weightUnits[7]
+                weight_unit = GeneralHelper.getWeightUnitHolder()!!.weightUnits[7]
             )
 
             model.createMeal(meal)

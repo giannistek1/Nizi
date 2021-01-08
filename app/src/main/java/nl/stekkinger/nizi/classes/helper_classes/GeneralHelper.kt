@@ -5,10 +5,15 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Build
+import android.view.Gravity
+import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.custom_toast.*
+import kotlinx.android.synthetic.main.custom_toast.view.*
 import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.login.Role
@@ -16,6 +21,7 @@ import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 object GeneralHelper {
     const val PREF_TOKEN = "TOKEN"
@@ -52,7 +58,7 @@ object GeneralHelper {
         }
     }
 
-    fun getWeightUnits() : WeightUnitHolder?
+    fun getWeightUnitHolder() : WeightUnitHolder?
     {
         return if (prefs.contains(PREF_WEIGHT_UNIT)) {
             val json: String = prefs.getString(PREF_WEIGHT_UNIT, "")!!
@@ -83,6 +89,25 @@ object GeneralHelper {
     fun getFeedbackDateFormat() : SimpleDateFormat
     {
         return SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    }
+
+    fun createToast(cont: Context, customToastLayout: View, message: String)
+    {
+        // Sadly cant use animations on the android toast
+        val toast: Toast = Toast.makeText(cont, "", Toast.LENGTH_SHORT)
+        toast.setGravity(Gravity.BOTTOM or Gravity.FILL_HORIZONTAL, 0, 0)
+        customToastLayout.toast_text.text = message
+        customToastLayout.visibility = View.VISIBLE
+        toast.view = customToastLayout
+
+        toast.show()
+    }
+
+    fun showToast(toastView: View, toastAnimation: Animation, message: String)
+    {
+        toastView.toast_text.text = message
+        toastView.visibility = View.VISIBLE
+        toastView.startAnimation(toastAnimation)
     }
 
     @SuppressLint("NewApi")

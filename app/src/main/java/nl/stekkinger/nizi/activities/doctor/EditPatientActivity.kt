@@ -13,6 +13,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RadioButton
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -45,8 +46,6 @@ class EditPatientActivity : BaseActivity() {
     val sdf = GeneralHelper.getFeedbackDateFormat()
     val sdfDB = GeneralHelper.getCreateDateFormat()
 
-    private lateinit var loader: View
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +55,11 @@ class EditPatientActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar_txt_back.text = getString(R.string.patient_overview)
         loader = activity_add_patient_progressbar
+
+        // Setup custom toast
+        val parent: RelativeLayout = activity_add_patient_rl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         // Fill patient
         patientData = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientData

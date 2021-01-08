@@ -14,12 +14,10 @@ import android.text.util.Linkify
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_add_patient.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
@@ -42,8 +40,6 @@ class LoginActivity : BaseActivity() {
 
     private var isDoctor = false
 
-    private lateinit var loader: View
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,6 +55,11 @@ class LoginActivity : BaseActivity() {
         activity_login_txt_nierstichtingUrl.removeLinksUnderline()
         activity_login_txt_nierstichtingPhonenumber.removeLinksUnderline()
         activity_login_txt_nierstichtingEmail.removeLinksUnderline()
+
+        // Setup custom toast
+        val parent: FrameLayout = activity_login_fl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         activity_login_et_username.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}

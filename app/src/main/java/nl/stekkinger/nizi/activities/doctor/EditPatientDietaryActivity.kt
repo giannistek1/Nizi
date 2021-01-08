@@ -1,18 +1,14 @@
 package nl.stekkinger.nizi.activities.doctor
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.RelativeLayout
 import android.widget.Toast
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
 import kotlinx.android.synthetic.main.custom_toast.view.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -39,8 +35,6 @@ class EditPatientDietaryActivity : BaseActivity() {
     private val patientRepository: PatientRepository = PatientRepository()
     private val dietaryRepository: DietaryRepository = DietaryRepository()
 
-    private lateinit var loader: View
-
     private var doctorId: Int? = null
     private lateinit var patientData: PatientData                                   // User, Patient, Doctor, Current DietaryManagements
     private lateinit var weightUnitHolder: WeightUnitHolder                         // WeightUnits
@@ -58,6 +52,12 @@ class EditPatientDietaryActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar_txt_back.text = getString(R.string.personal_info_short)
+        loader = activity_add_patient_dietary_loader
+
+        // Setup custom toast
+        val parent: RelativeLayout = activity_add_patient_dietary_rl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         // Add inputs to list
         textViewList = arrayListOf(activity_add_patient_dietary_et_cal_min, activity_add_patient_dietary_et_cal_max,
@@ -72,9 +72,7 @@ class EditPatientDietaryActivity : BaseActivity() {
         patientData = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientData
 
         // Get WeightUnits
-        val gson = Gson()
-        val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
-        weightUnitHolder = gson.fromJson(json, WeightUnitHolder::class.java)
+        weightUnitHolder = GeneralHelper.getWeightUnitHolder()!!
 
         patientData.diets.forEachIndexed { _, diet ->
             if (diet.description.contains("Calorie")) {
@@ -97,8 +95,6 @@ class EditPatientDietaryActivity : BaseActivity() {
                 activity_add_patient_dietary_et_protein_max.setText(diet.maximum.toString())
             }
         }
-
-        loader = activity_add_patient_dietary_loader
 
         activity_add_patient_dietary_btn_save.setOnClickListener {
 

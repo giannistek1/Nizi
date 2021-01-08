@@ -8,19 +8,18 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_doctor_main.*
 import kotlinx.android.synthetic.main.custom_toast.*
-import kotlinx.android.synthetic.main.custom_toast.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
@@ -55,9 +54,6 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
     private var filteredList: MutableList<PatientItem> = arrayListOf()
     private var doctorId: Int = 1
 
-    private lateinit var loader: View
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         /// setup UI
@@ -67,6 +63,11 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
         setSupportActionBar(toolbar)
         toolbar_title.text = getString(R.string.patients)
         loader = activity_doctor_main_loader
+
+        // Setup custom toast
+        val parent: RelativeLayout = activity_doctor_main_rl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         // Get User and doctorId
         user = GeneralHelper.getUser()
@@ -84,12 +85,10 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
 
         // Add patient button
         activity_doctor_main_btn_addPatient.setOnClickListener {
-            val intent = Intent(this@DoctorMainActivity, AddPatientActivity::class.java)
-
-            // Prevents multiple activities
-            intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-            intent.putExtra(EXTRA_DOCTOR_ID, doctorId)
-            startActivityForResult(intent, ADD_PATIENT_REQUEST_CODE)
+            doAddPatient()
+        }
+        activity_doctor_main_txt_patient.setOnClickListener {
+            doAddPatient()
         }
 
         // Check connection
@@ -117,7 +116,7 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
     }
     //endregion
 
-    //region Spinner?
+    //region Needed for AdapterView.onSelectedItemListener
     override fun onItemSelected(parent: AdapterView<*>, view: View, pos: Int, id: Long) {
         // An item was selected. You can retrieve the selected item using
          parent.getItemAtPosition(pos)
@@ -210,6 +209,16 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
     }
     //endregion
 
+    private fun doAddPatient()
+    {
+        val intent = Intent(this@DoctorMainActivity, AddPatientActivity::class.java)
+
+        // Prevents multiple activities
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        intent.putExtra(EXTRA_DOCTOR_ID, doctorId)
+        startActivityForResult(intent, ADD_PATIENT_REQUEST_CODE)
+    }
+
     //region getPatients
     inner class getPatientsForDoctorAsyncTask() : AsyncTask<Void, Void, ArrayList<Patient>>()
     {
@@ -242,11 +251,9 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
                 return }
 
             // Feedback
-            val toast: Toast = Toast.makeText(baseContext, "", Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.BOTTOM, 0, 0)
-            customToastLayout.toast_text.text = getString(R.string.get_patients_success)
-            toast.view = customToastLayout
-            toast.show()
+            GeneralHelper.showToast(toastView, toastAnimation, getString(R.string.get_patients_success))
+
+            //GeneralHelper.createToast(baseContext, customToastLayout, getString(R.string.get_patients_success))
 
             // Clear
             patientList.clear()
@@ -311,13 +318,9 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
                 return }
 
             // Feedback
-            val toast: Toast = Toast.makeText(baseContext, "", Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.BOTTOM, 0, 0)
-            customToastLayout.toast_text.text = getString(R.string.patient_deleted)
-            toast.view = customToastLayout
-            toast.show()
+            GeneralHelper.showToast(toastView, toastAnimation, getString(R.string.patient_deleted))
 
-
+            //GeneralHelper.createToast(baseContext, customToastLayout, getString(R.string.patient_deleted))
 
             deleteUserAsyncTask(result.user!!.id).execute()
         }

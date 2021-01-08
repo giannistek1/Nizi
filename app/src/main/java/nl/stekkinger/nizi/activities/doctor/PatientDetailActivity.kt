@@ -4,12 +4,14 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.activity_doctor_main.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_patient_detail.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -45,8 +47,6 @@ class PatientDetailActivity : BaseActivity() {
 
     private var savedInstanceState: Bundle? = null
 
-    private lateinit var loader: View
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -57,6 +57,11 @@ class PatientDetailActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar_txt_back.text = getString(R.string.patient_overview)
         loader = activity_patient_detail_loader
+
+        // Setup custom toast
+        val parent: RelativeLayout = activity_patient_detail_rl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         // Checks if fragment state is null and save it
         if (savedInstanceState != null)

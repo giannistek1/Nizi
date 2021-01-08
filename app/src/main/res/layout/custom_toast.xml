@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_custom_toast_wrapper"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center"
     android:background="@drawable/rectangle"
-    android:padding="@dimen/marginSmall">
+    android:padding="@dimen/marginSmall"
+    android:translationZ="1dp"
+    android:elevation="1dp"
+    android:visibility="gone"
+    android:layout_alignParentBottom="true">
 
-    <TextView
-        android:id="@+id/toast_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="@string/food_added"
-        android:textColor="@color/white"/>
+        <TextView
+            android:text="@string/food_added"
+            android:textColor="@color/white"
+            android:fontFamily="@font/helvetica_neue_medium"
+            android:id="@+id/toast_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            />
 
 </LinearLayout>

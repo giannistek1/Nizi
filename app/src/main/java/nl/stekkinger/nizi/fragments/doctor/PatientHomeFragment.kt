@@ -10,13 +10,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_patient_home.*
 import kotlinx.android.synthetic.main.fragment_patient_home.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.EditPatientActivity
-import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
@@ -24,7 +21,6 @@ import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
-import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.util.*
@@ -63,7 +59,7 @@ class PatientHomeFragment : Fragment() {
         if (bundle != null) {
             patientData = bundle.getSerializable(GeneralHelper.EXTRA_PATIENT) as PatientData
 
-            weightUnits = GeneralHelper.getWeightUnits()!!.weightUnits
+            weightUnits = GeneralHelper.getWeightUnitHolder()!!.weightUnits
 
             // Header
             val fullName = "${patientData.user.first_name} ${patientData.user.last_name}"

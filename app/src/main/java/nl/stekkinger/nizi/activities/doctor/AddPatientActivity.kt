@@ -10,10 +10,12 @@ import android.util.Patterns
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_add_patient.*
+import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
@@ -46,8 +48,6 @@ class AddPatientActivity : BaseActivity() {
 
     val sdfDB = GeneralHelper.getCreateDateFormat() // Todo: Refactor getCreateDate to DBDate or something
 
-    private lateinit var loader: View
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +57,11 @@ class AddPatientActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar_txt_back.text = getString(R.string.patient_overview)
         loader = activity_add_patient_progressbar
+
+        // Setup custom toast
+        val parent: RelativeLayout = activity_add_patient_rl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         // Date of Birth
         activity_add_patient_et_dob.setOnClickListener {
@@ -68,7 +73,7 @@ class AddPatientActivity : BaseActivity() {
         }
 
         activity_add_patient_dp.updateDate(2000, 1, 1)
-        activity_add_patient_dp.setOnDateChangedListener { view, mYear, mMonth, mDay ->
+        activity_add_patient_dp.setOnDateChangedListener { _, mYear, mMonth, mDay ->
 
             val calendar = Calendar.getInstance()
             calendar.set(mYear, mMonth, mDay, 0, 0)
@@ -212,7 +217,7 @@ class AddPatientActivity : BaseActivity() {
                 return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.fetched_users, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, R.string.fetched_users, Toast.LENGTH_SHORT).show()
 
             users = result
         }

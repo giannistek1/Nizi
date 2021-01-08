@@ -7,8 +7,10 @@ import android.os.Bundle
 import android.view.Gravity
 import android.view.View
 import android.widget.EditText
+import android.widget.RelativeLayout
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
+import kotlinx.android.synthetic.main.activity_patient_detail.*
 import kotlinx.android.synthetic.main.custom_toast.*
 import kotlinx.android.synthetic.main.custom_toast.view.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -39,8 +41,6 @@ class AddPatientDietaryActivity : BaseActivity() {
     private lateinit var dietaryRestrictionList: ArrayList<DietaryRestriction>
     private lateinit var dietaryManagementList: ArrayList<DietaryManagementShort>
     private lateinit var textViewList: ArrayList<EditText>
-    private lateinit var loader: View
-    //private lateinit var customToastLayout: View
 
     private var userId: Int? = null
 
@@ -60,7 +60,10 @@ class AddPatientDietaryActivity : BaseActivity() {
         toolbar_txt_back.text = getString(R.string.personal_info_short)
         loader = activity_add_patient_dietary_loader
 
-        //customToastLayout = layoutInflater.inflate(R.layout.custom_toast, ll_custom_toast_wrapper)
+        // Setup custom toast
+        val parent: RelativeLayout = activity_add_patient_dietary_rl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         // Ideally dynamic inputs
         // Add inputs to list
@@ -170,11 +173,7 @@ class AddPatientDietaryActivity : BaseActivity() {
                 return }
 
             // Feedback
-            val toast: Toast = Toast.makeText(baseContext, "", Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.BOTTOM, 0, 0)
-            customToastLayout.toast_text.text = getString(R.string.patient_added)
-            toast.view = customToastLayout
-            toast.show()
+            GeneralHelper.createToast(baseContext, customToastLayout, getString(R.string.patient_added))
 
             // Update patientId which you get after making patient (two places)
             addPatientViewModel.patient.id = result.id!!
@@ -248,7 +247,7 @@ class AddPatientDietaryActivity : BaseActivity() {
                 return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.dietary_added, Toast.LENGTH_SHORT).show()
+            //Toast.makeText(baseContext, R.string.dietary_added, Toast.LENGTH_SHORT).show()
 
             // Remove from list
             dietaryManagementList.removeAt(0)

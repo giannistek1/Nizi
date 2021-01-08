@@ -51,8 +51,6 @@ class MainActivity : BaseActivity() {
 
     private var savedInstanceState: Bundle? = null
 
-    private lateinit var loader: View
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Setup UI
@@ -64,7 +62,7 @@ class MainActivity : BaseActivity() {
 
         diaryModel = ViewModelProviders.of(this)[DiaryViewModel::class.java]
 
-        diaryModel.getDiary().observe(this, Observer { result ->
+        diaryModel.getDiary().observe(this, Observer { _ ->
 
         })
 

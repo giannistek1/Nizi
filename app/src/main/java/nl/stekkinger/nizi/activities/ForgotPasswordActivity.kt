@@ -9,8 +9,10 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_forgot_password.*
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.DoctorMainActivity
@@ -29,8 +31,6 @@ class ForgotPasswordActivity : BaseActivity() {
     private val authRepository: AuthRepository = AuthRepository()
     //endregion
 
-    private lateinit var loader: View
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,6 +42,11 @@ class ForgotPasswordActivity : BaseActivity() {
         // Show app title by hiding the bar overlayed on the toolbar
         toolbar_bar.visibility = View.GONE
         loader = activity_forgot_password_loader
+
+        // Setup custom toast
+        val parent: FrameLayout = activity_login_fl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         activity_forgot_password_et_email.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
