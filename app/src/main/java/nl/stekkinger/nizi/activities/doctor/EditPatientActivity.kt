@@ -82,6 +82,7 @@ class EditPatientActivity : BaseActivity() {
                 activity_add_patient_dp.visibility = View.VISIBLE
         }
 
+        activity_add_patient_dp.maxDate = Date().time
         activity_add_patient_dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
         activity_add_patient_dp.setOnDateChangedListener { _, mYear, mMonth, mDay ->
 

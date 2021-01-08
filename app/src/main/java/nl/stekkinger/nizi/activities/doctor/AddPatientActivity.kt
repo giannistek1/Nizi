@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.util.Patterns
 import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
@@ -15,7 +14,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import kotlinx.android.synthetic.main.activity_add_patient.*
-import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
@@ -24,13 +22,9 @@ import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
-import nl.stekkinger.nizi.classes.patient.Patient
-import nl.stekkinger.nizi.classes.patient.PatientItem
 import nl.stekkinger.nizi.classes.patient.PatientShort
 import nl.stekkinger.nizi.repositories.AuthRepository
 import java.util.*
-import java.util.regex.Pattern
-import kotlin.collections.ArrayList
 
 
 class AddPatientActivity : BaseActivity() {
@@ -72,6 +66,7 @@ class AddPatientActivity : BaseActivity() {
                 activity_add_patient_dp.visibility = View.VISIBLE
         }
 
+        activity_add_patient_dp.maxDate = Date().time
         activity_add_patient_dp.updateDate(2000, 1, 1)
         activity_add_patient_dp.setOnDateChangedListener { _, mYear, mMonth, mDay ->
 
