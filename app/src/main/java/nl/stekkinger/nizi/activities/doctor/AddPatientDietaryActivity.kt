@@ -4,15 +4,11 @@ import android.app.Activity
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
 import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
-import kotlinx.android.synthetic.main.activity_patient_detail.*
-import kotlinx.android.synthetic.main.custom_toast.*
-import kotlinx.android.synthetic.main.custom_toast.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
@@ -78,7 +74,7 @@ class AddPatientDietaryActivity : BaseActivity() {
         activity_add_patient_dietary_btn_save.setOnClickListener {
 
             // (Guard) Check internet connection
-            if (!GeneralHelper.hasInternetConnection(this)) return@setOnClickListener
+            if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return@setOnClickListener
 
             // TODO: Check if anything is notEmpty first
             // if all empty, toast: dietaries_empty, return
@@ -102,8 +98,8 @@ class AddPatientDietaryActivity : BaseActivity() {
         activity_add_patient_dietary_et_water_min.setText("1969")
         activity_add_patient_dietary_et_water_max.setText("3696")
 
-        // Check connection
-        if (!GeneralHelper.hasInternetConnection(this)) return
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
 
         // Get DietaryRestrictions
         getDietaryRestrictionsAsyncTask().execute()
@@ -141,7 +137,7 @@ class AddPatientDietaryActivity : BaseActivity() {
                 Toast.LENGTH_SHORT).show(); return }
 
             // Feedback
-            //Toast.makeText(baseContext, R.string.fetched_dietary_restrictions, Toast.LENGTH_SHORT).show()
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_dietary_restrictions))
 
             dietaryRestrictionList = result
         }
@@ -173,7 +169,7 @@ class AddPatientDietaryActivity : BaseActivity() {
                 return }
 
             // Feedback
-            GeneralHelper.createToast(baseContext, customToastLayout, getString(R.string.patient_added))
+            GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.patient_added))
 
             // Update patientId which you get after making patient (two places)
             addPatientViewModel.patient.id = result.id!!
@@ -243,11 +239,11 @@ class AddPatientDietaryActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guard
-            if (result == null) { Toast.makeText(baseContext, R.string.dietary_add_fail, Toast.LENGTH_SHORT).show()
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.dietary_add_fail))
                 return }
 
             // Feedback
-            //Toast.makeText(baseContext, R.string.dietary_added, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.dietary_added))
 
             // Remove from list
             dietaryManagementList.removeAt(0)
@@ -279,11 +275,11 @@ class AddPatientDietaryActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guard
-            if (result == null) { Toast.makeText(baseContext, R.string.user_add_fail, Toast.LENGTH_SHORT).show()
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.user_add_fail))
                 return }
 
             // Feedback
-            //Toast.makeText(baseContext, R.string.user_added, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.user_added))
 
             // Save userId for the patient that needs to be updated
             userId = result.id
@@ -314,11 +310,11 @@ class AddPatientDietaryActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guard
-            if (result == null) { Toast.makeText(baseContext, R.string.patient_update_fail, Toast.LENGTH_SHORT).show()
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.patient_update_fail))
                 return }
 
             // Feedback
-            //Toast.makeText(baseContext, R.string.patient_updated, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.patient_updated))
 
             // In case we wanna return something
             val returnIntent = Intent()

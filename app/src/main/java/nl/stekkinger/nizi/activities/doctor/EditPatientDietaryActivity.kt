@@ -38,6 +38,7 @@ class EditPatientDietaryActivity : BaseActivity() {
 
     private var doctorId: Int? = null
     private lateinit var patientData: PatientData                                   // User, Patient, Doctor, Current DietaryManagements
+    private lateinit var originalEmail: String                                      // Original email
     private lateinit var weightUnitHolder: WeightUnitHolder                         // WeightUnits
     private lateinit var dietaryRestrictionList: ArrayList<DietaryRestriction>      // Dietary Restrictions
     private lateinit var currentDietaryList: ArrayList<DietaryManagementShort>      // All Current DietaryManagements
@@ -71,6 +72,7 @@ class EditPatientDietaryActivity : BaseActivity() {
 
         // Get patient data
         patientData = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientData
+        originalEmail = intent.extras!!.getString(GeneralHelper.EXTRA_ORIGINAL_EMAIL, "")
 
         // Get WeightUnits
         weightUnitHolder = GeneralHelper.getWeightUnitHolder()!!
@@ -100,7 +102,7 @@ class EditPatientDietaryActivity : BaseActivity() {
         activity_add_patient_dietary_btn_save.setOnClickListener {
 
             // (Guard) Check internet connection
-            if (!GeneralHelper.hasInternetConnection(this)) return@setOnClickListener
+            if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return@setOnClickListener
 
             if (updatePatientAsyncTask().status != AsyncTask.Status.RUNNING)
                 updatePatientAsyncTask().execute()
@@ -109,10 +111,14 @@ class EditPatientDietaryActivity : BaseActivity() {
         // Get doctorId
         doctorId = intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 0)
 
-        // Standard on canceled
+        // Standard on canceled and give values back
         val returnIntent = Intent()
         returnIntent.putExtra(GeneralHelper.EXTRA_PATIENT, patientData)
+        returnIntent.putExtra(GeneralHelper.EXTRA_ORIGINAL_EMAIL, originalEmail)
         setResult(Activity.RESULT_CANCELED, returnIntent)
+
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
 
         // Get DietaryRestrictions
         getDietaryRestrictionsAsyncTask().execute()

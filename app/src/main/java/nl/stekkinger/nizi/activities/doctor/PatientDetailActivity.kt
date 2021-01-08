@@ -45,9 +45,10 @@ class PatientDetailActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar_txt_back.text = getString(R.string.patient_overview)
         loader = activity_patient_detail_loader
+        activity_patient_detail_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
 
         // Setup custom toast
-        val parent: RelativeLayout = activity_patient_detail_fragment_container
+        val parent: RelativeLayout = activity_patient_detail_rl
         toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
         parent.addView(toastView)
 
@@ -76,10 +77,8 @@ class PatientDetailActivity : BaseActivity() {
         val json = gson.toJson(doctorUser)
         GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_USER, json).apply()
 
-        activity_patient_detail_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
-
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(this)) return
+        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
 
         getWeightUnitsAsyncTask().execute()
     }
@@ -150,12 +149,12 @@ class PatientDetailActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(baseContext, R.string.get_weight_unit_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_weight_unit_fail))
                 return }
 
             // Feedback
-            //Toast.makeText(baseContext, R.string.fetched_weight_units, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_weight_units))
 
             // Save weightUnits
             val gson = Gson()
@@ -192,11 +191,11 @@ class PatientDetailActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guard
-            if (result == null) { Toast.makeText(baseContext, R.string.get_patient_fail, Toast.LENGTH_SHORT).show()
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_patient_fail))
                 return }
 
             // Feedback
-            GeneralHelper.showToast(toastView, toastAnimation, getString(R.string.fetched_patient))
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_patient))
 
             // Make PatientData because patient does not have descriptions of dietaryRestrictions
             patientData.user = result.user!!
@@ -213,18 +212,15 @@ class PatientDetailActivity : BaseActivity() {
             )
 
 
-            // Checks if fragment state is null, then start with homeFragment
-            //if (savedInstanceState == null) {
-                val fragment = PatientHomeFragment()
-                val bundle = Bundle()
-                bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
-                fragment.arguments = bundle
-                supportFragmentManager.beginTransaction().replace(
-                    activity_patient_detail_fragment_container.id,
-                    fragment,
-                    fragment.javaClass.simpleName)
-                    .commit()
-            //}
+            val fragment = PatientHomeFragment()
+            val bundle = Bundle()
+            bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
+            fragment.arguments = bundle
+            supportFragmentManager.beginTransaction().replace(
+                activity_patient_detail_fragment_container.id,
+                fragment,
+                fragment.javaClass.simpleName)
+                .commit()
         }
     }
     //endregion

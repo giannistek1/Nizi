@@ -7,9 +7,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import kotlinx.android.synthetic.main.fragment_patient_feedback.view.*
 import kotlinx.android.synthetic.main.fragment_patient_home.*
 import kotlinx.android.synthetic.main.fragment_patient_home.view.*
 import nl.stekkinger.nizi.R
@@ -21,12 +23,13 @@ import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
+import nl.stekkinger.nizi.fragments.BaseFragment
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.util.*
 import kotlin.math.roundToInt
 
-class PatientHomeFragment : Fragment() {
+class PatientHomeFragment : BaseFragment() {
     private val dietaryRepository: DietaryRepository = DietaryRepository()
     private val foodRepository: FoodRepository = FoodRepository()
 
@@ -52,6 +55,11 @@ class PatientHomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_patient_home, container, false)
         loader = view.fragment_patient_home_loader
+
+        // Setup custom toast
+        val parent: RelativeLayout = view.fragment_patient_home_rl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         // Get patient data from bundle
         val bundle: Bundle? = this.arguments
@@ -145,6 +153,9 @@ class PatientHomeFragment : Fragment() {
         view.fragment_patient_home_btn_nextWeek.isClickable = false
         view.fragment_patient_home_btn_nextWeek.alpha = 0.2f
 
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return view
+
         getConsumptionsAsyncTask().execute()
 
         return view
@@ -190,8 +201,8 @@ class PatientHomeFragment : Fragment() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(activity, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(activity, R.string.get_consumptions_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_consumptions_fail))
                 return }
 
             // Feedback
@@ -249,11 +260,11 @@ class PatientHomeFragment : Fragment() {
             loader.visibility = View.GONE
 
             // Guard
-            if (result == null) { Toast.makeText(activity, R.string.get_dietary_fail, Toast.LENGTH_SHORT).show()
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_dietary_fail))
                 return }
 
             // Feedback
-            //Toast.makeText(activity, R.string.fetched_dietary, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_dietary))
 
             val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
 

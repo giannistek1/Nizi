@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RelativeLayout
@@ -16,8 +15,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_patient_detail.*
-import kotlinx.android.synthetic.main.fragment_patient_feedback.*
 import kotlinx.android.synthetic.main.fragment_patient_feedback.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConversationAdapter
@@ -73,7 +70,7 @@ class PatientFeedbackFragment : BaseFragment() {
             hideKeyboard()
 
             // Guard
-            if (InputHelper.inputIsEmpty(mContext!!, mNewFeedbackET, R.string.feedback_is_empty))
+            if (InputHelper.inputIsEmpty(mContext!!, mNewFeedbackET, toastView, toastAnimation, getString(R.string.feedback_is_empty)))
                 return@setOnClickListener
 
             val sdf = GeneralHelper.getCreateDateFormat()
@@ -83,6 +80,9 @@ class PatientFeedbackFragment : BaseFragment() {
                 comment = mNewFeedbackET.text.toString(), patient = patientData.patient.id,
                 doctor = patientData.patient.doctor, date = sdf.format(Date())
             )
+
+            // Check internet connection
+            if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return@setOnClickListener
 
             if (addFeedbackAsyncTask().status != AsyncTask.Status.RUNNING)
                 addFeedbackAsyncTask().execute()
@@ -95,7 +95,7 @@ class PatientFeedbackFragment : BaseFragment() {
         mFeedbackRV.adapter = adapter
 
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(context!!)) return view
+        if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return view
 
         // Get feedback
         getConversationsAsyncTask().execute()
@@ -128,12 +128,12 @@ class PatientFeedbackFragment : BaseFragment() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(activity, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(activity, R.string.get_feedbacks_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_feedbacks_fail))
                 return }
 
             // Feedback
-            GeneralHelper.showToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
 
             // Save result
             feedbackList = result.asReversed()
@@ -166,12 +166,12 @@ class PatientFeedbackFragment : BaseFragment() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(activity, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(activity, R.string.add_feedback_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.add_feedback_fail))
                 return }
 
             // Feedback
-            GeneralHelper.showToast(toastView, toastAnimation, getString(R.string.added_feedback))
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.added_feedback))
 
             // Clean input
             mNewFeedbackET.setText("")
