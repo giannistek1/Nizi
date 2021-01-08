@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.Gravity
+import android.view.MenuItem
 import android.view.View
 import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.core.app.NavUtils
 import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
 import kotlinx.android.synthetic.main.custom_toast.view.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -25,7 +27,6 @@ import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
-import java.lang.Exception
 
 class EditPatientDietaryActivity : BaseActivity() {
 
@@ -110,10 +111,20 @@ class EditPatientDietaryActivity : BaseActivity() {
 
         // Standard on canceled
         val returnIntent = Intent()
+        returnIntent.putExtra(GeneralHelper.EXTRA_PATIENT, patientData)
         setResult(Activity.RESULT_CANCELED, returnIntent)
 
         // Get DietaryRestrictions
         getDietaryRestrictionsAsyncTask().execute()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // handle arrow click here
+        if (item.itemId == android.R.id.home) {
+            finish()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     //region Step 1. getDietaryRestrictions

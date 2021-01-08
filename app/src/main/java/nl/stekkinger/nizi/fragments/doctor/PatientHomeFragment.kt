@@ -150,12 +150,6 @@ class PatientHomeFragment : Fragment() {
         return view
     }
 
-    // Gets called when visible
-    override fun onStart() {
-        super.onStart()
-
-    }
-
     fun refreshGuidelines()
     {
         // Fragment patient home ll guidelines might be null because activity + fragment refresh after editing patient

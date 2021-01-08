@@ -62,46 +62,9 @@ class EditPatientActivity : BaseActivity() {
         parent.addView(toastView)
 
         // Fill patient
-        patientData = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientData
-
-        activity_add_patient_et_firstName.setText(patientData.user.first_name)
-        activity_add_patient_et_lastName.setText(patientData.user.last_name)
-        activity_add_patient_et_email.setText(patientData.user.email)
-
-        // Date of Birth
-        date = SimpleDateFormat("yyyy-MM-dd").parse(patientData.patient.date_of_birth)
-        val calendar = Calendar.getInstance()
-        calendar.time = date
-        activity_add_patient_et_dob.setText("${sdf.format(date)}")
-
-        activity_add_patient_et_dob.setOnClickListener {
-
-            if (activity_add_patient_dp.visibility == View.VISIBLE)
-                activity_add_patient_dp.visibility = View.GONE
-            else
-                activity_add_patient_dp.visibility = View.VISIBLE
+        if (intent.extras != null) {
+            fillInPatient()
         }
-
-        activity_add_patient_dp.maxDate = Date().time
-        activity_add_patient_dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
-        activity_add_patient_dp.setOnDateChangedListener { _, mYear, mMonth, mDay ->
-
-            calendar.set(mYear, mMonth, mDay, 0, 0)
-            date = calendar.time
-
-            activity_add_patient_et_dob.setText("${sdf.format(date)}")
-        }
-
-        // Hide password
-        activity_add_patient_txt_password.visibility = View.GONE
-        activity_add_patient_ll_password.visibility = View.GONE
-        activity_add_patient_txt_password_confirm.visibility = View.GONE
-        activity_add_patient_ll_passwordConfirm.visibility = View.GONE
-
-        if (patientData.patient.gender == activity_add_patient_rb_male.text.toString())
-            activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
-        else
-            activity_add_patient_rg_gender.check(activity_add_patient_rb_female.id)
 
         activity_add_patient_btn_to_guidelines.setOnClickListener {
 
@@ -170,6 +133,54 @@ class EditPatientActivity : BaseActivity() {
         startActivityForResult(intent, REQUEST_CODE)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fillInPatient() {
+        patientData = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientData
+
+        activity_add_patient_et_firstName.setText(patientData.user.first_name)
+        activity_add_patient_et_lastName.setText(patientData.user.last_name)
+        activity_add_patient_et_email.setText(patientData.user.email)
+
+        // Date of Birth
+        date = SimpleDateFormat("yyyy-MM-dd").parse(patientData.patient.date_of_birth)
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        activity_add_patient_et_dob.setText("${sdf.format(date)}")
+
+        activity_add_patient_et_dob.setOnClickListener {
+
+            if (activity_add_patient_dp.visibility == View.VISIBLE)
+                activity_add_patient_dp.visibility = View.GONE
+            else
+                activity_add_patient_dp.visibility = View.VISIBLE
+        }
+
+        activity_add_patient_dp.maxDate = Date().time
+        activity_add_patient_dp.updateDate(
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        activity_add_patient_dp.setOnDateChangedListener { _, mYear, mMonth, mDay ->
+
+            calendar.set(mYear, mMonth, mDay, 0, 0)
+            date = calendar.time
+
+            activity_add_patient_et_dob.setText("${sdf.format(date)}")
+        }
+
+        // Hide password
+        activity_add_patient_txt_password.visibility = View.GONE
+        activity_add_patient_ll_password.visibility = View.GONE
+        activity_add_patient_txt_password_confirm.visibility = View.GONE
+        activity_add_patient_ll_passwordConfirm.visibility = View.GONE
+
+        if (patientData.patient.gender == activity_add_patient_rb_male.text.toString())
+            activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
+        else
+            activity_add_patient_rg_gender.check(activity_add_patient_rb_female.id)
+    }
+
     //region getUsers
     inner class getUsers : AsyncTask<Void, Void, ArrayList<UserLogin>>()
     {
@@ -209,6 +220,7 @@ class EditPatientActivity : BaseActivity() {
     }
     //endregion
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -217,6 +229,11 @@ class EditPatientActivity : BaseActivity() {
             val returnIntent = Intent()
             setResult(RESULT_OK, returnIntent)
             finish()
+        }
+
+        // If came back from dietary screen
+        else if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_CANCELED) {
+            fillInPatient()
         }
     }
 }

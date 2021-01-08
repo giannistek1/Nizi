@@ -41,6 +41,10 @@
     <dimen name="marginSize4">4dp</dimen>
     <dimen name="marginSize2">2dp</dimen>
 
+    <!-- Z indexes (higher is higher on stack)-->
+    <dimen name="toastZIndex">5dp</dimen>
+    <dimen name="bottomNavZIndex">10dp</dimen>
+
     <!-- Shadow -->
     <dimen name="elevationNormal">5dp</dimen>
 </resources>

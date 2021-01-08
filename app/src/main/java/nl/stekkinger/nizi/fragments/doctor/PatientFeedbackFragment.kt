@@ -8,12 +8,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_patient_detail.*
+import kotlinx.android.synthetic.main.fragment_patient_feedback.*
 import kotlinx.android.synthetic.main.fragment_patient_feedback.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConversationAdapter
@@ -22,6 +26,7 @@ import nl.stekkinger.nizi.classes.feedback.FeedbackShort
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.patient.PatientData
+import nl.stekkinger.nizi.fragments.BaseFragment
 import nl.stekkinger.nizi.repositories.FeedbackRepository
 import java.lang.Exception
 import java.util.*
@@ -30,7 +35,7 @@ import kotlin.collections.ArrayList
 /**
  * A simple [Fragment] subclass.
  */
-class PatientFeedbackFragment : Fragment() {
+class PatientFeedbackFragment : BaseFragment() {
 
     private val feedbackRepository: FeedbackRepository = FeedbackRepository()
 
@@ -51,6 +56,11 @@ class PatientFeedbackFragment : Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_patient_feedback, container, false)
         loader = view.fragment_patient_feedback_loader
         mNewFeedbackET = view.fragment_patient_feedback_et_newFeedback as EditText
+
+        // Setup custom toast
+        val parent: RelativeLayout = view.fragment_patient_feedback_rl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         // Get patient data from bundle
         val bundle: Bundle = this.arguments!!
@@ -122,7 +132,8 @@ class PatientFeedbackFragment : Fragment() {
             if (result == null) { Toast.makeText(activity, R.string.get_feedbacks_fail, Toast.LENGTH_SHORT).show()
                 return }
 
-            Toast.makeText(activity, R.string.fetched_feedbacks, Toast.LENGTH_SHORT).show()
+            // Feedback
+            GeneralHelper.showToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
 
             // Save result
             feedbackList = result.asReversed()
@@ -159,7 +170,8 @@ class PatientFeedbackFragment : Fragment() {
             if (result == null) { Toast.makeText(activity, R.string.add_feedback_fail, Toast.LENGTH_SHORT).show()
                 return }
 
-            Toast.makeText(activity, R.string.added_feedback, Toast.LENGTH_SHORT).show()
+            // Feedback
+            GeneralHelper.showToast(toastView, toastAnimation, getString(R.string.added_feedback))
 
             // Clean input
             mNewFeedbackET.setText("")
