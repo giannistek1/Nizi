@@ -93,6 +93,9 @@ class AddPatientActivity : BaseActivity() {
         val returnIntent = Intent()
         setResult(Activity.RESULT_CANCELED, returnIntent)
 
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
+
         getUsers().execute()
 
         //region Testing
@@ -119,12 +122,12 @@ class AddPatientActivity : BaseActivity() {
         passwordConfirmET.setBackgroundColor(Color.TRANSPARENT)
 
         // Guards/Checks
-        if (InputHelper.inputIsEmpty(this, firstNameET, R.string.empty_first_name)) return
-        if (InputHelper.inputIsEmpty(this, lastNameET, R.string.empty_last_name)) return
-        if (InputHelper.inputIsEmpty(this, dobET, R.string.empty_date_of_birth)) return
-        if (InputHelper.inputIsEmpty(this, emailET, R.string.empty_email)) return
-        if (InputHelper.inputIsEmpty(this, passwordET, R.string.empty_password)) return
-        if (InputHelper.inputIsEmpty(this, passwordConfirmET, R.string.empty_password_confirm)) return
+        if (InputHelper.inputIsEmpty(this, firstNameET, toastView, toastAnimation, getString(R.string.empty_first_name))) return
+        if (InputHelper.inputIsEmpty(this, lastNameET, toastView, toastAnimation, getString(R.string.empty_last_name))) return
+        if (InputHelper.inputIsEmpty(this, dobET, toastView, toastAnimation, getString(R.string.empty_date_of_birth))) return
+        if (InputHelper.inputIsEmpty(this, emailET, toastView, toastAnimation, getString(R.string.empty_email))) return
+        if (InputHelper.inputIsEmpty(this, passwordET, toastView, toastAnimation, getString(R.string.empty_password))) return
+        if (InputHelper.inputIsEmpty(this, passwordConfirmET, toastView, toastAnimation, getString(R.string.empty_password_confirm))) return
 
         val checkedGenderRadioButtonId: Int = activity_add_patient_rg_gender.checkedRadioButtonId
         if (checkedGenderRadioButtonId == -1) { return }
@@ -132,19 +135,20 @@ class AddPatientActivity : BaseActivity() {
         // Check if email already exists
         val user = users.find { it.email ==  emailET.text.toString() }
         if (user != null) {
-            Toast.makeText(baseContext, R.string.email_already_exists, Toast.LENGTH_SHORT).show()
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.email_already_exists))
             emailET.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
             return }
 
         // Check if email is valid
         if (!InputHelper.isValidEmail(emailET.text.toString())) {
-            Toast.makeText(baseContext, R.string.email_invalid, Toast.LENGTH_SHORT).show()
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.email_invalid))
             emailET.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
             return }
 
         // Check if not matching passwords
         else if (passwordET.text.toString() != passwordConfirmET.text.toString()) {
-            Toast.makeText(baseContext, R.string.passwords_dont_match, Toast.LENGTH_SHORT).show(); return }
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.passwords_dont_match))
+            return }
 
         val intent = Intent(this@AddPatientActivity, AddPatientDietaryActivity::class.java)
         // Prevents duplicating activity
@@ -207,12 +211,12 @@ class AddPatientActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(baseContext, R.string.get_users_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_users_fail))
                 return }
 
             // Feedback
-            //Toast.makeText(baseContext, R.string.fetched_users, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_users))
 
             users = result
         }

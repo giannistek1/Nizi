@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.Toast
+import android.widget.*
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -44,7 +41,7 @@ class ForgotPasswordActivity : BaseActivity() {
         loader = activity_forgot_password_loader
 
         // Setup custom toast
-        val parent: FrameLayout = activity_login_fl
+        val parent: RelativeLayout = activity_forgot_password_rl
         toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
         parent.addView(toastView)
 
@@ -91,8 +88,8 @@ class ForgotPasswordActivity : BaseActivity() {
         emailET.setBackgroundColor(Color.TRANSPARENT)
 
         // Checks (Guards)
-        if (!GeneralHelper.hasInternetConnection(this)) return
-        if (InputHelper.inputIsEmpty(this, emailET, R.string.email_cant_be_empty)) return
+        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
+        if (InputHelper.inputIsEmpty(this, emailET, toastView, toastAnimation, getString(R.string.email_cant_be_empty))) return
 
         val forgotPasswordRequest = ForgotPasswordRequest(emailET.text.toString())
 
@@ -129,12 +126,12 @@ class ForgotPasswordActivity : BaseActivity() {
 
             // Guards
             // Since you can't toast in onBackground
-            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
             // Result either gives the (token, user, patient/doctor) OR null
-            if (result == null) { Toast.makeText(baseContext, R.string.mail_sent_fail, Toast.LENGTH_SHORT).show(); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.mail_sent_fail)); return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.mail_sent, Toast.LENGTH_SHORT).show()
+            GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.mail_sent))
 
             showNextActivity()
         }

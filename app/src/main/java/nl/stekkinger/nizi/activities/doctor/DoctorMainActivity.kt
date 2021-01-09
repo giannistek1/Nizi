@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_doctor_main.*
-import kotlinx.android.synthetic.main.custom_toast.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
@@ -91,8 +90,8 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
             doAddPatient()
         }
 
-        // Check connection
-        if (!GeneralHelper.hasInternetConnection(this)) return
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
 
         // Get patients
         getPatientsForDoctorAsyncTask().execute()
@@ -246,12 +245,12 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(baseContext, R.string.get_patients_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_patients_fail));
                 return }
 
             // Feedback
-            GeneralHelper.showToast(toastView, toastAnimation, getString(R.string.get_patients_success))
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_patients_success))
 
             //GeneralHelper.createToast(baseContext, customToastLayout, getString(R.string.get_patients_success))
 
@@ -313,14 +312,12 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(baseContext, R.string.patient_delete_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.patient_delete_fail))
                 return }
 
             // Feedback
-            GeneralHelper.showToast(toastView, toastAnimation, getString(R.string.patient_deleted))
-
-            //GeneralHelper.createToast(baseContext, customToastLayout, getString(R.string.patient_deleted))
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.patient_deleted))
 
             deleteUserAsyncTask(result.user!!.id).execute()
         }
@@ -354,8 +351,8 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(baseContext, R.string.user_delete_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.user_delete_fail));
                 return }
 
             // Feedback

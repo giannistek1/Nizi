@@ -42,6 +42,7 @@ class EditPatientActivity : BaseActivity() {
     private lateinit var patientData: PatientData
     private lateinit var date: Date
     private var users: ArrayList<UserLogin> = arrayListOf()
+    private lateinit var originalEmail: String
 
     val sdf = GeneralHelper.getFeedbackDateFormat()
     val sdfDB = GeneralHelper.getCreateDateFormat()
@@ -62,6 +63,99 @@ class EditPatientActivity : BaseActivity() {
         parent.addView(toastView)
 
         // Fill patient
+        if (intent.extras != null) {
+            fillInPatient()
+        }
+
+        activity_add_patient_btn_to_guidelines.setOnClickListener {
+
+            tryEditPatient(activity_add_patient_et_firstName, activity_add_patient_et_lastName,
+                activity_add_patient_et_dob, activity_add_patient_et_email, activity_add_patient_et_password,
+                activity_add_patient_et_passwordConfirm)
+        }
+
+        // Get doctorId
+        doctorId = intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 0)
+
+        // Save current Email
+        originalEmail = activity_add_patient_et_email.text.toString()
+
+        // Standard on canceled
+        val returnIntent = Intent()
+        setResult(Activity.RESULT_CANCELED, returnIntent)
+
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
+
+        getUsers().execute()
+    }
+
+    //region tryEditPatient
+    private fun tryEditPatient(firstNameET: EditText, lastNameET: EditText, dobET: EditText, emailET:
+    EditText, passwordET: EditText, passwordConfirmET: EditText) {
+        firstNameET.setBackgroundColor(Color.TRANSPARENT)
+        lastNameET.setBackgroundColor(Color.TRANSPARENT)
+        dobET.setBackgroundColor(Color.TRANSPARENT)
+        emailET.setBackgroundColor(Color.TRANSPARENT)
+        passwordET.setBackgroundColor(Color.TRANSPARENT)
+        passwordConfirmET.setBackgroundColor(Color.TRANSPARENT)
+
+        // Guards/Checks
+        if (InputHelper.inputIsEmpty(this, firstNameET, toastView, toastAnimation, getString(R.string.empty_first_name))) return
+        if (InputHelper.inputIsEmpty(this, lastNameET, toastView, toastAnimation, getString(R.string.empty_last_name))) return
+        if (InputHelper.inputIsEmpty(this, dobET, toastView, toastAnimation, getString(R.string.empty_date_of_birth))) return
+        if (InputHelper.inputIsEmpty(this, emailET, toastView, toastAnimation, getString(R.string.empty_email))) return
+
+        val checkedGenderRadioButtonId: Int = activity_add_patient_rg_gender.checkedRadioButtonId
+        if (checkedGenderRadioButtonId == -1) { return }
+
+        // Check if email already exists and isnt original email
+        val user = users.find { it.email ==  emailET.text.toString() }
+        if (user != null && user.email != originalEmail) {
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.email_already_exists))
+            emailET.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+            return }
+
+        // Check if email is valid
+        if (!InputHelper.isValidEmail(emailET.text.toString())) {
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.email_invalid))
+            emailET.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
+            return }
+
+        // Check if not matching passwords
+        else if (passwordET.text.toString() != passwordConfirmET.text.toString()) {
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.passwords_dont_match))
+            return }
+
+        // Update fields with new inputs once you click btn
+        patientData.user.first_name = firstNameET.text.toString().trim()
+        patientData.user.last_name = lastNameET.text.toString().trim()
+        patientData.patient.date_of_birth = sdfDB.format(date)
+        patientData.user.email = emailET.text.toString().trim()
+        //patientData.user.password = passwordConfirmET.text.toString().trim()
+        //model.patient.weight = activity_add_patient_et_weight.text.toString().toFloat()
+
+        val selectedRadioButton: RadioButton = activity_add_patient_rg_gender.findViewById(checkedGenderRadioButtonId)
+        patientData.patient.gender = selectedRadioButton.text.toString()
+
+        val intent = Intent(this@EditPatientActivity, EditPatientDietaryActivity::class.java)
+
+        // Prevents duplicating activity
+        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+
+        // Give patient, original Email and doctor ID
+        intent.putExtra(GeneralHelper.EXTRA_PATIENT, patientData)
+        intent.putExtra(GeneralHelper.EXTRA_ORIGINAL_EMAIL, originalEmail)
+        intent.putExtra(GeneralHelper.EXTRA_DOCTOR_ID, doctorId)
+
+        // Start intent
+        startActivityForResult(intent, REQUEST_CODE)
+    }
+    //endregion
+
+    //region fillInPatient
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun fillInPatient() {
         patientData = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientData
 
         activity_add_patient_et_firstName.setText(patientData.user.first_name)
@@ -83,7 +177,11 @@ class EditPatientActivity : BaseActivity() {
         }
 
         activity_add_patient_dp.maxDate = Date().time
-        activity_add_patient_dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+        activity_add_patient_dp.updateDate(
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
         activity_add_patient_dp.setOnDateChangedListener { _, mYear, mMonth, mDay ->
 
             calendar.set(mYear, mMonth, mDay, 0, 0)
@@ -102,73 +200,8 @@ class EditPatientActivity : BaseActivity() {
             activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
         else
             activity_add_patient_rg_gender.check(activity_add_patient_rb_female.id)
-
-        activity_add_patient_btn_to_guidelines.setOnClickListener {
-
-            tryEditPatient(activity_add_patient_et_firstName, activity_add_patient_et_lastName,
-                activity_add_patient_et_dob, activity_add_patient_et_email, activity_add_patient_et_password,
-                activity_add_patient_et_passwordConfirm)
-        }
-
-        // Get doctorId
-        doctorId = intent.getIntExtra(GeneralHelper.EXTRA_DOCTOR_ID, 0)
-
-        // Standard on canceled
-        val returnIntent = Intent()
-        setResult(Activity.RESULT_CANCELED, returnIntent)
     }
-
-    private fun tryEditPatient(firstNameET: EditText, lastNameET: EditText, dobET: EditText, emailET:
-    EditText, passwordET: EditText, passwordConfirmET: EditText) {
-        firstNameET.setBackgroundColor(Color.TRANSPARENT)
-        lastNameET.setBackgroundColor(Color.TRANSPARENT)
-        dobET.setBackgroundColor(Color.TRANSPARENT)
-        emailET.setBackgroundColor(Color.TRANSPARENT)
-        passwordET.setBackgroundColor(Color.TRANSPARENT)
-        passwordConfirmET.setBackgroundColor(Color.TRANSPARENT)
-
-        // Guards/Checks
-        if (InputHelper.inputIsEmpty(this, firstNameET, R.string.empty_first_name)) return
-        if (InputHelper.inputIsEmpty(this, lastNameET, R.string.empty_last_name)) return
-        if (InputHelper.inputIsEmpty(this, dobET, R.string.empty_date_of_birth)) return
-        if (InputHelper.inputIsEmpty(this, emailET, R.string.empty_email)) return
-
-        val checkedGenderRadioButtonId: Int = activity_add_patient_rg_gender.checkedRadioButtonId
-        if (checkedGenderRadioButtonId == -1) { return }
-
-        // Check if email is valid
-        if (!InputHelper.isValidEmail(emailET.text.toString())) {
-            Toast.makeText(baseContext, R.string.email_invalid, Toast.LENGTH_SHORT).show()
-            emailET.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
-            return }
-
-        // Check if not matching passwords
-        else if (passwordET.text.toString() != passwordConfirmET.text.toString()) {
-            Toast.makeText(baseContext, R.string.passwords_dont_match, Toast.LENGTH_SHORT).show(); return }
-
-        // Update fields with new inputs once you click btn
-        patientData.user.first_name = firstNameET.text.toString().trim()
-        patientData.user.last_name = lastNameET.text.toString().trim()
-        patientData.patient.date_of_birth = sdfDB.format(date)
-        patientData.user.email = emailET.text.toString().trim()
-        //patientData.user.password = passwordConfirmET.text.toString().trim()
-        //model.patient.weight = activity_add_patient_et_weight.text.toString().toFloat()
-
-        val selectedRadioButton: RadioButton = activity_add_patient_rg_gender.findViewById(checkedGenderRadioButtonId)
-        patientData.patient.gender = selectedRadioButton.text.toString()
-
-        val intent = Intent(this@EditPatientActivity, EditPatientDietaryActivity::class.java)
-
-        // Prevents duplicating activity
-        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-
-        // Give patient and doctor ID
-        intent.putExtra(GeneralHelper.EXTRA_PATIENT, patientData)
-        intent.putExtra(GeneralHelper.EXTRA_DOCTOR_ID, doctorId)
-
-        // Start intent
-        startActivityForResult(intent, REQUEST_CODE)
-    }
+    //endregion
 
     //region getUsers
     inner class getUsers : AsyncTask<Void, Void, ArrayList<UserLogin>>()
@@ -197,18 +230,19 @@ class EditPatientActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(baseContext, R.string.get_users_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_users_fail))
                 return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.fetched_users, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_users));
 
             users = result
         }
     }
     //endregion
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -217,6 +251,12 @@ class EditPatientActivity : BaseActivity() {
             val returnIntent = Intent()
             setResult(RESULT_OK, returnIntent)
             finish()
+        }
+
+        // If came back from dietary screen
+        else if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_CANCELED) {
+            fillInPatient()
+            //originalEmail = intent.extras!!.getString(GeneralHelper.EXTRA_ORIGINAL_EMAIL, "")
         }
     }
 }

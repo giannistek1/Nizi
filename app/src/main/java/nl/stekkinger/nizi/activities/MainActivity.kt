@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.AnimationUtils
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -13,6 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_patient_detail.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.fragments.HomeFragment
@@ -57,11 +60,22 @@ class MainActivity : BaseActivity() {
         // Setup UI
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        // Back button
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-//        supportActionBar!!.setDisplayShowHomeEnabled(true)
         toolbar_title.text = getString(R.string.app_name)
         loader = activity_main_loader
         activity_main_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
+
+        // Setup custom toast
+        val parent: RelativeLayout = activity_main_rl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
+
+        // Overrides custom toast animation for with bottom navigation
+        toastAnimation = AnimationUtils.loadAnimation(
+            baseContext,
+            R.anim.move_up_fade_out_bottom_nav
+        )
 
         diaryModel = ViewModelProviders.of(this)[DiaryViewModel::class.java]
 
@@ -77,7 +91,7 @@ class MainActivity : BaseActivity() {
         user = GeneralHelper.getUser()
 
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(this)) return
+        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
 
         getWeightUnits().execute()
         getDoctorAsyncTask().execute()

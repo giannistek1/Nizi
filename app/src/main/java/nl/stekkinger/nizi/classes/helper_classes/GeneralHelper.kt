@@ -32,6 +32,7 @@ object GeneralHelper {
 
     const val EXTRA_PATIENT = "PATIENT"
     const val EXTRA_DOCTOR_ID = "DOCTOR_ID"
+    const val EXTRA_ORIGINAL_EMAIL = "ORIGINAL_EMAIL"
     const val EXTRA_DIETARY = "DIETARY"
 
     var apiIsDown = false
@@ -91,7 +92,7 @@ object GeneralHelper {
         return SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     }
 
-    fun createToast(cont: Context, customToastLayout: View, message: String)
+    fun makeToast(cont: Context, customToastLayout: View, message: String)
     {
         // Sadly cant use animations on the android toast
         val toast: Toast = Toast.makeText(cont, "", Toast.LENGTH_SHORT)
@@ -103,15 +104,15 @@ object GeneralHelper {
         toast.show()
     }
 
-    fun showToast(toastView: View, toastAnimation: Animation, message: String)
+    fun showAnimatedToast(toastView: View, toastAnimation: Animation, message: String)
     {
-        toastView.toast_text.text = message
+        toastView.toast_text.text = message // Could also be context.getString(id) but its easier to give a string instead of context and id, because you can test that quicker
         toastView.visibility = View.VISIBLE
         toastView.startAnimation(toastAnimation)
     }
 
     @SuppressLint("NewApi")
-    fun hasInternetConnection(context: Context) : Boolean
+    fun hasInternetConnection(context: Context, toastView: View, toastAnimation: Animation) : Boolean
     {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
@@ -128,7 +129,7 @@ object GeneralHelper {
                 }
             }
         }
-        Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT).show()
+        showAnimatedToast(toastView, toastAnimation, context.getString(R.string.no_internet_connection))
         return false
     }
 }

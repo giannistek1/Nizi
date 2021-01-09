@@ -6,8 +6,8 @@
 
     <translate
         android:fillAfter="true"
-        android:fromYDelta="5%p"
-        android:toYDelta="0%p"
+        android:fromYDelta="-1%p"
+        android:toYDelta="-7%p"
         android:duration="600" />
 
     <alpha

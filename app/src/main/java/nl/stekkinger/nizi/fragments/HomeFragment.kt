@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -12,6 +13,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_diary.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.fragment_patient_home.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
@@ -28,7 +30,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
 
-class HomeFragment: Fragment() {
+class HomeFragment: BaseFragment() {
     private val dietaryRepository: DietaryRepository = DietaryRepository()
     private val foodRepository: FoodRepository = FoodRepository()
 
@@ -48,6 +50,11 @@ class HomeFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View =  inflater.inflate(R.layout.fragment_home, container, false)
         loader = view.fragment_home_loader
+
+        // Setup custom toast
+        val parent: RelativeLayout = view.fragment_home_rl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         val gson = Gson()
         val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
@@ -174,12 +181,12 @@ class HomeFragment: Fragment() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(activity, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(activity, R.string.get_consumptions_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_consumptions_fail))
                 return }
 
             // Feedback
-            //Toast.makeText(activity, R.string.fetched_consumptions, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_consumptions))
 
             consumptions = result
 
@@ -230,12 +237,12 @@ class HomeFragment: Fragment() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(activity, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(activity, R.string.get_dietary_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_dietary_fail))
                 return }
 
             // Feedback
-            //Toast.makeText(activity, R.string.fetched_dietary, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_dietary))
 
             dietaryGuidelines.clear()
 

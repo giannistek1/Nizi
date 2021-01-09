@@ -35,6 +35,7 @@
         <activity
             android:name=".activities.doctor.EditPatientDietaryActivity"
             android:parentActivityName=".activities.doctor.EditPatientActivity" />
+
         <activity android:name=".activities.MainActivity" />
         <activity android:name=".activities.doctor.DoctorMainActivity" />
         <activity android:name=".activities.ForgotPasswordActivity"

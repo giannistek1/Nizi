@@ -1,25 +1,17 @@
 package nl.stekkinger.nizi.activities.doctor
 
-import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_doctor_main.*
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_patient_detail.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
-import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
-import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.patient.Patient
@@ -29,10 +21,8 @@ import nl.stekkinger.nizi.classes.patient.PatientShort
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.fragments.DiaryFragment
-import nl.stekkinger.nizi.fragments.doctor.PatientDiaryFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientFeedbackFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientHomeFragment
-import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 import nl.stekkinger.nizi.repositories.WeightUnitRepository
 
@@ -45,8 +35,6 @@ class PatientDetailActivity : BaseActivity() {
     private lateinit var weightUnits: ArrayList<WeightUnit>             // WeightUnits
     private lateinit var patientData: PatientData                       // User, Patient, Doctor, Dietary
 
-    private var savedInstanceState: Bundle? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -57,15 +45,18 @@ class PatientDetailActivity : BaseActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar_txt_back.text = getString(R.string.patient_overview)
         loader = activity_patient_detail_loader
+        activity_patient_detail_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
 
         // Setup custom toast
         val parent: RelativeLayout = activity_patient_detail_rl
         toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
         parent.addView(toastView)
 
-        // Checks if fragment state is null and save it
-        if (savedInstanceState != null)
-            this.savedInstanceState = savedInstanceState
+        // Overrides custom toast animation for with bottom navigation
+        toastAnimation = AnimationUtils.loadAnimation(
+            baseContext,
+            R.anim.move_up_fade_out_bottom_nav
+        )
 
         val patientItem = intent.extras?.get(GeneralHelper.EXTRA_PATIENT) as PatientItem
 
@@ -86,10 +77,8 @@ class PatientDetailActivity : BaseActivity() {
         val json = gson.toJson(doctorUser)
         GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_USER, json).apply()
 
-        activity_patient_detail_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
-
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(this)) return
+        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
 
         getWeightUnitsAsyncTask().execute()
     }
@@ -160,12 +149,12 @@ class PatientDetailActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(baseContext, R.string.get_weight_unit_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_weight_unit_fail))
                 return }
 
             // Feedback
-            //Toast.makeText(baseContext, R.string.fetched_weight_units, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_weight_units))
 
             // Save weightUnits
             val gson = Gson()
@@ -202,11 +191,11 @@ class PatientDetailActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guard
-            if (result == null) { Toast.makeText(baseContext, R.string.get_patient_fail, Toast.LENGTH_SHORT).show()
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_patient_fail))
                 return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.fetched_patient, Toast.LENGTH_SHORT).show()
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_patient))
 
             // Make PatientData because patient does not have descriptions of dietaryRestrictions
             patientData.user = result.user!!
@@ -223,18 +212,15 @@ class PatientDetailActivity : BaseActivity() {
             )
 
 
-            // Checks if fragment state is null, then start with homeFragment
-            //if (savedInstanceState == null) {
-                val fragment = PatientHomeFragment()
-                val bundle = Bundle()
-                bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
-                fragment.arguments = bundle
-                supportFragmentManager.beginTransaction().replace(
-                    activity_patient_detail_fragment_container.id,
-                    fragment,
-                    fragment.javaClass.simpleName)
-                    .commit()
-            //}
+            val fragment = PatientHomeFragment()
+            val bundle = Bundle()
+            bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
+            fragment.arguments = bundle
+            supportFragmentManager.beginTransaction().replace(
+                activity_patient_detail_fragment_container.id,
+                fragment,
+                fragment.javaClass.simpleName)
+                .commit()
         }
     }
     //endregion

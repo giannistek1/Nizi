@@ -6,12 +6,10 @@ import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
+import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_conversation.view.*
-import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConversationAdapter
 import nl.stekkinger.nizi.classes.doctor.Doctor
@@ -21,7 +19,8 @@ import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.repositories.FeedbackRepository
 import java.lang.Exception
 
-class ConversationFragment(private val user: UserLogin, private val doctor: Doctor): Fragment() {
+//TODO: no fragment arguments, make a bundle!!
+class ConversationFragment(private val user: UserLogin, private val doctor: Doctor): BaseFragment() {
     private val mRepository: FeedbackRepository = FeedbackRepository()
     private lateinit var adapter: ConversationAdapter
 
@@ -31,6 +30,11 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
         // Setup UI
         val view: View = inflater.inflate(R.layout.fragment_conversation, container, false)
         loader = view.fragment_conversation_loader
+
+        // Setup custom toast
+        val parent: RelativeLayout = view.fragment_conversation_rl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         val doctorName = "${doctor.user.first_name.first()}. ${doctor.user.last_name}"
         view.fragment_conversation_txt_advice_from.text = getString(R.string.advice_from, doctorName)
@@ -44,7 +48,7 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
         recyclerView.adapter = adapter
 
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(context!!)) return view
+        if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return view
 
         // Get feedback
         getConversationsAsyncTask().execute()
@@ -82,11 +86,12 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(activity, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(activity, R.string.get_feedbacks_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_feedbacks_fail))
                 return }
 
-            Toast.makeText(activity, R.string.fetched_feedbacks, Toast.LENGTH_SHORT).show()
+            // Feedback
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
 
             d("CONVO", result.toString())
             adapter.setConversationList(result)

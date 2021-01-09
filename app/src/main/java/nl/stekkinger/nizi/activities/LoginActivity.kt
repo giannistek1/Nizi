@@ -1,6 +1,5 @@
 package nl.stekkinger.nizi.activities
 
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.AsyncTask
@@ -11,18 +10,13 @@ import android.text.TextPaint
 import android.text.TextWatcher
 import android.text.style.URLSpan
 import android.text.util.Linkify
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_add_patient.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.DoctorMainActivity
-import nl.stekkinger.nizi.activities.doctor.PatientDetailActivity
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.LoginRequest
@@ -56,8 +50,8 @@ class LoginActivity : BaseActivity() {
         activity_login_txt_nierstichtingPhonenumber.removeLinksUnderline()
         activity_login_txt_nierstichtingEmail.removeLinksUnderline()
 
-        // Setup custom toast
-        val parent: FrameLayout = activity_login_fl
+        // Setup custom toast (any Relative layout will do)
+        val parent: RelativeLayout = activity_login_rl_header
         toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
         parent.addView(toastView)
 
@@ -103,6 +97,9 @@ class LoginActivity : BaseActivity() {
         //activity_login_et_username.setText("BramWenting") // Patient
         //activity_login_et_username.setText("HugoBrand") // Doctor
         //activity_login_et_password.setText("Welkom123")
+
+        toggleLoginButtonIfNotEmpty(activity_login_et_username, activity_login_et_password,
+            activity_login_btn_login)
     }
 
     private fun showNextActivity() {
@@ -130,9 +127,9 @@ class LoginActivity : BaseActivity() {
         passwordET.setBackgroundColor(Color.TRANSPARENT)
 
         // Checks (Guards)
-        if (!GeneralHelper.hasInternetConnection(this)) return
-        if (InputHelper.inputIsEmpty(this, usernameET, R.string.username_cant_be_empty)) return
-        if (InputHelper.inputIsEmpty(this, passwordET, R.string.password_cant_be_empty)) return
+        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
+        if (InputHelper.inputIsEmpty(this, usernameET, toastView, toastAnimation, getString(R.string.username_cant_be_empty))) return
+        if (InputHelper.inputIsEmpty(this, passwordET, toastView, toastAnimation, getString(R.string.password_cant_be_empty))) return
 
         val loginRequest = LoginRequest(usernameET.text.toString(), passwordET.text.toString())
 
@@ -140,7 +137,7 @@ class LoginActivity : BaseActivity() {
             loginAsyncTask(loginRequest).execute()
     }
 
-    fun TextView.removeLinksUnderline() {
+    private fun TextView.removeLinksUnderline() {
         val spannable = SpannableString(text)
         for (u in spannable.getSpans(0, spannable.length, URLSpan::class.java)) {
             spannable.setSpan(object : URLSpan(u.url) {
@@ -182,12 +179,12 @@ class LoginActivity : BaseActivity() {
 
             // Guards
             // Since you can't toast in onBackground
-            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
             // Result either gives the (token, user, patient/doctor) OR null
-            if (result == null) { Toast.makeText(baseContext, R.string.credentials_wrong, Toast.LENGTH_SHORT).show(); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.credentials_wrong)); return }
 
             // Feedback
-            Toast.makeText(baseContext, R.string.login_success, Toast.LENGTH_SHORT).show()
+            GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.login_success))
 
             // Save token
             GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_TOKEN, result.jwt).apply()
