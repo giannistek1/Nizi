@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RelativeLayout
@@ -58,6 +59,12 @@ class PatientFeedbackFragment : BaseFragment() {
         val parent: RelativeLayout = view.fragment_patient_feedback_rl
         toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
         parent.addView(toastView)
+
+        // Sets custom toast animation for every fragment
+        toastAnimation = AnimationUtils.loadAnimation(
+            activity,
+            R.anim.move_up_fade_out_bottom_nav
+        )
 
         // Get patient data from bundle
         val bundle: Bundle = this.arguments!!

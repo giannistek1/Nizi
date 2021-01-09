@@ -256,7 +256,7 @@ class EditPatientActivity : BaseActivity() {
         // If came back from dietary screen
         else if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_CANCELED) {
             fillInPatient()
-            originalEmail = intent.extras!!.getString(GeneralHelper.EXTRA_ORIGINAL_EMAIL, "")
+            //originalEmail = intent.extras!!.getString(GeneralHelper.EXTRA_ORIGINAL_EMAIL, "")
         }
     }
 }

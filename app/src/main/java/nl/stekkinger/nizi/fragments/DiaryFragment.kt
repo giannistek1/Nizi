@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import android.util.Log.d
+import android.widget.RelativeLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_diary.view.*
+import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
@@ -30,7 +32,7 @@ import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.util.*
 
-class DiaryFragment: Fragment() {
+class DiaryFragment: BaseFragment() {
     private lateinit var model: DiaryViewModel
     private lateinit var breakfastAdapter: ConsumptionAdapter
     private lateinit var lunchAdapter: ConsumptionAdapter
@@ -44,6 +46,11 @@ class DiaryFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
+
+        // Setup custom toast
+        val parent: RelativeLayout = view.fragment_diary_rl
+        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(toastView)
 
         val breakfastRv: RecyclerView = view.findViewById(R.id.diary_breakfast_rv)
         breakfastRv.layoutManager = LinearLayoutManager(activity)

@@ -23,10 +23,10 @@ open class BaseFragment : Fragment() {
         // CustomToastLayout for toast (in case you want a disappearing toast that exists through multiple activities)
         customToastLayout = layoutInflater.inflate(R.layout.custom_toast, ll_custom_toast_wrapper)
 
-        // Sets custom toast animation for every fragment (the above bottom nav animation one)
+        // Sets custom toast animation for every fragment
         toastAnimation = AnimationUtils.loadAnimation(
             activity,
-            R.anim.move_up_fade_out_bottom_nav
+            R.anim.move_up_fade_out
         )
     }
 }

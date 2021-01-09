@@ -59,6 +59,8 @@ class MainActivity : BaseActivity() {
         // Setup UI
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        // Back button
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         toolbar_title.text = getString(R.string.app_name)
         loader = activity_main_loader
         activity_main_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
