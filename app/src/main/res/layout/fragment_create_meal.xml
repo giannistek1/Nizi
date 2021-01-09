@@ -1,113 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
     <!-- Header (REUSEABLE BUT NOT IMPLEMENTED YET) -->
     <LinearLayout
         android:id="@+id/activity_main_header_background"
-        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary">
 
         <TextView
             android:id="@+id/activity_main_txt_header"
-            android:textSize="@dimen/h1"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:text="Maaltijd aanmaken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:gravity="center"
+            android:text="Maaltijd aanmaken"
+            android:textColor="@color/white"
+            android:textSize="@dimen/h1" />
 
     </LinearLayout>
 
-    <!-- Nutrition -->
-    <RelativeLayout
-        android:id="@+id/fragment_diary_rl_nutrition"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_below="@+id/activity_main_header_background">
 
-        <TextView
-            android:id="@+id/current_products"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:text="Toegevoegte producten"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/save_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="@string/save" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_meal_name"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                app:counterEnabled="true"
+                app:counterMaxLength="30"
+                app:errorEnabled="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/meal_food_list_holder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintHeight_default="wrap"
-            app:layout_constraintHeight_max="450px"
-            android:layout_below="@+id/current_products">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="maaltijd naam"
+                    android:inputType="text"
+                    android:maxLength="30"
+                    android:textColorHighlight="@color/colorPrimary" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/meal_food_list_recycler_view"
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/create_meal_list_holder"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="2dp"
-                android:layout_marginTop="2dp"
-                android:scrollbars="vertical"
-                android:background="@android:color/darker_gray" />
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/input_meal_name"
+                app:layout_constraintHeight_default="wrap"
+                app:layout_constraintHeight_max="300px">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/create_meal_list_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:background="@android:color/darker_gray"
+                    android:padding="2dp"
+                    android:scrollbars="vertical" />
 
-        <TextView
-            android:id="@+id/add_products"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:text="Producten toevoegen"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/meal_food_list_holder"/>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <SearchView
-            android:id="@+id/search_food"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/add_products">
+            <ImageView
+                android:id="@+id/image_food_view"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_below="@+id/create_meal_list_holder"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                android:contentDescription="@string/content_meal_photo_display"
+                app:srcCompat="@color/darkGray" />
 
-        </SearchView>
+            <Button
+                android:id="@+id/meal_camera_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/image_food_view"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:text="@string/add_picture_btn" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/food_search_holder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintHeight_default="wrap"
-            app:layout_constraintHeight_min="300dp"
-            android:layout_below="@+id/search_food">
+            <Button
+                android:id="@+id/create_meal_add_food"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/image_food_view"
+                android:layout_toLeftOf="@+id/meal_camera_btn"
+                android:layout_marginTop="30dp"
+                android:text="@string/add_food" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/food_search_recycler_view"
+            <!-- All nutricien values -->
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="2dp"
-                android:layout_marginTop="2dp"
-                android:scrollbars="vertical"
-                android:background="@android:color/darker_gray" />
+                android:layout_height="wrap_content"
+                android:layout_below="@id/meal_camera_btn"
+                android:layout_margin="@dimen/marginNormal"
+                android:orientation="vertical">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/food_view_nutrition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/marginSmall"
+                    android:text="@string/nutrition_values"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/h1" />
 
-    </RelativeLayout>
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="@dimen/marginVerySmall">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/calories"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
+
+                    <TextView
+                        android:id="@+id/calories_value_meal_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12"
+                        tools:text="0 kcal" />
+
+                </RelativeLayout>
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="@dimen/marginVerySmall">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/fibers"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
+
+                    <TextView
+                        android:id="@+id/fiber_value_meal_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12"
+                        tools:text="0 g" />
+
+                </RelativeLayout>
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="@dimen/marginVerySmall">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/proteins"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
+
+                    <TextView
+                        android:id="@+id/protein_value_meal_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12"
+                        tools:text="0 g" />
+
+                </RelativeLayout>
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="@dimen/marginVerySmall">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/water"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
+
+                    <TextView
+                        android:id="@+id/water_value_meal_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12"
+                        tools:text="0 g" />
+
+                </RelativeLayout>
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="@dimen/marginVerySmall">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/sodium"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
+
+                    <TextView
+                        android:id="@+id/sodium_value_meal_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12"
+                        tools:text="0 g" />
+
+                </RelativeLayout>
+
+                <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_marginBottom="@dimen/marginVerySmall">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:text="@string/potassium"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12" />
+
+                    <TextView
+                        android:id="@+id/potassium_value_meal_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/textSize12"
+                        tools:text="0 g" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/fragment_create_meal_loader"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>

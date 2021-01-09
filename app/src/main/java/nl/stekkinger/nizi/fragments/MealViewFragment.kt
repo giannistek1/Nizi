@@ -106,6 +106,10 @@ class MealViewFragment : Fragment() {
 
         view.edit_food_view.setOnClickListener {
             model.editMeal(mMeal)
+            (activity)!!.supportFragmentManager.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                CreateMealFragment()
+            ).commit()
         }
 
         view.delete_food_view.setOnClickListener {

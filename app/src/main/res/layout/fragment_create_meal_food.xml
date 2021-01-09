@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+
+    <!-- Header (REUSEABLE BUT NOT IMPLEMENTED YET) -->
+    <LinearLayout
+        android:id="@+id/activity_main_header_background"
+        android:background="@color/colorPrimary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true">
+
+        <TextView
+            android:id="@+id/activity_main_txt_header"
+            android:textSize="@dimen/h1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="Maaltijd aanmaken"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <!-- Nutrition -->
+    <RelativeLayout
+        android:id="@+id/fragment_diary_rl_nutrition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/activity_main_header_background">
+
+        <TextView
+            android:id="@+id/current_products"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:text="Toegevoegte producten"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/save_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="@string/save" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/meal_food_list_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintHeight_max="450px"
+            android:layout_below="@+id/current_products">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/meal_food_list_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:layout_marginTop="2dp"
+                android:scrollbars="vertical"
+                android:background="@android:color/darker_gray" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/add_products"
+            android:textSize="18sp"
+            android:textColor="@color/black"
+            android:text="Producten toevoegen"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/meal_food_list_holder"/>
+
+        <SearchView
+            android:id="@+id/search_food"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/add_products">
+
+        </SearchView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/food_search_holder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintHeight_default="wrap"
+            app:layout_constraintHeight_min="300dp"
+            android:layout_below="@+id/search_food">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/food_search_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="2dp"
+                android:layout_marginTop="2dp"
+                android:scrollbars="vertical"
+                android:background="@android:color/darker_gray" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

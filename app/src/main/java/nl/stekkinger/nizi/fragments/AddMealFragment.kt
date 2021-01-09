@@ -1,25 +1,15 @@
 package nl.stekkinger.nizi.fragments
 
-import android.app.SearchManager
 import android.os.Bundle
 import android.view.*
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.content.Context.SEARCH_SERVICE
 import android.os.AsyncTask
-import android.util.Log
-import android.util.Log.d
-import android.widget.TextView
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_meals.*
 import kotlinx.android.synthetic.main.fragment_meals.view.*
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.adapters.MealAdapter
 import nl.stekkinger.nizi.classes.diary.Meal
 import nl.stekkinger.nizi.repositories.FoodRepository
@@ -49,6 +39,7 @@ class AddMealFragment: Fragment() {
 
         // listeners
         view.create_meal.setOnClickListener {
+            model.setIsMealEdit(false)
             fragmentManager!!
                 .beginTransaction()
                 .replace(

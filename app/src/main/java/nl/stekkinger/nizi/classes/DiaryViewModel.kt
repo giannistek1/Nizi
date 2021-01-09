@@ -263,6 +263,13 @@ class DiaryViewModel(
             mRepository.createMealFood(mealFood)
         }
     }
+    private var isMealEdit = false
+    fun getIsMealEdit(): Boolean {
+        return isMealEdit
+    }
+    fun setIsMealEdit(bool: Boolean) {
+        isMealEdit = true
+    }
 
     // load the food view fragment with the selected food
     val selectedMeal = MutableLiveData<Meal>()
@@ -280,13 +287,20 @@ class DiaryViewModel(
         // mRepository.addConsumption(consumption)
     }
 
+    val foodsState = mRepository.foodsState
     fun editMeal(meal: Meal) {
+        // empty meal products
+        mealProducts.clear()
+        setIsMealEdit(true)
         // get the food items
-        if (meal.meal_foods!!.count() > 0)
-        for (mealFood: MealFood in meal.meal_foods) {
-//            mRepository.getFood
+        val foods: ArrayList<Food> = arrayListOf()
+        val foodIds: ArrayList<Int> = arrayListOf()
+        if (meal.meal_foods!!.count() > 0) {
+            for (mealFood: MealFood in meal.meal_foods) {
+                foodIds.add(mealFood.food)
+            }
+            mRepository.getFoods(foodIds)
         }
-
     }
 
     fun getMealProducts(): ArrayList<Food> {

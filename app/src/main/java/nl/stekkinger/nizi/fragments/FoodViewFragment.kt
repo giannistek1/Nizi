@@ -1,6 +1,5 @@
 package nl.stekkinger.nizi.fragments
 
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,7 +14,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
-import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_food_view.*
 import kotlinx.android.synthetic.main.fragment_food_view.view.*
@@ -25,7 +23,6 @@ import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.MyFood
 import nl.stekkinger.nizi.repositories.FoodRepository
-import java.util.ArrayList
 
 
 class FoodViewFragment : Fragment() {
@@ -213,7 +210,7 @@ class FoodViewFragment : Fragment() {
 
                     (activity)!!.supportFragmentManager.beginTransaction().replace(
                         R.id.activity_main_fragment_container,
-                        CreateMealFragment()
+                        CreateMealFoodFragment()
                     ).commit()
                 }
                 "mealEdit" -> {
@@ -222,7 +219,7 @@ class FoodViewFragment : Fragment() {
 
                     (activity)!!.supportFragmentManager.beginTransaction().replace(
                         R.id.activity_main_fragment_container,
-                        CreateMealFragment()
+                        CreateMealFoodFragment()
                     ).commit()
                 }
             }

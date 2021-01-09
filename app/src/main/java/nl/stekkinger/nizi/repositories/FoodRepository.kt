@@ -200,7 +200,6 @@ class FoodRepository : Repository() {
                 if (response.isSuccessful && response.body() != null) {
 
                     for (foodResponse: FoodResponse in response.body()!!) {
-                        Log.i("onResponse", foodResponse.toString())
 
                         val food = Food(
                             id = foodResponse.id,
@@ -214,7 +213,7 @@ class FoodRepository : Repository() {
                             fiber = foodResponse.food_meal_component.fiber,
                             portion_size = foodResponse.food_meal_component.portion_size,
                             weight_unit = foodResponse.weight_unit,
-                            weight_amount = foodResponse.food_meal_component.portion_size, // Todo: there is no amount yet
+                            weight_amount = foodResponse.food_meal_component.portion_size,
                             image_url = foodResponse.food_meal_component.image_url,
                             foodId = foodResponse.food_meal_component.foodId
                         )
@@ -230,6 +229,55 @@ class FoodRepository : Repository() {
             }
         })
         return result
+    }
+
+    private val _foodsState: MutableStateFlow<FoodsState> = MutableStateFlow(FoodsState.Empty)
+    val foodsState: StateFlow<FoodsState> = _foodsState
+
+    sealed class FoodsState {
+        data class Success(val data: ArrayList<Food>) : FoodsState()
+        data class Error(val message: String) : FoodsState()
+        object Loading: FoodsState()
+        object Empty: FoodsState()
+    }
+
+    // used for getting foods products for meals
+    fun getFoods(ids: ArrayList<Int>) {
+        _foodsState.value = FoodsState.Loading
+        var foodList: ArrayList<Food> = arrayListOf()
+
+        service.getFoods(authHeader = authHeader, foodName = ids).enqueue(object: Callback<ArrayList<FoodResponse>> {
+            override fun onResponse(call: Call<ArrayList<FoodResponse>>, response: Response<ArrayList<FoodResponse>>) {
+                if (response.isSuccessful && response.body() != null) {
+
+                    for (foodResponse: FoodResponse in response.body()!!) {
+                        val food = Food(
+                            id = foodResponse.id,
+                            name = foodResponse.name,
+                            description = foodResponse.food_meal_component.description,
+                            kcal = foodResponse.food_meal_component.kcal,
+                            protein = foodResponse.food_meal_component.protein,
+                            potassium = foodResponse.food_meal_component.potassium,
+                            sodium = foodResponse.food_meal_component.sodium,
+                            water = foodResponse.food_meal_component.water,
+                            fiber = foodResponse.food_meal_component.fiber,
+                            portion_size = foodResponse.food_meal_component.portion_size,
+                            weight_unit = foodResponse.weight_unit,
+                            weight_amount = foodResponse.food_meal_component.portion_size,
+                            image_url = foodResponse.food_meal_component.image_url,
+                            foodId = foodResponse.food_meal_component.foodId
+                        )
+                        foodList.add(food)
+                    }
+                    _foodsState.value = FoodsState.Success(foodList)
+                } else {
+                    _foodsState.value = FoodsState.Empty
+                }
+            }
+            override fun onFailure(call: Call<ArrayList<FoodResponse>>, t: Throwable) {
+                _foodsState.value = FoodsState.Error(t.message!!)
+            }
+        })
     }
 
     fun addConsumption(consumption: Consumption) {
