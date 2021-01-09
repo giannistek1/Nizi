@@ -223,17 +223,24 @@ interface ApiService {
         @Query("patient.id") patientId: Int
     ) : Call<ArrayList<Meal>>
 
-    @PUT("v1/meal/{patientId}/{mealId}")
+    @PUT("meals/{id}")
     fun updateMeal(
-        @Path("patientId") patientId: Int,
-        @Path("mealId") mealId: Int
-    ) : Call<Unit>
+        @Header("Authorization") authHeader : String,
+        @Path("id") id: Int,
+        @Body body: Meal
+    ) : Call<Meal>
 
     @DELETE("v1/meal")
     fun deleteMeal(
         @Header("Authorization") authHeader : String,
         @Query("patientId") patientId: Int,
         @Query("mealId") mealId: Int
+    ) : Call<Unit>
+
+    @DELETE("meal-foods/")
+    fun deleteMealFoods(
+        @Header("Authorization") authHeader : String,
+        @Query("meal") id: Int
     ) : Call<Unit>
 
     //endregion

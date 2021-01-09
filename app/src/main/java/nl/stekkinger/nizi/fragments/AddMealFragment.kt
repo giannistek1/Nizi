@@ -14,6 +14,7 @@ import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.MealAdapter
+import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.Meal
 import nl.stekkinger.nizi.repositories.FoodRepository
 
@@ -51,6 +52,8 @@ class AddMealFragment: Fragment() {
         // listeners
         view.create_meal.setOnClickListener {
             model.setIsMealEdit(false)
+            val mealProducts: ArrayList<Food> = ArrayList()
+            model.setMealProducts(mealProducts)
             fragmentManager!!
                 .beginTransaction()
                 .replace(

@@ -102,6 +102,11 @@ class MealViewFragment : Fragment() {
             val amount: Float = mServingInput.text.toString().trim().toFloat()
             // add meal
             model.addMeal(mMeal, amount)
+
+            (activity)!!.supportFragmentManager.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                DiaryFragment()
+            ).commit()
         }
 
         view.edit_food_view.setOnClickListener {
@@ -202,6 +207,19 @@ class MealViewFragment : Fragment() {
                 }
             }
             updateUI()
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    AddMealFragment()
+                ).commit()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

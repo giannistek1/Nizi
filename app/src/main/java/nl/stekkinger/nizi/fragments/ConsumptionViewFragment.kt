@@ -1,9 +1,12 @@
 package nl.stekkinger.nizi.fragments
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.view.*
 import android.text.TextWatcher
+import android.util.Base64
 import android.util.Log.d
 import android.view.View.GONE
 import android.widget.ImageButton
@@ -16,9 +19,11 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_create_meal.view.*
 import kotlinx.android.synthetic.main.fragment_diary.view.*
 import kotlinx.android.synthetic.main.fragment_food_view.*
 import kotlinx.android.synthetic.main.fragment_food_view.view.*
+import kotlinx.android.synthetic.main.fragment_food_view.view.image_food_view
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
@@ -58,7 +63,18 @@ class ConsumptionViewFragment : Fragment() {
             // Update the UI
             val amount: Float = mConsumption.amount
             view.title_food_view.text = mConsumption.food_meal_component.name
-            Picasso.get().load(mConsumption.food_meal_component.image_url).into(image_food_view)
+
+            if(mConsumption.food_meal_component.image_url.startsWith("/9j/")) { // bitmap img
+                val decodedString: ByteArray =
+                    Base64.decode(mConsumption.food_meal_component.image_url, Base64.DEFAULT)
+                val decodedByte: Bitmap? =
+                    BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                if (decodedByte != null) {
+                    view.image_food_view.setImageBitmap(decodedByte)
+                }
+            } else {
+                Picasso.get().load(mConsumption.food_meal_component.image_url).into(image_food_view)
+            }
             serving_input.setText(mConsumption.amount.toString(), TextView.BufferType.EDITABLE)
         })
 

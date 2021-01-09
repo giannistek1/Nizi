@@ -36,7 +36,7 @@ class FoodRepository : Repository() {
 
     fun getData(date: String) {
         _diaryState.value = DiaryState.Loading
-        val newDate: String = date + "T11:00:00.000Z"
+        val newDate: String = date + "T00:00:00.000Z"
 
         service.fetchConsumptions(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id, date = newDate).enqueue(object: Callback<ArrayList<ConsumptionResponse>> {
             override fun onResponse(call: Call<ArrayList<ConsumptionResponse>>, response: Response<ArrayList<ConsumptionResponse>>) {
@@ -170,7 +170,7 @@ class FoodRepository : Repository() {
 
     fun getDiary(date: String): MutableLiveData<ArrayList<ConsumptionResponse>> {
         val result = MutableLiveData<ArrayList<ConsumptionResponse>>()
-        val newDate: String = date + "T11:00:00.000Z"
+        val newDate: String = date + "T00:00:00.000Z"
         val gson = Gson()
         val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
 
@@ -194,6 +194,7 @@ class FoodRepository : Repository() {
     fun searchFood(search: String): MutableLiveData<ArrayList<Food>?> {
         var foodList: ArrayList<Food> = arrayListOf()
         val result = MutableLiveData<ArrayList<Food>?>()
+        d("auth", authHeader)
 
         service.searchFoodDB(authHeader = authHeader, foodName = search).enqueue(object: Callback<ArrayList<FoodResponse>> {
             override fun onResponse(call: Call<ArrayList<FoodResponse>>, response: Response<ArrayList<FoodResponse>>) {
@@ -324,26 +325,71 @@ class FoodRepository : Repository() {
 
             override fun onFailure(call: Call<Meal>, t: Throwable) {
                 _mealState.value = MealState.Error(t.message!!)
+                d("repo", "createMeal " + t.message)
             }
         })
     }
 
-//    private val _mealFoodState: MutableStateFlow<State> = MutableStateFlow(State.Empty)
-//    val mealFoodState: StateFlow<State> = _mealFoodState
+    fun updateMeal(meal: Meal, mealId: Int) {
+        d("repo", "updateMeal")
+        d("repo", mealId.toString() + ":" + meal.toString())
+        _mealState.value = MealState.Loading
 
-    fun createMealFood(mealFood: MealFood) {
-//        _mealFoodState.value = State.Loading
-        service.createMealFood(authHeader = authHeader, body = mealFood).enqueue(object : Callback<Unit> {
+        service.updateMeal(authHeader = authHeader, body = meal, id = mealId).enqueue(object : Callback<Meal> {
+            override fun onResponse(call: Call<Meal>, response: Response<Meal>) {
+                if (response.isSuccessful && response.body() != null) {
+                    _mealState.value = MealState.Success(response.body()!!)
+                } else {
+                    _mealState.value = MealState.Empty
+                }
+            }
+
+            override fun onFailure(call: Call<Meal>, t: Throwable) {
+                _mealState.value = MealState.Error(t.message!!)
+                d("repo", "updateMeal " + t.message)
+            }
+        })
+    }
+
+    private val _mealFoodState: MutableStateFlow<State> = MutableStateFlow(State.Empty)
+    val mealFoodState: StateFlow<State> = _mealFoodState
+
+    fun deleteMealFoods(mealId: Int) {
+        d("repo", "delete mf")
+        _mealFoodState.value = State.Loading
+        service.deleteMealFoods(authHeader = authHeader, id = mealId).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-//                if (response.isSuccessful && response.body() != null) {
-//                    _mealFoodState.value = State.Success
-//                } else {
-//                    _mealFoodState.value = State.Empty
-//                }
+                if (response.isSuccessful && response.body() != null) {
+                    _mealFoodState.value = State.Success
+                } else {
+                    _mealFoodState.value = State.Empty
+                }
             }
 
             override fun onFailure(call: Call<Unit>, t: Throwable) {
-//                _mealFoodState.value = State.Error(t.message!!)
+                _mealFoodState.value = State.Error(t.message!!)
+                d("repo", "deleteMealFoods " + t.message)
+            }
+        })
+    }
+
+
+
+    fun createMealFood(mealFood: MealFood) {
+        d("repo", "create mf")
+        _mealFoodState.value = State.Loading
+        service.createMealFood(authHeader = authHeader, body = mealFood).enqueue(object : Callback<Unit> {
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful && response.body() != null) {
+                    _mealFoodState.value = State.Success
+                } else {
+                    _mealFoodState.value = State.Empty
+                }
+            }
+
+            override fun onFailure(call: Call<Unit>, t: Throwable) {
+                _mealFoodState.value = State.Error(t.message!!)
+                d("repo", "createMealFood " + t.message)
             }
         })
     }

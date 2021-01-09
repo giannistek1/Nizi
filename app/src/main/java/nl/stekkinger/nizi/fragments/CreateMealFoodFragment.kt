@@ -112,21 +112,9 @@ class CreateMealFoodFragment: Fragment() {
             }
         }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_back, menu)
-        inflater?.inflate(R.menu.menu_confirm, menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.confirm_btn -> {
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
-                    R.id.activity_main_fragment_container,
-                    CreateMealFragment()
-                ).commit()
-                true
-            }
-            R.id.back_btn -> {
+            android.R.id.home -> {
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     CreateMealFragment()

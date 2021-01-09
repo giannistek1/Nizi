@@ -3,6 +3,7 @@ package nl.stekkinger.nizi.fragments
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
@@ -14,13 +15,17 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_create_meal.*
+import kotlinx.android.synthetic.main.fragment_create_meal.image_food_view
 import kotlinx.android.synthetic.main.fragment_create_meal.view.*
+import kotlinx.android.synthetic.main.fragment_food_view.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
@@ -41,9 +46,9 @@ class CreateMealFragment: Fragment() {
     private lateinit var searchAdapter: FoodSearchAdapter
     private lateinit var mealProductAdapter: MealProductAdapter
     private lateinit var mInputMealName: TextInputLayout
+    private var mMealId: Int? = null
     private var mMealName: String = ""
-    private var mPhoto: String? = null
-    private var mIsEdit: Boolean = false
+    private var mPhoto: String = ""
     val CAMERA_REQUEST_CODE = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,7 +63,43 @@ class CreateMealFragment: Fragment() {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-        mIsEdit = model.getIsMealEdit()
+        updateUI(view)
+        mInputMealName.editText?.setText(model.getMealName())
+        if (model.getMealPhoto() != null) {
+            val decodedString: ByteArray = Base64.decode(model.getMealPhoto(), Base64.DEFAULT)
+            val decodedByte: Bitmap? = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+            if(decodedByte != null) {
+                view.image_food_view.setImageBitmap(decodedByte)
+            }
+        }
+        d("createM", model.getIsMealEdit().toString())
+
+        model.selectedMeal.observe(this, Observer<Meal> { meal ->
+            // Update the UI
+            if (meal != null) {
+                // set meal values in the model
+                model.setIsMealEdit(true)
+                model.setMealId(meal.id)
+                model.setMealComponentId(meal.food_meal_component.id)
+                d("createM", model.getIsMealEdit().toString())
+                mMealId = meal.id
+                mInputMealName.editText?.setText(meal.food_meal_component.name)
+                if (meal.food_meal_component.image_url != "" && meal.food_meal_component.image_url != null) {
+                    mPhoto = meal.food_meal_component.image_url
+                    val decodedString: ByteArray =
+                        Base64.decode(meal.food_meal_component.image_url, Base64.DEFAULT)
+                    val decodedByte: Bitmap? =
+                        BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                    if (decodedByte != null) {
+                        view.image_food_view.setImageBitmap(decodedByte)
+                    }
+                } else {
+                    view.image_food_view.setImageResource(R.drawable.ic_culinary)
+                }
+                updateUI(view)
+                model.emptySelectedMeal()
+            }
+        })
 
         // rv's
         val mealProductRV: RecyclerView = view.findViewById(R.id.create_meal_list_recycler_view)
@@ -67,44 +108,27 @@ class CreateMealFragment: Fragment() {
         // adapters
         mealProductAdapter = model.getMealProductAdapter()
         mealProductRV.adapter = mealProductAdapter
-
+        val mealProducts: ArrayList<Food> = model.getMealProducts()
+        if (mealProducts.count() > 0) {
+            view.create_meal_empty_list_text.visibility = View.GONE
+        }
         // fill the adapter
         mealProductAdapter.setMealProductList(model.getMealProducts())
 
 
-
-        // get total nutrition values of the meal
-        var totalKcal = 0f
-        var totalProtein = 0f
-        var totalPotassium = 0f
-        var totalSodium = 0f
-        var totalWater = 0f
-        var totalFiber = 0f
-        val products: ArrayList<Food> = model.getMealProducts()
-        for (p: Food in products) {
-            totalKcal += (p.kcal * p.amount)
-            totalProtein += (p.protein * p.amount)
-            totalPotassium += (p.potassium * p.amount)
-            totalSodium += (p.sodium * p.amount)
-            totalWater += (p.water * p.amount)
-            totalFiber += (p.fiber * p.amount)
-        }
-
-        // update UI
-        view.calories_value_meal_view.text = "%.2f".format(totalKcal) + " Kcal"
-        view.fiber_value_meal_view.text = "%.2f".format(totalFiber) + " g"
-        view.protein_value_meal_view.text = "%.2f".format(totalProtein) + " g"
-        view.water_value_meal_view.text = "%.2f".format(totalWater) + "ml"
-        view.sodium_value_meal_view.text = "%.2f".format(totalSodium * 1000) + " mg"
-        view.potassium_value_meal_view.text = "%.2f".format(totalPotassium * 1000) + " mg"
-
-
-        // triggered when a meal is created
+        // triggered when a meal is saved
         lifecycleScope.launchWhenStarted {
             model.mealState.collect {
                 when(it) {
                     is FoodRepository.MealState.Success -> {
-                        model.createMealFoods(it.data.id)
+                        d("createM", "success")
+                        if (model.getIsMealEdit()) {
+                            model.deleteMealFoods(it.data.id)
+                            model.createMealFoods(it.data.id)
+                        } else {
+                            model.createMealFoods(it.data.id)
+                        }
+
 
                         view.fragment_create_meal_loader.visibility = View.GONE
                         (activity)!!.supportFragmentManager.beginTransaction().replace(
@@ -114,25 +138,32 @@ class CreateMealFragment: Fragment() {
                     }
                     is FoodRepository.MealState.Error -> {
                         // TODO: add Error msg toast
+                        d("createM", "error")
                         view.fragment_create_meal_loader.visibility = View.GONE
                     }
                     is FoodRepository.MealState.Loading -> {
+                        d("createM", "Loading")
                         view.fragment_create_meal_loader.visibility = View.VISIBLE
                     }
                     else -> {
+                        d("createM", "empty")
                         view.fragment_create_meal_loader.visibility = View.GONE
                     }
                 }
             }
         }
 
-        // Triggered if new mealfoods are collected(when editing a new meal)
+        // Triggered if new mealfoods are collected(when editing a meal)
         lifecycleScope.launchWhenStarted {
             model.foodsState.collect {
                 when(it) {
                     is FoodRepository.FoodsState.Success -> {
-                        d("foodlist", it.data.toString())
+                        if (it.data.count() > 0 ) {
+                            view.create_meal_empty_list_text.visibility = View.GONE
+                            mealProductAdapter.setMealProductList(it.data)
+                            model.setMealProducts(it.data)
 
+                        }
                         view.fragment_create_meal_loader.visibility = View.GONE
                     }
                     is FoodRepository.FoodsState.Error -> {
@@ -159,6 +190,10 @@ class CreateMealFragment: Fragment() {
         }
 
         view.create_meal_add_food.setOnClickListener {
+            // save input data when switching fragments
+            model.setMealName(mInputMealName.editText?.text.toString().trim())
+            if (mPhoto != "") model.setMealPhoto(mPhoto)
+
             (activity)!!.supportFragmentManager.beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 CreateMealFoodFragment()
@@ -166,13 +201,40 @@ class CreateMealFragment: Fragment() {
         }
 
         view.create_meal_save_btn.setOnClickListener {
-            createMeal()
+            saveMeal()
         }
 
         return view
     }
 
-    private fun createMeal(){
+    private fun updateUI(view: View) {
+        // get total nutrition values of the meal
+        var totalKcal = 0f
+        var totalProtein = 0f
+        var totalPotassium = 0f
+        var totalSodium = 0f
+        var totalWater = 0f
+        var totalFiber = 0f
+        val products: ArrayList<Food> = model.getMealProducts()
+        for (p: Food in products) {
+            totalKcal += (p.kcal * p.amount)
+            totalProtein += (p.protein * p.amount)
+            totalPotassium += (p.potassium * p.amount)
+            totalSodium += (p.sodium * p.amount)
+            totalWater += (p.water * p.amount)
+            totalFiber += (p.fiber * p.amount)
+        }
+
+        // update UI
+        view.calories_value_meal_view.text = "%.2f".format(totalKcal) + " Kcal"
+        view.fiber_value_meal_view.text = "%.2f".format(totalFiber) + " g"
+        view.protein_value_meal_view.text = "%.2f".format(totalProtein) + " g"
+        view.water_value_meal_view.text = "%.2f".format(totalWater) + "ml"
+        view.sodium_value_meal_view.text = "%.2f".format(totalSodium * 1000) + " mg"
+        view.potassium_value_meal_view.text = "%.2f".format(totalPotassium * 1000) + " mg"
+    }
+
+    private fun saveMeal(){
         if (!validateMealName()) {
             // validate failed
             return
@@ -203,6 +265,7 @@ class CreateMealFragment: Fragment() {
 
             // create meal object
             val foodMealComponent = FoodMealComponent(
+                id = 357,
                 name = mMealName,
                 description = "beschrijving",
                 kcal = totalKcal,
@@ -216,15 +279,24 @@ class CreateMealFragment: Fragment() {
                 foodId = 0
             )
 
-            val meal = Meal(
-                food_meal_component = foodMealComponent,
-                patient = GeneralHelper.getUser().patient!!,
-                weight_unit = GeneralHelper.getWeightUnitHolder()!!.weightUnits[7]
-            )
-
-            model.createMeal(meal)
+            if (model.getIsMealEdit()) {
+                d("createM", "editing")
+                val meal = Meal(
+                    id = model.getMealId(),
+                    food_meal_component = foodMealComponent,
+                    patient = GeneralHelper.getUser().patient!!,
+                    weight_unit = GeneralHelper.getWeightUnitHolder()!!.weightUnits[7]
+                )
+                model.updateMeal(meal)
+            } else {
+                val meal = Meal(
+                    food_meal_component = foodMealComponent,
+                    patient = GeneralHelper.getUser().patient!!,
+                    weight_unit = GeneralHelper.getWeightUnitHolder()!!.weightUnits[7]
+                )
+                model.createMeal(meal)
+            }
         }
-
     }
 
     private fun validateMealName(): Boolean {

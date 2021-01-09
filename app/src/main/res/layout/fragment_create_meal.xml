@@ -55,7 +55,7 @@
                 android:layout_marginBottom="@dimen/marginSmall"
                 android:layout_gravity="top|center"
                 android:contentDescription="@string/content_meal_photo_display"
-                app:srcCompat="@color/darkGray" />
+                android:src="@drawable/ic_culinary"/>
 
             <Button
                 android:id="@+id/meal_camera_btn"
@@ -80,7 +80,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/create_meal_list_holder"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="200dp"
                 android:layout_below="@+id/create_meal_food_list_title"
                 android:background="@color/lightGray"
                 app:layout_constraintHeight_default="wrap"
@@ -99,7 +99,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
-                android:id="@+id/create_meal_empty_list"
+                android:id="@+id/create_meal_empty_list_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/marginSmall"

@@ -179,7 +179,7 @@ class DiaryViewModel(
 
         val consumption = Consumption(
             amount = portion,
-            date = date+"T11:00:00.000Z",
+            date = date+"T00:00:00.000Z",
             meal_time = mMealTime,
             patient = GeneralHelper.getUser().patient!!.id,
             weight_unit = weightUnit,
@@ -217,7 +217,7 @@ class DiaryViewModel(
         val consumption = Consumption(
             id = c.id,
             amount = newPortion,
-            date = date+"T11:00:00.000Z",
+            date = date+"T00:00:00.000Z",
             meal_time = mMealTime,
             patient = GeneralHelper.getUser().patient!!.id,
             weight_unit = weightUnit,
@@ -231,13 +231,32 @@ class DiaryViewModel(
         mRepository.deleteMeal(id)
     }
 
+    // storing values for meal fragments
     private var adapter: MealProductAdapter = MealProductAdapter(this)
     private var mealProducts: ArrayList<Food> = ArrayList()
     private var mealProductPosition: Int = 0
+    private var mealId: Int = 0
+    private var mealComponentId: Int = 0
+    private var mealName = ""
+    private var mealPhoto: String? = null
+    private var isMealEdit: Boolean = false
 
-    fun setMealProductPosition(pos: Int) {
-        mealProductPosition = pos
-    }
+    // getters and setters for meal values
+    fun getIsMealEdit(): Boolean { return isMealEdit }
+    fun setIsMealEdit(isEdit: Boolean) { isMealEdit = isEdit }
+
+    fun getMealId(): Int { return mealId }
+    fun setMealId(id: Int) { mealId = id }
+
+    fun getMealName(): String { return mealName }
+    fun setMealName(name: String) { mealName = name }
+
+    fun getMealPhoto(): String? { return mealPhoto }
+    fun setMealPhoto(photo: String) { mealPhoto = photo }
+
+    fun setMealProductPosition(pos: Int) { mealProductPosition = pos }
+    fun setMealProducts(foods: ArrayList<Food>) { mealProducts = foods }
+
     fun addMealProduct(food: Food, amount: Float = 1f) {
         food.amount = amount
         mealProducts.add(food)
@@ -266,16 +285,10 @@ class DiaryViewModel(
             mRepository.createMealFood(mealFood)
         }
     }
-    private var isMealEdit = false
-    fun getIsMealEdit(): Boolean {
-        return isMealEdit
-    }
-    fun setIsMealEdit(bool: Boolean) {
-        isMealEdit = true
-    }
 
     // load the food view fragment with the selected food
     val selectedMeal = MutableLiveData<Meal>()
+    fun emptySelectedMeal() { selectedMeal.value = null}
     fun selectMeal(activity: AppCompatActivity, meal: Meal) {
 
         selectedMeal.value = meal
@@ -287,16 +300,40 @@ class DiaryViewModel(
 
     fun addMeal(meal: Meal, amount: Float = 1f) {
         // TODO: transform into consumption
-        // mRepository.addConsumption(consumption)
+        val date: String = sdfDb.format(mDate.value!!.time)
+
+        val foodItem = FoodMealComponent(
+            id = meal.id,
+            name = meal.food_meal_component.name,
+            description = meal.food_meal_component.description,
+            kcal = meal.food_meal_component.kcal * amount,
+            protein = meal.food_meal_component.protein * amount,
+            potassium = meal.food_meal_component.potassium * amount,
+            sodium = meal.food_meal_component.sodium * amount,
+            water = meal.food_meal_component.water * amount,
+            fiber = meal.food_meal_component.fiber * amount,
+            portion_size = meal.food_meal_component.portion_size * amount,
+            image_url = meal.food_meal_component.image_url,
+            foodId = meal.food_meal_component.foodId
+        )
+
+        val consumption = Consumption(
+            amount = amount,
+            date = date+"T00:00:00.000Z",
+            meal_time = mMealTime,
+            patient = GeneralHelper.getUser().patient!!.id,
+            weight_unit = GeneralHelper.getWeightUnitHolder()!!.weightUnits[7],
+            food_meal_component = foodItem
+        )
+
+         mRepository.addConsumption(consumption)
     }
 
     val foodsState = mRepository.foodsState
     fun editMeal(meal: Meal) {
         // empty meal products
         mealProducts.clear()
-        setIsMealEdit(true)
         // get the food items
-        val foods: ArrayList<Food> = arrayListOf()
         val foodIds: ArrayList<Int> = arrayListOf()
         if (meal.meal_foods!!.count() > 0) {
             for (mealFood: MealFood in meal.meal_foods) {
@@ -304,6 +341,12 @@ class DiaryViewModel(
             }
             mRepository.getFoods(foodIds)
         }
+    }
+    fun updateMeal(meal: Meal) {
+        mRepository.updateMeal(meal, mealId)
+    }
+    fun deleteMealFoods(mealId: Int) {
+        mRepository.deleteMealFoods(mealId)
     }
 
     fun getMealProducts(): ArrayList<Food> {
