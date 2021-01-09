@@ -1,29 +1,35 @@
 package nl.stekkinger.nizi.fragments
 
 import android.app.Activity
-import android.os.Bundle
-import android.view.*
-import android.widget.SearchView
-import androidx.fragment.app.Fragment
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log.d
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.fragment_create_meal.image_food_view
+import kotlinx.android.synthetic.main.fragment_create_meal.*
 import kotlinx.android.synthetic.main.fragment_create_meal.view.*
+import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.flow.collect
-import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.adapters.MealProductAdapter
-import nl.stekkinger.nizi.classes.diary.*
+import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.classes.diary.Food
+import nl.stekkinger.nizi.classes.diary.FoodMealComponent
+import nl.stekkinger.nizi.classes.diary.Meal
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.io.ByteArrayOutputStream
@@ -43,6 +49,8 @@ class CreateMealFragment: Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_create_meal, container, false)
         setHasOptionsMenu(true)
+
+        activity!!.toolbar_title.text = getString(R.string.create_meal)
 
         mInputMealName = view.findViewById(R.id.input_meal_name)
 
@@ -157,6 +165,10 @@ class CreateMealFragment: Fragment() {
             ).commit()
         }
 
+        view.create_meal_save_btn.setOnClickListener {
+            createMeal()
+        }
+
         return view
     }
 
@@ -231,30 +243,6 @@ class CreateMealFragment: Fragment() {
         return succes
     }
 
-
-
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_back, menu)
-        inflater?.inflate(R.menu.menu_confirm, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.confirm_btn -> {
-                createMeal()
-                true
-            }
-            R.id.back_btn -> {
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
-                    R.id.activity_main_fragment_container,
-                    CreateMealFoodFragment()
-                ).commit()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -274,6 +262,19 @@ class CreateMealFragment: Fragment() {
             else -> {
                 Toast.makeText(this.activity, R.string.photo_error, Toast.LENGTH_SHORT)
             }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    AddMealFragment()
+                ).commit()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

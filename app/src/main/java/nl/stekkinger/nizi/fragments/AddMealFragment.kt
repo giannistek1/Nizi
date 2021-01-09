@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.os.AsyncTask
+import android.util.Log
+import android.util.Log.d
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_meals.view.*
+import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.MealAdapter
@@ -31,6 +34,14 @@ class AddMealFragment: Fragment() {
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
+
+        when (model.getMealTime()) {
+            "Ontbijt" -> activity!!.toolbar_title.text = getString(R.string.add_breakfast)
+            "Lunch" -> activity!!.toolbar_title.text = getString(R.string.add_lunch)
+            "Avondeten" -> activity!!.toolbar_title.text = getString(R.string.add_dinner)
+            "Snack" -> activity!!.toolbar_title.text = getString(R.string.add_snack)
+            else -> activity!!.toolbar_title.text = getString(R.string.diary)
+        }
 
         adapter = MealAdapter(model)
         recyclerView.adapter = adapter
@@ -91,13 +102,9 @@ class AddMealFragment: Fragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_back, menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.back_btn -> {
+            android.R.id.home -> {
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     DiaryFragment()

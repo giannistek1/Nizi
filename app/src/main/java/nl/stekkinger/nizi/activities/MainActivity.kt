@@ -26,6 +26,7 @@ import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
+import nl.stekkinger.nizi.fragments.AddMealFragment
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.repositories.*
@@ -56,6 +57,8 @@ class MainActivity : BaseActivity() {
         // Setup UI
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+//        supportActionBar!!.setDisplayShowHomeEnabled(true)
         toolbar_title.text = getString(R.string.app_name)
         loader = activity_main_loader
         activity_main_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
@@ -90,6 +93,9 @@ class MainActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId)
         {
+            android.R.id.home -> {
+                return false
+            }
             R.id.menu_toolbar_logout -> {
                 authRepository.logout(this, this)
             }
@@ -121,7 +127,6 @@ class MainActivity : BaseActivity() {
             }
 
             R.id.nav_diary -> {
-                toolbar_title.text = getString(R.string.diary)
                 val fragment = DiaryFragment()
                 supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
                     .commit()

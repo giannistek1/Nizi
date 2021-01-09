@@ -42,7 +42,7 @@ class FoodViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_food_view, container, false)
-        setHasOptionsMenu(true)
+        this.setHasOptionsMenu(true)
 
 
         // get the DiaryViewModel
@@ -292,35 +292,29 @@ class FoodViewFragment : Fragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_back, menu)
-        inflater?.inflate(R.menu.menu_confirm, menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.confirm_btn -> {
-                Toast.makeText(this.context, R.string.add_food_success, Toast.LENGTH_LONG).show()
-
-                val portion = mServingInput.text.toString().trim().toFloat()
-                model.addConsumption(mFood, portion)
-
-                val fragment: Fragment = DiaryFragment()
-                val bundle = Bundle()
-                bundle.putBoolean("refresh", true)
-                fragment.arguments = bundle
-
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
-                    R.id.activity_main_fragment_container,
-                    fragment
-                ).commit()
-                true
-            }
-            R.id.back_btn -> {
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
-                    R.id.activity_main_fragment_container,
-                    AddFoodFragment()
-                ).commit()
+            android.R.id.home -> {
+                when (mCurrentFragment) {
+                    "food" -> {
+                        (activity)!!.supportFragmentManager.beginTransaction().replace(
+                            R.id.activity_main_fragment_container,
+                            AddFoodFragment()
+                        ).commit()
+                    }
+                    "meal", "mealEdit" -> {
+                        (activity)!!.supportFragmentManager.beginTransaction().replace(
+                            R.id.activity_main_fragment_container,
+                            AddMealFragment()
+                        ).commit()
+                    }
+                    else -> {
+                        (activity)!!.supportFragmentManager.beginTransaction().replace(
+                            R.id.activity_main_fragment_container,
+                            DiaryFragment()
+                        ).commit()
+                    }
+                }
                 true
             }
             else -> super.onOptionsItemSelected(item)

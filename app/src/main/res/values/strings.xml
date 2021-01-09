@@ -86,6 +86,10 @@
     <string name="snack">Snack</string>
     <string name="add">Toevoegen</string>
     <string name="add_food">Voeding toevoegen</string>
+    <string name="add_breakfast">Ontbijt toevoegen</string>
+    <string name="add_lunch">Lunch toevoegen</string>
+    <string name="add_dinner">Avondeten toevoegen</string>
+    <string name="add_snack">Snack toevoegen</string>
     <string name="food_added">Voeding toegevoegd</string>
     <string name="food">Voeding</string>
     <string name="products">Producten</string>
@@ -106,6 +110,7 @@
     <string name="meal_name_empty">Maaltijd naam is leeg </string>
     <string name="meal_name_too_long">Maaltijd naam mag max 30 tekens zijn</string>
     <string name="make_meal">Maaltijd maken</string>
+    <string name="create_meal">Maaltijd samenstellen</string>
     <string name="meal_edited">Maaltijd bewerkt</string>
     <string name="photo_error">Foto maken is mislukt</string>
     <string name="did_not_add_food">U heeft nog geen voeding toegevoegd</string>

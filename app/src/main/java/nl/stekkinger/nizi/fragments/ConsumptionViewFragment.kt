@@ -189,4 +189,17 @@ class ConsumptionViewFragment : Fragment() {
             updateUI()
         }
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            android.R.id.home -> {
+                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    R.id.activity_main_fragment_container,
+                    DiaryFragment()
+                ).commit()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 }

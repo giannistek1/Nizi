@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_diary.view.*
+import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
@@ -44,6 +45,8 @@ class DiaryFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
+
+        activity!!.toolbar_title.text = getString(R.string.diary)
 
         val breakfastRv: RecyclerView = view.findViewById(R.id.diary_breakfast_rv)
         breakfastRv.layoutManager = LinearLayoutManager(activity)
@@ -273,16 +276,9 @@ class DiaryFragment: Fragment() {
             view.diary_add_snack.visibility = GONE
             view.diary_add_snack_btn.visibility = GONE
         }
-
         loader = view.fragment_diary_loader
 
-
-
         return view
-    }
-    private fun refresh() {
-        d("re", "fresh")
-        (activity)!!.supportFragmentManager.beginTransaction().detach(this).attach(this).commit()
     }
 
     // function to set date in model, and return date as string for UI

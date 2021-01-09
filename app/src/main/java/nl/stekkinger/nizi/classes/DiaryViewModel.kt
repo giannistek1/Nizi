@@ -49,6 +49,9 @@ class DiaryViewModel(
     fun setMealTime(time: String){
         mMealTime = time
     }
+    fun getMealTime(): String {
+        return mMealTime
+    }
 
 
 

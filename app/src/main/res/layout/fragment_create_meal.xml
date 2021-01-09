@@ -6,27 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-    <!-- Header (REUSEABLE BUT NOT IMPLEMENTED YET) -->
-    <LinearLayout
-        android:id="@+id/activity_main_header_background"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:background="@color/colorPrimary">
-
-        <TextView
-            android:id="@+id/activity_main_txt_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"
-            android:text="Maaltijd aanmaken"
-            android:textColor="@color/white"
-            android:textSize="@dimen/h1" />
-
-    </LinearLayout>
-
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -38,14 +17,13 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_meal_name"
-                android:layout_width="fill_parent"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
-                app:counterEnabled="true"
                 app:counterMaxLength="30"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:hint="maaltijd naam"
                     android:inputType="text"
@@ -54,32 +32,28 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/create_meal_list_holder"
+            <Button
+                android:id="@+id/create_meal_save_btn"
+                android:layout_margin="@dimen/marginSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:text="@string/save" />
+
+            <FrameLayout
+                android:id="@+id/create_meal_photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/input_meal_name"
-                app:layout_constraintHeight_default="wrap"
-                app:layout_constraintHeight_max="300px">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/create_meal_list_recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="2dp"
-                    android:background="@android:color/darker_gray"
-                    android:padding="2dp"
-                    android:scrollbars="vertical" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_below="@+id/input_meal_name">
 
             <ImageView
                 android:id="@+id/image_food_view"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_below="@+id/create_meal_list_holder"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginBottom="@dimen/marginSmall"
+                android:layout_gravity="top|center"
                 android:contentDescription="@string/content_meal_photo_display"
                 app:srcCompat="@color/darkGray" />
 
@@ -87,25 +61,65 @@
                 android:id="@+id/meal_camera_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/image_food_view"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="30dp"
+                android:layout_marginEnd="@dimen/marginSmall"
+                android:layout_toRightOf="@+id/image_food_view"
+                android:layout_gravity="right|center"
                 android:text="@string/add_picture_btn" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/create_meal_food_list_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/marginVerySmall"
+                android:layout_below="@+id/create_meal_photo"
+                android:text="@string/food"
+                android:textColor="@color/black"
+                android:textSize="@dimen/h1" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/create_meal_list_holder"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@+id/create_meal_food_list_title"
+                android:background="@color/lightGray"
+                app:layout_constraintHeight_default="wrap"
+                app:layout_constraintHeight_min="100px"
+                app:layout_constraintHeight_max="300px">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/create_meal_list_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/lightGray"
+                    android:padding="2dp"
+                    android:scrollbars="vertical" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/create_meal_empty_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/marginSmall"
+                android:layout_below="@+id/create_meal_food_list_title"
+                android:text="@string/did_not_add_food"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSizeNormal" />
 
             <Button
                 android:id="@+id/create_meal_add_food"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/image_food_view"
-                android:layout_toLeftOf="@+id/meal_camera_btn"
-                android:layout_marginTop="30dp"
+                android:layout_below="@+id/create_meal_list_holder"
                 android:text="@string/add_food" />
 
             <!-- All nutricien values -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/meal_camera_btn"
+                android:layout_below="@id/create_meal_add_food"
                 android:layout_margin="@dimen/marginNormal"
                 android:orientation="vertical">
 
