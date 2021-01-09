@@ -242,6 +242,9 @@ class DiaryViewModel(
     private var isMealEdit: Boolean = false
 
     // getters and setters for meal values
+    fun getMealComponentId(): Int { return mealComponentId }
+    fun setMealComponentId(id: Int) { mealComponentId = id}
+
     fun getIsMealEdit(): Boolean { return isMealEdit }
     fun setIsMealEdit(isEdit: Boolean) { isMealEdit = isEdit }
 
