@@ -84,7 +84,7 @@ class AddFoodFragment: Fragment() {
         // get the results of food search
         model.getFoodSearch().observe(viewLifecycleOwner, Observer { foodList ->
             val amount = foodList.size
-            view.fragment_add_food_txt_amount.text = "Aantal ($amount)"
+            view.fragment_add_food_txt_amount.text = getString(R.string.amount_of_products, amount)
             adapter.setFoodList(foodList)
         })
 

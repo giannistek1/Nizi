@@ -43,7 +43,7 @@ class EditPatientDietaryActivity : BaseActivity() {
     private lateinit var dietaryRestrictionList: ArrayList<DietaryRestriction>      // Dietary Restrictions
     private lateinit var currentDietaryList: ArrayList<DietaryManagementShort>      // All Current DietaryManagements
     private lateinit var newDietaryList: ArrayList<DietaryManagementShort>          // All New DietaryManagements
-    private lateinit var checkList: ArrayList<DietaryManagementShort>               // Checklist to go off
+    private lateinit var checkList: ArrayList<DietaryManagementShort>               // Checklist to go off (could have also been a number until all dietaries were checked)
 
     private lateinit var textViewList: ArrayList<EditText>
 

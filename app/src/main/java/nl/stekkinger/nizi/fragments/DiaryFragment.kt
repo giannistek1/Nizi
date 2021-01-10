@@ -53,6 +53,14 @@ class DiaryFragment: BaseFragment() {
         toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
         parent.addView(toastView)
 
+        // Get foodAdded data from bundle
+        val bundle: Bundle? = this.arguments
+        if (bundle != null) {
+            val foodAdded = bundle.getBoolean(GeneralHelper.EXTRA_FOOD_ADDED, false)
+            if (foodAdded)
+                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_added))
+        }
+
         val breakfastRv: RecyclerView = view.findViewById(R.id.diary_breakfast_rv)
         breakfastRv.layoutManager = LinearLayoutManager(activity)
         val lunchRv: RecyclerView = view.findViewById(R.id.diary_lunch_rv)

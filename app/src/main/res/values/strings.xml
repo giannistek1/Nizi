@@ -90,7 +90,7 @@
     <string name="add_lunch">Lunch toevoegen</string>
     <string name="add_dinner">Avondeten toevoegen</string>
     <string name="add_snack">Snack toevoegen</string>
-    <string name="food_added">Voeding toegevoegd</string>
+    <string name="food_added">Voeding toegevoegd aan dagboek</string>
     <string name="food">Voeding</string>
     <string name="products">Producten</string>
     <string name="meals">Maaltijden</string>

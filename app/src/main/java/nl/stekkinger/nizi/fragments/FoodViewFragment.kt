@@ -22,6 +22,7 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.MyFood
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
@@ -199,9 +200,15 @@ class FoodViewFragment : Fragment() {
                     val amount: Float = mServingInput.text.toString().trim().toFloat()
                     model.addConsumption(mFood, amount)
 
+                    // Send boolean with fragment which gives a sign to show the toast in diary
+                    val fragment = DiaryFragment()
+                    val bundle = Bundle()
+                    bundle.putBoolean(GeneralHelper.EXTRA_FOOD_ADDED, true)
+                    fragment.arguments = bundle
+
                     (activity)!!.supportFragmentManager.beginTransaction().replace(
                         R.id.activity_main_fragment_container,
-                        DiaryFragment()
+                        fragment
                     ).commit()
                 }
                 "meal" -> {

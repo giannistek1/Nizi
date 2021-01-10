@@ -206,7 +206,7 @@ class PatientHomeFragment : BaseFragment() {
                 return }
 
             // Feedback
-            //Toast.makeText(activity, R.string.fetched_consumptions, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_consumptions));
 
             consumptions = result
 

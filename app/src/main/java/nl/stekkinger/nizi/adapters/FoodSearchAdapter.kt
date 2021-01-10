@@ -19,6 +19,7 @@ import kotlinx.android.synthetic.main.item_food.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Food
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.fragments.DiaryFragment
 
 class FoodSearchAdapter(
@@ -62,9 +63,15 @@ class FoodSearchAdapter(
             holder.addBtn.setOnClickListener {
                 model.addConsumption(food)
 
+                // Send boolean with fragment which gives a sign to show the toast in diary
+                val fragment = DiaryFragment()
+                val bundle = Bundle()
+                bundle.putBoolean(GeneralHelper.EXTRA_FOOD_ADDED, true)
+                fragment.arguments = bundle
+
                 (activity).supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
-                    DiaryFragment()
+                    fragment
                 ).commit()
             }
             holder.favBtn.setOnClickListener {
