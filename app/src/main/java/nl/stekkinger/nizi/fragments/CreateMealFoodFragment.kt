@@ -4,7 +4,6 @@ import android.app.SearchManager
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import androidx.fragment.app.Fragment
 import android.content.Context.SEARCH_SERVICE
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -18,13 +17,13 @@ import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.adapters.MealProductAdapter
 
 
-class CreateMealFoodFragment: Fragment() {
+class CreateMealFoodFragment: NavigationChildFragment() {
     private lateinit var model: DiaryViewModel
     private lateinit var queryTextListener: SearchView.OnQueryTextListener
     private lateinit var searchAdapter: FoodSearchAdapter
     private lateinit var mealProductAdapter: MealProductAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_create_meal_food, container, false)
         setHasOptionsMenu(true)
 
@@ -42,7 +41,7 @@ class CreateMealFoodFragment: Fragment() {
         mealProductRV.layoutManager = LinearLayoutManager(activity)
 
         // adapters
-        searchAdapter = FoodSearchAdapter(model, fragment = "meal")
+        searchAdapter = FoodSearchAdapter(model, fragment = "meal", context = context!!)
         searchRV.adapter = searchAdapter
 //        mealProductAdapter = MealProductAdapter(model)
         mealProductAdapter = model.getMealProductAdapter()

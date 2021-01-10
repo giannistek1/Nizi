@@ -12,7 +12,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -21,15 +21,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
-import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_create_meal.*
 import kotlinx.android.synthetic.main.fragment_create_meal.image_food_view
 import kotlinx.android.synthetic.main.fragment_create_meal.view.*
-import kotlinx.android.synthetic.main.fragment_food_view.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.adapters.MealProductAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Food
@@ -40,16 +36,16 @@ import nl.stekkinger.nizi.repositories.FoodRepository
 import java.io.ByteArrayOutputStream
 
 
-class CreateMealFragment: Fragment() {
+class CreateMealFragment: NavigationChildFragment() {
     private lateinit var model: DiaryViewModel
     private lateinit var mealProductAdapter: MealProductAdapter
-    private lateinit var mInputMealName: TextInputLayout
+    private lateinit var mInputMealName: EditText
     private var mMealId: Int? = null
     private var mMealName: String = ""
     private var mPhoto: String = ""
     val CAMERA_REQUEST_CODE = 0
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_create_meal, container, false)
         setHasOptionsMenu(true)
 
@@ -62,7 +58,7 @@ class CreateMealFragment: Fragment() {
         } ?: throw Exception("Invalid Activity")
 
         // update UI with current data
-        mInputMealName.editText?.setText(model.getMealName())
+        mInputMealName.setText(model.getMealName())
         if (model.getMealPhoto() != null) {
             val decodedString: ByteArray = Base64.decode(model.getMealPhoto(), Base64.DEFAULT)
             val decodedByte: Bitmap? = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
@@ -80,7 +76,7 @@ class CreateMealFragment: Fragment() {
                 model.setMealId(meal.id)
                 model.setMealComponentId(meal.food_meal_component.id)
                 mMealId = meal.id
-                mInputMealName.editText?.setText(meal.food_meal_component.name)
+                mInputMealName.setText(meal.food_meal_component.name)
                 if (meal.food_meal_component.image_url != "" && meal.food_meal_component.image_url != null) {
                     model.setMealPhoto(meal.food_meal_component.image_url)
                     mPhoto = meal.food_meal_component.image_url
@@ -189,7 +185,7 @@ class CreateMealFragment: Fragment() {
 
         view.create_meal_add_food.setOnClickListener {
             // save input data when switching fragments
-            model.setMealName(mInputMealName.editText?.text.toString().trim())
+            model.setMealName(mInputMealName.text.toString().trim())
             if (mPhoto != "") model.setMealPhoto(mPhoto)
 
             (activity)!!.supportFragmentManager.beginTransaction().replace(
@@ -298,7 +294,7 @@ class CreateMealFragment: Fragment() {
     }
 
     private fun validateMealName(): Boolean {
-        mMealName = mInputMealName.editText?.text.toString().trim()
+        mMealName = mInputMealName.text.toString().trim()
         // validate input for errors
         var succes = true
         when {

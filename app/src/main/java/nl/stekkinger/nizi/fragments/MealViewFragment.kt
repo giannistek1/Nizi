@@ -35,11 +35,12 @@ import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.FoodMealComponent
 import nl.stekkinger.nizi.classes.diary.Meal
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.util.ArrayList
 
 
-class MealViewFragment : Fragment() {
+class MealViewFragment : NavigationChildFragment() {
     private lateinit var model: DiaryViewModel
     private lateinit var mMeal: Meal
     private lateinit var mServingInput: TextInputEditText
@@ -49,10 +50,7 @@ class MealViewFragment : Fragment() {
     private var mEdit = true // edit or delete
     private val amounts: ArrayList<Float> = arrayListOf()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+    override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_food_view, container, false)
         setHasOptionsMenu(true)
@@ -182,9 +180,15 @@ class MealViewFragment : Fragment() {
             // add meal
             model.addMeal(mMeal, amount)
 
+            // Send text with fragment for toast
+            val fragment = DiaryFragment()
+            val bundle = Bundle()
+            bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.add_meal_success))
+            fragment.arguments = bundle
+
             (activity)!!.supportFragmentManager.beginTransaction().replace(
                 R.id.activity_main_fragment_container,
-                DiaryFragment()
+                fragment
             ).commit()
         }
 
@@ -210,11 +214,19 @@ class MealViewFragment : Fragment() {
             model.consumptionState.collect {
                 when(it) {
                     is FoodRepository.State.Success -> {
-                        if(mEdit) Toast.makeText(activity, R.string.update_food_success, Toast.LENGTH_SHORT).show()
-                        else Toast.makeText(activity, R.string.delete_food_success, Toast.LENGTH_SHORT).show()
+                        // Send text with fragment for toast
+                        val fragment = DiaryFragment()
+                        val bundle = Bundle()
+
+                        if(mEdit)
+                            bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.update_food_success))
+                        else
+                            bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.delete_food_success))
+
+                        fragment.arguments = bundle
                         (activity)!!.supportFragmentManager.beginTransaction().replace(
                             R.id.activity_main_fragment_container,
-                            DiaryFragment()
+                            fragment
                         ).commit()
                     }
                     is FoodRepository.State.Error -> {

@@ -7,12 +7,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
-import android.util.Log.d
 import android.widget.RelativeLayout
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -26,7 +21,6 @@ import nl.stekkinger.nizi.adapters.ConsumptionAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.diary.MyFood
-import nl.stekkinger.nizi.classes.diary.MyFoodResponse
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.util.*
@@ -46,12 +40,24 @@ class DiaryFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
 
-        activity!!.toolbar_title.text = getString(R.string.diary)
+        // Hide patient things if isDoctor
+        val isDoctor = GeneralHelper.prefs.getBoolean(GeneralHelper.PREF_IS_DOCTOR, false)
+
+        if (!isDoctor)
+            activity!!.toolbar_title.text = getString(R.string.diary)
 
         // Setup custom toast
         val parent: RelativeLayout = view.fragment_diary_rl
         toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
         parent.addView(toastView)
+
+        // Get foodAdded data from bundle
+        val bundle: Bundle? = this.arguments
+        if (bundle != null) {
+            val toastText = bundle.getString(GeneralHelper.TOAST_TEXT, "")
+
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, toastText)
+        }
 
         val breakfastRv: RecyclerView = view.findViewById(R.id.diary_breakfast_rv)
         breakfastRv.layoutManager = LinearLayoutManager(activity)
@@ -272,8 +278,7 @@ class DiaryFragment: BaseFragment() {
         view.diary_next_date.isClickable = false
         view.diary_next_date.alpha = 0.2f
 
-        // Hide patient things if isDoctor
-        val isDoctor = GeneralHelper.prefs.getBoolean(GeneralHelper.PREF_IS_DOCTOR, false)
+
         if (isDoctor) {
             view.diary_add_breakfast.visibility = GONE
             view.diary_add_breakfast_btn.visibility = GONE
@@ -333,6 +338,8 @@ class DiaryFragment: BaseFragment() {
                 lunchAdapter.removeItem(viewHolder.adapterPosition)
                 dinnerAdapter.removeItem(viewHolder.adapterPosition)
                 snackAdapter.removeItem(viewHolder.adapterPosition)
+
+                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted));
             }
         }
 }

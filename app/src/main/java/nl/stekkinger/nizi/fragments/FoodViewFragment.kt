@@ -9,7 +9,6 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageButton
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
@@ -22,10 +21,11 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.MyFood
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
-class FoodViewFragment : Fragment() {
+class FoodViewFragment : NavigationChildFragment() {
     private lateinit var model: DiaryViewModel
     private lateinit var mFood: Food
     private lateinit var mServingInput: TextInputEditText
@@ -36,10 +36,7 @@ class FoodViewFragment : Fragment() {
     private var mIsLiked = false
     private var mFavoriteSelected = 0
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+     override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_food_view, container, false)
         this.setHasOptionsMenu(true)
@@ -199,9 +196,15 @@ class FoodViewFragment : Fragment() {
                     val amount: Float = mServingInput.text.toString().trim().toFloat()
                     model.addConsumption(mFood, amount)
 
+                    // Send text with fragment for toast
+                    val fragment = DiaryFragment()
+                    val bundle = Bundle()
+                    bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.food_added))
+                    fragment.arguments = bundle
+
                     (activity)!!.supportFragmentManager.beginTransaction().replace(
                         R.id.activity_main_fragment_container,
-                        DiaryFragment()
+                        fragment
                     ).commit()
                 }
                 "meal" -> {

@@ -24,12 +24,12 @@ import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
-class FavoritesFragment: Fragment() {
+class FavoritesFragment: NavigationChildFragment() {
     private val mRepository: FoodRepository = FoodRepository()
     private lateinit var model: DiaryViewModel
     private lateinit var adapter: FoodSearchAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_favorites, container, false)
         setHasOptionsMenu(true)
 
@@ -39,10 +39,10 @@ class FavoritesFragment: Fragment() {
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
-
+        
         val recyclerView: RecyclerView = view.favorites_rv
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        adapter = FoodSearchAdapter(model, fragment = "favorites")
+        adapter = FoodSearchAdapter(model, fragment = "favorites", context = context!!)
         recyclerView.adapter = adapter
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
 

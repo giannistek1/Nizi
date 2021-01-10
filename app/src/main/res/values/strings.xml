@@ -62,6 +62,7 @@
     <string name="yesterday">Gisteren</string>
     <string name="tomorrow">Morgen</string>
     <string name="guidelines">Richtlijnen</string>
+    <string name="title">Titel</string>
     <string name="nutrition_values">VOEDINGSWAARDEN</string>
     <string name="other_nutrition_values">Overige voedingswaarden</string>
     <string name="calories">Calorieën</string>
@@ -90,7 +91,7 @@
     <string name="add_lunch">Lunch toevoegen</string>
     <string name="add_dinner">Avondeten toevoegen</string>
     <string name="add_snack">Snack toevoegen</string>
-    <string name="food_added">Voeding toegevoegd</string>
+    <string name="food_added">Voeding toegevoegd aan dagboek</string>
     <string name="food">Voeding</string>
     <string name="products">Producten</string>
     <string name="meals">Maaltijden</string>
@@ -107,16 +108,19 @@
     <string name="portion_with_weightunit">Portie %1$s</string>
     <string name="servings">Portie</string>
     <string name="nr_servings">Aantal porties: </string>
+    <string name="meal">Maaltijd</string>
     <string name="meal_name_empty">Maaltijd naam is leeg </string>
     <string name="meal_name_too_long">Maaltijd naam mag max 30 tekens zijn</string>
     <string name="make_meal">Maaltijd maken</string>
     <string name="create_meal">Maaltijd samenstellen</string>
     <string name="meal_edited">Maaltijd bewerkt</string>
+    <string name="meal_deleted">Maaltijd verwijderd</string>
     <string name="photo_error">Foto maken is mislukt</string>
     <string name="did_not_add_food">U heeft nog geen voeding toegevoegd</string>
-    <string name="import_food_diary">Importeren uit voedingsdagboek</string>
+    <string name="import_food_diary">Importeren uit dagboek</string>
 
     <string name="add_food_success">Voeding toegevoegd aan dagboek</string>
+    <string name="food_deleted">Voeding verwijderd uit dagboek</string>
     <string name="add_meal_success">Maaltijd toegevoegd aan dagboek</string>
     <string name="update_food_success">Voeding is aangepast in het dagboek</string>
     <string name="delete_food_success">Voeding is verwijderd uit het dagboek</string>

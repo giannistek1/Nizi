@@ -60,22 +60,64 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- Nutrition -->
+    <!-- Content -->
     <RelativeLayout
-        android:id="@+id/fragment_diary_rl_nutrition"
+        android:id="@+id/fragment_favorites_rl_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/marginSmall"
         android:layout_below="@+id/fragment_favorites_ll_navigation">
+
+        <!-- Search -->
+        <LinearLayout
+            android:id="@+id/fragment_favorites_ll_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/marginNormal">
+
+            <SearchView
+                android:id="@+id/search_food"
+                android:layout_width="0dp"
+                android:layout_weight="14"
+                android:layout_height="wrap_content"
+                android:background="@drawable/text_border_gray"/>
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/ic_barcode"
+                android:src="@drawable/ic_barcode"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="6"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="@dimen/textSize12"
+                android:text="@string/scan_barcode"
+                android:visibility="invisible"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/fragment_add_food_txt_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_favorites_ll_search"
+            android:textColor="@color/black"
+            android:text="@string/amount_zero"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/favorites_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/fragment_add_food_txt_amount"
             android:padding="2dp"
             android:layout_marginTop="2dp"
             android:scrollbars="vertical"
-            android:background="@android:color/white"
-            android:layout_below="@+id/search_food"/>
+            android:background="@android:color/white"/>
 
     </RelativeLayout>
 

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
 
+    <!-- Top navigation -->
     <LinearLayout
         android:id="@+id/fragment_meals_ll_navigation"
         android:layout_width="match_parent"
@@ -41,7 +43,8 @@
                 android:paddingBottom="@dimen/marginNormal"
                 android:text="@string/meals"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:fontFamily="@font/helvetica_neue_bold"/>
 
             <View
                 android:layout_width="match_parent"
@@ -62,48 +65,114 @@
             android:textColor="@color/black"
             android:textSize="14sp" />
 
-
-
     </LinearLayout>
 
-    <!-- Nutrition -->
+    <!-- Content -->
     <RelativeLayout
-        android:id="@+id/fragment_diary_rl_nutrition"
+        android:id="@+id/fragment_meals_rl_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="@dimen/marginNormal"
         android:layout_below="@+id/fragment_meals_ll_navigation">
+
+        <!-- Header -->
+        <LinearLayout
+            android:id="@+id/fragment_meals_ll_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/marginSmall"
+            android:baselineAligned="false"
+            android:background="@color/white">
+
+            <!-- Input -->
+            <LinearLayout
+                android:background="@drawable/text_border_gray"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/marginSmall"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/activity_doctor_main_ic_user"
+                    android:scaleType="fitCenter"
+                    android:layout_width="@dimen/loginIconSize"
+                    android:layout_height="@dimen/loginIconSize"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/marginVerySmall"
+                    android:contentDescription="@string/ic_user"
+                    android:src="@drawable/ic_search"/>
+
+                <EditText
+                    android:id="@+id/fragment_meals_et_meal"
+                    android:fontFamily="@font/helvetica_light"
+                    android:textSize="@dimen/textSize12"
+                    android:hint="@string/meal"
+                    android:autofillHints="@string/meal"
+                    tools:targetApi="o"
+                    android:inputType="text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/marginSmall"
+                    android:paddingEnd="0dp"
+                    android:paddingTop="@dimen/marginSmaller"
+                    android:paddingBottom="@dimen/marginSmaller"
+                    android:background="@null"/>
+            </LinearLayout>
+
+            <!-- Button -->
+            <LinearLayout
+                android:id="@+id/create_meal"
+                android:background="@drawable/rectangle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/fragment_meal_img_add"
+                    android:scaleType="fitCenter"
+                    android:tint="@color/white"
+                    android:layout_width="@dimen/buttonIconSize"
+                    android:layout_height="@dimen/buttonIconSize"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/marginVerySmall"
+                    android:contentDescription="@string/ic_user"
+                    android:src="@drawable/ic_add"/>
+
+                <TextView
+                    android:id="@+id/fragment_meal_txt_makeMeal"
+                    android:textSize="@dimen/textSize12"
+                    android:text="@string/make_meal"
+                    android:textColor="@color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/marginSmall"
+                    android:paddingEnd="@dimen/marginSmall"
+                    android:paddingTop="@dimen/marginSmaller"
+                    android:paddingBottom="@dimen/marginSmaller"
+                    android:background="@null"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/fragment_meals_txt_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_meals_ll_header"
+            android:textColor="@color/black"
+            android:text="@string/amount_zero"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/meal_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/fragment_meals_txt_amount"
             android:padding="2dp"
             android:layout_marginTop="2dp"
             android:scrollbars="vertical"
-            android:background="@android:color/white"
-            android:layout_below="@+id/search_food"/>
-
-    </RelativeLayout>
-
-    <!-- Guidelines -->
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:layout_alignParentBottom="true">
-
-        <TextView
-            android:id="@+id/create_meal"
-            android:textColor="@color/black"
-            android:textSize="@dimen/h2"
-            android:text="Nieuwe maaltijd aanmaken"
-            android:layout_marginLeft="@dimen/marginHorizontal"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            />
-
+            android:background="@android:color/white"/>
     </RelativeLayout>
 </RelativeLayout>

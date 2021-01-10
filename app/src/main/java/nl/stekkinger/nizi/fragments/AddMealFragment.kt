@@ -19,12 +19,12 @@ import nl.stekkinger.nizi.classes.diary.Meal
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
-class AddMealFragment: Fragment() {
+class AddMealFragment: NavigationChildFragment() {
     private val mRepository: FoodRepository = FoodRepository()
     private lateinit var model: DiaryViewModel
     private lateinit var adapter: MealAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_meals, container, false)
         setHasOptionsMenu(true)
 
@@ -44,7 +44,7 @@ class AddMealFragment: Fragment() {
             else -> activity!!.toolbar_title.text = getString(R.string.diary)
         }
 
-        adapter = MealAdapter(model)
+        adapter = MealAdapter(model, context = context!!)
         recyclerView.adapter = adapter
 
         getMealsAsyncTask().execute()

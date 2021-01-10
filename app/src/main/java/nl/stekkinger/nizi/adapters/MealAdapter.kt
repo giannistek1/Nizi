@@ -1,7 +1,9 @@
 package nl.stekkinger.nizi.adapters
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.Bundle
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
@@ -16,11 +18,13 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.Meal
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.fragments.DiaryFragment
 
 class MealAdapter(
     private var model: DiaryViewModel = DiaryViewModel(),
-    private var mDataset: ArrayList<Meal> = ArrayList()
+    private var mDataset: ArrayList<Meal> = ArrayList(),
+    private val context: Context
 ) : RecyclerView.Adapter<MealAdapter.ViewHolder>() {
 
     private lateinit var activity: AppCompatActivity
@@ -61,9 +65,14 @@ class MealAdapter(
         holder.itemView.add_btn.setOnClickListener {
             model.addMeal(meal)
 
+            val fragment = DiaryFragment()
+            val bundle = Bundle()
+            bundle.putString(GeneralHelper.TOAST_TEXT, context.getString(R.string.add_meal_success))
+            fragment.arguments = bundle
+
             (activity).supportFragmentManager.beginTransaction().replace(
                 R.id.activity_main_fragment_container,
-                DiaryFragment()
+                fragment
             ).commit()
         }
 
