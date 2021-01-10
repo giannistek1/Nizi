@@ -28,60 +28,49 @@ class DiaryViewModel(
     private var mSearchText: MutableLiveData<String> = MutableLiveData()
 ) : ViewModel() {
 
+    // State values, used to observe changes within fragments
     val diaryState = mRepository.diaryState
-    fun getData(date: Calendar) { mRepository.getData(sdfDb.format(date.time)) }
-
     val favoritesState = mRepository.favoritesState
-    fun fetchFavorites() { mRepository.getFavorites() }
-
-
-
-    // Favorites
     val toggleFavoriteState = mRepository.toggleFavoriteState
-    fun resetToggleFavoriteState() { mRepository.resetToggleFavoriteState() }
-    fun addFavorite(id: Int) { mRepository.addFavorite(id) }
-    fun deleteFavorite(id: Int) { mRepository.deleteFavorite(id) }
+    val consumptionState = mRepository.consumptionState
+    val foodsState = mRepository.foodsState
+    val mealState = mRepository.mealState
+    val deleteMealState = mRepository.deleteMealState
 
-    // Easy access for ui to check favorites
-    fun getFavorites(): ArrayList<MyFood> { return mFavorites}
-    fun setFavorites(favorites: ArrayList<MyFood>) { mFavorites = favorites }
+    // functions to reset states (only needed for some if the fragment redirects on success)
+    fun emptyState() { mRepository.emptyState() }
+    fun emptyMealState() { mRepository.emptyMealState() }
+    fun emptyFoodsState() { mRepository.emptyFoodsState() }
+    fun emptyToggleFavoriteState() { mRepository.emptyToggleFavoriteState() }
+    fun emptyDeleteMealState() { mRepository.emptyDeleteMealState() }
 
-    fun setMealTime(time: String){
-        mMealTime = time
+
+    // foodSearch functions
+    private var mFoodSearch: LiveData<ArrayList<Food>> = Transformations.switchMap<String, ArrayList<Food>>(
+        mSearchText
+    ) { search: String ->  foodSearch(search) }
+
+    private fun foodSearch(searchText: String): MutableLiveData<ArrayList<Food>?> {
+        return mRepository.searchFood(searchText)
     }
-    fun getMealTime(): String {
-        return mMealTime
-    }
+    fun getFoodSearch(): LiveData<ArrayList<Food>> { return mFoodSearch }
+    fun setFoodSearch(text: String) { mSearchText.value = text }
 
+    // diary functions
+    // For tracking if the user is adding consumptions to breakfast, lunch etc.
+    fun getMealTime(): String { return mMealTime }
+    fun setMealTime(time: String){ mMealTime = time }
 
-
-
-    // diary/consumption area
-    private var mDiary: LiveData<ArrayList<ConsumptionResponse>> = Transformations.switchMap<Calendar, ArrayList<ConsumptionResponse>>(
-        mDate
-    ) { date: Calendar ->  diary(date) }
-
-    private fun diary(date: Calendar): MutableLiveData<ArrayList<ConsumptionResponse>> {
-        return mRepository.getDiary(sdfDb.format(date.time))
-    }
-
-    fun setDiaryDate(cal: Calendar) {
-        mDate.value = cal
-    }
-
-    fun getDiary(): LiveData<ArrayList<ConsumptionResponse>> {
-        return mDiary
-    }
+    // For tracking on what date diary functions must execute
+    fun setDiaryDate(cal: Calendar) { mDate.value = cal }
+    fun getSelectedDate(): Calendar { return mDate.value!! }
 
     // Date format for views
     private val sdf: SimpleDateFormat = GeneralHelper.getDateFormat()
     // Date format for database
     private val sdfDb: SimpleDateFormat = GeneralHelper.getCreateDateFormat()
 
-    fun getSelectedDate(): Calendar {
-        return mDate.value!!
-    }
-
+    // Getting date string for views
     fun getDateString(): String {
         val date: String = sdf.format(mDate.value!!.time)
         // create temporary calendar
@@ -105,33 +94,10 @@ class DiaryViewModel(
         }
     }
 
-    fun deleteConsumption(id: Int) {
-        mRepository.deleteConsumption(id)
-    }
 
-    // foodSearch
-    private var mFoodSearch: LiveData<ArrayList<Food>> = Transformations.switchMap<String, ArrayList<Food>>(
-        mSearchText
-    ) { search: String ->  foodSearch(search) }
-
-    private fun foodSearch(searchText: String): MutableLiveData<ArrayList<Food>?> {
-        return mRepository.searchFood(searchText)
-    }
-
-    fun setFoodSearch(text: String) {
-        mSearchText.value = text
-    }
-
-    fun getFoodSearch(): LiveData<ArrayList<Food>> {
-        return mFoodSearch
-    }
-
-    // for food view fragment
+    // Holds food item for food view
     val selected = MutableLiveData<Food>()
-    private var currentFragment = "food"
-    fun getCurrentFragment(): String {
-        return currentFragment
-    }
+    fun getSelected(): Food? { return selected.value }
 
     // load the food view fragment with the selected food
     fun select(activity: AppCompatActivity, food: Food, fragment: String = "food") {
@@ -143,20 +109,16 @@ class DiaryViewModel(
         ).commit()
     }
 
-    fun emptyState() {
-        mRepository.emptyState()
-    }
+    // For tracking what type of food view is being used (food, meal, mealEdit)
+    private var currentFragment = "food"
+    fun getCurrentFragment(): String { return currentFragment }
 
-    val selectedEdit = MutableLiveData<ConsumptionResponse>()
-    fun selectEdit(activity: AppCompatActivity, consumption: ConsumptionResponse) {
-        // TODO: remove activity?
-        selectedEdit.value = consumption
-    }
+    // consumption functions
+    fun getConsumptions(date: Calendar) { mRepository.getConsumptions(sdfDb.format(date.time)) }
+    fun deleteConsumption(id: Int) { mRepository.deleteConsumption(id) }
 
     fun addConsumption(food: Food, portion: Float = 1.0F) {
-
         val date: String = sdfDb.format(mDate.value!!.time)
-
         val foodItem = FoodMealComponent(
             id = food.id,
             name = food.name,
@@ -176,7 +138,6 @@ class DiaryViewModel(
             unit = food.weight_unit.unit,
             short = food.weight_unit.short
         )
-
         val consumption = Consumption(
             amount = portion,
             date = date+"T00:00:00.000Z",
@@ -187,8 +148,6 @@ class DiaryViewModel(
         )
         mRepository.addConsumption(consumption)
     }
-
-    val consumptionState = mRepository.consumptionState
 
     fun editConsumption(c: ConsumptionResponse, newPortion: Float) {
         val date: String = sdfDb.format(mDate.value!!.time)
@@ -226,14 +185,24 @@ class DiaryViewModel(
         mRepository.editConsumption(consumption)
     }
 
-    // meals
-    fun deleteMeal(id: Int){
-        mRepository.deleteMeal(id)
-    }
+    // favorites
+    fun fetchFavorites() { mRepository.getFavorites() }
+    fun addFavorite(id: Int) { mRepository.addFavorite(id) }
+    fun deleteFavorite(id: Int) { mRepository.deleteFavorite(id) }
 
+    // Easy access for UI to check favorites
+    fun getFavorites(): ArrayList<MyFood> { return mFavorites}
+    fun setFavorites(favorites: ArrayList<MyFood>) { mFavorites = favorites }
+
+
+    // Holds consumption for consumption view
+    val selectedEdit = MutableLiveData<ConsumptionResponse>()
+    fun selectEdit(consumption: ConsumptionResponse) { selectedEdit.value = consumption }
+
+    // meals
     // storing values for meal fragments
     private var adapter: MealProductAdapter = MealProductAdapter(this)
-    private var mealProducts: ArrayList<Food> = ArrayList()
+    private var mealProducts: ArrayList<Food> = arrayListOf()
     private var mealProductPosition: Int = 0
     private var mealId: Int = 0
     private var mealComponentId: Int = 0
@@ -242,14 +211,18 @@ class DiaryViewModel(
     private var isMealEdit: Boolean = false
 
     // getters and setters for meal values
-    fun getMealComponentId(): Int { return mealComponentId }
-    fun setMealComponentId(id: Int) { mealComponentId = id}
+    fun getMealProductAdapter(): MealProductAdapter { return adapter }
 
-    fun getIsMealEdit(): Boolean { return isMealEdit }
-    fun setIsMealEdit(isEdit: Boolean) { isMealEdit = isEdit }
+    fun getMealProducts(): ArrayList<Food> { return mealProducts }
+    fun setMealProducts(foods: ArrayList<Food>) { mealProducts = foods }
+
+    fun setMealProductPosition(pos: Int) { mealProductPosition = pos }
 
     fun getMealId(): Int { return mealId }
     fun setMealId(id: Int) { mealId = id }
+
+    fun getMealComponentId(): Int { return mealComponentId }
+    fun setMealComponentId(id: Int) { mealComponentId = id}
 
     fun getMealName(): String { return mealName }
     fun setMealName(name: String) { mealName = name }
@@ -257,27 +230,41 @@ class DiaryViewModel(
     fun getMealPhoto(): String? { return mealPhoto }
     fun setMealPhoto(photo: String) { mealPhoto = photo }
 
-    fun setMealProductPosition(pos: Int) { mealProductPosition = pos }
-    fun setMealProducts(foods: ArrayList<Food>) { mealProducts = foods }
+    fun getIsMealEdit(): Boolean { return isMealEdit }
+    fun setIsMealEdit(isEdit: Boolean) { isMealEdit = isEdit }
 
+    // meal product list functions (keeps the list intact when swapping various meal fragments)
     fun addMealProduct(food: Food, amount: Float = 1f) {
         food.amount = amount
         mealProducts.add(food)
         adapter.setMealProductList(mealProducts)
     }
 
-
     fun editMealProduct(amount: Float) {
         mealProducts[mealProductPosition].amount = amount
         adapter.setMealProductList(mealProducts)
     }
 
-    val mealState = mRepository.mealState
+    fun emptyMealProducts() { mealProducts.clear() }
 
-    fun createMeal(meal: Meal) {
-        mRepository.createMeal(meal)
+    // load the food view fragment with the selected meal
+    val selectedMeal = MutableLiveData<Meal>()
+    fun emptySelectedMeal() { selectedMeal.value = null}
+    fun selectMeal(activity: AppCompatActivity, meal: Meal) {
+        selectedMeal.value = meal
+
+        (activity).supportFragmentManager.beginTransaction().replace(
+            R.id.activity_main_fragment_container,
+            MealViewFragment()
+        ).commit()
     }
 
+    fun getMeal(id: Int) { mRepository.getMeal(id) }
+
+    fun createMeal(meal: Meal) { mRepository.createMeal(meal) }
+    fun deleteMeal(id: Int){ mRepository.deleteMeal(id) }
+
+    // Meal food functions
     fun createMealFoods(mealId: Int) {
         for (food: Food in mealProducts) {
             val mealFood = MealFood(
@@ -289,20 +276,8 @@ class DiaryViewModel(
         }
     }
 
-    // load the food view fragment with the selected food
-    val selectedMeal = MutableLiveData<Meal>()
-    fun emptySelectedMeal() { selectedMeal.value = null}
-    fun selectMeal(activity: AppCompatActivity, meal: Meal) {
-
-        selectedMeal.value = meal
-        (activity).supportFragmentManager.beginTransaction().replace(
-            R.id.activity_main_fragment_container,
-            MealViewFragment()
-        ).commit()
-    }
-
+    // Adding a meal item as consumption
     fun addMeal(meal: Meal, amount: Float = 1f) {
-        // TODO: transform into consumption
         val date: String = sdfDb.format(mDate.value!!.time)
 
         val foodItem = FoodMealComponent(
@@ -328,12 +303,10 @@ class DiaryViewModel(
             weight_unit = GeneralHelper.getWeightUnitHolder()!!.weightUnits[7],
             food_meal_component = foodItem
         )
-
          mRepository.addConsumption(consumption)
     }
 
-    val foodsState = mRepository.foodsState
-    fun editMeal(meal: Meal) {
+    fun getFoods(meal: Meal) {
         // empty meal products
         mealProducts.clear()
         // get the food items
@@ -345,18 +318,8 @@ class DiaryViewModel(
             mRepository.getFoods(foodIds)
         }
     }
-    fun updateMeal(meal: Meal) {
-        mRepository.updateMeal(meal, mealId)
-    }
-    fun deleteMealFoods(mealId: Int) {
-        mRepository.deleteMealFoods(mealId)
-    }
 
-    fun getMealProducts(): ArrayList<Food> {
-        return mealProducts
-    }
+    fun updateMeal(meal: Meal) { mRepository.updateMeal(meal, mealId) }
+    fun deleteMealFoods(mealId: Int) { mRepository.deleteMealFoods(mealId) }
 
-    fun getMealProductAdapter(): MealProductAdapter {
-        return adapter
-    }
 }

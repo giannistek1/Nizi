@@ -130,8 +130,8 @@ class DiaryFragment: BaseFragment() {
             model.consumptionState.collect {
                 when(it) {
                     is FoodRepository.State.Success -> {
-                        // Somthing has been updated. get new diary data
-                        model.getData(cal)
+                        // Something has been updated. get new diary data
+                        model.getConsumptions(cal)
                         view.fragment_diary_loader.visibility = GONE
                         model.emptyState()
                     }
@@ -174,7 +174,7 @@ class DiaryFragment: BaseFragment() {
                 }
             }
         }
-        model.getData(cal)
+        model.getConsumptions(cal)
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(breakfastRv)
 
@@ -291,7 +291,7 @@ class DiaryFragment: BaseFragment() {
         var cal: Calendar = model.getSelectedDate()
         cal.add(Calendar.DATE, dayAdjustment)
         model.setDiaryDate(cal)
-        model.getData(cal)
+        model.getConsumptions(cal)
 
         when (model.getDateString()) {
             "today" -> {

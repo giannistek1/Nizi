@@ -128,14 +128,14 @@ class FoodViewFragment : Fragment() {
                             isLiked(false)
                             Toast.makeText(activity, R.string.deleted_favorite, Toast.LENGTH_SHORT).show()
                             model.fetchFavorites()
-                            model.resetToggleFavoriteState()
+                            model.emptyToggleFavoriteState()
                         } else {
                             d("add", "add")
                             // added
                             isLiked(true)
                             Toast.makeText(activity, R.string.added_favorite, Toast.LENGTH_SHORT).show()
                             model.fetchFavorites()
-                            model.resetToggleFavoriteState()
+                            model.emptyToggleFavoriteState()
                         }
                         view.fragment_food_view_loader.visibility = GONE
                         mFavBtn.isEnabled = true

@@ -42,8 +42,6 @@ import java.io.ByteArrayOutputStream
 
 class CreateMealFragment: Fragment() {
     private lateinit var model: DiaryViewModel
-    private lateinit var queryTextListener: SearchView.OnQueryTextListener
-    private lateinit var searchAdapter: FoodSearchAdapter
     private lateinit var mealProductAdapter: MealProductAdapter
     private lateinit var mInputMealName: TextInputLayout
     private var mMealId: Int? = null
@@ -63,7 +61,7 @@ class CreateMealFragment: Fragment() {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
-        updateUI(view)
+        // update UI with current data
         mInputMealName.editText?.setText(model.getMealName())
         if (model.getMealPhoto() != null) {
             val decodedString: ByteArray = Base64.decode(model.getMealPhoto(), Base64.DEFAULT)
@@ -72,19 +70,19 @@ class CreateMealFragment: Fragment() {
                 view.image_food_view.setImageBitmap(decodedByte)
             }
         }
-        d("createM", model.getIsMealEdit().toString())
+        updateUI(view)
 
+        // Update UI with incoming data
         model.selectedMeal.observe(this, Observer<Meal> { meal ->
-            // Update the UI
             if (meal != null) {
                 // set meal values in the model
                 model.setIsMealEdit(true)
                 model.setMealId(meal.id)
                 model.setMealComponentId(meal.food_meal_component.id)
-                d("createM", model.getIsMealEdit().toString())
                 mMealId = meal.id
                 mInputMealName.editText?.setText(meal.food_meal_component.name)
                 if (meal.food_meal_component.image_url != "" && meal.food_meal_component.image_url != null) {
+                    model.setMealPhoto(meal.food_meal_component.image_url)
                     mPhoto = meal.food_meal_component.image_url
                     val decodedString: ByteArray =
                         Base64.decode(meal.food_meal_component.image_url, Base64.DEFAULT)
@@ -101,20 +99,19 @@ class CreateMealFragment: Fragment() {
             }
         })
 
-        // rv's
+        // rv
         val mealProductRV: RecyclerView = view.findViewById(R.id.create_meal_list_recycler_view)
         mealProductRV.layoutManager = LinearLayoutManager(activity)
-
-        // adapters
+        // adapter
         mealProductAdapter = model.getMealProductAdapter()
         mealProductRV.adapter = mealProductAdapter
+        // collect mealproducts
         val mealProducts: ArrayList<Food> = model.getMealProducts()
         if (mealProducts.count() > 0) {
             view.create_meal_empty_list_text.visibility = View.GONE
         }
         // fill the adapter
         mealProductAdapter.setMealProductList(model.getMealProducts())
-
 
         // triggered when a meal is saved
         lifecycleScope.launchWhenStarted {
@@ -128,43 +125,44 @@ class CreateMealFragment: Fragment() {
                         } else {
                             model.createMealFoods(it.data.id)
                         }
-
+                        model.emptyMealState()
 
                         view.fragment_create_meal_loader.visibility = View.GONE
-                        (activity)!!.supportFragmentManager.beginTransaction().replace(
-                            R.id.activity_main_fragment_container,
-                            AddMealFragment()
-                        ).commit()
+
+                        fragmentManager!!
+                            .beginTransaction()
+                            .replace(
+                                R.id.activity_main_fragment_container,
+                                AddMealFragment()
+                            )
+                            .commit()
                     }
                     is FoodRepository.MealState.Error -> {
-                        // TODO: add Error msg toast
-                        d("createM", "error")
+                        // Todo: add toast for failure
                         view.fragment_create_meal_loader.visibility = View.GONE
                     }
                     is FoodRepository.MealState.Loading -> {
-                        d("createM", "Loading")
                         view.fragment_create_meal_loader.visibility = View.VISIBLE
                     }
                     else -> {
-                        d("createM", "empty")
                         view.fragment_create_meal_loader.visibility = View.GONE
                     }
                 }
             }
         }
 
-        // Triggered if new mealfoods are collected(when editing a meal)
+        // Triggered if new mealfoods are collected (when editing a meal)
         lifecycleScope.launchWhenStarted {
             model.foodsState.collect {
                 when(it) {
                     is FoodRepository.FoodsState.Success -> {
                         if (it.data.count() > 0 ) {
                             view.create_meal_empty_list_text.visibility = View.GONE
-                            mealProductAdapter.setMealProductList(it.data)
-                            model.setMealProducts(it.data)
-
                         }
+                        mealProductAdapter.setMealProductList(it.data)
+                        model.setMealProducts(it.data)
                         view.fragment_create_meal_loader.visibility = View.GONE
+                        model.emptyFoodsState()
                     }
                     is FoodRepository.FoodsState.Error -> {
                         // TODO: add Error msg toast
@@ -241,8 +239,9 @@ class CreateMealFragment: Fragment() {
         } else { // validate success
             // prep photo
             var photoString:String = ""
-            if(mPhoto != null) {
-                photoString = mPhoto.toString()
+            var savedPhoto: String? = model.getMealPhoto()
+            if(savedPhoto != null && savedPhoto != "") {
+                photoString = savedPhoto
             }
 
             // get total nutrition values of the meal
@@ -265,7 +264,7 @@ class CreateMealFragment: Fragment() {
 
             // create meal object
             val foodMealComponent = FoodMealComponent(
-                id = 357,
+                id = model.getMealComponentId(),
                 name = mMealName,
                 description = "beschrijving",
                 kcal = totalKcal,
@@ -280,7 +279,6 @@ class CreateMealFragment: Fragment() {
             )
 
             if (model.getIsMealEdit()) {
-                d("createM", "editing")
                 val meal = Meal(
                     id = model.getMealId(),
                     food_meal_component = foodMealComponent,
@@ -328,7 +326,7 @@ class CreateMealFragment: Fragment() {
                     val b: ByteArray = baos.toByteArray()
 
                     val encodedImage: String = Base64.encodeToString(b, Base64.DEFAULT)
-                    mPhoto = encodedImage
+                    model.setMealPhoto(encodedImage)
                 }
             }
             else -> {

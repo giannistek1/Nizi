@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.util.Log.d
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_food.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.Meal
 import nl.stekkinger.nizi.fragments.DiaryFragment
 
@@ -36,6 +38,8 @@ class MealAdapter(
         return ViewHolder(view)
             .listen { pos, _ ->
                 var meal = mDataset[pos]
+                model.emptySelectedMeal()
+                model.emptyMealProducts()
                 model.selectMeal(activity, meal)
             }
     }

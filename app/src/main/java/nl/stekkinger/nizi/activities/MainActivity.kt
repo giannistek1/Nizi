@@ -79,10 +79,6 @@ class MainActivity : BaseActivity() {
 
         diaryModel = ViewModelProviders.of(this)[DiaryViewModel::class.java]
 
-        diaryModel.getDiary().observe(this, Observer { _ ->
-
-        })
-
         // Checks if fragment state is null and save it
         if (savedInstanceState != null)
             this.savedInstanceState = savedInstanceState
