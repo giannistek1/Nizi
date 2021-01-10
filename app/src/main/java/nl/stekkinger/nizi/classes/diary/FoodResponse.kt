@@ -10,5 +10,6 @@ data class FoodResponse (
     val weight_unit: WeightUnit,
     val my_food: Int,
     val food_meal_component: FoodMealComponent,
-    val meal_foods: ArrayList<MealFood> = arrayListOf()
+    val meal_foods: ArrayList<MealFood> = arrayListOf(),
+    val barcode: String
 )

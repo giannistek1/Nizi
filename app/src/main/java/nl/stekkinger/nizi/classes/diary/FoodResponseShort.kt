@@ -8,5 +8,6 @@ data class FoodResponseShort (
     val weight_unit: Int,
     val my_food: Int,
     val meal_food: Int? = null,
-    val food_meal_component: FoodMealComponent
+    val food_meal_component: FoodMealComponent,
+    val barcode: String
 )
