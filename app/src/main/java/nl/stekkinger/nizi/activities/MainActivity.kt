@@ -147,17 +147,6 @@ class MainActivity : BaseActivity() {
     }
     //endregion
 
-    fun getVisibleFragment(): Fragment? {
-        val fragmentManager: FragmentManager = this@MainActivity.supportFragmentManager
-        val fragments: List<Fragment>? = fragmentManager.fragments
-        if (fragments != null) {
-            for (fragment in fragments) {
-                if (fragment != null && fragment.isVisible) return fragment
-            }
-        }
-        return null
-    }
-
     //region Get WeightUnits
     inner class getWeightUnits() : AsyncTask<Void, Void, ArrayList<WeightUnit>>()
     {

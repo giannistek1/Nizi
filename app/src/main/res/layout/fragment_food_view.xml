@@ -30,10 +30,10 @@
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
                         android:background="@color/lightGray"
-                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingStart="@dimen/marginNormal"
                         android:textColor="@color/black"
                         android:textSize="@dimen/textSizeNormal"
-                        tools:text="Title" />
+                        android:text="@string/title"/>
 
                     <TextView
                         android:id="@+id/date_food_view"
@@ -43,7 +43,7 @@
                         android:gravity="center|center_vertical"
                         android:textColor="@color/black"
                         android:textSize="@dimen/textSizeNormal"
-                        tools:text="" />
+                        tools:text=""/>
 
                     <LinearLayout
                         android:id="@+id/fav_and_delete_btns"
@@ -58,7 +58,7 @@
                             style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="@dimen/dateNavigationSize"
                             android:layout_height="@dimen/dateNavigationSize"
-                            android:layout_gravity="right"
+                            android:layout_gravity="end"
                             android:contentDescription="@string/favorites"
                             android:src="@drawable/ic_edit" />
 
@@ -67,7 +67,7 @@
                             style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="@dimen/dateNavigationSize"
                             android:layout_height="@dimen/dateNavigationSize"
-                            android:layout_gravity="right"
+                            android:layout_gravity="end"
                             android:contentDescription="@string/favorites"
                             android:src="@drawable/ic_heart" />
 
@@ -76,7 +76,7 @@
                             style="@style/Widget.AppCompat.Button.Borderless"
                             android:layout_width="@dimen/dateNavigationSize"
                             android:layout_height="@dimen/dateNavigationSize"
-                            android:layout_gravity="right"
+                            android:layout_gravity="end"
                             android:contentDescription="@string/content_delete"
                             android:src="@drawable/ic_trashcan" />
 
