@@ -104,9 +104,6 @@ class MainActivity : BaseActivity() {
             R.id.confirm_btn -> {
                 return false
             }
-            R.id.back_btn -> {
-                return false
-            }
         }
         return true
     }
