@@ -9,5 +9,5 @@ data class FoodResponseShort (
     val my_food: Int,
     val meal_food: Int? = null,
     val food_meal_component: FoodMealComponent,
-    val barcode: String
+    val barcode: String = ""
 )
