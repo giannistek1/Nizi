@@ -223,6 +223,12 @@ interface ApiService {
         @Query("patient.id") patientId: Int
     ) : Call<ArrayList<Meal>>
 
+    @GET("meals/{id}")
+    fun getMeal(
+        @Header("Authorization") authHeader : String,
+        @Path("id") id: Int
+    ) : Call<Meal>
+
     @PUT("meals/{id}")
     fun updateMeal(
         @Header("Authorization") authHeader : String,
@@ -230,11 +236,10 @@ interface ApiService {
         @Body body: Meal
     ) : Call<Meal>
 
-    @DELETE("v1/meal")
+    @DELETE("meals/{id}")
     fun deleteMeal(
         @Header("Authorization") authHeader : String,
-        @Query("patientId") patientId: Int,
-        @Query("mealId") mealId: Int
+        @Path("id") id: Int
     ) : Call<Unit>
 
     @DELETE("meal-foods/")

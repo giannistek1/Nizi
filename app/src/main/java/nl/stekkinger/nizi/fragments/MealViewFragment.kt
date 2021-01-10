@@ -2,6 +2,8 @@ package nl.stekkinger.nizi.fragments
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.os.AsyncTask
+import android.util.Log
 import android.os.Bundle
 import android.text.Editable
 import android.view.*
@@ -16,14 +18,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_create_meal.view.*
 import kotlinx.android.synthetic.main.fragment_diary.view.*
 import kotlinx.android.synthetic.main.fragment_food_view.*
 import kotlinx.android.synthetic.main.fragment_food_view.view.*
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.adapters.MealProductAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.diary.Food
@@ -39,7 +45,9 @@ class MealViewFragment : Fragment() {
     private lateinit var mServingInput: TextInputEditText
     private lateinit var mDecreaseBtn: ImageButton
     private lateinit var mSaveBtn: ImageButton
+    private lateinit var mealProductAdapter: MealProductAdapter
     private var mEdit = true // edit or delete
+    private val amounts: ArrayList<Float> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,9 +62,13 @@ class MealViewFragment : Fragment() {
             ViewModelProviders.of(this).get(DiaryViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
+        model.emptyMealProducts()
+
         model.selectedMeal.observe(this, Observer<Meal> { meal ->
             // store food product
             mMeal = meal
+            // collects mealproducts belonging to meal
+            model.getMeal(meal.id)
 
             // Update the UI
             title_food_view.text = meal.food_meal_component.name
@@ -71,6 +83,73 @@ class MealViewFragment : Fragment() {
             }
             updateUI()
         })
+
+        // rv's
+        val mealProductRV: RecyclerView = view.findViewById(R.id.food_view_recycler_view)
+        mealProductRV.layoutManager = LinearLayoutManager(activity)
+
+        // adapters
+        mealProductAdapter = model.getMealProductAdapter()
+        mealProductRV.adapter = mealProductAdapter
+        val mealProducts: ArrayList<Food> = model.getMealProducts()
+
+
+
+        lifecycleScope.launchWhenStarted {
+            model.mealState.collect {
+                when(it) {
+                    is FoodRepository.MealState.Success -> {
+                        // get meal products
+                        model.getFoods(it.data)
+                        // store amounts (API doesnt retrieve amount from products)
+
+                        if (it.data.meal_foods != null) {
+                            for (food in it.data.meal_foods) {
+                                amounts.add(food.amount)
+                            }
+                        }
+                        model.emptyMealState()
+                    } else -> {}
+                }
+            }
+        }
+
+        lifecycleScope.launchWhenStarted {
+            model.foodsState.collect {
+                when(it) {
+                    is FoodRepository.FoodsState.Success -> {
+                        // update amounts
+                        for (i in 1..amounts.count()) {
+                            it.data[i-1].amount = amounts[i-1]
+                        }
+                        // fill the adapter
+                        model.setMealProducts(it.data)
+                        mealProductAdapter.setMealProductList(it.data)
+                        model.emptyFoodsState()
+                    } else -> {}
+                }
+            }
+        }
+        lifecycleScope.launchWhenStarted {
+            model.deleteMealState.collect {
+                when(it) {
+                    is FoodRepository.State.Success -> {
+                        // todo: toast
+                        model.emptyDeleteMealState()
+                        (activity)!!.supportFragmentManager.beginTransaction().replace(
+                            R.id.activity_main_fragment_container,
+                            AddMealFragment()
+                        ).commit()
+                    }
+                    is FoodRepository.State.Error -> {
+                        // todo: toast
+                    } else -> {}
+                }
+            }
+        }
+
+        view.food_view_meal_products_title.visibility = View.VISIBLE
+        view.food_view_recycler_view.visibility = View.VISIBLE
 
         view.heart_food_view.visibility = GONE
         mSaveBtn = view.save_btn
@@ -110,7 +189,6 @@ class MealViewFragment : Fragment() {
         }
 
         view.edit_food_view.setOnClickListener {
-            model.editMeal(mMeal)
             (activity)!!.supportFragmentManager.beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 CreateMealFragment()
@@ -118,8 +196,12 @@ class MealViewFragment : Fragment() {
         }
 
         view.delete_food_view.setOnClickListener {
-            mEdit = false
-            model.deleteConsumption(mMeal.id)
+            model.deleteMeal(mMeal.id)
+
+            (activity)!!.supportFragmentManager.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                AddMealFragment()
+            ).commit()
         }
 
         mServingInput.setOnKeyListener { v, keyCode, _ ->

@@ -29,11 +29,10 @@ class ConsumptionAdapter(
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_diary_food, parent, false)
         return ViewHolder(view)
             .listen { pos, _ ->
-
                 var consumption = mDataset[pos]
-                d("conAdp", consumption.toString())
+                model.selectEdit(consumption)
+
                 val activity = view.context as AppCompatActivity
-                model.selectEdit(activity, consumption)
                 (activity).supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     ConsumptionViewFragment()
