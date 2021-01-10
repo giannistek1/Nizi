@@ -67,7 +67,7 @@ class MealAdapter(
 
             val fragment = DiaryFragment()
             val bundle = Bundle()
-            bundle.putString(GeneralHelper.TOAST_TEXT, context.getString(R.string.meal_added))
+            bundle.putString(GeneralHelper.TOAST_TEXT, context.getString(R.string.add_meal_success))
             fragment.arguments = bundle
 
             (activity).supportFragmentManager.beginTransaction().replace(

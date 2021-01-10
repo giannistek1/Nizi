@@ -183,7 +183,7 @@ class MealViewFragment : NavigationChildFragment() {
             // Send text with fragment for toast
             val fragment = DiaryFragment()
             val bundle = Bundle()
-            bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.meal_added))
+            bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.add_meal_success))
             fragment.arguments = bundle
 
             (activity)!!.supportFragmentManager.beginTransaction().replace(
@@ -219,11 +219,19 @@ class MealViewFragment : NavigationChildFragment() {
             model.consumptionState.collect {
                 when(it) {
                     is FoodRepository.State.Success -> {
-                        if(mEdit) Toast.makeText(activity, R.string.update_food_success, Toast.LENGTH_SHORT).show()
-                        else Toast.makeText(activity, R.string.delete_food_success, Toast.LENGTH_SHORT).show()
+                        // Send text with fragment for toast
+                        val fragment = DiaryFragment()
+                        val bundle = Bundle()
+
+                        if(mEdit)
+                            bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.update_food_success))
+                        else
+                            bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.delete_food_success))
+
+                        fragment.arguments = bundle
                         (activity)!!.supportFragmentManager.beginTransaction().replace(
                             R.id.activity_main_fragment_container,
-                            DiaryFragment()
+                            fragment
                         ).commit()
                     }
                     is FoodRepository.State.Error -> {
