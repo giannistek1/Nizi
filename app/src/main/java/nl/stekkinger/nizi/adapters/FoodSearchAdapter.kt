@@ -18,6 +18,7 @@ import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_food.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.fragments.DiaryFragment
 
@@ -101,7 +102,6 @@ class FoodSearchAdapter(
             holder.favBtn.isVisible = false
             holder.deleteBtn.isVisible = true
         }
-
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -118,6 +118,13 @@ class FoodSearchAdapter(
 
     fun setFoodList(foodList: ArrayList<Food>) {
         this.mDataset = foodList
+        notifyDataSetChanged()
+    }
+
+    fun removeItem(position: Int) {
+        var food : Food = mDataset[position]
+        model.deleteFavorite(food.my_food)
+        this.mDataset.removeAt(position)
         notifyDataSetChanged()
     }
 }

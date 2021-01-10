@@ -178,7 +178,7 @@ interface ApiService {
     @GET("my-foods")
     fun getFavoriteFood(
         @Header("Authorization") authHeader : String,
-        @Query("patients_ids.id") patientId: Int
+        @Query("patients_id.id") patientId: Int
     ) : Call<ArrayList<MyFoodResponse>>
 
     // Staat hier ook een fout in bij swagger

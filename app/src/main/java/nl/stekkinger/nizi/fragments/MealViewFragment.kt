@@ -197,11 +197,6 @@ class MealViewFragment : Fragment() {
 
         view.delete_food_view.setOnClickListener {
             model.deleteMeal(mMeal.id)
-
-            (activity)!!.supportFragmentManager.beginTransaction().replace(
-                R.id.activity_main_fragment_container,
-                AddMealFragment()
-            ).commit()
         }
 
         mServingInput.setOnKeyListener { v, keyCode, _ ->
@@ -242,7 +237,7 @@ class MealViewFragment : Fragment() {
     }
 
     private fun updateUI() {
-        var amount: Float = 0f
+        var amount: Float = 1f
         if (mServingInput.text.toString() != "") {
             amount = mServingInput.text.toString().toFloat()
         }
@@ -266,13 +261,13 @@ class MealViewFragment : Fragment() {
 
         // updating nutrition values
         val food: FoodMealComponent = mMeal.food_meal_component
-        serving_size_value.text = "%.0f".format(food.portion_size) + " " + mMeal.weight_unit!!.unit
-        calories_value_food_view.text = "%.2f".format(food.kcal) + " Kcal"
-        fiber_value_food_view.text = "%.2f".format(food.fiber) + " g"
-        protein_value_food_view.text = "%.2f".format(food.protein) + " g"
-        water_value_food_view.text = "%.2f".format(food.water) + "ml"
-        sodium_value_food_view.text = "%.2f".format(food.sodium * 1000) + " mg"
-        potassium_value_food_view.text = "%.2f".format(food.potassium * 1000) + " mg"
+        serving_size_value.text = "%.0f".format(food.portion_size * amount) + " " + mMeal.weight_unit!!.unit
+        calories_value_food_view.text = "%.2f".format(food.kcal * amount) + " Kcal"
+        fiber_value_food_view.text = "%.2f".format(food.fiber * amount) + " g"
+        protein_value_food_view.text = "%.2f".format(food.protein * amount) + " g"
+        water_value_food_view.text = "%.2f".format(food.water * amount) + "ml"
+        sodium_value_food_view.text = "%.2f".format(food.sodium * 1000 * amount) + " mg"
+        potassium_value_food_view.text = "%.2f".format(food.potassium * 1000 * amount) + " mg"
     }
 
     private val textWatcher: TextWatcher = object : TextWatcher {

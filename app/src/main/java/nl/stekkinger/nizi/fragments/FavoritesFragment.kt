@@ -8,6 +8,7 @@ import android.util.Log
 import android.util.Log.d
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -32,15 +33,18 @@ class FavoritesFragment: Fragment() {
         val view: View = inflater.inflate(R.layout.fragment_favorites, container, false)
         setHasOptionsMenu(true)
 
-        val recyclerView: RecyclerView = view.favorites_rv
-        recyclerView.layoutManager = LinearLayoutManager(activity)
+
+
 
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
+        val recyclerView: RecyclerView = view.favorites_rv
+        recyclerView.layoutManager = LinearLayoutManager(activity)
         adapter = FoodSearchAdapter(model, fragment = "favorites")
         recyclerView.adapter = adapter
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
 
         model.fetchFavorites()
 
@@ -124,13 +128,9 @@ class FavoritesFragment: Fragment() {
         return view
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.menu_back, menu)
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.back_btn -> {
+            android.R.id.home -> {
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     DiaryFragment()
@@ -140,4 +140,22 @@ class FavoritesFragment: Fragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+    private val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(
+                viewHolder: RecyclerView.ViewHolder,
+                direction: Int
+            ) {
+                adapter.removeItem(viewHolder.adapterPosition)
+            }
+        }
 }

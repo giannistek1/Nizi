@@ -177,6 +177,9 @@ class DiaryFragment: BaseFragment() {
         model.getConsumptions(cal)
 
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(breakfastRv)
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(lunchRv)
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(dinnerRv)
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(snackRv)
 
         mNextDayBtn = view.diary_next_date
 
@@ -327,6 +330,9 @@ class DiaryFragment: BaseFragment() {
                 direction: Int
             ) {
                 breakfastAdapter.removeItem(viewHolder.adapterPosition)
+                lunchAdapter.removeItem(viewHolder.adapterPosition)
+                dinnerAdapter.removeItem(viewHolder.adapterPosition)
+                snackAdapter.removeItem(viewHolder.adapterPosition)
             }
         }
 }

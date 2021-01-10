@@ -5,5 +5,6 @@ data class PatientDiary(
     val gender: String,
     val date_of_birth: String,
     val doctor: Int = 0,
-    val user: Int = 0
+    val user: Int = 0,
+    val my_food: Int = 0
 )

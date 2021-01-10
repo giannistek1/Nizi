@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi.repositories
 
+import android.util.Log.d
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -214,7 +215,7 @@ class FoodRepository : Repository() {
     // Adding a favorite food for a user
     fun addFavorite(id: Int) {
         _toggleFavoriteState.value = State.Loading
-        val myFoodRequest = MyFoodRequest(food = id, patients_ids = GeneralHelper.getUser().patient!!.id )
+        val myFoodRequest = MyFoodRequest(food = id, patients_id = GeneralHelper.getUser().patient!!.id )
         service.addFavoriteFood(authHeader = authHeader, body = myFoodRequest).enqueue(object : Callback<Unit> {
             override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                 if (response.isSuccessful) {
