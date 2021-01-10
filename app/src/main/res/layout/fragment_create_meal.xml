@@ -20,6 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/lightGray"
+                android:paddingHorizontal="@dimen/marginNormal"
                 android:orientation="horizontal">
 
                 <TextView
@@ -27,7 +28,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/marginVerySmall"
+                    android:layout_marginEnd="@dimen/marginVerySmall"
                     android:layout_gravity="center_vertical"
                     android:text="@string/name"
                     android:textColor="@color/black"/>
@@ -117,7 +118,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="@dimen/marginNormal"
-                android:layout_margin="@dimen/marginVerySmall"
+                android:layout_marginVertical="@dimen/marginVerySmall"
                 android:layout_below="@+id/create_meal_photo"
                 android:text="@string/food"
                 android:textColor="@color/black"/>
@@ -248,7 +249,7 @@
                 android:layout_below="@+id/create_meal_list_holder"
                 android:text="@string/add_food" />-->
 
-            <!-- All nutritious values -->
+            <!-- All nutritional values -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
