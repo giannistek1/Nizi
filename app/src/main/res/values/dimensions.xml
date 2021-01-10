@@ -24,6 +24,7 @@
     <dimen name="patientDietaryIconSize">15dp</dimen>
     <dimen name="mealTimeIconSize">35dp</dimen>
     <dimen name="mealTimeAddIconSize">35dp</dimen>
+    <dimen name="buttonIconSize">28dp</dimen>
 
     <dimen name="dietaryInputSize">95dp</dimen>
 

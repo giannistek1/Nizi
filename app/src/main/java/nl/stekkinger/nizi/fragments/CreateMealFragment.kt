@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -38,7 +39,7 @@ import java.io.ByteArrayOutputStream
 class CreateMealFragment: NavigationChildFragment() {
     private lateinit var model: DiaryViewModel
     private lateinit var mealProductAdapter: MealProductAdapter
-    private lateinit var mInputMealName: TextInputLayout
+    private lateinit var mInputMealName: EditText
     private var mMealId: Int? = null
     private var mMealName: String = ""
     private var mPhoto: String = ""
@@ -57,7 +58,7 @@ class CreateMealFragment: NavigationChildFragment() {
         } ?: throw Exception("Invalid Activity")
 
         // update UI with current data
-        mInputMealName.editText?.setText(model.getMealName())
+        mInputMealName.setText(model.getMealName())
         if (model.getMealPhoto() != null) {
             val decodedString: ByteArray = Base64.decode(model.getMealPhoto(), Base64.DEFAULT)
             val decodedByte: Bitmap? = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
@@ -75,7 +76,7 @@ class CreateMealFragment: NavigationChildFragment() {
                 model.setMealId(meal.id)
                 model.setMealComponentId(meal.food_meal_component.id)
                 mMealId = meal.id
-                mInputMealName.editText?.setText(meal.food_meal_component.name)
+                mInputMealName.setText(meal.food_meal_component.name)
                 if (meal.food_meal_component.image_url != "" && meal.food_meal_component.image_url != null) {
                     model.setMealPhoto(meal.food_meal_component.image_url)
                     mPhoto = meal.food_meal_component.image_url
@@ -184,7 +185,7 @@ class CreateMealFragment: NavigationChildFragment() {
 
         view.create_meal_add_food.setOnClickListener {
             // save input data when switching fragments
-            model.setMealName(mInputMealName.editText?.text.toString().trim())
+            model.setMealName(mInputMealName.text.toString().trim())
             if (mPhoto != "") model.setMealPhoto(mPhoto)
 
             (activity)!!.supportFragmentManager.beginTransaction().replace(
@@ -293,7 +294,7 @@ class CreateMealFragment: NavigationChildFragment() {
     }
 
     private fun validateMealName(): Boolean {
-        mMealName = mInputMealName.editText?.text.toString().trim()
+        mMealName = mInputMealName.text.toString().trim()
         // validate input for errors
         var succes = true
         when {

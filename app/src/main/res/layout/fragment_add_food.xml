@@ -63,9 +63,9 @@
 
     </LinearLayout>
 
-    <!-- Nutrition -->
+    <!-- Food rv -->
     <RelativeLayout
-        android:id="@+id/fragment_diary_rl_nutrition"
+        android:id="@+id/fragment_meals_rl_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="@dimen/marginNormal"
