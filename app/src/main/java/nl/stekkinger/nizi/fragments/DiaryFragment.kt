@@ -40,7 +40,11 @@ class DiaryFragment: BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
 
-        activity!!.toolbar_title.text = getString(R.string.diary)
+        // Hide patient things if isDoctor
+        val isDoctor = GeneralHelper.prefs.getBoolean(GeneralHelper.PREF_IS_DOCTOR, false)
+
+        if (!isDoctor)
+            activity!!.toolbar_title.text = getString(R.string.diary)
 
         // Setup custom toast
         val parent: RelativeLayout = view.fragment_diary_rl
@@ -271,8 +275,7 @@ class DiaryFragment: BaseFragment() {
         view.diary_next_date.isClickable = false
         view.diary_next_date.alpha = 0.2f
 
-        // Hide patient things if isDoctor
-        val isDoctor = GeneralHelper.prefs.getBoolean(GeneralHelper.PREF_IS_DOCTOR, false)
+
         if (isDoctor) {
             view.diary_add_breakfast.visibility = GONE
             view.diary_add_breakfast_btn.visibility = GONE
