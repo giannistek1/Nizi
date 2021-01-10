@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.fragments.ConsumptionViewFragment
 
 class ConsumptionAdapter(
@@ -19,9 +20,12 @@ class ConsumptionAdapter(
 
 
     fun <T : RecyclerView.ViewHolder> T.listen(event: (position: Int, type: Int) -> Unit): T {
-        itemView.setOnClickListener {
-            event.invoke(getAdapterPosition(), getItemViewType())
-        }
+        val isDoctor = GeneralHelper.prefs.getBoolean(GeneralHelper.PREF_IS_DOCTOR, false)
+
+        if (!isDoctor)
+            itemView.setOnClickListener {
+                event.invoke(getAdapterPosition(), getItemViewType())
+            }
         return this
     }
 
