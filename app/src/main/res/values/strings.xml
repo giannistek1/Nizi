@@ -111,12 +111,15 @@
     <string name="meal_name_too_long">Maaltijd naam mag max 30 tekens zijn</string>
     <string name="make_meal">Maaltijd maken</string>
     <string name="create_meal">Maaltijd samenstellen</string>
+    <string name="meal_added">Maaltijd toegevoegd aan dagboek</string>
     <string name="meal_edited">Maaltijd bewerkt</string>
     <string name="photo_error">Foto maken is mislukt</string>
     <string name="did_not_add_food">U heeft nog geen voeding toegevoegd</string>
     <string name="import_food_diary">Importeren uit voedingsdagboek</string>
 
     <string name="add_food_success">Voeding toegevoegd aan dagboek</string>
+    <string name="food_deleted">Voeding verwijderd uit dagboek</string>
+    <!-- Double -->
     <string name="add_meal_success">Maaltijd toegevoegd aan dagboek</string>
     <string name="update_food_success">Voeding is aangepast in het dagboek</string>
     <string name="delete_food_success">Voeding is verwijderd uit het dagboek</string>

@@ -21,7 +21,7 @@ import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
-class AddFoodFragment: Fragment() {
+class AddFoodFragment: NavigationChildFragment() {
     private val mRepository: FoodRepository = FoodRepository()
     private lateinit var model: DiaryViewModel
     private lateinit var searchView: SearchView
@@ -31,7 +31,8 @@ class AddFoodFragment: Fragment() {
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var adapter: FoodSearchAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
         val view: View = inflater.inflate(R.layout.fragment_add_food, container, false)
         setHasOptionsMenu(true)
 
@@ -53,7 +54,7 @@ class AddFoodFragment: Fragment() {
             else -> activity!!.toolbar_title.text = getString(R.string.diary)
         }
 
-        adapter = FoodSearchAdapter(model, fragment = "food")
+        adapter = FoodSearchAdapter(model, fragment = "food", context = context!!)
         recyclerView.adapter = adapter
 
         if (searchView != null) {

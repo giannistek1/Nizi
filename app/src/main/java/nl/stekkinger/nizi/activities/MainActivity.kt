@@ -1,7 +1,6 @@
 package nl.stekkinger.nizi.activities
 
 import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,34 +8,28 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
 import android.widget.Toast
-import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
+import androidx.appcompat.app.ActionBar
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_patient_detail.*
 import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.coroutines.flow.collect
-import nl.stekkinger.nizi.fragments.HomeFragment
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.*
-import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
+import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
-import nl.stekkinger.nizi.classes.dietary.DietaryManagement
 import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
-import nl.stekkinger.nizi.fragments.AddMealFragment
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
-import nl.stekkinger.nizi.repositories.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import kotlin.collections.ArrayList
+import nl.stekkinger.nizi.fragments.HomeFragment
+import nl.stekkinger.nizi.repositories.AuthRepository
+import nl.stekkinger.nizi.repositories.DoctorRepository
+import nl.stekkinger.nizi.repositories.WeightUnitRepository
 
 class MainActivity : BaseActivity() {
 
@@ -60,8 +53,7 @@ class MainActivity : BaseActivity() {
         // Setup UI
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        // Back button
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
         toolbar_title.text = getString(R.string.app_name)
         loader = activity_main_loader
         activity_main_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
@@ -155,8 +147,15 @@ class MainActivity : BaseActivity() {
     }
     //endregion
 
-    fun getFavorites() {
-
+    fun getVisibleFragment(): Fragment? {
+        val fragmentManager: FragmentManager = this@MainActivity.supportFragmentManager
+        val fragments: List<Fragment>? = fragmentManager.fragments
+        if (fragments != null) {
+            for (fragment in fragments) {
+                if (fragment != null && fragment.isVisible) return fragment
+            }
+        }
+        return null
     }
 
     //region Get WeightUnits
@@ -186,12 +185,12 @@ class MainActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(baseContext, R.string.get_weight_unit_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_weight_unit_fail))
                 return }
 
             // Feedback
-            //Toast.makeText(baseContext, R.string.fetched_weight_units, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_weight_units))
 
             // Save weightUnits
             val gson = Gson()
@@ -244,12 +243,12 @@ class MainActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { Toast.makeText(baseContext, R.string.api_is_down, Toast.LENGTH_SHORT).show(); return }
-            if (result == null) { Toast.makeText(baseContext, R.string.get_doctor_fail, Toast.LENGTH_SHORT).show()
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_doctor_fail))
                 return }
 
             // Feedback
-            //Toast.makeText(baseContext, R.string.fetched_doctor, Toast.LENGTH_SHORT).show()
+            //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_doctor))
 
             doctor = result
         }

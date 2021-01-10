@@ -34,7 +34,7 @@ object GeneralHelper {
     const val EXTRA_DOCTOR_ID = "DOCTOR_ID"
     const val EXTRA_ORIGINAL_EMAIL = "ORIGINAL_EMAIL"
     const val EXTRA_DIETARY = "DIETARY"
-    const val EXTRA_FOOD_ADDED = "FOOD_ADDED"
+    const val TOAST_TEXT = "FOOD_ADDED"
 
     var apiIsDown = false
 

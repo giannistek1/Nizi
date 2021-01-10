@@ -75,17 +75,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/fragment_home_ll_day">
 
-        <ProgressBar
-            android:id="@+id/fragment_home_loader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
         <LinearLayout
             android:id="@+id/fragment_home_ll_guidelines"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/fragment_home_loader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_home_ll_guidelines"
+            android:visibility="gone"/>
     </RelativeLayout>
 </RelativeLayout>

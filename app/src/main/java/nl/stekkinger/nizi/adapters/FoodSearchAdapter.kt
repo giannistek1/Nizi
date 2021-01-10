@@ -1,8 +1,8 @@
 package nl.stekkinger.nizi.adapters
 
+import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +12,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.custom_toast.*
+import kotlinx.android.synthetic.main.custom_toast.view.*
 import kotlinx.android.synthetic.main.item_food.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
@@ -25,7 +26,8 @@ import nl.stekkinger.nizi.fragments.DiaryFragment
 class FoodSearchAdapter(
     private var model: DiaryViewModel = DiaryViewModel(),
     private var mDataset: ArrayList<Food> = ArrayList(),
-    private var fragment: String
+    private var fragment: String,
+    private val context: Context
 ) : RecyclerView.Adapter<FoodSearchAdapter.ViewHolder>() {
 
     private lateinit var activity: AppCompatActivity
@@ -66,7 +68,7 @@ class FoodSearchAdapter(
                 // Send boolean with fragment which gives a sign to show the toast in diary
                 val fragment = DiaryFragment()
                 val bundle = Bundle()
-                bundle.putBoolean(GeneralHelper.EXTRA_FOOD_ADDED, true)
+                bundle.putString(GeneralHelper.TOAST_TEXT, context.getString(R.string.add_food))
                 fragment.arguments = bundle
 
                 (activity).supportFragmentManager.beginTransaction().replace(

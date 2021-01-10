@@ -7,12 +7,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
-import android.util.Log.d
 import android.widget.RelativeLayout
-import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -26,7 +21,6 @@ import nl.stekkinger.nizi.adapters.ConsumptionAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.diary.MyFood
-import nl.stekkinger.nizi.classes.diary.MyFoodResponse
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.util.*
@@ -56,9 +50,9 @@ class DiaryFragment: BaseFragment() {
         // Get foodAdded data from bundle
         val bundle: Bundle? = this.arguments
         if (bundle != null) {
-            val foodAdded = bundle.getBoolean(GeneralHelper.EXTRA_FOOD_ADDED, false)
-            if (foodAdded)
-                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_added))
+            val toastText = bundle.getString(GeneralHelper.TOAST_TEXT, "")
+
+            GeneralHelper.showAnimatedToast(toastView, toastAnimation, toastText)
         }
 
         val breakfastRv: RecyclerView = view.findViewById(R.id.diary_breakfast_rv)
@@ -335,6 +329,7 @@ class DiaryFragment: BaseFragment() {
                 direction: Int
             ) {
                 breakfastAdapter.removeItem(viewHolder.adapterPosition)
+                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted));
             }
         }
 }

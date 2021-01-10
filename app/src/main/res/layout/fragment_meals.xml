@@ -41,7 +41,8 @@
                 android:paddingBottom="@dimen/marginNormal"
                 android:text="@string/meals"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:fontFamily="@font/helvetica_neue_bold"/>
 
             <View
                 android:layout_width="match_parent"
