@@ -63,7 +63,7 @@
 
     </LinearLayout>
 
-    <!-- Food rv -->
+    <!-- Content -->
     <RelativeLayout
         android:id="@+id/fragment_meals_rl_content"
         android:layout_width="match_parent"
