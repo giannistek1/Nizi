@@ -1,15 +1,19 @@
 package nl.stekkinger.nizi.fragments
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.os.AsyncTask
 import android.util.Log
 import android.util.Log.d
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.fragment_add_food.*
 import kotlinx.android.synthetic.main.fragment_meals.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.classes.DiaryViewModel
@@ -22,6 +26,7 @@ import nl.stekkinger.nizi.repositories.FoodRepository
 
 class AddMealFragment: NavigationChildFragment() {
     private val mRepository: FoodRepository = FoodRepository()
+    private lateinit var queryTextListener: SearchView.OnQueryTextListener
     private lateinit var model: DiaryViewModel
     private lateinit var adapter: MealAdapter
     private lateinit var aantal: TextView
@@ -52,37 +57,53 @@ class AddMealFragment: NavigationChildFragment() {
 
         getMealsAsyncTask().execute()
 
-        // listeners
+        val searchView = view.findViewById(R.id.search_meal) as SearchView
+        val searchManager: SearchManager = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+
+        if (searchView != null) {
+            // Fixes that only the icon is clickable
+            searchView.setOnClickListener {
+                searchView.isIconified = false
+            }
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+
+            queryTextListener = object : SearchView.OnQueryTextListener {
+                override fun onQueryTextChange(newText: String): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextSubmit(query: String): Boolean {
+                    getMealsByNameAsyncTask(query).execute()
+                    d("lo", query)
+                    return true
+                }
+            }
+            searchView.setOnQueryTextListener(queryTextListener)
+        }
+
+        // click isteners
         view.create_meal.setOnClickListener {
             model.emptySelectedMeal()
             model.setIsMealEdit(false)
 
-            fragmentManager!!
-                .beginTransaction()
-                .replace(
-                    R.id.activity_main_fragment_container,
-                    CreateMealFragment()
-                ).commit()
+            fragmentManager!!.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                CreateMealFragment()
+            ).commit()
         }
 
         view.activity_add_food.setOnClickListener {
-            fragmentManager!!
-                .beginTransaction()
-                .replace(
-                    R.id.activity_main_fragment_container,
-                    AddFoodFragment()
-                )
-                .commit()
+            fragmentManager!!.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                AddFoodFragment()
+            ).commit()
         }
 
         view.activity_favorites.setOnClickListener {
-            fragmentManager!!
-                .beginTransaction()
-                .replace(
-                    R.id.activity_main_fragment_container,
-                    FavoritesFragment()
-                )
-                .commit()
+            fragmentManager!!.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                FavoritesFragment()
+            ).commit()
         }
 
         return view
@@ -94,14 +115,29 @@ class AddMealFragment: NavigationChildFragment() {
             return meals
         }
 
-        override fun onPreExecute() {
-            super.onPreExecute()
+        override fun onPostExecute(result: ArrayList<Meal>?) {
+            super.onPostExecute(result)
+            // update UI
+            if(result != null) {
+                val mealsFound = result.count().toString()
+                aantal.text = "Aantal ($mealsFound)"
+                adapter.setMealList(result)
+            }
+        }
+    }
+
+    inner class getMealsByNameAsyncTask(val search: String) : AsyncTask<Void, Void, ArrayList<Meal>>() {
+        override fun doInBackground(vararg params: Void?): ArrayList<Meal>? {
+            d("r", search)
+            var meals = mRepository.getMealsByName(search)
+            return meals
         }
 
         override fun onPostExecute(result: ArrayList<Meal>?) {
             super.onPostExecute(result)
             // update UI
             if(result != null) {
+                d("r", result.toString())
                 val mealsFound = result.count().toString()
                 aantal.text = "Aantal ($mealsFound)"
                 adapter.setMealList(result)

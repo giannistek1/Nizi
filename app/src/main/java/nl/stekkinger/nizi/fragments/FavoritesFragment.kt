@@ -33,21 +33,23 @@ class FavoritesFragment: NavigationChildFragment() {
         val view: View = inflater.inflate(R.layout.fragment_favorites, container, false)
         setHasOptionsMenu(true)
 
-
-
-
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
-        
+
+        // rc
         val recyclerView: RecyclerView = view.favorites_rv
         recyclerView.layoutManager = LinearLayoutManager(activity)
+        // adapter
         adapter = FoodSearchAdapter(model, fragment = "favorites", context = context!!)
         recyclerView.adapter = adapter
+
+        // swipe funct
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
 
         model.fetchFavorites()
 
+        // stateflows
         lifecycleScope.launchWhenStarted {
             model.favoritesState.collect {
                 when(it) {
@@ -96,6 +98,7 @@ class FavoritesFragment: NavigationChildFragment() {
             }
         }
 
+        // click listeners
         view.activity_add_food.setOnClickListener {
             fragmentManager!!
                 .beginTransaction()

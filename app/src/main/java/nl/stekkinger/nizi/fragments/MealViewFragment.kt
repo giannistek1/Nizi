@@ -61,8 +61,17 @@ class MealViewFragment : NavigationChildFragment() {
             ViewModelProviders.of(this).get(DiaryViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
+        // throw away old mealproducts if saved
         model.emptyMealProducts()
 
+        // rv
+        val mealProductRV: RecyclerView = view.findViewById(R.id.food_view_recycler_view)
+        mealProductRV.layoutManager = LinearLayoutManager(activity)
+        // adapter
+        mealProductAdapter = model.getMealProductAdapter()
+        mealProductRV.adapter = mealProductAdapter
+
+        // stateflows/observers
         model.selectedMeal.observe(this, Observer<Meal> { meal ->
             // store food product
             mMeal = meal
@@ -87,17 +96,7 @@ class MealViewFragment : NavigationChildFragment() {
             updateUI()
         })
 
-        // rv's
-        val mealProductRV: RecyclerView = view.findViewById(R.id.food_view_recycler_view)
-        mealProductRV.layoutManager = LinearLayoutManager(activity)
-
-        // adapters
-        mealProductAdapter = model.getMealProductAdapter()
-        mealProductRV.adapter = mealProductAdapter
-        val mealProducts: ArrayList<Food> = model.getMealProducts()
-
-
-
+        // meal data
         lifecycleScope.launchWhenStarted {
             model.mealState.collect {
                 when(it) {
@@ -105,7 +104,6 @@ class MealViewFragment : NavigationChildFragment() {
                         // get meal products
                         model.getFoods(it.data)
                         // store amounts (API doesnt retrieve amount from products)
-
                         if (it.data.meal_foods != null) {
                             for (food in it.data.meal_foods) {
                                 amounts.add(food.amount)
@@ -117,6 +115,7 @@ class MealViewFragment : NavigationChildFragment() {
             }
         }
 
+        // getting food products from the meal
         lifecycleScope.launchWhenStarted {
             model.foodsState.collect {
                 when(it) {
@@ -125,27 +124,26 @@ class MealViewFragment : NavigationChildFragment() {
                         for (i in 1..amounts.count()) {
                             it.data[i-1].amount = amounts[i-1]
                         }
-                        // fill the adapter
+                        // fill the model, keeping track of food products
                         model.setMealProducts(it.data)
+                        // fill the adapter
                         mealProductAdapter.setMealProductList(it.data)
                         model.emptyFoodsState()
                     } else -> {}
                 }
             }
         }
+
+        // when meal deleted
         lifecycleScope.launchWhenStarted {
             model.deleteMealState.collect {
                 when(it) {
                     is FoodRepository.State.Success -> {
-                        // todo: toast
                         model.emptyDeleteMealState()
                         (activity)!!.supportFragmentManager.beginTransaction().replace(
                             R.id.activity_main_fragment_container,
                             AddMealFragment()
                         ).commit()
-                    }
-                    is FoodRepository.State.Error -> {
-                        // todo: toast
                     } else -> {}
                 }
             }
@@ -234,18 +232,7 @@ class MealViewFragment : NavigationChildFragment() {
                             fragment
                         ).commit()
                     }
-                    is FoodRepository.State.Error -> {
-                        // TODO: handle events below
-//                        wat gaan we hier doen?
-//                        Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
-                    }
-                    is FoodRepository.State.Loading -> {
-//                        spinner toevoegen aan consumptionview?
-//                        Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-
-                    }
+                    else -> {}
                 }
             }
         }

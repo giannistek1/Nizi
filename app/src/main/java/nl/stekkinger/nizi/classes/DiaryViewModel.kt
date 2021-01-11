@@ -98,10 +98,8 @@ class DiaryViewModel(
         }
     }
 
-
     // Holds food item for food view
     val selected = MutableLiveData<Food>()
-    fun getSelected(): Food? { return selected.value }
 
     // load the food view fragment with the selected food
     fun select(activity: AppCompatActivity, food: Food, fragment: String = "food") {
@@ -116,7 +114,6 @@ class DiaryViewModel(
     // For tracking what type of food view is being used (food, meal, mealEdit)
     private var currentFragment = "food"
     fun getCurrentFragment(): String { return currentFragment }
-    fun setCurrentFragment(string: String) { currentFragment = string }
 
     // consumption functions
     fun getConsumptions(date: Calendar) { mRepository.getConsumptions(sdfDb.format(date.time)) }

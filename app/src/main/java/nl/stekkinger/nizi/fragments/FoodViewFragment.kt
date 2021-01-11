@@ -47,7 +47,18 @@ class FoodViewFragment : NavigationChildFragment() {
         } ?: throw Exception("Invalid Activity")
 
         mCurrentFragment = model.getCurrentFragment()
+        mFavBtn = view.findViewById(R.id.heart_food_view)
+        mSaveBtn = view.save_btn
+        mDecreaseBtn = view.decrease_portion
+        mServingInput = view.findViewById(R.id.serving_input) as TextInputEditText
+        // this view does not have a delete button
+        view.delete_food_view.visibility = GONE
 
+        mServingInput.addTextChangedListener(textWatcher)
+
+        view.edit_food_view.visibility = GONE
+
+        // stateflows/observers
         model.selected.observe(this, Observer<Food> { food ->
             // store food product
             mFood = food
@@ -72,8 +83,6 @@ class FoodViewFragment : NavigationChildFragment() {
             updateUI()
         })
 
-        view.edit_food_view.visibility = GONE
-
         lifecycleScope.launchWhenStarted {
             model.favoritesState.collect {
                 when(it) {
@@ -85,34 +94,13 @@ class FoodViewFragment : NavigationChildFragment() {
                             if (mFood.id == fav.food.id) mFavoriteSelected = fav.id
                         }
                         model.setFavorites(favorites)
-
-
                     }
-                    is FoodRepository.FavoritesState.Error -> {
-                        // TODO: handle events below
-//                        wat gaan we hier doen?
-//                        Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
-                    }
-                    is FoodRepository.FavoritesState.Loading -> {
-//                        spinner toevoegen aan consumptionview?
-//                        Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-
-                    }
+                    else -> {}
                 }
             }
         }
 
-        mFavBtn = view.findViewById(R.id.heart_food_view)
-        mSaveBtn = view.save_btn
-        mDecreaseBtn = view.decrease_portion
-        mServingInput = view.findViewById(R.id.serving_input) as TextInputEditText
 
-        mServingInput.addTextChangedListener(textWatcher)
-
-        // this view does not have a delete button
-        view.delete_food_view.visibility = GONE
 
         lifecycleScope.launchWhenStarted {
             model.toggleFavoriteState.collect {
@@ -163,7 +151,6 @@ class FoodViewFragment : NavigationChildFragment() {
             mFavBtn.isClickable = false
 
             if(mIsLiked) {
-                d("del", "del")
                 model.deleteFavorite(mFavoriteSelected)
             } else {
                 model.addFavorite(mFood.id)
@@ -189,7 +176,6 @@ class FoodViewFragment : NavigationChildFragment() {
         }
 
         view.save_btn.setOnClickListener {
-
             when (mCurrentFragment) {
                 "food" -> {
                     val amount: Float = mServingInput.text.toString().trim().toFloat()
@@ -225,7 +211,6 @@ class FoodViewFragment : NavigationChildFragment() {
                     ).commit()
                 }
             }
-
         }
 
         mServingInput.setOnKeyListener { v, keyCode, _ ->
@@ -298,26 +283,6 @@ class FoodViewFragment : NavigationChildFragment() {
         return when (item.itemId) {
             android.R.id.home -> {
                 requireActivity().onBackPressed()
-                /*when (mCurrentFragment) {
-                    "food" -> {
-                        (activity)!!.supportFragmentManager.beginTransaction().replace(
-                            R.id.activity_main_fragment_container,
-                            AddFoodFragment()
-                        ).commit()
-                    }
-                    "meal", "mealEdit" -> {
-                        (activity)!!.supportFragmentManager.beginTransaction().replace(
-                            R.id.activity_main_fragment_container,
-                            AddMealFragment()
-                        ).commit()
-                    }
-                    else -> {
-                        (activity)!!.supportFragmentManager.beginTransaction().replace(
-                            R.id.activity_main_fragment_container,
-                            DiaryFragment()
-                        ).commit()
-                    }
-                }*/
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -33,12 +33,12 @@ class CreateMealFoodFragment: NavigationChildFragment() {
         val view: View = inflater.inflate(R.layout.fragment_create_meal_food, container, false)
         setHasOptionsMenu(true)
 
-        val searchView = view.findViewById(R.id.search_food) as SearchView
-        val searchManager: SearchManager = activity!!.getSystemService(SEARCH_SERVICE) as SearchManager
-
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
+
+        val searchView: SearchView = view.findViewById(R.id.search_food) as SearchView
+        val searchManager: SearchManager = activity!!.getSystemService(SEARCH_SERVICE) as SearchManager
 
         // rv's
         val searchRV: RecyclerView = view.findViewById(R.id.food_search_recycler_view)
@@ -49,9 +49,15 @@ class CreateMealFoodFragment: NavigationChildFragment() {
         // adapters
         searchAdapter = FoodSearchAdapter(model, fragment = "meal", context = context!!)
         searchRV.adapter = searchAdapter
-//        mealProductAdapter = MealProductAdapter(model)
+
         mealProductAdapter = model.getMealProductAdapter()
         mealProductRV.adapter = mealProductAdapter
+
+        // fill adapter with meal products
+        mealProductAdapter.setMealProductList(model.getMealProducts())
+
+        // for swipe to delete
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mealProductRV)
 
         if (searchView != null) {
             searchView.setOnClickListener {
@@ -64,7 +70,6 @@ class CreateMealFoodFragment: NavigationChildFragment() {
                     model.setFoodSearch(newText)
                     return true
                 }
-
                 override fun onQueryTextSubmit(query: String): Boolean {
                     return true
                 }
@@ -74,17 +79,13 @@ class CreateMealFoodFragment: NavigationChildFragment() {
             model.setFoodSearch("")
         }
 
-         //TODO: do i need consumption response or something else to create a meal, what information do i send?
-//        mealProductAdapter.setMealProductList(model.getMealProducts())
-
+        // stateflows/observers
         // get the results of food search
         model.getFoodSearch().observe(viewLifecycleOwner, Observer { foodList ->
             searchAdapter.setFoodList(foodList)
         })
 
-        mealProductAdapter.setMealProductList(model.getMealProducts())
-        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mealProductRV)
-
+        // when a barcode scan returns a product
         lifecycleScope.launchWhenStarted {
             model.foodByBarcodeState.collect {
                 when(it) {
@@ -92,30 +93,19 @@ class CreateMealFoodFragment: NavigationChildFragment() {
                         model.emptyFoodBarcodeState()
                         model.select(activity as AppCompatActivity, it.data, "meal")
                     }
-                    is FoodRepository.FoodState.Error -> {
-                        // TODO: handle events below
-//                        Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
-                    }
-                    is FoodRepository.FoodState.Loading -> {
-//                        Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-
-                    }
+                    else -> {}
                 }
             }
         }
 
-        // click events
+        // click listeners
         view.save_btn.setOnClickListener {
-            fragmentManager!!
-                .beginTransaction()
-                .replace(
-                    R.id.activity_main_fragment_container,
-                    CreateMealFragment()
-                )
-                .commit()
+            fragmentManager!!.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                CreateMealFragment()
+            ).commit()
         }
+
         view.zxing_barcode_scanner.setOnClickListener {
             zxing_barcode_scanner(view)
         }

@@ -54,6 +54,15 @@ class ConsumptionViewFragment : NavigationChildFragment() {
             ViewModelProviders.of(this).get(DiaryViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
+        view.edit_food_view.visibility = GONE
+        view.heart_food_view.visibility = GONE
+        mSaveBtn = view.save_btn
+        mDecreaseBtn = view.decrease_portion
+        mServingInput = view.findViewById(R.id.serving_input) as TextInputEditText
+
+        mServingInput.addTextChangedListener(textWatcher)
+
+        // stateflows/observers
         model.selectedEdit.observe(this, Observer<ConsumptionResponse> { food ->
             // store food product
             mConsumption = food
@@ -78,13 +87,30 @@ class ConsumptionViewFragment : NavigationChildFragment() {
             serving_input.setText(mConsumption.amount.toString(), TextView.BufferType.EDITABLE)
         })
 
-        view.edit_food_view.visibility = GONE
-        view.heart_food_view.visibility = GONE
-        mSaveBtn = view.save_btn
-        mDecreaseBtn = view.decrease_portion
-        mServingInput = view.findViewById(R.id.serving_input) as TextInputEditText
+        lifecycleScope.launchWhenStarted {
+            model.consumptionState.collect {
+                when(it) {
+                    is FoodRepository.State.Success -> {
+                        // Send text with fragment for toast
+                        val fragment = DiaryFragment()
+                        val bundle = Bundle()
 
-        mServingInput.addTextChangedListener(textWatcher)
+                        if(mEdit)
+                            bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.update_food_success))
+                        else
+                            bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.delete_food_success))
+
+                        fragment.arguments = bundle
+
+                        (activity)!!.supportFragmentManager.beginTransaction().replace(
+                            R.id.activity_main_fragment_container,
+                            fragment
+                        ).commit()
+                    }
+                    else -> {}
+                }
+            }
+        }
 
         // click listeners
         view.increase_portion.setOnClickListener {
@@ -122,52 +148,15 @@ class ConsumptionViewFragment : NavigationChildFragment() {
             }
             false
         }
-
-        lifecycleScope.launchWhenStarted {
-            model.consumptionState.collect {
-                when(it) {
-                    is FoodRepository.State.Success -> {
-                        // Send text with fragment for toast
-                        val fragment = DiaryFragment()
-                        val bundle = Bundle()
-
-                        if(mEdit)
-                            bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.update_food_success))
-                        else
-                            bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.delete_food_success))
-
-                        fragment.arguments = bundle
-
-                        (activity)!!.supportFragmentManager.beginTransaction().replace(
-                            R.id.activity_main_fragment_container,
-                            fragment
-                        ).commit()
-                    }
-                    is FoodRepository.State.Error -> {
-                        // TODO: handle events below
-//                        wat gaan we hier doen?
-//                        Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
-                    }
-                    is FoodRepository.State.Loading -> {
-//                        spinner toevoegen aan consumptionview?
-//                        Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-
-                    }
-                }
-            }
-        }
-
         return view
     }
 
+    // updating values in the view
     private fun updateUI() {
         var amount: Float = 0f
         if (mServingInput.text.toString() != "") {
             amount = mServingInput.text.toString().toFloat()
         }
-        d("lo", amount.toString())
 
         // enabling/disabeling save or decrease btn
         if(amount <= 0) {

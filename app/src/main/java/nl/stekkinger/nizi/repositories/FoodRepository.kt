@@ -300,6 +300,9 @@ class FoodRepository : Repository() {
     fun getMeals(): ArrayList<Meal>? {
         return service.getMeals(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id).execute().body()
     }
+    fun getMealsByName(search: String): ArrayList<Meal>? {
+        return service.getMealsByName(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id, mealName = search).execute().body()
+    }
 
     fun getMeal(id: Int) {
         _mealState.value = MealState.Loading

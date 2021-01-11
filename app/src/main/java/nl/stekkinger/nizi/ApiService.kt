@@ -156,13 +156,6 @@ interface ApiService {
         @Path("foodId") foodId: Int
     ) : Call<Unit>
 
-    @GET("v1/food/partial/{foodName}/{count}")
-    fun searchFoodDBBU(
-        @Header("Authorization") authHeader : String,
-        @Path("foodName") foodName: String,
-        @Path("count") count: Int
-    ) : Call<ArrayList<Food>>
-
     @GET("foods")
     fun searchFoodDB(
         @Header("Authorization") authHeader : String,
@@ -227,6 +220,13 @@ interface ApiService {
     fun getMeals(
         @Header("Authorization") authHeader : String,
         @Query("patient.id") patientId: Int
+    ) : Call<ArrayList<Meal>>
+
+    @GET("meals")
+    fun getMealsByName(
+        @Header("Authorization") authHeader : String,
+        @Query("patient.id") patientId: Int,
+        @Query("name_contains") mealName: String
     ) : Call<ArrayList<Meal>>
 
     @GET("meals/{id}")

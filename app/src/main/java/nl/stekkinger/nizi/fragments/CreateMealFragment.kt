@@ -51,14 +51,12 @@ class CreateMealFragment: NavigationChildFragment() {
 
         activity!!.toolbar_title.text = getString(R.string.create_meal)
 
-        mInputMealName = view.findViewById(R.id.input_meal_name)
-
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
         // update UI with current data
-
+        mInputMealName = view.findViewById(R.id.input_meal_name)
         mInputMealName.setText(model.getMealName())
         if (model.getMealPhoto() != null) {
             val decodedString: ByteArray = Base64.decode(model.getMealPhoto(), Base64.DEFAULT)
@@ -70,33 +68,6 @@ class CreateMealFragment: NavigationChildFragment() {
         updateUI(view)
 
 
-
-        // Update UI with incoming data
-        model.selectedMeal.observe(this, Observer<Meal> { meal ->
-            if (meal != null) {
-                // set meal values in the model
-                model.setIsMealEdit(true)
-                model.setMealId(meal.id)
-                model.setMealComponentId(meal.food_meal_component.id)
-                mMealId = meal.id
-                mInputMealName.setText(meal.food_meal_component.name)
-                if (meal.food_meal_component.image_url != "" && meal.food_meal_component.image_url != null) {
-                    model.setMealPhoto(meal.food_meal_component.image_url)
-                    mPhoto = meal.food_meal_component.image_url
-                    val decodedString: ByteArray =
-                        Base64.decode(meal.food_meal_component.image_url, Base64.DEFAULT)
-                    val decodedByte: Bitmap? =
-                        BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                    if (decodedByte != null) {
-                        view.image_food_view.setImageBitmap(decodedByte)
-                    }
-                } else {
-                    view.image_food_view.setImageResource(R.drawable.ic_culinary)
-                }
-                updateUI(view)
-                model.emptySelectedMeal()
-            }
-        })
 
         // rv
         val mealProductRV: RecyclerView = view.findViewById(R.id.create_meal_list_recycler_view)
@@ -112,6 +83,7 @@ class CreateMealFragment: NavigationChildFragment() {
         // fill the adapter
         mealProductAdapter.setMealProductList(model.getMealProducts())
 
+        // stateflows/observers
         // triggered when a meal is saved
         lifecycleScope.launchWhenStarted {
             model.mealState.collect {
@@ -177,6 +149,33 @@ class CreateMealFragment: NavigationChildFragment() {
             }
         }
 
+        // Update UI with incoming data
+        model.selectedMeal.observe(this, Observer<Meal> { meal ->
+            if (meal != null) {
+                // set meal values in the model
+                model.setIsMealEdit(true)
+                model.setMealId(meal.id)
+                model.setMealComponentId(meal.food_meal_component.id)
+                mMealId = meal.id
+                mInputMealName.setText(meal.food_meal_component.name)
+                if (meal.food_meal_component.image_url != "" && meal.food_meal_component.image_url != null) {
+                    model.setMealPhoto(meal.food_meal_component.image_url)
+                    mPhoto = meal.food_meal_component.image_url
+                    val decodedString: ByteArray =
+                        Base64.decode(meal.food_meal_component.image_url, Base64.DEFAULT)
+                    val decodedByte: Bitmap? =
+                        BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                    if (decodedByte != null) {
+                        view.image_food_view.setImageBitmap(decodedByte)
+                    }
+                } else {
+                    view.image_food_view.setImageResource(R.drawable.ic_culinary)
+                }
+                updateUI(view)
+                model.emptySelectedMeal()
+            }
+        })
+
         // click events
         view.meal_camera_btn.setOnClickListener {
             val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -227,8 +226,8 @@ class CreateMealFragment: NavigationChildFragment() {
         view.fiber_value_meal_view.text = "%.2f".format(totalFiber) + " g"
         view.protein_value_meal_view.text = "%.2f".format(totalProtein) + " g"
         view.water_value_meal_view.text = "%.2f".format(totalWater) + "ml"
-        view.sodium_value_meal_view.text = "%.2f".format(totalSodium * 1000) + " mg"
-        view.potassium_value_meal_view.text = "%.2f".format(totalPotassium * 1000) + " mg"
+        view.sodium_value_meal_view.text = "%.2f".format(totalSodium) + " mg"
+        view.potassium_value_meal_view.text = "%.2f".format(totalPotassium) + " mg"
     }
 
     private fun saveMeal(){
@@ -287,6 +286,7 @@ class CreateMealFragment: NavigationChildFragment() {
                 model.updateMeal(meal)
             } else {
                 val meal = Meal(
+                    name = mMealName,
                     food_meal_component = foodMealComponent,
                     patient = GeneralHelper.getUser().patient!!,
                     weight_unit = GeneralHelper.getWeightUnitHolder()!!.weightUnits[7]

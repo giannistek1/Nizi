@@ -41,8 +41,14 @@ class DiaryFragment: BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
-        d("hi", "hi")
-        fragmentManager!!.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        fragmentManager!!.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+
+        mNextDayBtn = view.diary_next_date
+
+        model = activity?.run {
+            ViewModelProviders.of(this)[DiaryViewModel::class.java]
+        } ?: throw Exception("Invalid Activity")
 
         // Hide patient things if isDoctor
         val isDoctor = GeneralHelper.prefs.getBoolean(GeneralHelper.PREF_IS_DOCTOR, false)
@@ -63,6 +69,7 @@ class DiaryFragment: BaseFragment() {
             GeneralHelper.showAnimatedToast(toastView, toastAnimation, toastText)
         }
 
+        // rv's
         val breakfastRv: RecyclerView = view.findViewById(R.id.diary_breakfast_rv)
         breakfastRv.layoutManager = LinearLayoutManager(activity)
         val lunchRv: RecyclerView = view.findViewById(R.id.diary_lunch_rv)
@@ -72,10 +79,7 @@ class DiaryFragment: BaseFragment() {
         val snackRv: RecyclerView = view.findViewById(R.id.diary_snack_rv)
         snackRv.layoutManager = LinearLayoutManager(activity)
 
-        model = activity?.run {
-            ViewModelProviders.of(this)[DiaryViewModel::class.java]
-        } ?: throw Exception("Invalid Activity")
-
+        // adapters
         breakfastAdapter = ConsumptionAdapter(model)
         lunchAdapter = ConsumptionAdapter(model)
         dinnerAdapter = ConsumptionAdapter(model)
@@ -85,6 +89,15 @@ class DiaryFragment: BaseFragment() {
         dinnerRv.adapter = dinnerAdapter
         snackRv.adapter = snackAdapter
 
+        // adapters swipe functions
+        ItemTouchHelper(breakfastTouchHelperCallback).attachToRecyclerView(breakfastRv)
+        ItemTouchHelper(lunchTouchHelperCallback).attachToRecyclerView(lunchRv)
+        ItemTouchHelper(dinnerTouchHelperCallback).attachToRecyclerView(dinnerRv)
+        ItemTouchHelper(snackTouchHelperCallback).attachToRecyclerView(snackRv)
+
+        // empty state when loading page(avoids triggering success response if nothing is done)
+        model.emptyState()
+
         // setting date for diary
         val cal: Calendar = Calendar.getInstance()
         cal.set(Calendar.HOUR_OF_DAY, 0)
@@ -92,9 +105,14 @@ class DiaryFragment: BaseFragment() {
         cal.clear(Calendar.SECOND)
         cal.clear(Calendar.MILLISECOND)
         cal.time = Date()
+        // setting the date
         model.setDiaryDate(cal)
-        model.emptyState()
+        //fetching needed diary information
+        model.fetchFavorites()
+        model.getConsumptions(cal)
 
+        // stateflows
+        // collects all consumptions and fills the diary
         lifecycleScope.launchWhenStarted {
             model.diaryState.collect {
                 when(it) {
@@ -136,6 +154,7 @@ class DiaryFragment: BaseFragment() {
             }
         }
 
+        // if a consumption has been updated while in diary, get new diary data
         lifecycleScope.launchWhenStarted {
             model.consumptionState.collect {
                 when(it) {
@@ -157,8 +176,8 @@ class DiaryFragment: BaseFragment() {
                 }
             }
         }
-        model.fetchFavorites()
 
+        // collect user's favorites info
         lifecycleScope.launchWhenStarted {
             model.favoritesState.collect {
                 when(it) {
@@ -171,67 +190,42 @@ class DiaryFragment: BaseFragment() {
                         }
                         model.setFavorites(favorites)
                     }
-                    is FoodRepository.FavoritesState.Error -> {
-                        // TODO: handle events below
-//                        Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
-                    }
-                    is FoodRepository.FavoritesState.Loading -> {
-//                        Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-
-                    }
+                    else -> {}
                 }
             }
         }
-        model.getConsumptions(cal)
 
-        ItemTouchHelper(breakfastTouchHelperCallback).attachToRecyclerView(breakfastRv)
-        ItemTouchHelper(lunchTouchHelperCallback).attachToRecyclerView(lunchRv)
-        ItemTouchHelper(dinnerTouchHelperCallback).attachToRecyclerView(dinnerRv)
-        ItemTouchHelper(snackTouchHelperCallback).attachToRecyclerView(snackRv)
-
-        mNextDayBtn = view.diary_next_date
-
-        // click events
+        // click listeners
         view.diary_add_breakfast_btn.setOnClickListener {
             model.setMealTime("Ontbijt")
-            fragmentManager!!
-                .beginTransaction()
-                .replace(
-                    R.id.activity_main_fragment_container,
-                    AddFoodFragment()
-                ).addToBackStack(null).commit()
+            fragmentManager!!.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                AddFoodFragment()
+            ).addToBackStack(null).commit()
         }
 
         view.diary_add_lunch_btn.setOnClickListener {
             model.setMealTime("Lunch")
-            fragmentManager!!
-                .beginTransaction()
-                .replace(
-                    R.id.activity_main_fragment_container,
-                    AddFoodFragment()
-                ).addToBackStack(null).commit()
+            fragmentManager!!.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                AddFoodFragment()
+            ).addToBackStack(null).commit()
         }
 
         view.diary_add_dinner_btn.setOnClickListener {
             model.setMealTime("Avondeten")
-            fragmentManager!!
-                .beginTransaction()
-                .replace(
-                    R.id.activity_main_fragment_container,
-                    AddFoodFragment()
-                ).addToBackStack(null).commit()
+            fragmentManager!!.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                AddFoodFragment()
+            ).addToBackStack(null).commit()
         }
 
         view.diary_add_snack_btn.setOnClickListener {
             model.setMealTime("Snack")
-            fragmentManager!!
-                .beginTransaction()
-                .replace(
-                    R.id.activity_main_fragment_container,
-                    AddFoodFragment()
-                ).addToBackStack(null).commit()
+            fragmentManager!!.beginTransaction().replace(
+                R.id.activity_main_fragment_container,
+                AddFoodFragment()
+            ).addToBackStack(null).commit()
         }
 
         view.fragment_diary_breakfast.setOnClickListener {
@@ -274,11 +268,12 @@ class DiaryFragment: BaseFragment() {
             setNewDate(1, view)
         }
 
+        // btns starting state
         view.diary_next_date.isEnabled = false
         view.diary_next_date.isClickable = false
         view.diary_next_date.alpha = 0.2f
 
-
+        // Diary view for doctor's side
         if (isDoctor) {
             view.diary_add_breakfast.visibility = GONE
             view.diary_add_breakfast_btn.visibility = GONE
@@ -290,7 +285,6 @@ class DiaryFragment: BaseFragment() {
             view.diary_add_snack_btn.visibility = GONE
         }
         loader = view.fragment_diary_loader
-
         return view
     }
 
