@@ -58,15 +58,18 @@ class CreateMealFragment: NavigationChildFragment() {
         } ?: throw Exception("Invalid Activity")
 
         // update UI with current data
-        mInputMealName.setText(model.getMealName())
-        if (model.getMealPhoto() != null) {
-            val decodedString: ByteArray = Base64.decode(model.getMealPhoto(), Base64.DEFAULT)
-            val decodedByte: Bitmap? = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-            if(decodedByte != null) {
-                view.image_food_view.setImageBitmap(decodedByte)
+        if (model.getIsMealEdit()) {
+            mInputMealName.setText(model.getMealName())
+            if (model.getMealPhoto() != null) {
+                val decodedString: ByteArray = Base64.decode(model.getMealPhoto(), Base64.DEFAULT)
+                val decodedByte: Bitmap? = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                if(decodedByte != null) {
+                    view.image_food_view.setImageBitmap(decodedByte)
+                }
             }
+            updateUI(view)
         }
-        updateUI(view)
+
 
         // Update UI with incoming data
         model.selectedMeal.observe(this, Observer<Meal> { meal ->
@@ -114,7 +117,7 @@ class CreateMealFragment: NavigationChildFragment() {
             model.mealState.collect {
                 when(it) {
                     is FoodRepository.MealState.Success -> {
-                        d("createM", "success")
+
                         if (model.getIsMealEdit()) {
                             model.deleteMealFoods(it.data.id)
                             model.createMealFoods(it.data.id)

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.os.AsyncTask
 import android.util.Log
 import android.util.Log.d
+import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,10 +24,12 @@ class AddMealFragment: NavigationChildFragment() {
     private val mRepository: FoodRepository = FoodRepository()
     private lateinit var model: DiaryViewModel
     private lateinit var adapter: MealAdapter
+    private lateinit var aantal: TextView
 
     override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_meals, container, false)
         setHasOptionsMenu(true)
+        aantal = view.fragment_meals_txt_amount
 
         val recyclerView: RecyclerView = view.meal_recycler_view
         // TODO: change recycler view
@@ -51,10 +54,9 @@ class AddMealFragment: NavigationChildFragment() {
 
         // listeners
         view.create_meal.setOnClickListener {
-            model.resetMealValues()
+            model.emptySelectedMeal()
             model.setIsMealEdit(false)
-            val mealProducts: ArrayList<Food> = ArrayList()
-            model.setMealProducts(mealProducts)
+
             fragmentManager!!
                 .beginTransaction()
                 .replace(
@@ -101,6 +103,8 @@ class AddMealFragment: NavigationChildFragment() {
             super.onPostExecute(result)
             // update UI
             if(result != null) {
+                val mealsFound = result.count().toString()
+                aantal.text = "Aantal ($mealsFound)"
                 adapter.setMealList(result)
             }
         }
@@ -109,6 +113,7 @@ class AddMealFragment: NavigationChildFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
+                model.setCurrentFragment("food")
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     DiaryFragment()

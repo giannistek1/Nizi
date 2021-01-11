@@ -116,6 +116,7 @@ class DiaryViewModel(
     // For tracking what type of food view is being used (food, meal, mealEdit)
     private var currentFragment = "food"
     fun getCurrentFragment(): String { return currentFragment }
+    fun setCurrentFragment(string: String) { currentFragment = string }
 
     // consumption functions
     fun getConsumptions(date: Calendar) { mRepository.getConsumptions(sdfDb.format(date.time)) }

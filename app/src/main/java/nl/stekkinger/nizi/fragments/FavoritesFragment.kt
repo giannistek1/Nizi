@@ -87,20 +87,11 @@ class FavoritesFragment: NavigationChildFragment() {
                             )
                             foodList.add(food)
                         }
+                        val foodAmount = foodList.count().toString()
+                        view.fragment_add_food_txt_amount.text = "Aantal ($foodAmount)"
                         adapter.setFoodList(foodList)
                     }
-                    is FoodRepository.FavoritesState.Error -> {
-                        // TODO: handle events below
-//                        wat gaan we hier doen?
-//                        Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
-                    }
-                    is FoodRepository.FavoritesState.Loading -> {
-//                        spinner toevoegen aan consumptionview?
-//                        Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
-                    }
-                    else -> {
-
-                    }
+                    else -> {}
                 }
             }
         }
