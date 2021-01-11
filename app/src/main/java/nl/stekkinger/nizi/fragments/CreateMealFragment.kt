@@ -58,17 +58,17 @@ class CreateMealFragment: NavigationChildFragment() {
         } ?: throw Exception("Invalid Activity")
 
         // update UI with current data
-        if (model.getIsMealEdit()) {
-            mInputMealName.setText(model.getMealName())
-            if (model.getMealPhoto() != null) {
-                val decodedString: ByteArray = Base64.decode(model.getMealPhoto(), Base64.DEFAULT)
-                val decodedByte: Bitmap? = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                if(decodedByte != null) {
-                    view.image_food_view.setImageBitmap(decodedByte)
-                }
+
+        mInputMealName.setText(model.getMealName())
+        if (model.getMealPhoto() != null) {
+            val decodedString: ByteArray = Base64.decode(model.getMealPhoto(), Base64.DEFAULT)
+            val decodedByte: Bitmap? = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+            if(decodedByte != null) {
+                view.image_food_view.setImageBitmap(decodedByte)
             }
-            updateUI(view)
         }
+        updateUI(view)
+
 
 
         // Update UI with incoming data
