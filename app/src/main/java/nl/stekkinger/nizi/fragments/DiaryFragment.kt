@@ -1,6 +1,7 @@
 package nl.stekkinger.nizi.fragments
 
 import android.os.Bundle
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -40,7 +41,7 @@ class DiaryFragment: BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
-
+        d("hi", "hi")
         fragmentManager!!.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         // Hide patient things if isDoctor
@@ -200,9 +201,7 @@ class DiaryFragment: BaseFragment() {
                 .replace(
                     R.id.activity_main_fragment_container,
                     AddFoodFragment()
-                )
-                .addToBackStack(null)
-                .commit()
+                ).commit()
         }
 
         view.diary_add_lunch_btn.setOnClickListener {
@@ -212,9 +211,7 @@ class DiaryFragment: BaseFragment() {
                 .replace(
                     R.id.activity_main_fragment_container,
                     AddFoodFragment()
-                )
-                .addToBackStack(null)
-                .commit()
+                ).commit()
         }
 
         view.diary_add_dinner_btn.setOnClickListener {
@@ -224,9 +221,7 @@ class DiaryFragment: BaseFragment() {
                 .replace(
                     R.id.activity_main_fragment_container,
                     AddFoodFragment()
-                )
-                .addToBackStack(null)
-                .commit()
+                ).commit()
         }
 
         view.diary_add_snack_btn.setOnClickListener {
@@ -236,9 +231,7 @@ class DiaryFragment: BaseFragment() {
                 .replace(
                     R.id.activity_main_fragment_container,
                     AddFoodFragment()
-                )
-                .addToBackStack(null)
-                .commit()
+                ).commit()
         }
 
         view.fragment_diary_breakfast.setOnClickListener {

@@ -62,8 +62,7 @@ class AddMealFragment: NavigationChildFragment() {
                 .replace(
                     R.id.activity_main_fragment_container,
                     CreateMealFragment()
-                ).addToBackStack(null)
-                .commit()
+                ).commit()
         }
 
         view.activity_add_food.setOnClickListener {

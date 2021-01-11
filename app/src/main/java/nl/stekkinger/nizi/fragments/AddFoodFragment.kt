@@ -88,7 +88,7 @@ class AddFoodFragment: NavigationChildFragment() {
                         fragmentManager!!.beginTransaction().replace(
                                 R.id.activity_main_fragment_container,
                                 FoodViewFragment()
-                            ).addToBackStack(null).commit()
+                            ).commit()
                     }
                     is FoodRepository.FoodState.Error -> {
 
