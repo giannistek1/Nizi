@@ -147,6 +147,7 @@ class CreateMealFoodFragment: NavigationChildFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
+                fragmentManager!!.popBackStack()
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     CreateMealFragment()
