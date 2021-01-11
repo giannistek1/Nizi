@@ -178,7 +178,7 @@ interface ApiService {
     @GET("foods")
     fun getFoods(
         @Header("Authorization") authHeader : String,
-        @Query("id") foodName: ArrayList<Int>
+        @Query("id") ids: ArrayList<Int>
     ) : Call<ArrayList<FoodResponse>>
 
     @GET("my-foods")

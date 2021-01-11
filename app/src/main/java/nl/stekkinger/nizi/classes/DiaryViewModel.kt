@@ -237,6 +237,16 @@ class DiaryViewModel(
     fun getIsMealEdit(): Boolean { return isMealEdit }
     fun setIsMealEdit(isEdit: Boolean) { isMealEdit = isEdit }
 
+    // reset all meal values
+    fun resetMealValues() {
+        mealProductPosition = 0
+        mealId = 0
+        mealComponentId = 0
+        mealName = ""
+        mealPhoto = null
+        isMealEdit = false
+    }
+
     // meal product list functions (keeps the list intact when swapping various meal fragments)
     fun addMealProduct(food: Food, amount: Float = 1f) {
         food.amount = amount
@@ -270,13 +280,18 @@ class DiaryViewModel(
 
     // Meal food functions
     fun createMealFoods(mealId: Int) {
+        // dont create duplicates
+        val ids: ArrayList<Int> = arrayListOf()
         for (food: Food in mealProducts) {
-            val mealFood = MealFood(
-                food = food.id,
-                amount = food.amount,
-                meal = mealId
-            )
-            mRepository.createMealFood(mealFood)
+            if (!ids.contains(food.id)) {
+                ids.add(food.id)
+                val mealFood = MealFood(
+                    food = food.id,
+                    amount = food.amount,
+                    meal = mealId
+                )
+                mRepository.createMealFood(mealFood)
+            }
         }
     }
 

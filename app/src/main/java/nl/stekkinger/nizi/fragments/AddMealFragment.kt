@@ -51,6 +51,7 @@ class AddMealFragment: NavigationChildFragment() {
 
         // listeners
         view.create_meal.setOnClickListener {
+            model.resetMealValues()
             model.setIsMealEdit(false)
             val mealProducts: ArrayList<Food> = ArrayList()
             model.setMealProducts(mealProducts)

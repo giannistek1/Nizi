@@ -370,10 +370,11 @@ class FoodRepository : Repository() {
     // Meal food calls
     // used for getting foods products for meals
     fun getFoods(ids: ArrayList<Int>) {
+
         _foodsState.value = FoodsState.Loading
         var foodList: ArrayList<Food> = arrayListOf()
 
-        service.getFoods(authHeader = authHeader, foodName = ids).enqueue(object: Callback<ArrayList<FoodResponse>> {
+        service.getFoods(authHeader = authHeader, ids = ids).enqueue(object: Callback<ArrayList<FoodResponse>> {
             override fun onResponse(call: Call<ArrayList<FoodResponse>>, response: Response<ArrayList<FoodResponse>>) {
                 if (response.isSuccessful && response.body() != null) {
                     for (foodResponse: FoodResponse in response.body()!!) {

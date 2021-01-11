@@ -9,6 +9,7 @@ import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log.d
 import android.view.View.GONE
+import android.webkit.URLUtil
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -59,19 +60,20 @@ class ConsumptionViewFragment : NavigationChildFragment() {
             model.setMealTime(food.meal_time)
 
             // Update the UI
-            val amount: Float = mConsumption.amount
             view.title_food_view.text = mConsumption.food_meal_component.name
 
-            if(mConsumption.food_meal_component.image_url.startsWith("/9j/")) { // bitmap img
+            val image = mConsumption.food_meal_component.image_url
+            if (URLUtil.isValidUrl(image)) {
+                Picasso.get().load(image).into(image_food_view)
+            }
+            else if(image != null && image !="") { // bitmap img
                 val decodedString: ByteArray =
-                    Base64.decode(mConsumption.food_meal_component.image_url, Base64.DEFAULT)
+                    Base64.decode(image, Base64.DEFAULT)
                 val decodedByte: Bitmap? =
                     BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
                 if (decodedByte != null) {
                     view.image_food_view.setImageBitmap(decodedByte)
                 }
-            } else {
-                Picasso.get().load(mConsumption.food_meal_component.image_url).into(image_food_view)
             }
             serving_input.setText(mConsumption.amount.toString(), TextView.BufferType.EDITABLE)
         })

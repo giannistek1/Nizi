@@ -1,6 +1,7 @@
 package nl.stekkinger.nizi.fragments
 
 import android.os.Bundle
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -182,10 +183,10 @@ class DiaryFragment: BaseFragment() {
         }
         model.getConsumptions(cal)
 
-        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(breakfastRv)
-        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(lunchRv)
-        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(dinnerRv)
-        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(snackRv)
+        ItemTouchHelper(breakfastTouchHelperCallback).attachToRecyclerView(breakfastRv)
+        ItemTouchHelper(lunchTouchHelperCallback).attachToRecyclerView(lunchRv)
+        ItemTouchHelper(dinnerTouchHelperCallback).attachToRecyclerView(dinnerRv)
+        ItemTouchHelper(snackTouchHelperCallback).attachToRecyclerView(snackRv)
 
         mNextDayBtn = view.diary_next_date
 
@@ -320,7 +321,8 @@ class DiaryFragment: BaseFragment() {
         }
     }
 
-    private val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+    // swipe callbacks
+    private val breakfastTouchHelperCallback: ItemTouchHelper.SimpleCallback =
         object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -335,10 +337,62 @@ class DiaryFragment: BaseFragment() {
                 direction: Int
             ) {
                 breakfastAdapter.removeItem(viewHolder.adapterPosition)
-                lunchAdapter.removeItem(viewHolder.adapterPosition)
-                dinnerAdapter.removeItem(viewHolder.adapterPosition)
-                snackAdapter.removeItem(viewHolder.adapterPosition)
+                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted));
+            }
+        }
 
+    private val lunchTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(
+                viewHolder: RecyclerView.ViewHolder,
+                direction: Int
+            ) {
+                lunchAdapter.removeItem(viewHolder.adapterPosition)
+                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted));
+            }
+        }
+
+    private val dinnerTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(
+                viewHolder: RecyclerView.ViewHolder,
+                direction: Int
+            ) {
+                dinnerAdapter.removeItem(viewHolder.adapterPosition)
+                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted));
+            }
+        }
+    private val snackTouchHelperCallback: ItemTouchHelper.SimpleCallback =
+        object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(
+                viewHolder: RecyclerView.ViewHolder,
+                direction: Int
+            ) {
+                snackAdapter.removeItem(viewHolder.adapterPosition)
                 GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted));
             }
         }

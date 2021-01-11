@@ -11,6 +11,7 @@ import android.text.TextWatcher
 import android.util.Base64
 import android.util.Log.d
 import android.view.View.GONE
+import android.webkit.URLUtil
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
@@ -70,14 +71,18 @@ class MealViewFragment : NavigationChildFragment() {
 
             // Update the UI
             title_food_view.text = meal.food_meal_component.name
-            if (meal.food_meal_component.image_url != "" && meal.food_meal_component.image_url != null) {
-                val decodedString: ByteArray = Base64.decode(meal.food_meal_component.image_url, Base64.DEFAULT)
-                val decodedByte: Bitmap? = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                if(decodedByte != null) {
+            val image = meal.food_meal_component.image_url
+            if (URLUtil.isValidUrl(image)) {
+                Picasso.get().load(image).into(image_food_view)
+            }
+            else if(image != null && image !="") { // bitmap img
+                val decodedString: ByteArray =
+                    Base64.decode(image, Base64.DEFAULT)
+                val decodedByte: Bitmap? =
+                    BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+                if (decodedByte != null) {
                     image_food_view.setImageBitmap(decodedByte)
                 }
-            } else {
-                image_food_view.setImageResource(R.drawable.ic_culinary)
             }
             updateUI()
         })
