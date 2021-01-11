@@ -40,7 +40,7 @@ class ConsumptionAdapter(
                 (activity).supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     ConsumptionViewFragment()
-                ).commit()
+                ).addToBackStack(null).commit()
             }
     }
 

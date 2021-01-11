@@ -7,9 +7,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
-import android.widget.Toast
-import androidx.appcompat.app.ActionBar
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -240,4 +237,13 @@ class MainActivity : BaseActivity() {
         }
     }
     //endregion
+
+    override fun onBackPressed() {
+        val fm: FragmentManager = supportFragmentManager
+        if (fm.backStackEntryCount > 0) {
+            fm.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
+    }
  }

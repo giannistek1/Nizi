@@ -213,7 +213,7 @@ class FoodViewFragment : NavigationChildFragment() {
                     (activity)!!.supportFragmentManager.beginTransaction().replace(
                         R.id.activity_main_fragment_container,
                         CreateMealFoodFragment()
-                    ).commit()
+                    ).addToBackStack(null).commit()
                 }
                 "mealEdit" -> {
                     val amount: Float = mServingInput.text.toString().trim().toFloat()
@@ -222,7 +222,7 @@ class FoodViewFragment : NavigationChildFragment() {
                     (activity)!!.supportFragmentManager.beginTransaction().replace(
                         R.id.activity_main_fragment_container,
                         CreateMealFoodFragment()
-                    ).commit()
+                    ).addToBackStack(null).commit()
                 }
             }
 
@@ -297,7 +297,8 @@ class FoodViewFragment : NavigationChildFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                when (mCurrentFragment) {
+                requireActivity().onBackPressed()
+                /*when (mCurrentFragment) {
                     "food" -> {
                         (activity)!!.supportFragmentManager.beginTransaction().replace(
                             R.id.activity_main_fragment_container,
@@ -316,7 +317,7 @@ class FoodViewFragment : NavigationChildFragment() {
                             DiaryFragment()
                         ).commit()
                     }
-                }
+                }*/
                 true
             }
             else -> super.onOptionsItemSelected(item)

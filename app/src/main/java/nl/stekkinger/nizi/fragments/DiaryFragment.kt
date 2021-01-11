@@ -1,7 +1,6 @@
 package nl.stekkinger.nizi.fragments
 
 import android.os.Bundle
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -9,6 +8,7 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -40,6 +40,8 @@ class DiaryFragment: BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
+
+        fragmentManager!!.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
         // Hide patient things if isDoctor
         val isDoctor = GeneralHelper.prefs.getBoolean(GeneralHelper.PREF_IS_DOCTOR, false)
@@ -199,6 +201,7 @@ class DiaryFragment: BaseFragment() {
                     R.id.activity_main_fragment_container,
                     AddFoodFragment()
                 )
+                .addToBackStack(null)
                 .commit()
         }
 
@@ -210,6 +213,7 @@ class DiaryFragment: BaseFragment() {
                     R.id.activity_main_fragment_container,
                     AddFoodFragment()
                 )
+                .addToBackStack(null)
                 .commit()
         }
 
@@ -221,6 +225,7 @@ class DiaryFragment: BaseFragment() {
                     R.id.activity_main_fragment_container,
                     AddFoodFragment()
                 )
+                .addToBackStack(null)
                 .commit()
         }
 
@@ -232,6 +237,7 @@ class DiaryFragment: BaseFragment() {
                     R.id.activity_main_fragment_container,
                     AddFoodFragment()
                 )
+                .addToBackStack(null)
                 .commit()
         }
 
