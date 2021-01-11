@@ -337,7 +337,7 @@ class DiaryFragment: BaseFragment() {
                 direction: Int
             ) {
                 breakfastAdapter.removeItem(viewHolder.adapterPosition)
-                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted));
+                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted))
             }
         }
 
@@ -356,7 +356,7 @@ class DiaryFragment: BaseFragment() {
                 direction: Int
             ) {
                 lunchAdapter.removeItem(viewHolder.adapterPosition)
-                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted));
+                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted))
             }
         }
 
@@ -375,9 +375,10 @@ class DiaryFragment: BaseFragment() {
                 direction: Int
             ) {
                 dinnerAdapter.removeItem(viewHolder.adapterPosition)
-                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted));
+                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted))
             }
         }
+
     private val snackTouchHelperCallback: ItemTouchHelper.SimpleCallback =
         object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             override fun onMove(
@@ -393,7 +394,7 @@ class DiaryFragment: BaseFragment() {
                 direction: Int
             ) {
                 snackAdapter.removeItem(viewHolder.adapterPosition)
-                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted));
+                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted))
             }
         }
 }

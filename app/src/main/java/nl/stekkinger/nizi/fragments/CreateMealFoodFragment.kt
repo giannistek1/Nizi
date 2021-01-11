@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.fragment_add_food.view.*
 import kotlinx.android.synthetic.main.fragment_create_meal_food.view.*
-import kotlinx.android.synthetic.main.fragment_create_meal_food.view.zxing_barcode_scanner
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
