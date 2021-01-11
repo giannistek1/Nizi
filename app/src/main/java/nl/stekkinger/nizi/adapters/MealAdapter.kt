@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.util.Log.d
+import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_food.view.*
 import nl.stekkinger.nizi.R
@@ -51,6 +53,7 @@ class MealAdapter(
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var meal : Meal = mDataset[position]
+        holder.favBtn.isVisible = false
         if (meal.food_meal_component.image_url != "" && meal.food_meal_component.image_url != null) {
             val decodedString: ByteArray = Base64.decode(meal.food_meal_component.image_url, Base64.DEFAULT)
             val decodedByte: Bitmap? = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
@@ -84,6 +87,7 @@ class MealAdapter(
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.food_image)
         val title: TextView = itemView.findViewById(R.id.title)
+        val favBtn: ImageButton = itemView.fav_btn
     }
 
     fun setMealList(mealList: ArrayList<Meal>) {
