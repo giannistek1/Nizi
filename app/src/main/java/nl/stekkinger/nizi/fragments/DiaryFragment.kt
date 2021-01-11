@@ -201,7 +201,7 @@ class DiaryFragment: BaseFragment() {
                 .replace(
                     R.id.activity_main_fragment_container,
                     AddFoodFragment()
-                ).commit()
+                ).addToBackStack(null).commit()
         }
 
         view.diary_add_lunch_btn.setOnClickListener {
@@ -211,7 +211,7 @@ class DiaryFragment: BaseFragment() {
                 .replace(
                     R.id.activity_main_fragment_container,
                     AddFoodFragment()
-                ).commit()
+                ).addToBackStack(null).commit()
         }
 
         view.diary_add_dinner_btn.setOnClickListener {
@@ -221,7 +221,7 @@ class DiaryFragment: BaseFragment() {
                 .replace(
                     R.id.activity_main_fragment_container,
                     AddFoodFragment()
-                ).commit()
+                ).addToBackStack(null).commit()
         }
 
         view.diary_add_snack_btn.setOnClickListener {
@@ -231,7 +231,7 @@ class DiaryFragment: BaseFragment() {
                 .replace(
                     R.id.activity_main_fragment_container,
                     AddFoodFragment()
-                ).commit()
+                ).addToBackStack(null).commit()
         }
 
         view.fragment_diary_breakfast.setOnClickListener {
