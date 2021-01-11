@@ -75,7 +75,7 @@ class FoodSearchAdapter(
                 (activity).supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     fragment
-                ).commit()
+                ).addToBackStack(null).commit()
             }
             holder.favBtn.setOnClickListener {
                 // do somthing in model

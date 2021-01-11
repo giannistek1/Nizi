@@ -142,7 +142,7 @@ class MealViewFragment : NavigationChildFragment() {
                         (activity)!!.supportFragmentManager.beginTransaction().replace(
                             R.id.activity_main_fragment_container,
                             AddMealFragment()
-                        ).commit()
+                        ).addToBackStack(null).commit()
                     }
                     is FoodRepository.State.Error -> {
                         // todo: toast
@@ -201,7 +201,7 @@ class MealViewFragment : NavigationChildFragment() {
             (activity)!!.supportFragmentManager.beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 CreateMealFragment()
-            ).commit()
+            ).addToBackStack(null).commit()
         }
 
         view.delete_food_view.setOnClickListener {
@@ -310,7 +310,7 @@ class MealViewFragment : NavigationChildFragment() {
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     AddMealFragment()
-                ).commit()
+                ).addToBackStack(null).commit()
                 true
             }
             else -> super.onOptionsItemSelected(item)
