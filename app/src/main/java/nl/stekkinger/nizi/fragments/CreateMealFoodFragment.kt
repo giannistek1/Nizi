@@ -108,6 +108,9 @@ class CreateMealFoodFragment: NavigationChildFragment() {
 
         // click events
         view.save_btn.setOnClickListener {
+            // Remove last fragment from backstack
+            fragmentManager!!.popBackStack()
+
             fragmentManager!!
                 .beginTransaction()
                 .replace(
