@@ -1,24 +1,38 @@
 package nl.stekkinger.nizi.fragments
 
 import android.app.SearchManager
-import android.os.Bundle
-import android.view.*
-import android.widget.SearchView
-import androidx.fragment.app.Fragment
 import android.content.Context.SEARCH_SERVICE
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Bundle
 import android.util.Log
 import android.util.Log.d
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.SearchView
+import android.widget.TextView
+import androidx.annotation.Nullable
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.fragment_add_food.*
 import kotlinx.android.synthetic.main.fragment_add_food.view.*
 import kotlinx.android.synthetic.main.toolbar.*
-import nl.stekkinger.nizi.classes.DiaryViewModel
+import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
+import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.classes.diary.MyFood
 import nl.stekkinger.nizi.repositories.FoodRepository
+import java.util.ArrayList
+import java.util.concurrent.TimeUnit
 
 
 class AddFoodFragment: NavigationChildFragment() {
@@ -31,10 +45,15 @@ class AddFoodFragment: NavigationChildFragment() {
     private lateinit var viewManager: RecyclerView.LayoutManager
     private lateinit var adapter: FoodSearchAdapter
 
+    private lateinit var textView: TextView
+
     override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_add_food, container, false)
         setHasOptionsMenu(true)
+
+        textView = view.scan_barcode_text
+//        ActivityCompat.requestPermissions(activity!!, Array(0) { _ -> ""}, PackageManager.PERMISSION_GRANTED)
 
         val searchView = view.findViewById(R.id.search_food) as SearchView
         val searchManager: SearchManager = activity!!.getSystemService(SEARCH_SERVICE) as SearchManager
@@ -57,6 +76,30 @@ class AddFoodFragment: NavigationChildFragment() {
         adapter = FoodSearchAdapter(model, fragment = "food", context = context!!)
         recyclerView.adapter = adapter
 
+        lifecycleScope.launchWhenStarted {
+            model.foodByBarcodeState.collect {
+                when(it) {
+                    is FoodRepository.FoodState.Success -> {
+                        model.selected.value = it.data
+                        model.emptyFoodBarcodeState()
+                        fragmentManager!!.beginTransaction().replace(
+                                R.id.activity_main_fragment_container,
+                                FoodViewFragment()
+                            ).commit()
+                    }
+                    is FoodRepository.FoodState.Error -> {
+                        // TODO: handle events below
+//                        Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
+                    }
+                    is FoodRepository.FoodState.Loading -> {
+//                        Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+        }
         if (searchView != null) {
             // Fixes that only the icon is clickable
             searchView.setOnClickListener {
@@ -109,6 +152,10 @@ class AddFoodFragment: NavigationChildFragment() {
                 .commit()
         }
 
+        view.zxing_barcode_scanner.setOnClickListener {
+            zxing_barcode_scanner(view)
+        }
+
         return view
     }
 
@@ -124,4 +171,19 @@ class AddFoodFragment: NavigationChildFragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+    private fun zxing_barcode_scanner(view: View?) {
+        val intentIntegrator = IntentIntegrator.forSupportFragment(this)
+        intentIntegrator.initiateScan()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        var intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (intentResult != null){
+            if (intentResult.contents != null){
+                model.getFoodByBarcode(intentResult.contents)
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
 }

@@ -5,16 +5,24 @@ import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import android.content.Context.SEARCH_SERVICE
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.zxing.integration.android.IntentIntegrator
+import kotlinx.android.synthetic.main.fragment_add_food.view.*
 import kotlinx.android.synthetic.main.fragment_create_meal_food.view.*
+import kotlinx.android.synthetic.main.fragment_create_meal_food.view.zxing_barcode_scanner
+import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.adapters.MealProductAdapter
+import nl.stekkinger.nizi.repositories.FoodRepository
 
 
 class CreateMealFoodFragment: NavigationChildFragment() {
@@ -79,6 +87,27 @@ class CreateMealFoodFragment: NavigationChildFragment() {
         mealProductAdapter.setMealProductList(model.getMealProducts())
         ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mealProductRV)
 
+        lifecycleScope.launchWhenStarted {
+            model.foodByBarcodeState.collect {
+                when(it) {
+                    is FoodRepository.FoodState.Success -> {
+                        model.emptyFoodBarcodeState()
+                        model.select(activity as AppCompatActivity, it.data, "meal")
+                    }
+                    is FoodRepository.FoodState.Error -> {
+                        // TODO: handle events below
+//                        Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
+                    }
+                    is FoodRepository.FoodState.Loading -> {
+//                        Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+
+                    }
+                }
+            }
+        }
+
         // click events
         view.save_btn.setOnClickListener {
             fragmentManager!!
@@ -88,6 +117,9 @@ class CreateMealFoodFragment: NavigationChildFragment() {
                     CreateMealFragment()
                 )
                 .commit()
+        }
+        view.zxing_barcode_scanner.setOnClickListener {
+            zxing_barcode_scanner(view)
         }
 
         return view
@@ -122,5 +154,20 @@ class CreateMealFoodFragment: NavigationChildFragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun zxing_barcode_scanner(view: View?) {
+        val intentIntegrator = IntentIntegrator.forSupportFragment(this)
+        intentIntegrator.initiateScan()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        var intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        if (intentResult != null){
+            if (intentResult.contents != null){
+                model.getFoodByBarcode(intentResult.contents)
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

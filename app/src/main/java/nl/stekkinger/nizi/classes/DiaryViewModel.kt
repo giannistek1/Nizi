@@ -34,6 +34,7 @@ class DiaryViewModel(
     val toggleFavoriteState = mRepository.toggleFavoriteState
     val consumptionState = mRepository.consumptionState
     val foodsState = mRepository.foodsState
+    val foodByBarcodeState = mRepository.foodByBarcodeState
     val mealState = mRepository.mealState
     val deleteMealState = mRepository.deleteMealState
 
@@ -41,6 +42,7 @@ class DiaryViewModel(
     fun emptyState() { mRepository.emptyState() }
     fun emptyMealState() { mRepository.emptyMealState() }
     fun emptyFoodsState() { mRepository.emptyFoodsState() }
+    fun emptyFoodBarcodeState() { mRepository.emptyFoodBarcodeState() }
     fun emptyToggleFavoriteState() { mRepository.emptyToggleFavoriteState() }
     fun emptyDeleteMealState() { mRepository.emptyDeleteMealState() }
 
@@ -55,6 +57,8 @@ class DiaryViewModel(
     }
     fun getFoodSearch(): LiveData<ArrayList<Food>> { return mFoodSearch }
     fun setFoodSearch(text: String) { mSearchText.value = text }
+
+    fun getFoodByBarcode(barcode: String) { mRepository.getFoodByBarcode(barcode) }
 
     // diary functions
     // For tracking if the user is adding consumptions to breakfast, lunch etc.

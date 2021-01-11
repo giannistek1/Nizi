@@ -170,6 +170,12 @@ interface ApiService {
     ) : Call<ArrayList<FoodResponse>>
 
     @GET("foods")
+    fun getFoodByBarcode(
+        @Header("Authorization") authHeader : String,
+        @Query("barcode") barcode: String
+    ) : Call<ArrayList<FoodResponse>>
+
+    @GET("foods")
     fun getFoods(
         @Header("Authorization") authHeader : String,
         @Query("id") foodName: ArrayList<Int>

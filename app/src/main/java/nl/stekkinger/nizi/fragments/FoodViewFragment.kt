@@ -27,12 +27,12 @@ import nl.stekkinger.nizi.repositories.FoodRepository
 
 class FoodViewFragment : NavigationChildFragment() {
     private lateinit var model: DiaryViewModel
-    private lateinit var mFood: Food
     private lateinit var mServingInput: TextInputEditText
     private lateinit var mDecreaseBtn: ImageButton
     private lateinit var mSaveBtn: ImageButton
     private lateinit var mFavBtn: ImageButton
     private lateinit var mCurrentFragment: String
+    private var mFood: Food = Food(weight_unit = GeneralHelper.getWeightUnitHolder()!!.weightUnits[1])
     private var mIsLiked = false
     private var mFavoriteSelected = 0
 
@@ -40,7 +40,6 @@ class FoodViewFragment : NavigationChildFragment() {
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_food_view, container, false)
         this.setHasOptionsMenu(true)
-
 
         // get the DiaryViewModel
         model = activity?.run {

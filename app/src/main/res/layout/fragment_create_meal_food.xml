@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white">
 
 
@@ -24,13 +24,13 @@
                 android:id="@+id/activity_add_meal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/gray2"
+                android:fontFamily="@font/helvetica_neue_bold"
                 android:gravity="center"
                 android:paddingTop="@dimen/marginNormal"
                 android:paddingBottom="@dimen/marginNormal"
-                android:background="@color/gray2"
                 android:text="@string/products"
-                android:textColor="@color/black"
-                android:fontFamily="@font/helvetica_neue_bold"/>
+                android:textColor="@color/black" />
 
             <View
                 android:layout_width="match_parent"
@@ -64,14 +64,14 @@
 
         <TextView
             android:id="@+id/current_products"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:text="Toegevoegte producten"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:text="Toegevoegte producten"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/save_btn"
@@ -84,56 +84,79 @@
             android:id="@+id/meal_food_list_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/current_products"
             app:layout_constraintHeight_default="wrap"
-            app:layout_constraintHeight_max="450px"
-            android:layout_below="@+id/current_products">
+            app:layout_constraintHeight_max="450px">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/meal_food_list_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="2dp"
                 android:layout_marginTop="2dp"
-                android:scrollbars="vertical"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray"
+                android:padding="2dp"
+                android:scrollbars="vertical" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/add_products"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:text="Producten toevoegen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/meal_food_list_holder"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
+            android:text="Producten toevoegen"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <LinearLayout
+            android:id="@+id/fragment_add_food_li_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/meal_food_list_holder"/>
+            android:layout_below="@+id/add_products"
+            android:layout_marginBottom="@dimen/marginNormal">
 
-        <SearchView
-            android:id="@+id/search_food"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/add_products">
+            <SearchView
+                android:id="@+id/search_food"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="14" />
 
-        </SearchView>
+            <ImageView
+                android:id="@+id/zxing_barcode_scanner"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="4"
+                android:contentDescription="@string/ic_barcode"
+                android:src="@drawable/ic_barcode" />
+
+            <TextView
+                android:id="@+id/scan_barcode_text"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="6"
+                android:gravity="center"
+                android:text="@string/scan_barcode"
+                android:textSize="@dimen/textSize12" />
+        </LinearLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/food_search_holder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/fragment_add_food_li_search"
             app:layout_constraintHeight_default="wrap"
-            app:layout_constraintHeight_min="300dp"
-            android:layout_below="@+id/search_food">
+            app:layout_constraintHeight_min="300dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/food_search_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="2dp"
                 android:layout_marginTop="2dp"
-                android:scrollbars="vertical"
-                android:background="@android:color/darker_gray" />
+                android:background="@android:color/darker_gray"
+                android:padding="2dp"
+                android:scrollbars="vertical" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

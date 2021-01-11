@@ -27,17 +27,23 @@ class FoodRepository : Repository() {
         object Loading: DiaryState()
         object Empty: DiaryState()
     }
-    sealed class FavoritesState {
-        data class Success(val data: ArrayList<MyFoodResponse>) : FavoritesState()
-        data class Error(val message: String) : FavoritesState()
-        object Loading: FavoritesState()
-        object Empty: FavoritesState()
-    }
     sealed class FoodsState {
         data class Success(val data: ArrayList<Food>) : FoodsState()
         data class Error(val message: String) : FoodsState()
         object Loading: FoodsState()
         object Empty: FoodsState()
+    }
+    sealed class FoodState {
+        data class Success(val data: Food) : FoodState()
+        data class Error(val message: String) : FoodState()
+        object Loading: FoodState()
+        object Empty: FoodState()
+    }
+    sealed class FavoritesState {
+        data class Success(val data: ArrayList<MyFoodResponse>) : FavoritesState()
+        data class Error(val message: String) : FavoritesState()
+        object Loading: FavoritesState()
+        object Empty: FavoritesState()
     }
     sealed class MealState {
         data class Success(val data: Meal) : MealState()
@@ -59,6 +65,9 @@ class FoodRepository : Repository() {
     private val _toggleFavoriteState: MutableStateFlow<State> = MutableStateFlow(State.Empty)
     val toggleFavoriteState: StateFlow<State> = _toggleFavoriteState
 
+    private val _foodByBarcodeState: MutableStateFlow<FoodState> = MutableStateFlow(FoodState.Empty)
+    val foodByBarcodeState: StateFlow<FoodState> = _foodByBarcodeState
+
     private val _foodsState: MutableStateFlow<FoodsState> = MutableStateFlow(FoodsState.Empty)
     val foodsState: StateFlow<FoodsState> = _foodsState
 
@@ -74,6 +83,7 @@ class FoodRepository : Repository() {
     // functions to reset states (only needed for some if the fragment redirects on success)
     fun emptyState() { _consumptionState.value = State.Empty }
     fun emptyFoodsState() { _foodsState.value = FoodsState.Empty}
+    fun emptyFoodBarcodeState() { _foodByBarcodeState.value = FoodState.Empty }
     fun emptyToggleFavoriteState() { _toggleFavoriteState.value = State.Empty }
     fun emptyMealState() { _mealState.value = MealState.Empty }
     fun emptyDeleteMealState() { _deleteMealState.value = State.Empty }
@@ -115,6 +125,47 @@ class FoodRepository : Repository() {
             }
         })
         return result
+    }
+
+    fun getFoodByBarcode(barcode: String) {
+        d("repo", "loadbarcode")
+        _foodByBarcodeState.value = FoodState.Loading
+        service.getFoodByBarcode(authHeader = authHeader, barcode = barcode).enqueue(object: Callback<ArrayList<FoodResponse>> {
+            override fun onResponse(call: Call<ArrayList<FoodResponse>>, response: Response<ArrayList<FoodResponse>>) {
+                if (response.isSuccessful && response.body() != null) {
+                    val foodResponse: FoodResponse = response.body()!![0]!!
+                    val food = Food(
+                        id = foodResponse.id,
+                        name = foodResponse.name,
+                        description = foodResponse.food_meal_component.description,
+                        kcal = foodResponse.food_meal_component.kcal,
+                        protein = foodResponse.food_meal_component.protein,
+                        potassium = foodResponse.food_meal_component.potassium,
+                        sodium = foodResponse.food_meal_component.sodium,
+                        water = foodResponse.food_meal_component.water,
+                        fiber = foodResponse.food_meal_component.fiber,
+                        portion_size = foodResponse.food_meal_component.portion_size,
+                        weight_unit = foodResponse.weight_unit,
+                        weight_amount = foodResponse.food_meal_component.portion_size,
+                        image_url = foodResponse.food_meal_component.image_url,
+                        foodId = foodResponse.food_meal_component.foodId
+                    )
+                    d("repo", "success")
+                    _foodByBarcodeState.value = FoodState.Success(food)
+                } else {
+                    d("repo", "empty")
+
+                    _foodByBarcodeState.value = FoodState.Empty
+                }
+                d("repo", response.message())
+                d("repo", response.toString())
+                d("repo", response.code().toString())
+            }
+            override fun onFailure(call: Call<ArrayList<FoodResponse>>, t: Throwable) {
+                d("repo", t.message)
+                _foodByBarcodeState.value = FoodState.Error(t.message!!)
+            }
+        })
     }
 
     // Get all consumptions by date for a patient
