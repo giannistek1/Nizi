@@ -312,7 +312,7 @@ class MealViewFragment : NavigationChildFragment() {
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     AddMealFragment()
-                ).addToBackStack(null).commit()
+                ).commit()
                 true
             }
             else -> super.onOptionsItemSelected(item)
