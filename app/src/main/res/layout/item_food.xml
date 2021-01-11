@@ -58,7 +58,7 @@
         <LinearLayout
             android:id="@+id/food_item_btns"
             android:layout_width="0dp"
-            android:layout_weight="6"
+            android:layout_weight="4"
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
