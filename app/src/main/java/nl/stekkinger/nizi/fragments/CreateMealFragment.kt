@@ -193,7 +193,7 @@ class CreateMealFragment: NavigationChildFragment() {
             (activity)!!.supportFragmentManager.beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 CreateMealFoodFragment()
-            ).commit()
+            ).addToBackStack(null).commit()
         }
 
         view.create_meal_save_btn.setOnClickListener {

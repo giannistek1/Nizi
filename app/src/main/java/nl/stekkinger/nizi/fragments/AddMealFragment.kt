@@ -89,7 +89,7 @@ class AddMealFragment: NavigationChildFragment() {
             fragmentManager!!.beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 CreateMealFragment()
-            ).commit()
+            ).addToBackStack(null).commit()
         }
 
         view.activity_add_food.setOnClickListener {

@@ -100,6 +100,10 @@ class CreateMealFoodFragment: NavigationChildFragment() {
 
         // click listeners
         view.save_btn.setOnClickListener {
+
+        // Remove last fragment from backstack
+            fragmentManager!!.popBackStack()
+
             fragmentManager!!.beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 CreateMealFragment()
@@ -134,6 +138,7 @@ class CreateMealFoodFragment: NavigationChildFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
+                fragmentManager!!.popBackStack()
                 (activity)!!.supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     CreateMealFragment()
