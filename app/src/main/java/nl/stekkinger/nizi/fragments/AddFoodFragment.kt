@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.annotation.Nullable
@@ -22,14 +23,17 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.zxing.integration.android.IntentIntegrator
+import com.journeyapps.barcodescanner.CaptureActivity
 import kotlinx.android.synthetic.main.fragment_add_food.*
 import kotlinx.android.synthetic.main.fragment_add_food.view.*
+import kotlinx.android.synthetic.main.fragment_diary.view.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.MyFood
+import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.util.ArrayList
 import java.util.concurrent.TimeUnit
@@ -53,7 +57,6 @@ class AddFoodFragment: NavigationChildFragment() {
         setHasOptionsMenu(true)
 
         textView = view.scan_barcode_text
-//        ActivityCompat.requestPermissions(activity!!, Array(0) { _ -> ""}, PackageManager.PERMISSION_GRANTED)
 
         val searchView = view.findViewById(R.id.search_food) as SearchView
         val searchManager: SearchManager = activity!!.getSystemService(SEARCH_SERVICE) as SearchManager
@@ -88,8 +91,7 @@ class AddFoodFragment: NavigationChildFragment() {
                             ).commit()
                     }
                     is FoodRepository.FoodState.Error -> {
-                        // TODO: handle events below
-//                        Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
+
                     }
                     is FoodRepository.FoodState.Loading -> {
 //                        Toast.makeText(activity, "LOADING", Toast.LENGTH_SHORT).show()
@@ -173,7 +175,10 @@ class AddFoodFragment: NavigationChildFragment() {
     }
     private fun zxing_barcode_scanner(view: View?) {
         val intentIntegrator = IntentIntegrator.forSupportFragment(this)
+        intentIntegrator.setOrientationLocked(true)
+        intentIntegrator.setBeepEnabled(true)
         intentIntegrator.initiateScan()
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

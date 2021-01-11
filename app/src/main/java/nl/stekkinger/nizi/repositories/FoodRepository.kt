@@ -128,41 +128,39 @@ class FoodRepository : Repository() {
     }
 
     fun getFoodByBarcode(barcode: String) {
-        d("repo", "loadbarcode")
         _foodByBarcodeState.value = FoodState.Loading
         service.getFoodByBarcode(authHeader = authHeader, barcode = barcode).enqueue(object: Callback<ArrayList<FoodResponse>> {
             override fun onResponse(call: Call<ArrayList<FoodResponse>>, response: Response<ArrayList<FoodResponse>>) {
                 if (response.isSuccessful && response.body() != null) {
-                    val foodResponse: FoodResponse = response.body()!![0]!!
-                    val food = Food(
-                        id = foodResponse.id,
-                        name = foodResponse.name,
-                        description = foodResponse.food_meal_component.description,
-                        kcal = foodResponse.food_meal_component.kcal,
-                        protein = foodResponse.food_meal_component.protein,
-                        potassium = foodResponse.food_meal_component.potassium,
-                        sodium = foodResponse.food_meal_component.sodium,
-                        water = foodResponse.food_meal_component.water,
-                        fiber = foodResponse.food_meal_component.fiber,
-                        portion_size = foodResponse.food_meal_component.portion_size,
-                        weight_unit = foodResponse.weight_unit,
-                        weight_amount = foodResponse.food_meal_component.portion_size,
-                        image_url = foodResponse.food_meal_component.image_url,
-                        foodId = foodResponse.food_meal_component.foodId
-                    )
-                    d("repo", "success")
-                    _foodByBarcodeState.value = FoodState.Success(food)
+                    if (response.body()!!.count() == 0) {
+                        // no food found with this barcode
+                        _foodByBarcodeState.value = FoodState.Error("not found")
+                    } else {
+                        val foodResponse: FoodResponse = response.body()!![0]!!
+                        val food = Food(
+                            id = foodResponse.id,
+                            name = foodResponse.name,
+                            description = foodResponse.food_meal_component.description,
+                            kcal = foodResponse.food_meal_component.kcal,
+                            protein = foodResponse.food_meal_component.protein,
+                            potassium = foodResponse.food_meal_component.potassium,
+                            sodium = foodResponse.food_meal_component.sodium,
+                            water = foodResponse.food_meal_component.water,
+                            fiber = foodResponse.food_meal_component.fiber,
+                            portion_size = foodResponse.food_meal_component.portion_size,
+                            weight_unit = foodResponse.weight_unit,
+                            weight_amount = foodResponse.food_meal_component.portion_size,
+                            image_url = foodResponse.food_meal_component.image_url,
+                            foodId = foodResponse.food_meal_component.foodId
+                        )
+                        _foodByBarcodeState.value = FoodState.Success(food)
+                    }
                 } else {
-                    d("repo", "empty")
-
+                    d("got", "here")
                     _foodByBarcodeState.value = FoodState.Empty
                 }
-                d("repo", response.message())
-                d("repo", response.toString())
-                d("repo", response.code().toString())
             }
             override fun onFailure(call: Call<ArrayList<FoodResponse>>, t: Throwable) {
-                d("repo", t.message)
                 _foodByBarcodeState.value = FoodState.Error(t.message!!)
             }
         })
