@@ -7,24 +7,27 @@
     android:layout_marginBottom="2dp"
     app:cardCornerRadius="2dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_margin="2dp">
+        android:layout_margin="2dp"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/food_image"
-            android:layout_width="60dp"
+            android:layout_width="0dp"
+            android:layout_weight="3"
             android:layout_height="60dp"
             tools:src="@drawable/ic_food"
             android:scaleType="fitCenter"
             android:contentDescription="@string/content_food_image"/>
 
+        <!-- Info -->
         <LinearLayout
             android:id="@+id/food_info"
-            android:layout_width="230dp"
+            android:layout_width="0dp"
+            android:layout_weight="10"
             android:layout_height="match_parent"
-            android:layout_toEndOf="@+id/food_image"
             android:paddingTop="@dimen/marginSmall"
             android:paddingStart="@dimen/marginNormal"
             android:paddingEnd="0dp"
@@ -51,56 +54,44 @@
 
         </LinearLayout>
 
+        <!-- Buttons -->
         <LinearLayout
             android:id="@+id/food_item_btns"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="6"
             android:layout_height="match_parent"
-            android:layout_marginStart="5dp"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/food_info"
             android:orientation="horizontal">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="end">
 
                 <ImageButton
                     android:id="@+id/fav_btn"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="30dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="30dp"
-                    android:layout_toStartOf="@id/add_btn"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_favorite"
                     android:contentDescription="@string/content_favorite_food"/>
 
                 <ImageButton
                     android:id="@+id/add_btn"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="50dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/ic_add"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_save"
                     android:scaleType="centerCrop"
-                    android:tint="@color/colorPrimary"
                     android:contentDescription="@string/content_add_food"/>
 
                 <ImageButton
                     android:id="@+id/delete_btn"
                     style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="30dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="30dp"
-                    android:layout_toStartOf="@id/fav_btn"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_delete"
                     android:contentDescription="@string/content_delete_food" />
-
-            </RelativeLayout>
-
         </LinearLayout>
-
-    </RelativeLayout>
-
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
