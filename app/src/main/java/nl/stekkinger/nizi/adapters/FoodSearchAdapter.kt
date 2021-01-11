@@ -83,15 +83,12 @@ class FoodSearchAdapter(
                 // show toast of success (there is no way to get visual representation of liked foods)
                 Toast.makeText(activity, R.string.added_favorite, Toast.LENGTH_SHORT).show()
             }
-            // hide btns
-            holder.deleteBtn.isVisible = false
         } else if (fragment == "meal") {
             holder.addBtn.setOnClickListener {
                 model.addMealProduct(food)
                 notifyDataSetChanged()
             }
             holder.favBtn.isVisible = false
-            holder.deleteBtn.isVisible = false
         } else if(fragment == "favorites") {
             holder.addBtn.setOnClickListener {
                 model.addConsumption(food)
@@ -101,15 +98,8 @@ class FoodSearchAdapter(
                     DiaryFragment()
                 ).commit()
             }
-            holder.deleteBtn.setOnClickListener {
-                // do something in model
-                model.deleteFavorite(food.my_food)
-                mDataset.removeAt(holder.adapterPosition)
-                notifyDataSetChanged()
-            }
             // hide btns
             holder.favBtn.isVisible = false
-            holder.deleteBtn.isVisible = true
         }
     }
 
@@ -122,7 +112,6 @@ class FoodSearchAdapter(
         val summary: TextView = itemView.summary
         val addBtn: ImageButton = itemView.add_btn
         val favBtn: ImageButton = itemView.fav_btn
-        val deleteBtn: ImageButton = itemView.delete_btn
     }
 
     fun setFoodList(foodList: ArrayList<Food>) {

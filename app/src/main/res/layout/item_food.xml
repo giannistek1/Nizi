@@ -83,15 +83,6 @@
                     android:scaleType="centerCrop"
                     android:contentDescription="@string/content_add_food"/>
 
-                <ImageButton
-                    android:id="@+id/delete_btn"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_delete"
-                    android:contentDescription="@string/content_delete_food" />
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

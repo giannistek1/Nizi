@@ -135,12 +135,12 @@
                     android:background="@drawable/text_border_gray"/>
 
                 <ImageView
+                    android:id="@+id/zxing_barcode_scanner"
                     android:layout_width="0dp"
                     android:layout_weight="4"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/ic_barcode"
-                    android:src="@drawable/ic_barcode"
-                    android:visibility="invisible"/>
+                    android:src="@drawable/ic_barcode" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -148,8 +148,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:textSize="@dimen/textSize12"
-                    android:text="@string/scan_barcode"
-                    android:visibility="invisible"/>
+                    android:text="@string/scan_barcode" />
             </LinearLayout>
 
             <TextView
