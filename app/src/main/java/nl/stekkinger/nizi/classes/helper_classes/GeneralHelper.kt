@@ -133,4 +133,9 @@ object GeneralHelper {
         showAnimatedToast(toastView, toastAnimation, context.getString(R.string.no_internet_connection))
         return false
     }
+
+    fun isAdmin() : Boolean {
+        val json: String = prefs.getString(PREF_TOKEN, "")!!
+        return json == "admin"
+    }
 }

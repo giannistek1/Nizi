@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.DoctorMainActivity
+import nl.stekkinger.nizi.classes.Mockup
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.LoginRequest
@@ -133,6 +134,9 @@ class LoginActivity : BaseActivity() {
 
         val loginRequest = LoginRequest(usernameET.text.toString(), passwordET.text.toString())
 
+        if (usernameET.text.toString().toLowerCase() == "doctor" && passwordET.text.toString().toLowerCase() == "doctor") { loginDoctorMockup(); return }
+        if (usernameET.text.toString().toLowerCase() == "patient" && passwordET.text.toString().toLowerCase() == "patient") { loginPatientMockup(); return }
+
         if (loginAsyncTask(loginRequest).status != AsyncTask.Status.RUNNING)
             loginAsyncTask(loginRequest).execute()
     }
@@ -194,7 +198,7 @@ class LoginActivity : BaseActivity() {
             GeneralHelper.prefs.edit().putBoolean(GeneralHelper.PREF_IS_DOCTOR, isDoctor).apply()
 
 
-            // Save Patient/Doctor Id
+            // Save own Patient/Doctor Id
             if (isDoctor)
                 GeneralHelper.prefs.edit().putInt(GeneralHelper.PREF_DOCTOR_ID, result.user.doctor!!.id!!).apply()
             else
@@ -207,6 +211,52 @@ class LoginActivity : BaseActivity() {
 
             showNextActivity()
         }
+    }
+    //endregion
+
+    //region Mockup Login
+    private fun loginPatientMockup() {
+        // Feedback
+        GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.login_success))
+
+        // Save token
+        GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_TOKEN, Mockup.jwt).apply()
+
+        // Save isDoctor for future reference
+        isDoctor = false
+        GeneralHelper.prefs.edit().putBoolean(GeneralHelper.PREF_IS_DOCTOR, isDoctor).apply()
+
+        // Save own Patient/Doctor Id
+        GeneralHelper.prefs.edit().putInt(GeneralHelper.PREF_DOCTOR_ID, 0).apply()
+
+        // Save user
+        val gson = Gson()
+        val json = gson.toJson(Mockup.userLogin)
+        GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_USER, json).apply()
+
+        showNextActivity()
+    }
+
+    private fun loginDoctorMockup() {
+        // Feedback
+        GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.login_success))
+
+        // Save token
+        GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_TOKEN, Mockup.jwt).apply()
+
+        // Save isDoctor for future reference
+        isDoctor = true
+        GeneralHelper.prefs.edit().putBoolean(GeneralHelper.PREF_IS_DOCTOR, isDoctor).apply()
+
+        // Save own Patient/Doctor Id
+        GeneralHelper.prefs.edit().putInt(GeneralHelper.PREF_DOCTOR_ID, 0).apply()
+
+        // Save user
+        val gson = Gson()
+        val json = gson.toJson(Mockup.userLogin)
+        GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_USER, json).apply()
+
+        showNextActivity()
     }
     //endregion
 }

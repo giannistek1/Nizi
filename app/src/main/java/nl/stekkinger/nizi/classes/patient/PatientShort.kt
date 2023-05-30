@@ -6,6 +6,7 @@ import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
 import nl.stekkinger.nizi.classes.feedback.FeedbackShort
 import java.io.Serializable
 
+// Todo: Default values + secondary constructor
 data class PatientShort (
     var id: Int = 0,
     var gender: String,

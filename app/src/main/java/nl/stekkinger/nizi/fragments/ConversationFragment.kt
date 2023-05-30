@@ -9,9 +9,11 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_conversation.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConversationAdapter
+import nl.stekkinger.nizi.classes.Mockup
 import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -47,18 +49,17 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
         adapter = ConversationAdapter()
         recyclerView.adapter = adapter
 
+        // Get feedback
+        GeneralHelper.isAdmin()
+        if (GeneralHelper.isAdmin()) { getConversationsMockup(); return view }
+
         // Check internet connection
         if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return view
-
-        // Get feedback
-        getConversationsAsyncTask().execute()
+        else {
+            getConversationsAsyncTask().execute()
+        }
 
         return view
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
     }
 
     inner class getConversationsAsyncTask : AsyncTask<Void, Void, ArrayList<Feedback>>() {
@@ -97,4 +98,14 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
             adapter.setConversationList(result)
         }
     }
+
+    //region Mockup Login
+    private fun getConversationsMockup() {
+        // Feedback
+        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
+
+        d("CONVO", "Conversation mockup loaded.")
+        adapter.setConversationList(Mockup.feedbacks)
+    }
+    //endregion
 }

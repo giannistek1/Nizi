@@ -18,12 +18,14 @@ import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_doctor_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.adapters.PatientAdapter
 import nl.stekkinger.nizi.adapters.PatientAdapterListener
+import nl.stekkinger.nizi.classes.Mockup
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.patient.Patient
@@ -94,6 +96,10 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
         if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
 
         // Get patients
+        if (GeneralHelper.isAdmin()) {
+            getPatientsForDoctorMockup(); return
+        }
+
         getPatientsForDoctorAsyncTask().execute()
     }
 
@@ -378,6 +384,43 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
     private fun Context.hideKeyboard(view: View) {
         val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+    //endregion
+
+    //region Mockup Login
+    private fun getPatientsForDoctorMockup() {
+        // Feedback
+        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_patients_success))
+
+
+
+        // Clear
+        patientList.clear()
+        filteredList.clear()
+
+        // Fill
+        (0 until Mockup.patients.count()).forEach {
+            if (Mockup.patients[it].user == null) return@forEach
+
+            val pi = PatientItem(
+                it + 1,
+                Mockup.patients[it].user!!.first_name + " " + Mockup.patients[it].user!!.last_name,
+                Mockup.patients[it].user!!.first_name,
+                Mockup.patients[it].user!!.last_name,
+                Mockup.patients[it].date_of_birth,
+                Mockup.patients[it].gender,
+                Mockup.patients[it].user!!.username,
+                Mockup.patients[it].user!!.email,
+                Mockup.patients[it].user!!.role,
+                Mockup.patients[it].id!!,
+                Mockup.patients[it].doctor.id!!
+            )
+            patientList.add(pi)
+        }
+
+        filteredList.addAll(patientList)
+
+        setupRecyclerView()
     }
     //endregion
 }

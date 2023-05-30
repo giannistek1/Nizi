@@ -15,6 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.classes.Mockup
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -69,14 +70,17 @@ class MainActivity : BaseActivity() {
         diaryModel = ViewModelProviders.of(this)[DiaryViewModel::class.java]
 
         // Checks if fragment state is null and save it
-        if (savedInstanceState != null)
-            this.savedInstanceState = savedInstanceState
+        //if (savedInstanceState != null)
+            //this.savedInstanceState = savedInstanceState
 
         // Get User
         user = GeneralHelper.getUser()
 
         // Check internet connection
         if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
+
+        // Get data
+        if (GeneralHelper.isAdmin()) { getDoctorMockup(); return }
 
         getWeightUnits().execute()
         getDoctorAsyncTask().execute()
@@ -235,6 +239,12 @@ class MainActivity : BaseActivity() {
 
             doctor = result
         }
+    }
+    //endregion
+
+    //region Mockups
+    private fun getDoctorMockup() {
+        doctor = Mockup.doctor
     }
     //endregion
 
