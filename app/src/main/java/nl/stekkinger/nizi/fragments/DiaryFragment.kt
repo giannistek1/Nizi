@@ -1,7 +1,6 @@
 package nl.stekkinger.nizi.fragments
 
 import android.os.Bundle
-import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -21,6 +20,7 @@ import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConsumptionAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.classes.Mockup
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.diary.MyFood
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -111,44 +111,71 @@ class DiaryFragment: BaseFragment() {
         model.fetchFavorites()
         model.getConsumptions(cal)
 
-        // stateflows
-        // collects all consumptions and fills the diary
-        lifecycleScope.launchWhenStarted {
-            model.diaryState.collect {
-                when(it) {
-                    is FoodRepository.DiaryState.Success -> {
+        if (GeneralHelper.isAdmin())
+        {
+            val breakfastList = ArrayList<ConsumptionResponse>()
+            val lunchList = ArrayList<ConsumptionResponse>()
+            val dinnerList = ArrayList<ConsumptionResponse>()
+            val snackList = ArrayList<ConsumptionResponse>()
 
-                        val breakfastList = ArrayList<ConsumptionResponse>()
-                        val lunchList = ArrayList<ConsumptionResponse>()
-                        val dinnerList = ArrayList<ConsumptionResponse>()
-                        val snackList = ArrayList<ConsumptionResponse>()
+            // Sorting consumptions
+            for (c: ConsumptionResponse in Mockup.getRandomConsumptionResponses(4)) {
+                when (c.meal_time) {
+                    getString(R.string.breakfast) -> breakfastList.add(c)
+                    getString(R.string.lunch) -> lunchList.add(c)
+                    getString(R.string.dinner) -> dinnerList.add(c)
+                    getString(R.string.snack) -> snackList.add(c)
+                    else -> breakfastList.add(c)
+                }
+            }
 
-                        //sorting consumptions
-                        for (c: ConsumptionResponse in it.data) {
-                            when (c.meal_time) {
-                                "Ontbijt" -> breakfastList.add(c)
-                                "Lunch" -> lunchList.add(c)
-                                "Avondeten" -> dinnerList.add(c)
-                                "Snack" -> snackList.add(c)
-                                else -> breakfastList.add(c)
+            // pass list of consumptions to adapter
+            breakfastAdapter.setConsumptionList(breakfastList)
+            lunchAdapter.setConsumptionList(lunchList)
+            dinnerAdapter.setConsumptionList(dinnerList)
+            snackAdapter.setConsumptionList(snackList)
+        }
+        else
+        {
+            // stateflows
+            // collects all consumptions and fills the diary
+            lifecycleScope.launchWhenStarted {
+                model.diaryState.collect {
+                    when(it) {
+                        is FoodRepository.DiaryState.Success -> {
+
+                            val breakfastList = ArrayList<ConsumptionResponse>()
+                            val lunchList = ArrayList<ConsumptionResponse>()
+                            val dinnerList = ArrayList<ConsumptionResponse>()
+                            val snackList = ArrayList<ConsumptionResponse>()
+
+                            //sorting consumptions
+                            for (c: ConsumptionResponse in it.data) {
+                                when (c.meal_time) {
+                                    "Ontbijt" -> breakfastList.add(c)
+                                    "Lunch" -> lunchList.add(c)
+                                    "Avondeten" -> dinnerList.add(c)
+                                    "Snack" -> snackList.add(c)
+                                    else -> breakfastList.add(c)
+                                }
                             }
-                        }
 
-                        // pass list of consumptions to adapter
-                        breakfastAdapter.setConsumptionList(breakfastList)
-                        lunchAdapter.setConsumptionList(lunchList)
-                        dinnerAdapter.setConsumptionList(dinnerList)
-                        snackAdapter.setConsumptionList(snackList)
-                        view.fragment_diary_loader.visibility = GONE
-                    }
-                    is FoodRepository.DiaryState.Error -> {
-                        view.fragment_diary_loader.visibility = GONE
-                    }
-                    is FoodRepository.DiaryState.Loading -> {
-                        view.fragment_diary_loader.visibility = VISIBLE
-                    }
-                    else -> {
-                        view.fragment_diary_loader.visibility = GONE
+                            // pass list of consumptions to adapter
+                            breakfastAdapter.setConsumptionList(breakfastList)
+                            lunchAdapter.setConsumptionList(lunchList)
+                            dinnerAdapter.setConsumptionList(dinnerList)
+                            snackAdapter.setConsumptionList(snackList)
+                            view.fragment_diary_loader.visibility = GONE
+                        }
+                        is FoodRepository.DiaryState.Error -> {
+                            view.fragment_diary_loader.visibility = GONE
+                        }
+                        is FoodRepository.DiaryState.Loading -> {
+                            view.fragment_diary_loader.visibility = VISIBLE
+                        }
+                        else -> {
+                            view.fragment_diary_loader.visibility = GONE
+                        }
                     }
                 }
             }

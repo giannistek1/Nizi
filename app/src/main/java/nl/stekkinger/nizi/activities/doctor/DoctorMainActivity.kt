@@ -392,28 +392,28 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
         // Feedback
         GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_patients_success))
 
-
-
         // Clear
         patientList.clear()
         filteredList.clear()
 
+        val _patients = Mockup.patients
+
         // Fill
-        (0 until Mockup.patients.count()).forEach {
-            if (Mockup.patients[it].user == null) return@forEach
+        (0 until _patients.count()).forEach {
+            if (_patients[it].user == null) return@forEach
 
             val pi = PatientItem(
                 it + 1,
-                Mockup.patients[it].user!!.first_name + " " + Mockup.patients[it].user!!.last_name,
-                Mockup.patients[it].user!!.first_name,
-                Mockup.patients[it].user!!.last_name,
-                Mockup.patients[it].date_of_birth,
-                Mockup.patients[it].gender,
-                Mockup.patients[it].user!!.username,
-                Mockup.patients[it].user!!.email,
-                Mockup.patients[it].user!!.role,
-                Mockup.patients[it].id!!,
-                Mockup.patients[it].doctor.id!!
+                _patients[it].user!!.first_name + " " + Mockup.patients[it].user!!.last_name,
+                _patients[it].user!!.first_name,
+                _patients[it].user!!.last_name,
+                _patients[it].date_of_birth,
+                _patients[it].gender,
+                _patients[it].user!!.username,
+                _patients[it].user!!.email,
+                _patients[it].user!!.role,
+                _patients[it].id!!,
+                _patients[it].doctor.id!!
             )
             patientList.add(pi)
         }

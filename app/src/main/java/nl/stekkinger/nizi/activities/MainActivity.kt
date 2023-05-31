@@ -70,8 +70,8 @@ class MainActivity : BaseActivity() {
         diaryModel = ViewModelProviders.of(this)[DiaryViewModel::class.java]
 
         // Checks if fragment state is null and save it
-        //if (savedInstanceState != null)
-            //this.savedInstanceState = savedInstanceState
+        if (savedInstanceState != null)
+            this.savedInstanceState = savedInstanceState
 
         // Get User
         user = GeneralHelper.getUser()
@@ -245,6 +245,14 @@ class MainActivity : BaseActivity() {
     //region Mockups
     private fun getDoctorMockup() {
         doctor = Mockup.doctor
+
+        // Checks if fragment state is null, then start with homeFragment
+        if (savedInstanceState == null) {
+            val fragment = HomeFragment()
+
+            supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id, fragment,
+                fragment.javaClass.simpleName).commit()
+        }
     }
     //endregion
 

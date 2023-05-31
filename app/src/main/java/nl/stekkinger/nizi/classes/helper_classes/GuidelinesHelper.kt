@@ -160,7 +160,7 @@ object GuidelinesHelper {
             //val randomProgress = Random.nextInt(150)
             //var progress = randomProgress
             val progress: Int
-            var amount = dietaryGuideline.amount
+            val amount = dietaryGuideline.amount
 
             //
             if (dietaryGuideline.maximum != 0) {

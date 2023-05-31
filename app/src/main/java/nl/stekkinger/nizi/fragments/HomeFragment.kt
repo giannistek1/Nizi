@@ -5,17 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_diary.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
-import kotlinx.android.synthetic.main.fragment_patient_home.view.*
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.Mockup
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
@@ -47,10 +41,12 @@ class HomeFragment: BaseFragment() {
     private val sdfDB = GeneralHelper.getCreateDateFormat()
 
     private lateinit var loader: View
+    private lateinit var linearLayoutGuidelines: LinearLayout
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View =  inflater.inflate(R.layout.fragment_home, container, false)
+        val view = inflater.inflate(R.layout.fragment_home, container, false)
         loader = view.fragment_home_loader
+        linearLayoutGuidelines = view.fragment_home_ll_guidelines
 
         // Setup custom toast
         val parent: RelativeLayout = view.fragment_home_rl
@@ -68,7 +64,6 @@ class HomeFragment: BaseFragment() {
         }
 
         user = GeneralHelper.getUser()
-
 
         val calendar: Calendar = Calendar.getInstance()
         // set the calendar to start of today
@@ -100,8 +95,8 @@ class HomeFragment: BaseFragment() {
             } else {
                 view.fragment_home_txt_day.text = sdf.format(mCurrentDate)
             }
-            
-            getConsumptionsAsyncTask().execute()
+
+            getConsumptions();
 
             // Update UI
             view.fragment_home_btn_tomorrow.isEnabled = true
@@ -133,7 +128,7 @@ class HomeFragment: BaseFragment() {
                 view.fragment_home_txt_day.text = sdf.format(mCurrentDate)
             }
 
-            getConsumptionsAsyncTask().execute()
+            getConsumptions()
         }
 
         // Update UI
@@ -142,14 +137,9 @@ class HomeFragment: BaseFragment() {
         view.fragment_home_btn_tomorrow.isClickable = false
         view.fragment_home_btn_tomorrow.alpha = 0.2f
 
-        getConsumptionsAsyncTask().execute()
+        getConsumptions()
 
         return view
-    }
-
-    override fun onStart() {
-        super.onStart()
-
     }
 
     fun refreshGuidelines()
@@ -157,10 +147,17 @@ class HomeFragment: BaseFragment() {
         // Guard
         if (dietaryGuidelines == null) { return }
 
-        GuidelinesHelper.initializeGuidelines(activity, fragment_home_ll_guidelines, dietaryGuidelines)
+        GuidelinesHelper.initializeGuidelines(activity, linearLayoutGuidelines, dietaryGuidelines)
     }
 
     //region Get Consumptions
+    private fun getConsumptions() {
+        if (GeneralHelper.isAdmin()) {
+            getConsumptionsMockup()
+        } else {
+            getConsumptionsAsyncTask().execute()
+        }
+    }
     inner class getConsumptionsAsyncTask() : AsyncTask<Void, Void, ArrayList<ConsumptionResponse>>()
     {
         override fun onPreExecute() {
@@ -284,6 +281,64 @@ class HomeFragment: BaseFragment() {
 
             refreshGuidelines()
         }
+    }
+    //endregion
+
+    //region Mockups
+    private fun getConsumptionsMockup() {
+        consumptions = Mockup.getRandomConsumptionResponses(5)
+
+        supplements.clear()
+
+        // Should be based on amount of dietaryRestrictions
+        for (i in 0..5)
+            supplements.add(0)
+
+        consumptions.forEach {
+            supplements[0] += (it.food_meal_component.kcal).roundToInt()
+            supplements[1] += (it.food_meal_component.water).roundToInt()
+            supplements[2] += (it.food_meal_component.sodium * 1000).roundToInt()
+            supplements[3] += (it.food_meal_component.potassium * 1000).roundToInt()
+            supplements[4] += (it.food_meal_component.protein).roundToInt()
+            supplements[5] += (it.food_meal_component.fiber).roundToInt()
+        }
+
+        getDietaryMockup()
+    }
+
+    private fun getDietaryMockup() {
+        dietaryGuidelines.clear()
+
+        Mockup.dietaryManagements.forEachIndexed { _, resultDietary ->
+            if (!resultDietary.is_active) return@forEachIndexed
+
+            var index = 0 // Kcal
+            if (resultDietary.dietary_restriction.description.contains("Vocht"))
+                index = 1
+            else if (resultDietary.dietary_restriction.description.contains("Natrium"))
+                index = 2
+            else if (resultDietary.dietary_restriction.description.contains("Kalium"))
+                index = 3
+            else if (resultDietary.dietary_restriction.description.contains("Eiwit"))
+                index = 4
+            else if (resultDietary.dietary_restriction.description.contains("Vezel"))
+                index = 5
+
+            val dietaryGuideline = DietaryGuideline(
+                id = resultDietary.id!!,
+                description = resultDietary.dietary_restriction.description,
+                plural = resultDietary.dietary_restriction.plural,
+                minimum = resultDietary.minimum, maximum = resultDietary.maximum, amount = supplements[index],
+                weightUnit = ""
+            )
+
+            val weightUnit = weightUnits.find { it.id == resultDietary.dietary_restriction.weight_unit }
+            dietaryGuideline.weightUnit = weightUnit!!.short
+
+            dietaryGuidelines.add(dietaryGuideline)
+        }
+
+        refreshGuidelines()
     }
     //endregion
 }
