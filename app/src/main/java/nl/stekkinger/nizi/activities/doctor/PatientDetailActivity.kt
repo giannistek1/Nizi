@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
-import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_patient_detail.*
@@ -23,14 +22,16 @@ import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientFeedbackFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientHomeFragment
+import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 import nl.stekkinger.nizi.repositories.WeightUnitRepository
 
 
 class PatientDetailActivity : BaseActivity() {
 
-    private val patientRepository: PatientRepository = PatientRepository()
-    private val weightUnitRepository: WeightUnitRepository = WeightUnitRepository()
+    private val authRepository = AuthRepository()
+    private val patientRepository = PatientRepository()
+    private val weightUnitRepository = WeightUnitRepository()
 
     private lateinit var weightUnits: ArrayList<WeightUnit>             // WeightUnits
     private lateinit var patientData: PatientData                       // User, Patient, Doctor, Dietary
@@ -76,6 +77,8 @@ class PatientDetailActivity : BaseActivity() {
         val gson = Gson()
         val json = gson.toJson(doctorUser)
         GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_USER, json).apply()
+
+        if (GeneralHelper.isAdmin()) { getPatientMockup(); return }
 
         // Check internet connection
         if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
@@ -211,7 +214,6 @@ class PatientDetailActivity : BaseActivity() {
                 consumptions = result.consumptions
             )
 
-
             val fragment = PatientHomeFragment()
             val bundle = Bundle()
             bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
@@ -222,6 +224,36 @@ class PatientDetailActivity : BaseActivity() {
                 fragment.javaClass.simpleName)
                 .commit()
         }
+    }
+    //endregion
+
+    //region Mockups
+    private fun getPatientMockup() {
+        // Make PatientData because patient does not have descriptions of dietaryRestrictions
+        patientData.user = authRepository.getUserLocally(patientData.user.username)!!
+        val result = patientRepository.getPatientLocally(patientData.patient.id)!!
+
+        patientData.patient = PatientShort(
+            id = result.id!!,
+            gender = result.gender,
+            date_of_birth = result.date_of_birth,
+            doctor = result.doctor.id!!,
+            user = patientData.user.id,
+            feedbacks = result.feedbacks,
+            dietary_managements = result.dietary_managements,
+            my_foods = result.my_foods,
+            consumptions = result.consumptions
+        )
+
+        val fragment = PatientHomeFragment()
+        val bundle = Bundle()
+        bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
+        fragment.arguments = bundle
+        supportFragmentManager.beginTransaction().replace(
+            activity_patient_detail_fragment_container.id,
+            fragment,
+            fragment.javaClass.simpleName)
+            .commit()
     }
     //endregion
 }

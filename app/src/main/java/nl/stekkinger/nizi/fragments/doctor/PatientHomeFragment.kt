@@ -8,14 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_patient_feedback.view.*
 import kotlinx.android.synthetic.main.fragment_patient_home.*
 import kotlinx.android.synthetic.main.fragment_patient_home.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.EditPatientActivity
+import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
@@ -67,7 +65,10 @@ class PatientHomeFragment : BaseFragment() {
         if (bundle != null) {
             patientData = bundle.getSerializable(GeneralHelper.EXTRA_PATIENT) as PatientData
 
-            weightUnits = GeneralHelper.getWeightUnitHolder()!!.weightUnits
+            if (GeneralHelper.isAdmin())
+                weightUnits = LocalDb.weightUnits
+            else
+                weightUnits = GeneralHelper.getWeightUnitHolder()!!.weightUnits
 
             // Header
             val fullName = "${patientData.user.first_name} ${patientData.user.last_name}"
@@ -122,7 +123,7 @@ class PatientHomeFragment : BaseFragment() {
             view.fragment_patient_home_btn_nextWeek.isClickable = true
             view.fragment_patient_home_btn_nextWeek.alpha = 1f
 
-            getConsumptionsAsyncTask().execute()
+            getConsumptions()
         }
 
         view.fragment_patient_home_btn_nextWeek.setOnClickListener {
@@ -145,7 +146,7 @@ class PatientHomeFragment : BaseFragment() {
                 view.fragment_patient_home_btn_nextWeek.alpha = 0.2f
             }
 
-            getConsumptionsAsyncTask().execute()
+            getConsumptions()
         }
 
         view.fragment_patient_home_week.text = "${sdf.format(selectedFirstDayOfWeek)} - ${sdf.format(selectedLastDayOfWeek)}"
@@ -153,12 +154,13 @@ class PatientHomeFragment : BaseFragment() {
         view.fragment_patient_home_btn_nextWeek.isClickable = false
         view.fragment_patient_home_btn_nextWeek.alpha = 0.2f
 
-        // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return view
-
-        getConsumptionsAsyncTask().execute()
-
         return view
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        getConsumptions()
     }
 
     fun refreshGuidelines()
@@ -315,4 +317,86 @@ class PatientHomeFragment : BaseFragment() {
 
         }
     }
+
+    //region Get Consumptions
+    private fun getConsumptions() {
+        if (GeneralHelper.isAdmin()) {
+            getConsumptionsMockup()
+        } else {
+            // Check internet connection
+            if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return
+
+            getConsumptionsAsyncTask().execute()
+        }
+    }
+
+    //region Mockups
+    private fun getConsumptionsMockup() {
+        consumptions = LocalDb.getRandomConsumptionResponses(5)
+
+        supplements.clear()
+
+        // TODO: Should be based on amount of dietaryRestrictions
+        for (i in 0..5)
+            supplements.add(0)
+
+        consumptions.forEach {
+            supplements[0] += (it.food_meal_component.kcal).roundToInt()
+            supplements[1] += (it.food_meal_component.water).roundToInt()
+            supplements[2] += (it.food_meal_component.sodium * 1000).roundToInt()
+            supplements[3] += (it.food_meal_component.potassium * 1000).roundToInt()
+            supplements[4] += (it.food_meal_component.protein).roundToInt()
+            supplements[5] += (it.food_meal_component.fiber).roundToInt()
+        }
+
+        val calendar: Calendar = Calendar.getInstance()
+        //val dayOfWeek: Int = calendar.get(Calendar.DAY_OF_WEEK) // Makes Sunday day 1
+        val dayOfWeek: Int = Calendar.DAY_OF_WEEK
+
+        supplements.forEachIndexed { index, element ->
+            supplements[index] = (element.toFloat()/dayOfWeek).roundToInt()
+        }
+
+        getDietaryMockup()
+    }
+
+    private fun getDietaryMockup() {
+        val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
+
+        LocalDb.dietaryManagements.forEachIndexed { _, resultDietary ->
+            if (!resultDietary.is_active) return@forEachIndexed
+
+            var index = 0 // Kcal
+            if (resultDietary.dietary_restriction.description.contains("Vocht"))
+                index = 1
+            else if (resultDietary.dietary_restriction.description.contains("Natrium"))
+                index = 2
+            else if (resultDietary.dietary_restriction.description.contains("Kalium"))
+                index = 3
+            else if (resultDietary.dietary_restriction.description.contains("Eiwit"))
+                index = 4
+            else if (resultDietary.dietary_restriction.description.contains("Vezel"))
+                index = 5
+
+            val dietaryGuideline =
+                DietaryGuideline(
+                    id = resultDietary.id!!,
+                    description = resultDietary.dietary_restriction.description,
+                    plural = resultDietary.dietary_restriction.plural,
+                    minimum = resultDietary.minimum, maximum = resultDietary.maximum, amount = supplements[index],
+                    weightUnit = ""
+                )
+
+            val weightUnit = weightUnits.find { it.id == resultDietary.dietary_restriction.weight_unit }
+            dietaryGuideline.weightUnit = weightUnit!!.short
+
+            dietaryGuidelines.add(dietaryGuideline)
+        }
+
+        // Save dietaries for editPage
+        patientData.diets = dietaryGuidelines
+
+        refreshGuidelines()
+    }
+    //endregion
 }

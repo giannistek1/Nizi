@@ -12,13 +12,13 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.fragment_patient_feedback.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConversationAdapter
+import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.feedback.FeedbackShort
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -88,6 +88,9 @@ class PatientFeedbackFragment : BaseFragment() {
                 doctor = patientData.patient.doctor, date = sdf.format(Date())
             )
 
+            // Admin guard
+            if (GeneralHelper.isAdmin()) { addFeedbackMockup(); return@setOnClickListener }
+
             // Check internet connection
             if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return@setOnClickListener
 
@@ -105,7 +108,11 @@ class PatientFeedbackFragment : BaseFragment() {
         if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return view
 
         // Get feedback
-        getConversationsAsyncTask().execute()
+        if (GeneralHelper.isAdmin()) {
+            getConversationsMockup()
+        } else {
+            getConversationsAsyncTask().execute()
+        }
 
         return view
     }
@@ -202,6 +209,7 @@ class PatientFeedbackFragment : BaseFragment() {
     }
     //endregion
 
+    // Todo: Wordt dit gebruikt door de view?
     private fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
@@ -217,4 +225,29 @@ class PatientFeedbackFragment : BaseFragment() {
         super.onDetach()
         mContext = null
     }
+
+    //region Mockups
+    private fun getConversationsMockup() {
+        // Feedback
+        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
+
+        // Save result
+        feedbackList = LocalDb.feedbacks.asReversed()
+        adapter.setConversationList(feedbackList)
+    }
+
+    private fun addFeedbackMockup() {
+        val newFeedback = feedbackRepository.addFeedbackLocally(newFeedback)
+
+        // Feedback
+        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.added_feedback))
+
+        // Clean input
+        mNewFeedbackET.setText("")
+
+        // Update RV
+        mFeedbackRV.adapter!!.notifyDataSetChanged()
+    }
+
+    //endregion
 }

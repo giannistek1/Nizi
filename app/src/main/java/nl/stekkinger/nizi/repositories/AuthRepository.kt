@@ -3,8 +3,8 @@ package nl.stekkinger.nizi.repositories
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
-import nl.stekkinger.nizi.activities.ForgotPasswordActivity
 import nl.stekkinger.nizi.activities.LoginActivity
+import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.*
 import nl.stekkinger.nizi.classes.password.ForgotPasswordRequest
@@ -58,4 +58,12 @@ class AuthRepository : Repository() {
         return service.resetPassword(resetPasswordRequest).execute().body()
     }
 
+    //region LocalDb functions
+    fun getUserLocally(username: String) : User? {
+        return LocalDb.users.firstOrNull { it.username == username }
+    }
+
+    fun deleteUserLocally(userId: Int) {
+        LocalDb.users.removeAt(LocalDb.users.indexOfFirst { it.id == userId })
+    }
 }

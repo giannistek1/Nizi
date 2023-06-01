@@ -14,18 +14,16 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_doctor_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.adapters.PatientAdapter
 import nl.stekkinger.nizi.adapters.PatientAdapterListener
-import nl.stekkinger.nizi.classes.Mockup
+import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.patient.Patient
@@ -178,7 +176,11 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
             builder.setMessage(getString(R.string.delete_patient_prompt, patient.first_name))
 
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                deletePatientAsyncTask(patient.patient_id).execute()
+                if (GeneralHelper.isAdmin()) {
+                    deletePatientAndUserMockup(patient.patient_id)
+                } else {
+                    deletePatientAsyncTask(patient.patient_id).execute()
+                }
                 filteredList.removeAt(viewHolder.adapterPosition)
                 activity_doctor_main_rv.adapter!!.notifyDataSetChanged()
             }
@@ -387,7 +389,7 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
     }
     //endregion
 
-    //region Mockup Login
+    //region Mockups
     private fun getPatientsForDoctorMockup() {
         // Feedback
         GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_patients_success))
@@ -396,7 +398,7 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
         patientList.clear()
         filteredList.clear()
 
-        val _patients = Mockup.patients
+        val _patients = LocalDb.patients
 
         // Fill
         (0 until _patients.count()).forEach {
@@ -404,7 +406,7 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
 
             val pi = PatientItem(
                 it + 1,
-                _patients[it].user!!.first_name + " " + Mockup.patients[it].user!!.last_name,
+                _patients[it].user!!.first_name + " " + LocalDb.patients[it].user!!.last_name,
                 _patients[it].user!!.first_name,
                 _patients[it].user!!.last_name,
                 _patients[it].date_of_birth,
@@ -421,6 +423,14 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
         filteredList.addAll(patientList)
 
         setupRecyclerView()
+    }
+
+    private fun deletePatientAndUserMockup(patientId: Int) {
+        val deletedPatient = patientRepository.deletePatientLocally(patientId)
+        authRepository.deleteUserLocally(deletedPatient!!.user!!.id)
+
+        // Feedback
+        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.patient_deleted))
     }
     //endregion
 }

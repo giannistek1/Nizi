@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.Mockup
+import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -244,7 +244,7 @@ class MainActivity : BaseActivity() {
 
     //region Mockups
     private fun getDoctorMockup() {
-        doctor = Mockup.doctor
+        doctor = LocalDb.testDoctor1
 
         // Checks if fragment state is null, then start with homeFragment
         if (savedInstanceState == null) {

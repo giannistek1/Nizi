@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConsumptionAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.Mockup
+import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.diary.MyFood
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -119,7 +119,7 @@ class DiaryFragment: BaseFragment() {
             val snackList = ArrayList<ConsumptionResponse>()
 
             // Sorting consumptions
-            for (c: ConsumptionResponse in Mockup.getRandomConsumptionResponses(4)) {
+            for (c: ConsumptionResponse in LocalDb.getRandomConsumptionResponses(4)) {
                 when (c.meal_time) {
                     getString(R.string.breakfast) -> breakfastList.add(c)
                     getString(R.string.lunch) -> lunchList.add(c)

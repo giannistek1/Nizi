@@ -17,12 +17,13 @@ import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.DoctorMainActivity
-import nl.stekkinger.nizi.classes.Mockup
+import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.LoginRequest
 import nl.stekkinger.nizi.classes.login.LoginResponse
 import nl.stekkinger.nizi.repositories.AuthRepository
+import java.util.Locale
 
 
 class LoginActivity : BaseActivity() {
@@ -99,6 +100,11 @@ class LoginActivity : BaseActivity() {
         //activity_login_et_username.setText("HugoBrand") // Doctor
         //activity_login_et_password.setText("Welkom123")
 
+        activity_login_et_username.setText("patient") // Patient
+        activity_login_et_password.setText("patient") // Patient
+        //activity_login_et_username.setText("doctor") // Doctor
+        //activity_login_et_password.setText("doctor") // Doctor
+
         toggleLoginButtonIfNotEmpty(activity_login_et_username, activity_login_et_password,
             activity_login_btn_login)
     }
@@ -134,8 +140,8 @@ class LoginActivity : BaseActivity() {
 
         val loginRequest = LoginRequest(usernameET.text.toString(), passwordET.text.toString())
 
-        if (usernameET.text.toString().toLowerCase() == "doctor" && passwordET.text.toString().toLowerCase() == "doctor") { loginDoctorMockup(); return }
-        if (usernameET.text.toString().toLowerCase() == "patient" && passwordET.text.toString().toLowerCase() == "patient") { loginPatientMockup(); return }
+        if (usernameET.text.toString().toLowerCase(Locale.ROOT) == "doctor") { loginDoctorMockup(); return }
+        if (usernameET.text.toString().toLowerCase(Locale.ROOT) == "patient") { loginPatientMockup(); return }
 
         if (loginAsyncTask(loginRequest).status != AsyncTask.Status.RUNNING)
             loginAsyncTask(loginRequest).execute()
@@ -220,7 +226,7 @@ class LoginActivity : BaseActivity() {
         GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.login_success))
 
         // Save token
-        GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_TOKEN, Mockup.jwt).apply()
+        GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_TOKEN, LocalDb.jwt).apply()
 
         // Save isDoctor for future reference
         isDoctor = false
@@ -231,7 +237,7 @@ class LoginActivity : BaseActivity() {
 
         // Save user
         val gson = Gson()
-        val json = gson.toJson(Mockup.userLogin)
+        val json = gson.toJson(LocalDb.userLogin)
         GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_USER, json).apply()
 
         showNextActivity()
@@ -242,7 +248,7 @@ class LoginActivity : BaseActivity() {
         GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.login_success))
 
         // Save token
-        GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_TOKEN, Mockup.jwt).apply()
+        GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_TOKEN, LocalDb.jwt).apply()
 
         // Save isDoctor for future reference
         isDoctor = true
@@ -253,7 +259,7 @@ class LoginActivity : BaseActivity() {
 
         // Save user
         val gson = Gson()
-        val json = gson.toJson(Mockup.userLogin)
+        val json = gson.toJson(LocalDb.userLogin)
         GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_USER, json).apply()
 
         showNextActivity()

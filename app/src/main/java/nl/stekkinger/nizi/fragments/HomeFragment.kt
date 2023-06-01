@@ -10,7 +10,7 @@ import android.widget.RelativeLayout
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import nl.stekkinger.nizi.R
-import nl.stekkinger.nizi.classes.Mockup
+import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.dietary.DietaryGuideline
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
@@ -55,7 +55,7 @@ class HomeFragment: BaseFragment() {
 
         // WeightUnits
         weightUnits = if (GeneralHelper.isAdmin()) {
-            Mockup.weightUnits;
+            LocalDb.weightUnits;
         } else {
             val gson = Gson()
             val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
@@ -155,6 +155,9 @@ class HomeFragment: BaseFragment() {
         if (GeneralHelper.isAdmin()) {
             getConsumptionsMockup()
         } else {
+            // Check internet connection
+            if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return
+
             getConsumptionsAsyncTask().execute()
         }
     }
@@ -286,7 +289,7 @@ class HomeFragment: BaseFragment() {
 
     //region Mockups
     private fun getConsumptionsMockup() {
-        consumptions = Mockup.getRandomConsumptionResponses(5)
+        consumptions = LocalDb.getRandomConsumptionResponses(5)
 
         supplements.clear()
 
@@ -309,7 +312,7 @@ class HomeFragment: BaseFragment() {
     private fun getDietaryMockup() {
         dietaryGuidelines.clear()
 
-        Mockup.dietaryManagements.forEachIndexed { _, resultDietary ->
+        LocalDb.dietaryManagements.forEachIndexed { _, resultDietary ->
             if (!resultDietary.is_active) return@forEachIndexed
 
             var index = 0 // Kcal

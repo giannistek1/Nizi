@@ -1,5 +1,6 @@
 package nl.stekkinger.nizi.repositories
 
+import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.patient.*
 
 class PatientRepository : Repository() {
@@ -37,4 +38,19 @@ class PatientRepository : Repository() {
     {
         return service.deletePatient(authHeader, patientId).execute().body()
     }
+
+    //region Local/mockup
+    fun getPatientLocally(patientId: Int) : Patient?
+    {
+        return LocalDb.patients.firstOrNull { it.id == patientId }
+    }
+
+    fun deletePatientLocally(patientId: Int) : Patient?
+    {
+        val patient = LocalDb.patients.firstOrNull { it.id == patientId }
+        LocalDb.patients.removeAt(LocalDb.patients.indexOfFirst { it.id == patientId })
+
+        return patient
+    }
+    //endregion
 }
