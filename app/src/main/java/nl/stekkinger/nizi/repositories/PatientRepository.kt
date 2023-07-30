@@ -2,6 +2,7 @@ package nl.stekkinger.nizi.repositories
 
 import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.patient.*
+import java.util.*
 
 class PatientRepository : Repository() {
 

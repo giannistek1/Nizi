@@ -76,11 +76,11 @@ class MainActivity : BaseActivity() {
         // Get User
         user = GeneralHelper.getUser()
 
-        // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
-
         // Get data
         if (GeneralHelper.isAdmin()) { getDoctorMockup(); return }
+
+        // Check internet connection
+        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
 
         getWeightUnits().execute()
         getDoctorAsyncTask().execute()
