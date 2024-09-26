@@ -1,17 +1,17 @@
 package nl.stekkinger.nizi.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import kotlinx.android.synthetic.main.custom_toast.*
+import androidx.fragment.app.Fragment
 import nl.stekkinger.nizi.R
+import nl.stekkinger.nizi.databinding.CustomToastBinding
 
-/**
- * A simple [Fragment] subclass.
- */
 open class BaseFragment : Fragment() {
+    private var _binding: CustomToastBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var customToastLayout: View
     protected lateinit var toastView: View
 
@@ -19,9 +19,10 @@ open class BaseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //_binding = CustomToastBinding.inflate()
 
         // CustomToastLayout for toast (in case you want a disappearing toast that exists through multiple activities)
-        customToastLayout = layoutInflater.inflate(R.layout.custom_toast, ll_custom_toast_wrapper)
+        customToastLayout = layoutInflater.inflate(R.layout.custom_toast, binding.llCustomToastWrapper)
 
         // Sets custom toast animation for every fragment
         toastAnimation = AnimationUtils.loadAnimation(

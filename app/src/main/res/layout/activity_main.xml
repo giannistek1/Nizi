@@ -1,40 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main_rl"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/gray"
-    tools:context=".activities.MainActivity">
-
-    <!-- Toolbar -->
-    <include layout="@layout/toolbar"/>
+    xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
-        android:id="@+id/activity_main_fragment_container"
+        android:id="@+id/activity_main_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
-        android:layout_above="@+id/activity_main_bottom_navigation">
+        android:background="@color/gray"
+        tools:context=".activities.MainActivity">
+
+        <!-- Toolbar -->
+        <include layout="@layout/toolbar" />
+
+        <RelativeLayout
+            android:id="@+id/activity_main_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/toolbar"
+            android:layout_above="@+id/activity_main_bottom_navigation">
 
 
-        <ProgressBar
-            android:id="@+id/activity_main_loader"
-            android:layout_width="wrap_content"
+            <ProgressBar
+                android:id="@+id/activity_main_loader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <!-- Navigation -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/activity_main_bottom_navigation"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:layout_alignParentBottom="true"
+            android:translationZ="@dimen/bottomNavZIndex"
+            android:background="?android:attr/windowBackground"
+            android:theme="@style/BottomNavigationTheme"
+            app:menu="@menu/bottom_navigation" />
+
     </RelativeLayout>
-
-    <!-- Navigation -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/activity_main_bottom_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:translationZ="@dimen/bottomNavZIndex"
-        android:background="?android:attr/windowBackground"
-        android:theme="@style/BottomNavigationTheme"
-        app:menu="@menu/bottom_navigation"/>
-
-</RelativeLayout>
+</layout>

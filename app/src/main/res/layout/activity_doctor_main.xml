@@ -38,13 +38,13 @@
                 <ImageView
                     android:id="@+id/activity_doctor_main_ic_user"
                     android:scaleType="fitCenter"
-                    android:tint="@color/colorPrimary"
                     android:layout_width="@dimen/loginIconSize"
                     android:layout_height="@dimen/loginIconSize"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/marginVerySmall"
                     android:contentDescription="@string/ic_user"
-                    android:src="@drawable/ic_user"/>
+                    android:src="@drawable/ic_user"
+                    app:tint="@color/colorPrimary" />
 
                 <EditText
                     android:id="@+id/activity_doctor_main_et_searchPatients"
@@ -69,11 +69,11 @@
                 android:layout_height="40dp"
                 android:layout_weight="1"
                 android:scaleType="fitCenter"
-                android:tint="@color/colorPrimary"
                 android:clickable="true"
                 android:focusable="true"
                 android:contentDescription="@string/add_patient"
-                android:src="@drawable/ic_add" />
+                android:src="@drawable/ic_add"
+                app:tint="@color/colorPrimary" />
 
             <TextView
                 android:id="@+id/activity_doctor_main_txt_patient"

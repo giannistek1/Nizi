@@ -1,508 +1,516 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_add_patient_rl"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".activities.doctor.AddPatientActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Toolbar -->
-    <include layout="@layout/toolbar"/>
+    <data>
 
-    <!-- Steps -->
-    <LinearLayout
-        android:id="@+id/activity_add_patient_ll_steps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:background="@color/gray"
-        android:layout_below="@+id/toolbar"
-        android:paddingHorizontal="@dimen/marginNormal"
-        android:paddingVertical="@dimen/marginVerySmall">
+    </data>
 
-        <!-- Step 1 -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="9">
-
-            <TextView
-                android:id="@+id/activity_add_patient_txt_step_1"
-                android:fontFamily="@font/helvetica_neue_bold"
-                android:textColor="@color/darkGray"
-                android:text="@string/step_1"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <ImageView
-                android:layout_width="@dimen/patientStepIconSize"
-                android:layout_height="@dimen/patientStepIconSize"
-                android:layout_gravity="center"
-                android:contentDescription="@string/ic_user"
-                android:src="@drawable/ic_user"
-                android:layout_marginVertical="@dimen/marginVerySmall"/>
-
-            <TextView
-                android:id="@+id/activity_add_patient_txt_personal_info"
-                android:fontFamily="@font/helvetica_neue_bold"
-                android:textColor="@color/darkGray"
-                android:text="@string/personal_info_short"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-        <!-- Arrow -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="2"
-            android:layout_gravity="center">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:contentDescription="@string/arrow_right"
-                android:src="@drawable/ic_arrow_r"/>
-
-        </LinearLayout>
-
-        <!-- Step 2 -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_weight="9">
-
-            <TextView
-                android:id="@+id/activity_add_patient_txt_step_2"
-                android:text="@string/step_2"
-                android:textColor="@color/darkGray"
-                android:fontFamily="@font/helvetica_neue_light"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <ImageView
-                android:layout_width="@dimen/patientStepIconSize"
-                android:layout_height="@dimen/patientStepIconSize"
-                android:layout_gravity="center"
-                android:tint="@color/black"
-                android:contentDescription="@string/ic_culinary"
-                android:src="@drawable/ic_culinary"
-                android:layout_marginVertical="@dimen/marginVerySmall"/>
-
-            <TextView
-                android:id="@+id/activity_add_patient_txt_guidelines"
-                android:text="@string/guidelines"
-                android:textColor="@color/darkGray"
-                android:fontFamily="@font/helvetica_neue_light"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </LinearLayout>
-    </LinearLayout>
-
-    <!-- Patient data -->
-    <ScrollView
+    <RelativeLayout
+        android:id="@+id/activity_add_patient_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/activity_add_patient_ll_steps">
+        tools:context=".activities.doctor.AddPatientActivity"
+        tools:viewBindingIgnore="true">
 
-        <RelativeLayout
+        <!-- Toolbar -->
+        <include layout="@layout/toolbar" />
+
+        <!-- Steps -->
+        <LinearLayout
+            android:id="@+id/activity_add_patient_ll_steps"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingStart="@dimen/marginDouble"
-            android:paddingEnd="@dimen/marginDouble"
-            android:background="@color/white">
+            android:baselineAligned="false"
+            android:background="@color/gray"
+            android:layout_below="@+id/toolbar"
+            android:paddingHorizontal="@dimen/marginNormal"
+            android:paddingVertical="@dimen/marginVerySmall">
 
-            <!-- (First) Name -->
-            <TextView
-                android:id="@+id/activity_add_patient_txt_firstName"
-                android:textColor="@color/black"
-                android:text="@string/first_name_req"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/marginNormal" />
-
-            <!-- First name input -->
+            <!-- Step 1 -->
             <LinearLayout
-                android:id="@+id/activity_add_patient_ll_firstName"
-                android:background="@drawable/text_border_gray"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginBottom="@dimen/marginSize2"
-                android:layout_below="@+id/activity_add_patient_txt_firstName"
-                android:elevation="@dimen/elevationNormal"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:layout_weight="9">
+
+                <TextView
+                    android:id="@+id/activity_add_patient_txt_step_1"
+                    android:fontFamily="@font/helvetica_neue_bold"
+                    android:textColor="@color/darkGray"
+                    android:text="@string/step_1"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <ImageView
-                    android:id="@+id/activity_add_patient_ic_firstName"
-                    android:scaleType="fitCenter"
-                    android:tint="@color/colorPrimary"
-                    android:layout_width="@dimen/loginIconSize"
-                    android:layout_height="@dimen/loginIconSize"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/marginVerySmall"
+                    android:layout_width="@dimen/patientStepIconSize"
+                    android:layout_height="@dimen/patientStepIconSize"
+                    android:layout_gravity="center"
                     android:contentDescription="@string/ic_user"
-                    android:src="@drawable/ic_user"/>
+                    android:src="@drawable/ic_user"
+                    android:layout_marginVertical="@dimen/marginVerySmall" />
 
-                <EditText
-                    android:id="@+id/activity_add_patient_et_firstName"
-                    android:inputType="textCapSentences"
-                    android:fontFamily="@font/helvetica_neue_light"
-                    android:hint="@string/first_name"
-                    android:autofillHints="@string/first_name"
-                    tools:targetApi="o"
-                    android:maxLength="128"
+                <TextView
+                    android:id="@+id/activity_add_patient_txt_personal_info"
+                    android:fontFamily="@font/helvetica_neue_bold"
+                    android:textColor="@color/darkGray"
+                    android:text="@string/personal_info_short"
+                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/marginSmall"
-                    android:paddingEnd="0dp"
-                    android:paddingTop="@dimen/marginSmaller"
-                    android:paddingBottom="@dimen/marginSmaller"
-                    android:background="@null"/>
+                    android:layout_height="wrap_content" />
+
             </LinearLayout>
 
-            <!-- Last Name -->
-            <TextView
-                android:id="@+id/activity_add_patient_txt_lastName"
-                android:textColor="@color/black"
-                android:text="@string/last_name_req"
-                android:maxLength="128"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_ll_firstName"
-                android:layout_marginTop="@dimen/marginNormal"/>
-
-            <!-- Last name input -->
+            <!-- Arrow -->
             <LinearLayout
-                android:id="@+id/activity_add_patient_ll_lastName"
-                android:background="@drawable/text_border_gray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginBottom="@dimen/marginSize2"
-                android:layout_below="@+id/activity_add_patient_txt_lastName"
-                android:elevation="@dimen/elevationNormal"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/activity_add_patient_ic_lastName"
-                    android:scaleType="fitCenter"
-                    android:tint="@color/colorPrimary"
-                    android:layout_width="@dimen/loginIconSize"
-                    android:layout_height="@dimen/loginIconSize"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/marginVerySmall"
-                    android:contentDescription="@string/ic_user"
-                    android:src="@drawable/ic_user"/>
-
-                <EditText
-                    android:id="@+id/activity_add_patient_et_lastName"
-                    android:inputType="textCapSentences"
-                    android:fontFamily="@font/helvetica_neue_light"
-                    android:hint="@string/last_name"
-                    android:autofillHints="@string/last_name"
-                    tools:targetApi="o"
-                    android:maxLength="128"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/marginSmall"
-                    android:paddingEnd="0dp"
-                    android:paddingTop="@dimen/marginSmaller"
-                    android:paddingBottom="@dimen/marginSmaller"
-                    android:background="@null"/>
-            </LinearLayout>
-
-            <!-- DoB -->
-            <TextView
-                android:id="@+id/activity_add_patient_txt_dob"
-                android:textColor="@color/black"
-                android:text="@string/date_of_birth_req"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_ll_lastName"
-                android:layout_marginTop="@dimen/marginNormal"/>
-
-            <!-- DoB input -->
-            <LinearLayout
-                android:id="@+id/activity_add_patient_ll_dob"
-                android:background="@drawable/text_border_gray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginBottom="@dimen/marginSize2"
-                android:layout_below="@+id/activity_add_patient_txt_dob"
-                android:elevation="@dimen/elevationNormal"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:layout_weight="2"
+                android:layout_gravity="center">
 
                 <ImageView
-                    android:id="@+id/activity_add_patient_ic_dob"
-                    android:scaleType="fitCenter"
-                    android:tint="@color/colorPrimary"
-                    android:layout_width="@dimen/loginIconSize"
-                    android:layout_height="@dimen/loginIconSize"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/marginVerySmall"
-                    android:contentDescription="@string/ic_calendar"
-                    android:src="@drawable/ic_calendar"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/arrow_right"
+                    android:src="@drawable/ic_arrow_r" />
 
-                <EditText
-                    android:id="@+id/activity_add_patient_et_dob"
-                    android:focusable="false"
-                    android:inputType="date"
-                    android:fontFamily="@font/helvetica_neue_light"
-                    android:hint="@string/date_of_birth_format"
-                    android:autofillHints="@string/date_of_birth"
-                    tools:targetApi="o"
-                    android:maxLength="10"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/marginSmall"
-                    android:paddingEnd="0dp"
-                    android:paddingTop="@dimen/marginSmaller"
-                    android:paddingBottom="@dimen/marginSmaller"
-                    android:background="@null"/>
             </LinearLayout>
 
-            <DatePicker
-                android:id="@+id/activity_add_patient_dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_ll_dob"
-                android:datePickerMode="spinner"
-                android:calendarViewShown="false"
-                android:layout_centerInParent="true"
-                android:visibility="gone"/>
-
-            <!-- E-Mail -->
-            <TextView
-                android:id="@+id/activity_add_patient_txt_email"
-                android:textColor="@color/black"
-                android:text="@string/email_req"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_dp"
-                android:layout_marginTop="@dimen/marginNormal"/>
-
-            <!-- Email input -->
+            <!-- Step 2 -->
             <LinearLayout
-                android:id="@+id/activity_add_patient_ll_email"
-                android:background="@drawable/text_border_gray"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginBottom="@dimen/marginSize2"
-                android:layout_below="@+id/activity_add_patient_txt_email"
-                android:elevation="@dimen/elevationNormal"
-                android:orientation="horizontal">
+                android:orientation="vertical"
+                android:layout_weight="9">
+
+                <TextView
+                    android:id="@+id/activity_add_patient_txt_step_2"
+                    android:text="@string/step_2"
+                    android:textColor="@color/darkGray"
+                    android:fontFamily="@font/helvetica_neue_light"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <ImageView
-                    android:id="@+id/activity_add_patient_ic_email"
-                    android:scaleType="fitCenter"
-                    android:tint="@color/colorPrimary"
-                    android:layout_width="@dimen/loginIconSize"
-                    android:layout_height="@dimen/loginIconSize"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/marginVerySmall"
-                    android:contentDescription="@string/ic_mail"
-                    android:src="@drawable/ic_mail"/>
+                    android:layout_width="@dimen/patientStepIconSize"
+                    android:layout_height="@dimen/patientStepIconSize"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/ic_culinary"
+                    android:src="@drawable/ic_culinary"
+                    android:layout_marginVertical="@dimen/marginVerySmall"
+                    app:tint="@color/black" />
 
-                <EditText
-                    android:id="@+id/activity_add_patient_et_email"
-                    android:inputType="textEmailAddress"
+                <TextView
+                    android:id="@+id/activity_add_patient_txt_guidelines"
+                    android:text="@string/guidelines"
+                    android:textColor="@color/darkGray"
                     android:fontFamily="@font/helvetica_neue_light"
-                    android:hint="@string/email"
-                    android:autofillHints="@string/email"
-                    tools:targetApi="o"
-                    android:maxLength="64"
+                    android:gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/marginSmall"
-                    android:paddingEnd="0dp"
-                    android:paddingTop="@dimen/marginSmaller"
-                    android:paddingBottom="@dimen/marginSmaller"
-                    android:background="@null"/>
+                    android:layout_height="match_parent" />
             </LinearLayout>
+        </LinearLayout>
 
-            <!-- Password -->
-            <TextView
-                android:id="@+id/activity_add_patient_txt_password"
-                android:textColor="@color/black"
-                android:text="@string/password_req"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_ll_email"
-                android:layout_marginTop="@dimen/marginNormal"/>
-
-            <!-- Password input -->
-            <LinearLayout
-                android:id="@+id/activity_add_patient_ll_password"
-                android:background="@drawable/text_border_gray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginBottom="@dimen/marginSize2"
-                android:layout_below="@+id/activity_add_patient_txt_password"
-                android:elevation="@dimen/elevationNormal"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/activity_add_patient_ic_password"
-                    android:scaleType="fitCenter"
-                    android:tint="@color/colorPrimary"
-                    android:layout_width="@dimen/loginIconSize"
-                    android:layout_height="@dimen/loginIconSize"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/marginVerySmall"
-                    android:contentDescription="@string/ic_lock"
-                    android:src="@drawable/ic_lock"/>
-
-                <EditText
-                    android:id="@+id/activity_add_patient_et_password"
-                    android:inputType="textPassword"
-                    android:fontFamily="@font/helvetica_neue_light"
-                    android:hint="@string/password"
-                    android:autofillHints="@string/password"
-                    tools:targetApi="o"
-                    android:maxLength="64"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/marginSmall"
-                    android:paddingEnd="0dp"
-                    android:paddingTop="@dimen/marginSmaller"
-                    android:paddingBottom="@dimen/marginSmaller"
-                    android:background="@null"/>
-            </LinearLayout>
-
-            <!-- Confirm password -->
-            <TextView
-                android:id="@+id/activity_add_patient_txt_password_confirm"
-                android:textColor="@color/black"
-                android:text="@string/password_confirm_req"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_ll_password"
-                android:layout_marginTop="@dimen/marginNormal"/>
-
-            <!-- Confirm Password input -->
-            <LinearLayout
-                android:id="@+id/activity_add_patient_ll_passwordConfirm"
-                android:background="@drawable/text_border_gray"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/marginSmall"
-                android:layout_marginBottom="@dimen/marginSize2"
-                android:layout_below="@+id/activity_add_patient_txt_password_confirm"
-                android:elevation="@dimen/elevationNormal"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/activity_add_patient_ic_passwordConfirm"
-                    android:scaleType="fitCenter"
-                    android:tint="@color/colorPrimary"
-                    android:layout_width="@dimen/loginIconSize"
-                    android:layout_height="@dimen/loginIconSize"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="@dimen/marginVerySmall"
-                    android:contentDescription="@string/ic_lock"
-                    android:src="@drawable/ic_lock"/>
-
-                <EditText
-                    android:id="@+id/activity_add_patient_et_passwordConfirm"
-                    android:inputType="textPassword"
-                    android:fontFamily="@font/helvetica_neue_light"
-                    android:hint="@string/password_confirm"
-                    android:autofillHints="@string/password_confirm"
-                    tools:targetApi="o"
-                    android:maxLength="64"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="@dimen/marginSmall"
-                    android:paddingEnd="0dp"
-                    android:paddingTop="@dimen/marginSmaller"
-                    android:paddingBottom="@dimen/marginSmaller"
-                    android:background="@null"/>
-            </LinearLayout>
-
-            <!-- Gender -->
-            <TextView
-                android:id="@+id/activity_add_patient_txt_gender"
-                android:textColor="@color/black"
-                android:text="@string/gender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_ll_passwordConfirm"
-                android:layout_marginTop="@dimen/marginNormal"/>
-
+        <!-- Patient data -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/activity_add_patient_ll_steps">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/activity_add_patient_txt_gender">
+                android:paddingStart="@dimen/marginDouble"
+                android:paddingEnd="@dimen/marginDouble"
+                android:background="@color/white">
 
-                <RadioGroup
-                    android:id="@+id/activity_add_patient_rg_gender"
+                <!-- (First) Name -->
+                <TextView
+                    android:id="@+id/activity_add_patient_txt_firstName"
+                    android:textColor="@color/black"
+                    android:text="@string/first_name_req"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/marginNormal" />
+
+                <!-- First name input -->
+                <LinearLayout
+                    android:id="@+id/activity_add_patient_ll_firstName"
+                    android:background="@drawable/text_border_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSize2"
+                    android:layout_below="@+id/activity_add_patient_txt_firstName"
+                    android:elevation="@dimen/elevationNormal"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/activity_add_patient_ic_firstName"
+                        android:scaleType="fitCenter"
+                        android:layout_width="@dimen/loginIconSize"
+                        android:layout_height="@dimen/loginIconSize"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/marginVerySmall"
+                        android:contentDescription="@string/ic_user"
+                        android:src="@drawable/ic_user"
+                        app:tint="@color/colorPrimary" />
+
+                    <EditText
+                        android:id="@+id/activity_add_patient_et_firstName"
+                        android:inputType="textCapSentences"
+                        android:fontFamily="@font/helvetica_neue_light"
+                        android:hint="@string/first_name"
+                        android:autofillHints="@string/first_name"
+                        tools:targetApi="o"
+                        android:maxLength="128"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="0dp"
+                        android:paddingTop="@dimen/marginSmaller"
+                        android:paddingBottom="@dimen/marginSmaller"
+                        android:background="@null" />
+                </LinearLayout>
+
+                <!-- Last Name -->
+                <TextView
+                    android:id="@+id/activity_add_patient_txt_lastName"
+                    android:textColor="@color/black"
+                    android:text="@string/last_name_req"
+                    android:maxLength="128"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/activity_add_patient_ll_firstName"
+                    android:layout_marginTop="@dimen/marginNormal" />
+
+                <!-- Last name input -->
+                <LinearLayout
+                    android:id="@+id/activity_add_patient_ll_lastName"
+                    android:background="@drawable/text_border_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSize2"
+                    android:layout_below="@+id/activity_add_patient_txt_lastName"
+                    android:elevation="@dimen/elevationNormal"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/activity_add_patient_ic_lastName"
+                        android:scaleType="fitCenter"
+                        android:layout_width="@dimen/loginIconSize"
+                        android:layout_height="@dimen/loginIconSize"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/marginVerySmall"
+                        android:contentDescription="@string/ic_user"
+                        android:src="@drawable/ic_user"
+                        app:tint="@color/colorPrimary" />
+
+                    <EditText
+                        android:id="@+id/activity_add_patient_et_lastName"
+                        android:inputType="textCapSentences"
+                        android:fontFamily="@font/helvetica_neue_light"
+                        android:hint="@string/last_name"
+                        android:autofillHints="@string/last_name"
+                        tools:targetApi="o"
+                        android:maxLength="128"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="0dp"
+                        android:paddingTop="@dimen/marginSmaller"
+                        android:paddingBottom="@dimen/marginSmaller"
+                        android:background="@null" />
+                </LinearLayout>
+
+                <!-- DoB -->
+                <TextView
+                    android:id="@+id/activity_add_patient_txt_dob"
+                    android:textColor="@color/black"
+                    android:text="@string/date_of_birth_req"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_below="@+id/activity_add_patient_ll_lastName"
+                    android:layout_marginTop="@dimen/marginNormal" />
 
-                    android:layout_marginTop="@dimen/marginNormal">
-
-                    <RadioButton
-                        android:id="@+id/activity_add_patient_rb_male"
-                        android:textSize="@dimen/textSize12"
-                        android:text="@string/male"
-                        android:button="@null"
-                        android:drawableBottom="@android:drawable/btn_radio"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/marginNormal"/>
-
-                    <RadioButton
-                        android:id="@+id/activity_add_patient_rb_female"
-                        android:textSize="@dimen/textSize12"
-                        android:text="@string/female"
-                        android:button="@null"
-                        android:drawableBottom="@android:drawable/btn_radio"
-                        android:gravity="center"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/marginNormal"/>
-
-
-                </RadioGroup>
-
-                <androidx.core.widget.ContentLoadingProgressBar
-                    android:id="@+id/activity_add_patient_progressbar"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_above="@+id/activity_add_patient_btn_to_guidelines"
-                    android:visibility="gone"/>
-
-                <Button
-                    android:id="@+id/activity_add_patient_btn_to_guidelines"
-                    android:text="@string/to_guidelines"
-                    android:background="@color/colorAccent"
-                    android:textColor="@android:color/white"
-                    android:layout_width="140dp"
+                <!-- DoB input -->
+                <LinearLayout
+                    android:id="@+id/activity_add_patient_ll_dob"
+                    android:background="@drawable/text_border_gray"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:paddingVertical="@dimen/paddingButton"
-                    android:minHeight="0dp"
-                    android:minWidth="0dp"/>
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSize2"
+                    android:layout_below="@+id/activity_add_patient_txt_dob"
+                    android:elevation="@dimen/elevationNormal"
+                    android:orientation="horizontal">
 
+                    <ImageView
+                        android:id="@+id/activity_add_patient_ic_dob"
+                        android:scaleType="fitCenter"
+                        android:layout_width="@dimen/loginIconSize"
+                        android:layout_height="@dimen/loginIconSize"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/marginVerySmall"
+                        android:contentDescription="@string/ic_calendar"
+                        android:src="@drawable/ic_calendar"
+                        app:tint="@color/colorPrimary" />
+
+                    <EditText
+                        android:id="@+id/activity_add_patient_et_dob"
+                        android:focusable="false"
+                        android:inputType="date"
+                        android:fontFamily="@font/helvetica_neue_light"
+                        android:hint="@string/date_of_birth_format"
+                        android:autofillHints="@string/date_of_birth"
+                        tools:targetApi="o"
+                        android:maxLength="10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="0dp"
+                        android:paddingTop="@dimen/marginSmaller"
+                        android:paddingBottom="@dimen/marginSmaller"
+                        android:background="@null" />
+                </LinearLayout>
+
+                <DatePicker
+                    android:id="@+id/activity_add_patient_dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/activity_add_patient_ll_dob"
+                    android:datePickerMode="spinner"
+                    android:calendarViewShown="false"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+
+                <!-- E-Mail -->
+                <TextView
+                    android:id="@+id/activity_add_patient_txt_email"
+                    android:textColor="@color/black"
+                    android:text="@string/email_req"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/activity_add_patient_dp"
+                    android:layout_marginTop="@dimen/marginNormal" />
+
+                <!-- Email input -->
+                <LinearLayout
+                    android:id="@+id/activity_add_patient_ll_email"
+                    android:background="@drawable/text_border_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSize2"
+                    android:layout_below="@+id/activity_add_patient_txt_email"
+                    android:elevation="@dimen/elevationNormal"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/activity_add_patient_ic_email"
+                        android:scaleType="fitCenter"
+                        android:layout_width="@dimen/loginIconSize"
+                        android:layout_height="@dimen/loginIconSize"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/marginVerySmall"
+                        android:contentDescription="@string/ic_mail"
+                        android:src="@drawable/ic_mail"
+                        app:tint="@color/colorPrimary" />
+
+                    <EditText
+                        android:id="@+id/activity_add_patient_et_email"
+                        android:inputType="textEmailAddress"
+                        android:fontFamily="@font/helvetica_neue_light"
+                        android:hint="@string/email"
+                        android:autofillHints="@string/email"
+                        tools:targetApi="o"
+                        android:maxLength="64"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="0dp"
+                        android:paddingTop="@dimen/marginSmaller"
+                        android:paddingBottom="@dimen/marginSmaller"
+                        android:background="@null" />
+                </LinearLayout>
+
+                <!-- Password -->
+                <TextView
+                    android:id="@+id/activity_add_patient_txt_password"
+                    android:textColor="@color/black"
+                    android:text="@string/password_req"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/activity_add_patient_ll_email"
+                    android:layout_marginTop="@dimen/marginNormal" />
+
+                <!-- Password input -->
+                <LinearLayout
+                    android:id="@+id/activity_add_patient_ll_password"
+                    android:background="@drawable/text_border_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSize2"
+                    android:layout_below="@+id/activity_add_patient_txt_password"
+                    android:elevation="@dimen/elevationNormal"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/activity_add_patient_ic_password"
+                        android:scaleType="fitCenter"
+                        android:layout_width="@dimen/loginIconSize"
+                        android:layout_height="@dimen/loginIconSize"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/marginVerySmall"
+                        android:contentDescription="@string/ic_lock"
+                        android:src="@drawable/ic_lock"
+                        app:tint="@color/colorPrimary" />
+
+                    <EditText
+                        android:id="@+id/activity_add_patient_et_password"
+                        android:inputType="textPassword"
+                        android:fontFamily="@font/helvetica_neue_light"
+                        android:hint="@string/password"
+                        android:autofillHints="@string/password"
+                        tools:targetApi="o"
+                        android:maxLength="64"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="0dp"
+                        android:paddingTop="@dimen/marginSmaller"
+                        android:paddingBottom="@dimen/marginSmaller"
+                        android:background="@null" />
+                </LinearLayout>
+
+                <!-- Confirm password -->
+                <TextView
+                    android:id="@+id/activity_add_patient_txt_password_confirm"
+                    android:textColor="@color/black"
+                    android:text="@string/password_confirm_req"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/activity_add_patient_ll_password"
+                    android:layout_marginTop="@dimen/marginNormal" />
+
+                <!-- Confirm Password input -->
+                <LinearLayout
+                    android:id="@+id/activity_add_patient_ll_passwordConfirm"
+                    android:background="@drawable/text_border_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/marginSmall"
+                    android:layout_marginBottom="@dimen/marginSize2"
+                    android:layout_below="@+id/activity_add_patient_txt_password_confirm"
+                    android:elevation="@dimen/elevationNormal"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/activity_add_patient_ic_passwordConfirm"
+                        android:scaleType="fitCenter"
+                        android:layout_width="@dimen/loginIconSize"
+                        android:layout_height="@dimen/loginIconSize"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="@dimen/marginVerySmall"
+                        android:contentDescription="@string/ic_lock"
+                        android:src="@drawable/ic_lock"
+                        app:tint="@color/colorPrimary" />
+
+                    <EditText
+                        android:id="@+id/activity_add_patient_et_passwordConfirm"
+                        android:inputType="textPassword"
+                        android:fontFamily="@font/helvetica_neue_light"
+                        android:hint="@string/password_confirm"
+                        android:autofillHints="@string/password_confirm"
+                        tools:targetApi="o"
+                        android:maxLength="64"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="@dimen/marginSmall"
+                        android:paddingEnd="0dp"
+                        android:paddingTop="@dimen/marginSmaller"
+                        android:paddingBottom="@dimen/marginSmaller"
+                        android:background="@null" />
+                </LinearLayout>
+
+                <!-- Gender -->
+                <TextView
+                    android:id="@+id/activity_add_patient_txt_gender"
+                    android:textColor="@color/black"
+                    android:text="@string/gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/activity_add_patient_ll_passwordConfirm"
+                    android:layout_marginTop="@dimen/marginNormal" />
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/activity_add_patient_txt_gender">
+
+                    <RadioGroup
+                        android:id="@+id/activity_add_patient_rg_gender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+
+                        android:layout_marginTop="@dimen/marginNormal">
+
+                        <RadioButton
+                            android:id="@+id/activity_add_patient_rb_male"
+                            android:textSize="@dimen/textSize12"
+                            android:text="@string/male"
+                            android:button="@null"
+                            android:drawableBottom="@android:drawable/btn_radio"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/marginNormal" />
+
+                        <RadioButton
+                            android:id="@+id/activity_add_patient_rb_female"
+                            android:textSize="@dimen/textSize12"
+                            android:text="@string/female"
+                            android:button="@null"
+                            android:drawableBottom="@android:drawable/btn_radio"
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/marginNormal" />
+
+
+                    </RadioGroup>
+
+                    <androidx.core.widget.ContentLoadingProgressBar
+                        android:id="@+id/activity_add_patient_progressbar"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_above="@+id/activity_add_patient_btn_to_guidelines"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/activity_add_patient_btn_to_guidelines"
+                        android:text="@string/to_guidelines"
+                        android:background="@color/colorAccent"
+                        android:textColor="@android:color/white"
+                        android:layout_width="140dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:paddingVertical="@dimen/paddingButton"
+                        android:minHeight="0dp"
+                        android:minWidth="0dp" />
+
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
-    </ScrollView>
-</RelativeLayout>
+        </ScrollView>
+    </RelativeLayout>
+</layout>

@@ -15,12 +15,13 @@ import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_food.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.Meal
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.databinding.ItemConversationBinding
+import nl.stekkinger.nizi.databinding.ItemFoodBinding
 import nl.stekkinger.nizi.fragments.DiaryFragment
 
 class MealAdapter(
@@ -39,8 +40,8 @@ class MealAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_food, parent, false)
-        activity = view.context as AppCompatActivity
+        val view: ItemFoodBinding = ItemFoodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        activity = view.root.context as AppCompatActivity
         return ViewHolder(view)
             .listen { pos, _ ->
                 var meal = mDataset[pos]
@@ -84,10 +85,10 @@ class MealAdapter(
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = mDataset.size
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image: ImageView = itemView.findViewById(R.id.food_image)
-        val title: TextView = itemView.findViewById(R.id.title)
-        val favBtn: ImageButton = itemView.fav_btn
+    class ViewHolder(itemView: ItemFoodBinding) : RecyclerView.ViewHolder(itemView.root) {
+        val image: ImageView = itemView.foodImage
+        val title: TextView = itemView.title
+        val favBtn: ImageButton = itemView.favBtn
     }
 
     fun setMealList(mealList: ArrayList<Meal>) {

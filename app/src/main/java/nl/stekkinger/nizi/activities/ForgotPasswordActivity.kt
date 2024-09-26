@@ -7,20 +7,24 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
-import android.widget.*
-import kotlinx.android.synthetic.main.activity_forgot_password.*
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.toolbar.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RelativeLayout
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.DoctorMainActivity
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.password.ForgotPasswordRequest
 import nl.stekkinger.nizi.classes.password.ForgotPasswordResponse
+import nl.stekkinger.nizi.databinding.ActivityForgotPasswordBinding
+import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.repositories.AuthRepository
 
 
 class ForgotPasswordActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityForgotPasswordBinding
+    private lateinit var toolbarBinding: ToolbarBinding
 
     private var TAG = "ForgotPassword"
 
@@ -31,37 +35,40 @@ class ForgotPasswordActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Setup the UI
-        setContentView(R.layout.activity_forgot_password)
-        setSupportActionBar(toolbar)
+        // Setup UI.
+        binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        setSupportActionBar(toolbarBinding.toolbar)
         // Back button
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         // Show app title by hiding the bar overlayed on the toolbar
-        toolbar_bar.visibility = View.GONE
-        loader = activity_forgot_password_loader
+        toolbarBinding.toolbarBar.visibility = View.GONE
+        loader = binding.activityForgotPasswordLoader
 
         // Setup custom toast
-        val parent: RelativeLayout = activity_forgot_password_rl
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+        val parent: RelativeLayout = binding.activityForgotPasswordRl
+        //toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(customToastLayout)
 
-        activity_forgot_password_et_email.addTextChangedListener(object : TextWatcher {
+        binding.activityForgotPasswordEtEmail.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                toggleSendButtonIfNotEmpty(activity_forgot_password_et_email, activity_forgot_password_btn_send)
+                toggleSendButtonIfNotEmpty(binding.activityForgotPasswordEtEmail, binding.activityForgotPasswordBtnSend)
             }
         })
 
-        activity_forgot_password_btn_send.setOnClickListener {
+        binding.activityForgotPasswordBtnSend.setOnClickListener {
             // Give EditTexts so you can change them
-            sendForgetPassword(activity_forgot_password_et_email)
+            sendForgetPassword(binding.activityForgotPasswordEtEmail)
         }
 
-        activity_forgot_password_btn_send.isEnabled = false
-        activity_forgot_password_btn_send.alpha = 0.2f
+        binding.activityForgotPasswordBtnSend.isEnabled = false
+        binding.activityForgotPasswordBtnSend.alpha = 0.2f
 
         // Testing
         //activity_forgot_password_et_email.setText("BramWenting@inholland.nl")
@@ -88,8 +95,8 @@ class ForgotPasswordActivity : BaseActivity() {
         emailET.setBackgroundColor(Color.TRANSPARENT)
 
         // Checks (Guards)
-        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
-        if (InputHelper.inputIsEmpty(this, emailET, toastView, toastAnimation, getString(R.string.email_cant_be_empty))) return
+        if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return
+        if (InputHelper.inputIsEmpty(this, emailET, customToastLayout, toastAnimation, getString(R.string.email_cant_be_empty))) return
 
         val forgotPasswordRequest = ForgotPasswordRequest(emailET.text.toString())
 
@@ -126,12 +133,12 @@ class ForgotPasswordActivity : BaseActivity() {
 
             // Guards
             // Since you can't toast in onBackground
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.api_is_down)); return }
             // Result either gives the (token, user, patient/doctor) OR null
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.mail_sent_fail)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.mail_sent_fail)); return }
 
             // Feedback
-            GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.mail_sent))
+            GeneralHelper.makeToast(baseContext, customToastBinding, getString(R.string.mail_sent))
 
             showNextActivity()
         }

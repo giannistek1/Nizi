@@ -11,10 +11,11 @@ import android.text.TextWatcher
 import android.text.style.URLSpan
 import android.text.util.Linkify
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.RelativeLayout
+import android.widget.TextView
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.DoctorMainActivity
 import nl.stekkinger.nizi.classes.LocalDb
@@ -22,11 +23,16 @@ import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.LoginRequest
 import nl.stekkinger.nizi.classes.login.LoginResponse
+import nl.stekkinger.nizi.databinding.ActivityLoginBinding
+import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.repositories.AuthRepository
 import java.util.Locale
 
 
 class LoginActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityLoginBinding
+    private lateinit var toolbarBinding: ToolbarBinding
 
     private var TAG = "Login"
 
@@ -39,54 +45,57 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Setup the UI
-        setContentView(R.layout.activity_login)
-        setSupportActionBar(toolbar)
+        // Setup the UI.
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        setSupportActionBar(toolbarBinding.toolbar)
         // Show app title by hiding the bar overlayed on the toolbar
-        toolbar_bar.visibility = View.GONE
-        loader = activity_login_loader
-        Linkify.addLinks(activity_login_txt_nierstichtingUrl, Linkify.WEB_URLS)
-        Linkify.addLinks(activity_login_txt_nierstichtingPhonenumber, Linkify.PHONE_NUMBERS)
-        Linkify.addLinks(activity_login_txt_nierstichtingEmail, Linkify.EMAIL_ADDRESSES)
-        activity_login_txt_nierstichtingUrl.removeLinksUnderline()
-        activity_login_txt_nierstichtingPhonenumber.removeLinksUnderline()
-        activity_login_txt_nierstichtingEmail.removeLinksUnderline()
+        toolbarBinding.toolbar.visibility = View.GONE
+        loader = binding.activityLoginLoader
+        Linkify.addLinks(binding.activityLoginTxtNierstichtingUrl, Linkify.WEB_URLS)
+        Linkify.addLinks(binding.activityLoginTxtNierstichtingPhonenumber, Linkify.PHONE_NUMBERS)
+        Linkify.addLinks(binding.activityLoginTxtNierstichtingEmail, Linkify.EMAIL_ADDRESSES)
+        binding.activityLoginTxtNierstichtingUrl.removeLinksUnderline()
+        binding.activityLoginTxtNierstichtingPhonenumber.removeLinksUnderline()
+        binding.activityLoginTxtNierstichtingEmail.removeLinksUnderline()
 
         // Setup custom toast (any Relative layout will do)
-        val parent: RelativeLayout = activity_login_rl_header
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+        val parent: RelativeLayout = binding.activityLoginRlHeader
+        //toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(customToastLayout)
 
-        activity_login_et_username.addTextChangedListener(object : TextWatcher {
+        binding.activityLoginEtUsername.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                toggleLoginButtonIfNotEmpty(activity_login_et_username, activity_login_et_password,
-                    activity_login_btn_login)
+                toggleLoginButtonIfNotEmpty(binding.activityLoginEtUsername, binding.activityLoginEtPassword,
+                    binding.activityLoginBtnLogin)
             }
         })
 
-        activity_login_et_password.addTextChangedListener(object : TextWatcher {
+        binding.activityLoginEtPassword.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                toggleLoginButtonIfNotEmpty(activity_login_et_username, activity_login_et_password,
-                    activity_login_btn_login)
+                toggleLoginButtonIfNotEmpty(binding.activityLoginEtUsername, binding.activityLoginEtPassword,
+                    binding.activityLoginBtnLogin)
             }
         })
 
-        activity_login_txt_password_forgotten.setOnClickListener {
+        binding.activityLoginTxtPasswordForgotten.setOnClickListener {
             val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
             startActivity(intent)
         }
 
-        activity_login_btn_login.setOnClickListener {
+        binding.activityLoginBtnLogin.setOnClickListener {
             // Give EditTexts so you can change them
-            doLogin(activity_login_et_username, activity_login_et_password)
+            doLogin(binding.activityLoginEtUsername, binding.activityLoginEtPassword)
         }
 
         // if logged in, get isDoctor and go to next activity
@@ -100,13 +109,13 @@ class LoginActivity : BaseActivity() {
         //activity_login_et_username.setText("HugoBrand") // Doctor
         //activity_login_et_password.setText("Welkom123")
 
-        activity_login_et_username.setText("patient") // Patient
-        activity_login_et_password.setText("patient") // Patient
+        binding.activityLoginEtUsername.setText("patient") // Patient
+        binding.activityLoginEtUsername.setText("patient") // Patient
         //activity_login_et_username.setText("doctor") // Doctor
         //activity_login_et_password.setText("doctor") // Doctor
 
-        toggleLoginButtonIfNotEmpty(activity_login_et_username, activity_login_et_password,
-            activity_login_btn_login)
+        toggleLoginButtonIfNotEmpty(binding.activityLoginEtUsername, binding.activityLoginEtUsername,
+            binding.activityLoginBtnLogin)
     }
 
     private fun showNextActivity() {
@@ -134,9 +143,9 @@ class LoginActivity : BaseActivity() {
         passwordET.setBackgroundColor(Color.TRANSPARENT)
 
         // Checks (Guards)
-        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
-        if (InputHelper.inputIsEmpty(this, usernameET, toastView, toastAnimation, getString(R.string.username_cant_be_empty))) return
-        if (InputHelper.inputIsEmpty(this, passwordET, toastView, toastAnimation, getString(R.string.password_cant_be_empty))) return
+        if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return
+        if (InputHelper.inputIsEmpty(this, usernameET, customToastLayout, toastAnimation, getString(R.string.username_cant_be_empty))) return
+        if (InputHelper.inputIsEmpty(this, passwordET, customToastLayout, toastAnimation, getString(R.string.password_cant_be_empty))) return
 
         val loginRequest = LoginRequest(usernameET.text.toString(), passwordET.text.toString())
 
@@ -189,12 +198,12 @@ class LoginActivity : BaseActivity() {
 
             // Guards
             // Since you can't toast in onBackground
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.api_is_down)); return }
             // Result either gives the (token, user, patient/doctor) OR null
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.credentials_wrong)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.credentials_wrong)); return }
 
             // Feedback
-            GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.login_success))
+            GeneralHelper.makeToast(baseContext, customToastBinding, getString(R.string.login_success))
 
             // Save token
             GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_TOKEN, result.jwt).apply()
@@ -223,7 +232,7 @@ class LoginActivity : BaseActivity() {
     //region Mockup Login
     private fun loginPatientMockup() {
         // Feedback
-        GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.login_success))
+        GeneralHelper.makeToast(baseContext, customToastBinding, getString(R.string.login_success))
 
         // Save token
         GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_TOKEN, LocalDb.jwt).apply()
@@ -245,7 +254,7 @@ class LoginActivity : BaseActivity() {
 
     private fun loginDoctorMockup() {
         // Feedback
-        GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.login_success))
+        GeneralHelper.makeToast(baseContext, customToastBinding, getString(R.string.login_success))
 
         // Save token
         GeneralHelper.prefs.edit().putString(GeneralHelper.PREF_TOKEN, LocalDb.jwt).apply()

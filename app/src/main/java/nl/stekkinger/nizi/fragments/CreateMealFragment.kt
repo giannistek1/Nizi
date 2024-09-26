@@ -21,9 +21,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.fragment_create_meal.image_food_view
-import kotlinx.android.synthetic.main.fragment_create_meal.view.*
-import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.MealProductAdapter

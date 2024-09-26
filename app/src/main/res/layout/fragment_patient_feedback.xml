@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_patient_feedback_rl"
     android:layout_width="match_parent"
@@ -72,11 +73,11 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:scaleType="fitCenter"
-            android:tint="@color/colorPrimary"
             android:clickable="true"
             android:focusable="true"
             android:contentDescription="@string/add_patient"
-            android:src="@drawable/ic_add"/>
+            android:src="@drawable/ic_add"
+            app:tint="@color/colorPrimary" />
 
     </RelativeLayout>
 

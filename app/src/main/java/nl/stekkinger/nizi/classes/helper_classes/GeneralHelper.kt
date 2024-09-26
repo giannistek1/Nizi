@@ -8,22 +8,21 @@ import android.net.NetworkCapabilities
 import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import android.widget.TextView
 import android.widget.Toast
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.custom_toast.*
-import kotlinx.android.synthetic.main.custom_toast.view.*
 import nl.stekkinger.nizi.NiziApplication
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.login.Role
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
+import nl.stekkinger.nizi.databinding.CustomToastBinding
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 
 object GeneralHelper {
+
+
     const val PREF_TOKEN = "TOKEN"
     const val PREF_USER = "USER"
     const val PREF_IS_DOCTOR = "IS_DOCTOR"
@@ -93,27 +92,27 @@ object GeneralHelper {
         return SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
     }
 
-    fun makeToast(cont: Context, customToastLayout: View, message: String)
+    fun makeToast(cont: Context, customToastLayout: CustomToastBinding, message: String)
     {
         // Sadly cant use animations on the android toast
         val toast: Toast = Toast.makeText(cont, "", Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.BOTTOM or Gravity.FILL_HORIZONTAL, 0, 0)
-        customToastLayout.toast_text.text = message
-        customToastLayout.visibility = View.VISIBLE
-        toast.view = customToastLayout
+        customToastLayout.toastText.text = message
+        customToastLayout.root.visibility = View.VISIBLE
+        toast.view = customToastLayout.root
 
         toast.show()
     }
 
-    fun showAnimatedToast(toastView: View, toastAnimation: Animation, message: String)
+    fun showAnimatedToast(toastView: CustomToastBinding, toastAnimation: Animation, message: String)
     {
-        toastView.toast_text.text = message // Could also be context.getString(id) but its easier to give a string instead of context and id, because you can test that quicker
-        toastView.visibility = View.VISIBLE
-        toastView.startAnimation(toastAnimation)
+        toastView.toastText.text = message // Could also be context.getString(id) but its easier to give a string instead of context and id, because you can test that quicker
+        toastView.root.visibility = View.VISIBLE
+        toastView.root.startAnimation(toastAnimation)
     }
 
     @SuppressLint("NewApi")
-    fun hasInternetConnection(context: Context, toastView: View, toastAnimation: Animation) : Boolean
+    fun hasInternetConnection(context: Context, toastView: CustomToastBinding, toastAnimation: Animation) : Boolean
     {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

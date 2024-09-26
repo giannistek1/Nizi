@@ -7,8 +7,6 @@ import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_patient_detail.*
-import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -19,6 +17,8 @@ import nl.stekkinger.nizi.classes.patient.PatientItem
 import nl.stekkinger.nizi.classes.patient.PatientShort
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
+import nl.stekkinger.nizi.databinding.ActivityPatientDetailBinding
+import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientFeedbackFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientHomeFragment
@@ -28,6 +28,9 @@ import nl.stekkinger.nizi.repositories.WeightUnitRepository
 
 
 class PatientDetailActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityPatientDetailBinding
+    private lateinit var toolbarBinding: ToolbarBinding
 
     private val authRepository = AuthRepository()
     private val patientRepository = PatientRepository()
@@ -39,19 +42,22 @@ class PatientDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Setup UI
-        setContentView(R.layout.activity_patient_detail)
-        setSupportActionBar(toolbar)
+        // Setup UI.
+        binding = ActivityPatientDetailBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        setSupportActionBar(toolbarBinding.toolbar)
         // Back button
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbar_txt_back.text = getString(R.string.patient_overview)
-        loader = activity_patient_detail_loader
-        activity_patient_detail_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
+        toolbarBinding.toolbarTxtBack.text = getString(R.string.patient_overview)
+        loader = binding.activityPatientDetailLoader
+        binding.activityPatientDetailBottomNavigation.setOnNavigationItemSelectedListener(navListener)
 
         // Setup custom toast
-        val parent: RelativeLayout = activity_patient_detail_rl
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+        val parent: RelativeLayout = binding.activityPatientDetailRl
+        //toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(customToastLayout)
 
         // Overrides custom toast animation for with bottom navigation
         toastAnimation = AnimationUtils.loadAnimation(
@@ -81,7 +87,7 @@ class PatientDetailActivity : BaseActivity() {
         if (GeneralHelper.isAdmin()) { getPatientMockup(); return }
 
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
+        if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return
 
         getWeightUnitsAsyncTask().execute()
     }
@@ -96,14 +102,14 @@ class PatientDetailActivity : BaseActivity() {
                 bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
                 fragment.arguments = bundle
 
-                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.simpleName)
+                supportFragmentManager.beginTransaction().replace(binding.activityPatientDetailFragmentContainer.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.nav_diary -> {
                 val fragment = DiaryFragment()
-                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.simpleName)
+                supportFragmentManager.beginTransaction().replace(binding.activityPatientDetailFragmentContainer.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
@@ -115,7 +121,7 @@ class PatientDetailActivity : BaseActivity() {
                 bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
                 fragment.arguments = bundle
 
-                supportFragmentManager.beginTransaction().replace(activity_patient_detail_fragment_container.id,  fragment, fragment.javaClass.simpleName)
+                supportFragmentManager.beginTransaction().replace(binding.activityPatientDetailFragmentContainer.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
@@ -152,8 +158,8 @@ class PatientDetailActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_weight_unit_fail))
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.get_weight_unit_fail))
                 return }
 
             // Feedback
@@ -194,11 +200,11 @@ class PatientDetailActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guard
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_patient_fail))
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.get_patient_fail))
                 return }
 
             // Feedback
-            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_patient))
+            GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.fetched_patient))
 
             // Make PatientData because patient does not have descriptions of dietaryRestrictions
             patientData.user = result.user!!
@@ -219,7 +225,7 @@ class PatientDetailActivity : BaseActivity() {
             bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
             fragment.arguments = bundle
             supportFragmentManager.beginTransaction().replace(
-                activity_patient_detail_fragment_container.id,
+                binding.activityPatientDetailFragmentContainer.id,
                 fragment,
                 fragment.javaClass.simpleName)
                 .commit()
@@ -250,7 +256,7 @@ class PatientDetailActivity : BaseActivity() {
         bundle.putSerializable(GeneralHelper.EXTRA_PATIENT, patientData)
         fragment.arguments = bundle
         supportFragmentManager.beginTransaction().replace(
-            activity_patient_detail_fragment_container.id,
+            binding.activityPatientDetailFragmentContainer.id,
             fragment,
             fragment.javaClass.simpleName)
             .commit()

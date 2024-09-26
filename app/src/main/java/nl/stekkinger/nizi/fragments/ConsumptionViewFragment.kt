@@ -20,11 +20,6 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_create_meal.view.*
-import kotlinx.android.synthetic.main.fragment_diary.view.*
-import kotlinx.android.synthetic.main.fragment_food_view.*
-import kotlinx.android.synthetic.main.fragment_food_view.view.*
-import kotlinx.android.synthetic.main.fragment_food_view.view.image_food_view
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel

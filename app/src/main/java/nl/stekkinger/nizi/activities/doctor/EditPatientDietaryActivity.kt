@@ -10,10 +10,6 @@ import android.view.View
 import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.Toast
-import androidx.core.app.NavUtils
-import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
-import kotlinx.android.synthetic.main.custom_toast.view.*
-import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.classes.dietary.DietaryManagement
@@ -24,11 +20,16 @@ import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
+import nl.stekkinger.nizi.databinding.ActivityAddPatientDietaryBinding
+import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 
 class EditPatientDietaryActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityAddPatientDietaryBinding
+    private lateinit var toolbarBinding: ToolbarBinding
 
     private var TAG = "EditPatientDietary"
 
@@ -49,25 +50,28 @@ class EditPatientDietaryActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Setup UI
-        setContentView(R.layout.activity_add_patient_dietary)
-        setSupportActionBar(toolbar)
+
+        // Setup UI same as AddPatientDietary
+        binding = ActivityAddPatientDietaryBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        setSupportActionBar(toolbarBinding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbar_txt_back.text = getString(R.string.personal_info_short)
-        loader = activity_add_patient_dietary_loader
+        toolbarBinding.toolbarTxtBack.text = getString(R.string.personal_info_short)
+        loader = binding.activityAddPatientDietaryLoader
 
         // Setup custom toast
-        val parent: RelativeLayout = activity_add_patient_dietary_rl
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+        val parent: RelativeLayout = binding.activityAddPatientDietaryRl
+        parent.addView(customToastLayout)
 
         // Add inputs to list
-        textViewList = arrayListOf(activity_add_patient_dietary_et_cal_min, activity_add_patient_dietary_et_cal_max,
-            activity_add_patient_dietary_et_water_min, activity_add_patient_dietary_et_water_max,
-            activity_add_patient_dietary_et_sodium_min, activity_add_patient_dietary_et_sodium_max,
-            activity_add_patient_dietary_et_potassium_min, activity_add_patient_dietary_et_potassium_max,
-            activity_add_patient_dietary_et_protein_min, activity_add_patient_dietary_et_protein_max,
-            activity_add_patient_dietary_et_fiber_min, activity_add_patient_dietary_et_fiber_max
+        textViewList = arrayListOf(binding.activityAddPatientDietaryEtCalMin, binding.activityAddPatientDietaryEtCalMax,
+            binding.activityAddPatientDietaryEtWaterMin, binding.activityAddPatientDietaryEtWaterMax,
+            binding.activityAddPatientDietaryEtSodiumMin, binding.activityAddPatientDietaryEtSodiumMax,
+            binding.activityAddPatientDietaryEtPotassiumMin, binding.activityAddPatientDietaryEtPotassiumMax,
+            binding.activityAddPatientDietaryEtProteinMin, binding.activityAddPatientDietaryEtProteinMax,
+            binding.activityAddPatientDietaryEtFiberMin, binding.activityAddPatientDietaryEtFiberMax
         )
 
         // Get patient data
@@ -79,30 +83,30 @@ class EditPatientDietaryActivity : BaseActivity() {
 
         patientData.diets.forEachIndexed { _, diet ->
             if (diet.description.contains("Calorie")) {
-                activity_add_patient_dietary_et_cal_min.setText(diet.minimum.toString())
-                activity_add_patient_dietary_et_cal_max.setText(diet.maximum.toString())
+                binding.activityAddPatientDietaryEtCalMin.setText(diet.minimum.toString())
+                binding.activityAddPatientDietaryEtCalMax.setText(diet.maximum.toString())
             } else if (diet.description.contains("Vocht")) {
-                activity_add_patient_dietary_et_water_min.setText(diet.minimum.toString())
-                activity_add_patient_dietary_et_water_max.setText(diet.maximum.toString())
+                binding.activityAddPatientDietaryEtWaterMin.setText(diet.minimum.toString())
+                binding.activityAddPatientDietaryEtWaterMax.setText(diet.maximum.toString())
             } else if (diet.description.contains("Natrium")) {
-                activity_add_patient_dietary_et_sodium_min.setText(diet.minimum.toString())
-                activity_add_patient_dietary_et_sodium_max.setText(diet.maximum.toString())
+                binding.activityAddPatientDietaryEtSodiumMin.setText(diet.minimum.toString())
+                binding.activityAddPatientDietaryEtSodiumMax.setText(diet.maximum.toString())
             } else if (diet.description.contains("Kalium")) {
-                activity_add_patient_dietary_et_potassium_min.setText(diet.minimum.toString())
-                activity_add_patient_dietary_et_potassium_max.setText(diet.maximum.toString())
+                binding.activityAddPatientDietaryEtPotassiumMin.setText(diet.minimum.toString())
+                binding.activityAddPatientDietaryEtPotassiumMax.setText(diet.maximum.toString())
             } else if (diet.description.contains("Eiwit")) {
-                activity_add_patient_dietary_et_protein_min.setText(diet.minimum.toString())
-                activity_add_patient_dietary_et_protein_max.setText(diet.maximum.toString())
+                binding.activityAddPatientDietaryEtProteinMin.setText(diet.minimum.toString())
+                binding.activityAddPatientDietaryEtProteinMax.setText(diet.maximum.toString())
             } else if (diet.description.contains("Vezel")) {
-                activity_add_patient_dietary_et_protein_min.setText(diet.minimum.toString())
-                activity_add_patient_dietary_et_protein_max.setText(diet.maximum.toString())
+                binding.activityAddPatientDietaryEtFiberMin.setText(diet.minimum.toString())
+                binding.activityAddPatientDietaryEtFiberMax.setText(diet.maximum.toString())
             }
         }
 
-        activity_add_patient_dietary_btn_save.setOnClickListener {
+        binding.activityAddPatientDietaryBtnSave.setOnClickListener {
 
             // (Guard) Check internet connection
-            if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return@setOnClickListener
+            if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return@setOnClickListener
 
             if (updatePatientAsyncTask().status != AsyncTask.Status.RUNNING)
                 updatePatientAsyncTask().execute()
@@ -118,7 +122,7 @@ class EditPatientDietaryActivity : BaseActivity() {
         setResult(Activity.RESULT_CANCELED, returnIntent)
 
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
+        if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return
 
         // Get DietaryRestrictions
         getDietaryRestrictionsAsyncTask().execute()
@@ -238,7 +242,8 @@ class EditPatientDietaryActivity : BaseActivity() {
             // Feedback
             val toast: Toast = Toast.makeText(baseContext, "", Toast.LENGTH_SHORT)
             toast.setGravity(Gravity.BOTTOM, 0, 0)
-            customToastLayout.toast_text.text = getString(R.string.patient_edited)
+            GeneralHelper.makeToast(baseContext, customToastBinding, getString(R.string.patient_edited))
+            //customToastLayout.toast_text.text = getString(R.string.patient_edited)
             toast.view = customToastLayout
             toast.show()
 

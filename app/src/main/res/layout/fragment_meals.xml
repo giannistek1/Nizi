@@ -116,13 +116,13 @@
                 <ImageView
                     android:id="@+id/fragment_meal_img_add"
                     android:scaleType="fitCenter"
-                    android:tint="@color/white"
                     android:layout_width="@dimen/buttonIconSize"
                     android:layout_height="@dimen/buttonIconSize"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="@dimen/marginVerySmall"
                     android:contentDescription="@string/ic_user"
-                    android:src="@drawable/ic_add"/>
+                    android:src="@drawable/ic_add"
+                    app:tint="@color/white" />
 
                 <TextView
                     android:id="@+id/fragment_meal_txt_makeMeal"

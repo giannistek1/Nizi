@@ -1,10 +1,8 @@
 package nl.stekkinger.nizi.adapters
 
 import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -14,14 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.custom_toast.*
-import kotlinx.android.synthetic.main.custom_toast.view.*
-import kotlinx.android.synthetic.main.item_food.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.databinding.ItemFoodBinding
 import nl.stekkinger.nizi.fragments.DiaryFragment
 
 class FoodSearchAdapter(
@@ -41,8 +36,8 @@ class FoodSearchAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.item_food, parent, false)
-        activity = view.context as AppCompatActivity
+        val view: ItemFoodBinding = ItemFoodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        activity = view.root.context as AppCompatActivity
         return ViewHolder(view)
             .listen { pos, _ ->
                 var food = mDataset[pos]
@@ -106,12 +101,12 @@ class FoodSearchAdapter(
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = mDataset.size
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val image: ImageView = itemView.food_image
+    class ViewHolder(itemView: ItemFoodBinding) : RecyclerView.ViewHolder(itemView.root) {
+        val image: ImageView = itemView.foodImage
         val title: TextView = itemView.title
         val summary: TextView = itemView.summary
-        val addBtn: ImageButton = itemView.add_btn
-        val favBtn: ImageButton = itemView.fav_btn
+        val addBtn: ImageButton = itemView.addBtn
+        val favBtn: ImageButton = itemView.favBtn
     }
 
     fun setFoodList(foodList: ArrayList<Food>) {

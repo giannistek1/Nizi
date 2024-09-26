@@ -11,8 +11,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.LocalDb
@@ -22,6 +20,8 @@ import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
+import nl.stekkinger.nizi.databinding.ActivityMainBinding
+import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.fragments.HomeFragment
@@ -30,6 +30,9 @@ import nl.stekkinger.nizi.repositories.DoctorRepository
 import nl.stekkinger.nizi.repositories.WeightUnitRepository
 
 class MainActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var toolbarBinding: ToolbarBinding
 
     private var TAG = "Main"
 
@@ -48,18 +51,21 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Setup UI
-        setContentView(R.layout.activity_main)
-        setSupportActionBar(toolbar)
 
-        toolbar_title.text = getString(R.string.app_name)
-        loader = activity_main_loader
-        activity_main_bottom_navigation.setOnNavigationItemSelectedListener(navListener)
+        // Setup UI.
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        setSupportActionBar(toolbarBinding.toolbar)
+
+        toolbarBinding.toolbarTitle.text = getString(R.string.app_name)
+        loader = binding.activityMainLoader
+        binding.activityMainBottomNavigation.setOnNavigationItemSelectedListener(navListener)
 
         // Setup custom toast
-        val parent: RelativeLayout = activity_main_rl
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+        val parent: RelativeLayout = binding.activityMainRl
+        parent.addView(customToastLayout)
 
         // Overrides custom toast animation for with bottom navigation
         toastAnimation = AnimationUtils.loadAnimation(
@@ -80,7 +86,7 @@ class MainActivity : BaseActivity() {
         if (GeneralHelper.isAdmin()) { getDoctorMockup(); return }
 
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
+        if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return
 
         getWeightUnits().execute()
         getDoctorAsyncTask().execute()
@@ -114,29 +120,29 @@ class MainActivity : BaseActivity() {
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener {  menuItem ->
         when (menuItem.itemId) {
             R.id.nav_home -> {
-                toolbar_title.text = getString(R.string.app_name)
+                toolbarBinding.toolbarTitle.text = getString(R.string.app_name)
                 val fragment = HomeFragment()
 
                 val bundle = Bundle()
                 bundle.putSerializable(GeneralHelper.EXTRA_DIETARY, dietaryGuidelines)
                 fragment.arguments = bundle
 
-                supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
+                supportFragmentManager.beginTransaction().replace(binding.activityMainFragmentContainer.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.nav_diary -> {
                 val fragment = DiaryFragment()
-                supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
+                supportFragmentManager.beginTransaction().replace(binding.activityMainFragmentContainer.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.nav_conversation -> {
-                toolbar_title.text = getString(R.string.conversations)
+                toolbarBinding.toolbarTitle.text = getString(R.string.conversations)
                 val fragment = ConversationFragment(user, doctor)
-                supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id,  fragment, fragment.javaClass.simpleName)
+                supportFragmentManager.beginTransaction().replace(binding.activityMainFragmentContainer.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
                 return@OnNavigationItemSelectedListener true
             }
@@ -172,8 +178,8 @@ class MainActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_weight_unit_fail))
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.get_weight_unit_fail))
                 return }
 
             // Feedback
@@ -196,7 +202,7 @@ class MainActivity : BaseActivity() {
                 bundle.putSerializable(GeneralHelper.EXTRA_DIETARY, dietaryGuidelines)
                 fragment.arguments = bundle
 
-                supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id, fragment,
+                supportFragmentManager.beginTransaction().replace(binding.activityMainFragmentContainer.id, fragment,
                     fragment.javaClass.simpleName).commit()
             }
         }
@@ -230,8 +236,8 @@ class MainActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_doctor_fail))
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.get_doctor_fail))
                 return }
 
             // Feedback
@@ -250,7 +256,7 @@ class MainActivity : BaseActivity() {
         if (savedInstanceState == null) {
             val fragment = HomeFragment()
 
-            supportFragmentManager.beginTransaction().replace(activity_main_fragment_container.id, fragment,
+            supportFragmentManager.beginTransaction().replace(binding.activityMainFragmentContainer.id, fragment,
                 fragment.javaClass.simpleName).commit()
         }
     }

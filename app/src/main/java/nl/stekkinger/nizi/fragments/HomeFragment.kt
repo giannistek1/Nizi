@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.fragment_home.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse

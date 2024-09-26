@@ -1,6 +1,5 @@
 package nl.stekkinger.nizi.activities.doctor
 
-import android.app.Activity
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
@@ -8,21 +7,25 @@ import android.view.View
 import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.Toast
-import kotlinx.android.synthetic.main.activity_add_patient_dietary.*
-import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
-import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
-import nl.stekkinger.nizi.classes.dietary.*
+import nl.stekkinger.nizi.classes.dietary.DietaryManagement
+import nl.stekkinger.nizi.classes.dietary.DietaryManagementShort
+import nl.stekkinger.nizi.classes.dietary.DietaryRestriction
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
+import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
 import nl.stekkinger.nizi.classes.patient.Patient
+import nl.stekkinger.nizi.databinding.ActivityAddPatientDietaryBinding
+import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
-import java.lang.Exception
 
 class AddPatientDietaryActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityAddPatientDietaryBinding
+    private lateinit var toolbarBinding: ToolbarBinding
 
     private var TAG = "AddPatientDietary"
 
@@ -49,32 +52,35 @@ class AddPatientDietaryActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Setup UI
-        setContentView(R.layout.activity_add_patient_dietary)
-        setSupportActionBar(toolbar)
+
+        // Setup UI.
+        binding = ActivityAddPatientDietaryBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        setSupportActionBar(toolbarBinding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbar_txt_back.text = getString(R.string.personal_info_short)
-        loader = activity_add_patient_dietary_loader
+        toolbarBinding.toolbarTxtBack.text = getString(R.string.personal_info_short)
+        loader = binding.activityAddPatientDietaryLoader
 
         // Setup custom toast
-        val parent: RelativeLayout = activity_add_patient_dietary_rl
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+        val parent: RelativeLayout = binding.activityAddPatientDietaryRl
+        parent.addView(customToastLayout)
 
         // Ideally dynamic inputs
         // Add inputs to list
-        textViewList = arrayListOf(activity_add_patient_dietary_et_cal_min, activity_add_patient_dietary_et_cal_max,
-            activity_add_patient_dietary_et_water_min, activity_add_patient_dietary_et_water_max,
-            activity_add_patient_dietary_et_sodium_min, activity_add_patient_dietary_et_sodium_max,
-            activity_add_patient_dietary_et_potassium_min, activity_add_patient_dietary_et_potassium_max,
-            activity_add_patient_dietary_et_protein_min, activity_add_patient_dietary_et_protein_max,
-            activity_add_patient_dietary_et_fiber_min, activity_add_patient_dietary_et_fiber_max
+        textViewList = arrayListOf(binding.activityAddPatientDietaryEtCalMin, binding.activityAddPatientDietaryEtCalMax,
+            binding.activityAddPatientDietaryEtWaterMin, binding.activityAddPatientDietaryEtWaterMax,
+            binding.activityAddPatientDietaryEtSodiumMin, binding.activityAddPatientDietaryEtSodiumMax,
+            binding.activityAddPatientDietaryEtPotassiumMin, binding.activityAddPatientDietaryEtPotassiumMax,
+            binding.activityAddPatientDietaryEtProteinMin, binding.activityAddPatientDietaryEtProteinMax,
+            binding.activityAddPatientDietaryEtFiberMin, binding.activityAddPatientDietaryEtFiberMax
         )
 
-        activity_add_patient_dietary_btn_save.setOnClickListener {
+        binding.activityAddPatientDietaryBtnSave.setOnClickListener {
 
             // (Guard) Check internet connection
-            if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return@setOnClickListener
+            if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return@setOnClickListener
 
             // TODO: Check if anything is notEmpty first
             // if all empty, toast: dietaries_empty, return
@@ -92,14 +98,14 @@ class AddPatientDietaryActivity : BaseActivity() {
 
         // Standard on canceled
         val returnIntent = Intent()
-        setResult(Activity.RESULT_CANCELED, returnIntent)
+        setResult(RESULT_CANCELED, returnIntent)
 
         // Testing
-        activity_add_patient_dietary_et_water_min.setText("1969")
-        activity_add_patient_dietary_et_water_max.setText("3696")
+        binding.activityAddPatientDietaryEtWaterMin.setText("1969")
+        binding.activityAddPatientDietaryEtWaterMax.setText("3696")
 
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
+        if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return
 
         // Get DietaryRestrictions
         getDietaryRestrictionsAsyncTask().execute()
@@ -137,7 +143,7 @@ class AddPatientDietaryActivity : BaseActivity() {
                 Toast.LENGTH_SHORT).show(); return }
 
             // Feedback
-            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_dietary_restrictions))
+            GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.fetched_dietary_restrictions))
 
             dietaryRestrictionList = result
         }
@@ -169,7 +175,7 @@ class AddPatientDietaryActivity : BaseActivity() {
                 return }
 
             // Feedback
-            GeneralHelper.makeToast(baseContext, customToastLayout, getString(R.string.patient_added))
+            GeneralHelper.makeToast(baseContext, customToastBinding, getString(R.string.patient_added))
 
             // Update patientId which you get after making patient (two places)
             addPatientViewModel.patient.id = result.id!!
@@ -239,7 +245,7 @@ class AddPatientDietaryActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guard
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.dietary_add_fail))
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.dietary_add_fail))
                 return }
 
             // Feedback
@@ -275,7 +281,7 @@ class AddPatientDietaryActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guard
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.user_add_fail))
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.user_add_fail))
                 return }
 
             // Feedback
@@ -310,7 +316,7 @@ class AddPatientDietaryActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guard
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.patient_update_fail))
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.patient_update_fail))
                 return }
 
             // Feedback

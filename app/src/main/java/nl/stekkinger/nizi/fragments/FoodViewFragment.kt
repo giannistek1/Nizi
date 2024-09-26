@@ -14,8 +14,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_food_view.*
-import kotlinx.android.synthetic.main.fragment_food_view.view.*
 import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel

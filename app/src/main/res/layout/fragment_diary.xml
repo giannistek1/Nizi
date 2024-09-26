@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_diary_rl"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
 
 
-
-<!--    <ProgressBar-->
-<!--        android:id="@+id/progress_bar_diary"-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:layout_centerInParent="true"/>-->
+    <!--    <ProgressBar-->
+    <!--        android:id="@+id/progress_bar_diary"-->
+    <!--        android:layout_width="100dp"-->
+    <!--        android:layout_height="100dp"-->
+    <!--        android:layout_centerInParent="true"/>-->
 
     <LinearLayout
         android:id="@+id/fragment_diary_rl_day"
@@ -36,7 +36,7 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/yesterday"
                 android:src="@drawable/ic_back"
-                android:tint="@color/black"/>
+                app:tint="@color/black" />
 
         </LinearLayout>
 
@@ -70,7 +70,7 @@
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/tomorrow"
                 android:src="@drawable/ic_next"
-                android:tint="@color/black"/>
+                app:tint="@color/black" />
         </LinearLayout>
     </LinearLayout>
 
@@ -137,8 +137,8 @@
                         android:layout_centerVertical="true"
                         android:contentDescription="@string/content_add_breakfast"
                         android:scaleType="fitXY"
-                        android:tint="@color/colorPrimary"
-                        android:src="@drawable/ic_add" />
+                        android:src="@drawable/ic_add"
+                        app:tint="@color/colorPrimary" />
 
                 </RelativeLayout>
 
@@ -204,8 +204,8 @@
                         android:layout_marginEnd="@dimen/marginSmall"
                         android:contentDescription="@string/content_add_lunch"
                         android:scaleType="fitXY"
-                        android:tint="@color/colorPrimary"
-                        android:src="@drawable/ic_add" />
+                        android:src="@drawable/ic_add"
+                        app:tint="@color/colorPrimary" />
 
                 </RelativeLayout>
 
@@ -272,8 +272,8 @@
                         android:layout_marginEnd="@dimen/marginSmall"
                         android:contentDescription="@string/content_add_dinner"
                         android:scaleType="fitXY"
-                        android:tint="@color/colorPrimary"
-                        android:src="@drawable/ic_add" />
+                        android:src="@drawable/ic_add"
+                        app:tint="@color/colorPrimary" />
                 </RelativeLayout>
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -338,8 +338,8 @@
                         android:layout_marginEnd="@dimen/marginSmall"
                         android:contentDescription="@string/content_add_snack"
                         android:scaleType="fitXY"
-                        android:tint="@color/colorPrimary"
-                        android:src="@drawable/ic_add" />
+                        android:src="@drawable/ic_add"
+                        app:tint="@color/colorPrimary" />
 
                 </RelativeLayout>
 

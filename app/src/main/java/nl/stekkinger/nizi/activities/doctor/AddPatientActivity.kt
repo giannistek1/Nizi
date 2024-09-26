@@ -10,11 +10,8 @@ import android.view.View
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RelativeLayout
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import kotlinx.android.synthetic.main.activity_add_patient.*
-import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
@@ -23,11 +20,17 @@ import nl.stekkinger.nizi.classes.login.User
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.patient.AddPatientViewModel
 import nl.stekkinger.nizi.classes.patient.PatientShort
+import nl.stekkinger.nizi.databinding.ActivityAddPatientBinding
+import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.repositories.AuthRepository
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 
 class AddPatientActivity : BaseActivity() {
+
+    private lateinit var binding: ActivityAddPatientBinding
+    private lateinit var toolbarBinding: ToolbarBinding
 
     private var TAG = "AddPatient"
 
@@ -41,34 +44,37 @@ class AddPatientActivity : BaseActivity() {
     private var users: ArrayList<UserLogin> = arrayListOf()
 
     val sdfDB = GeneralHelper.getCreateDateFormat() // Todo: Refactor getCreateDate to DBDate or something
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Setup UI
-        setContentView(R.layout.activity_add_patient)
-        setSupportActionBar(toolbar)
+
+        // Setup UI.
+        binding = ActivityAddPatientBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
+        setSupportActionBar(toolbarBinding.toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbar_txt_back.text = getString(R.string.patient_overview)
-        loader = activity_add_patient_progressbar
+        toolbarBinding.toolbarTxtBack.text = getString(R.string.patient_overview)
+        loader = binding.activityAddPatientProgressbar
 
         // Setup custom toast
-        val parent: RelativeLayout = activity_add_patient_rl
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+        val parent: RelativeLayout = binding.activityAddPatientRl
+        //customToastBinding = CustomToastBinding.inflate(layoutInflater)
+        parent.addView(customToastLayout)
 
         // Date of Birth
-        activity_add_patient_et_dob.setOnClickListener {
+        binding.activityAddPatientEtDob.setOnClickListener {
 
-            if (activity_add_patient_dp.visibility == View.VISIBLE)
-                activity_add_patient_dp.visibility = View.GONE
+            if (binding.activityAddPatientDp.visibility == View.VISIBLE)
+                binding.activityAddPatientDp.visibility = View.GONE
             else
-                activity_add_patient_dp.visibility = View.VISIBLE
+                binding.activityAddPatientDp.visibility = View.VISIBLE
         }
 
-        activity_add_patient_dp.maxDate = Date().time
-        activity_add_patient_dp.updateDate(2000, 1, 1)
-        activity_add_patient_dp.setOnDateChangedListener { _, mYear, mMonth, mDay ->
+        binding.activityAddPatientDp.maxDate = Date().time
+        binding.activityAddPatientDp.updateDate(2000, 1, 1)
+        binding.activityAddPatientDp.setOnDateChangedListener { _, mYear, mMonth, mDay ->
 
             val calendar = Calendar.getInstance()
             calendar.set(mYear, mMonth, mDay, 0, 0)
@@ -76,14 +82,14 @@ class AddPatientActivity : BaseActivity() {
 
             val sdf = GeneralHelper.getFeedbackDateFormat()
 
-            activity_add_patient_et_dob.setText("${sdf.format(date)}")
+            binding.activityAddPatientEtDob.setText("${sdf.format(date)}")
 
         }
 
-        activity_add_patient_btn_to_guidelines.setOnClickListener {
-            tryCreatePatient(activity_add_patient_et_firstName, activity_add_patient_et_lastName,
-                activity_add_patient_et_dob, activity_add_patient_et_email, activity_add_patient_et_password,
-            activity_add_patient_et_passwordConfirm)
+        binding.activityAddPatientBtnToGuidelines.setOnClickListener {
+            tryCreatePatient(binding.activityAddPatientEtFirstName, binding.activityAddPatientEtLastName,
+                binding.activityAddPatientEtDob, binding.activityAddPatientEtEmail, binding.activityAddPatientEtPassword,
+                binding.activityAddPatientEtPasswordConfirm)
         }
 
         // Get doctorId
@@ -94,21 +100,21 @@ class AddPatientActivity : BaseActivity() {
         setResult(Activity.RESULT_CANCELED, returnIntent)
 
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
+        if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return
 
         getUsers().execute()
 
         //region Testing
-        activity_add_patient_et_firstName.setText(getString(R.string.sample_first_name))
-        activity_add_patient_et_lastName.setText(R.string.sample_last_name)
-        activity_add_patient_et_dob.setText(R.string.sample_dob)
+        binding.activityAddPatientEtFirstName.setText(getString(R.string.sample_first_name))
+        binding.activityAddPatientEtLastName.setText(R.string.sample_last_name)
+        binding.activityAddPatientEtDob.setText(R.string.sample_dob)
         val calendar = Calendar.getInstance()
         calendar.set(1990, 1, 1, 0, 0)
         date = calendar.time
-        activity_add_patient_et_email.setText(R.string.sample_email)
-        activity_add_patient_et_password.setText(R.string.sample_password)
-        activity_add_patient_et_passwordConfirm.setText(R.string.sample_password)
-        activity_add_patient_rg_gender.check(activity_add_patient_rb_male.id)
+        binding.activityAddPatientEtEmail.setText(R.string.sample_email)
+        binding.activityAddPatientEtPassword.setText(R.string.sample_password)
+        binding.activityAddPatientEtPasswordConfirm.setText(R.string.sample_password)
+        binding.activityAddPatientRgGender.check(binding.activityAddPatientRbMale.id)
         //endregion
     }
 
@@ -122,32 +128,32 @@ class AddPatientActivity : BaseActivity() {
         passwordConfirmET.setBackgroundColor(Color.TRANSPARENT)
 
         // Guards/Checks
-        if (InputHelper.inputIsEmpty(this, firstNameET, toastView, toastAnimation, getString(R.string.empty_first_name))) return
-        if (InputHelper.inputIsEmpty(this, lastNameET, toastView, toastAnimation, getString(R.string.empty_last_name))) return
-        if (InputHelper.inputIsEmpty(this, dobET, toastView, toastAnimation, getString(R.string.empty_date_of_birth))) return
-        if (InputHelper.inputIsEmpty(this, emailET, toastView, toastAnimation, getString(R.string.empty_email))) return
-        if (InputHelper.inputIsEmpty(this, passwordET, toastView, toastAnimation, getString(R.string.empty_password))) return
-        if (InputHelper.inputIsEmpty(this, passwordConfirmET, toastView, toastAnimation, getString(R.string.empty_password_confirm))) return
+        if (InputHelper.inputIsEmpty(this, firstNameET, customToastLayout, toastAnimation, getString(R.string.empty_first_name))) return
+        if (InputHelper.inputIsEmpty(this, lastNameET, customToastLayout, toastAnimation, getString(R.string.empty_last_name))) return
+        if (InputHelper.inputIsEmpty(this, dobET, customToastLayout, toastAnimation, getString(R.string.empty_date_of_birth))) return
+        if (InputHelper.inputIsEmpty(this, emailET, customToastLayout, toastAnimation, getString(R.string.empty_email))) return
+        if (InputHelper.inputIsEmpty(this, passwordET, customToastLayout, toastAnimation, getString(R.string.empty_password))) return
+        if (InputHelper.inputIsEmpty(this, passwordConfirmET, customToastLayout, toastAnimation, getString(R.string.empty_password_confirm))) return
 
-        val checkedGenderRadioButtonId: Int = activity_add_patient_rg_gender.checkedRadioButtonId
+        val checkedGenderRadioButtonId: Int = binding.activityAddPatientRgGender.checkedRadioButtonId
         if (checkedGenderRadioButtonId == -1) { return }
 
         // Check if email already exists
         val user = users.find { it.email ==  emailET.text.toString() }
         if (user != null) {
-            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.email_already_exists))
+            GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.email_already_exists))
             emailET.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
             return }
 
         // Check if email is valid
         if (!InputHelper.isValidEmail(emailET.text.toString())) {
-            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.email_invalid))
+            GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.email_invalid))
             emailET.setBackgroundColor(ContextCompat.getColor(this, R.color.red))
             return }
 
         // Check if not matching passwords
         else if (passwordET.text.toString() != passwordConfirmET.text.toString()) {
-            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.passwords_dont_match))
+            GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.passwords_dont_match))
             return }
 
         val intent = Intent(this@AddPatientActivity, AddPatientDietaryActivity::class.java)
@@ -158,7 +164,7 @@ class AddPatientActivity : BaseActivity() {
         var lastNameWithoutSpaces = lastNameET.text.toString().trim()
         lastNameWithoutSpaces = lastNameWithoutSpaces.replace("\\s".toRegex(), "")
 
-        val selectedRadioButton: RadioButton = activity_add_patient_rg_gender.findViewById(checkedGenderRadioButtonId)
+        val selectedRadioButton: RadioButton = binding.activityAddPatientRgGender.findViewById(checkedGenderRadioButtonId)
 
         val newPatient = AddPatientViewModel(
             user = User(
@@ -211,8 +217,8 @@ class AddPatientActivity : BaseActivity() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_users_fail))
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.get_users_fail))
                 return }
 
             // Feedback

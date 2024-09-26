@@ -17,8 +17,6 @@ import android.widget.RelativeLayout
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_doctor_main.*
-import kotlinx.android.synthetic.main.toolbar.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.BaseActivity
 import nl.stekkinger.nizi.adapters.PatientAdapter
@@ -28,12 +26,17 @@ import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.patient.PatientItem
+import nl.stekkinger.nizi.databinding.ActivityDoctorMainBinding
+import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
-import java.util.*
+import java.util.Locale
 
 
 class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
+
+    private lateinit var binding: ActivityDoctorMainBinding
+    private lateinit var toolbarBinding: ToolbarBinding
 
     private var TAG = "DoctorMain"
 
@@ -55,43 +58,46 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /// setup UI
-        setContentView(R.layout.activity_doctor_main)
+
+        // Setup UI.
+        binding = ActivityDoctorMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         // Set toolbar
-        setSupportActionBar(toolbar)
-        toolbar_title.text = getString(R.string.patients)
-        loader = activity_doctor_main_loader
+        setSupportActionBar(toolbarBinding.toolbar)
+        toolbarBinding.toolbarTitle.text = getString(R.string.patients)
+        loader = binding.activityDoctorMainLoader
 
         // Setup custom toast
-        val parent: RelativeLayout = activity_doctor_main_rl
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+        val parent: RelativeLayout = binding.activityDoctorMainRl
+        //toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        parent.addView(customToastLayout)
 
         // Get User and doctorId
         user = GeneralHelper.getUser()
         doctorId = GeneralHelper.getDoctorId()
 
-        activity_doctor_main_et_searchPatients.addTextChangedListener(object : TextWatcher {
+        binding.activityDoctorMainEtSearchPatients.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                filter(activity_doctor_main_et_searchPatients.text.toString())
+                filter(binding.activityDoctorMainEtSearchPatients.text.toString())
             }
         })
 
         // Add patient button
-        activity_doctor_main_btn_addPatient.setOnClickListener {
+        binding.activityDoctorMainBtnAddPatient.setOnClickListener {
             doAddPatient()
         }
-        activity_doctor_main_txt_patient.setOnClickListener {
+        binding.activityDoctorMainTxtPatient.setOnClickListener {
             doAddPatient()
         }
 
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(this, toastView, toastAnimation)) return
+        if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return
 
         // Get patients
         if (GeneralHelper.isAdmin()) {
@@ -148,12 +154,12 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
         }
 
         // Create adapter (data)
-        activity_doctor_main_rv.adapter = PatientAdapter(this, filteredList, listener)
+        binding.activityDoctorMainRv.adapter = PatientAdapter(this, filteredList, listener)
 
         // Create Linear Layout Manager
-        activity_doctor_main_rv.layoutManager = LinearLayoutManager(this)
+        binding.activityDoctorMainRv.layoutManager = LinearLayoutManager(this)
 
-        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(activity_doctor_main_rv)
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(binding.activityDoctorMainRv)
     }
 
     //region SwipeToDelete
@@ -182,12 +188,12 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
                     deletePatientAsyncTask(patient.patient_id).execute()
                 }
                 filteredList.removeAt(viewHolder.adapterPosition)
-                activity_doctor_main_rv.adapter!!.notifyDataSetChanged()
+                binding.activityDoctorMainRv.adapter!!.notifyDataSetChanged()
             }
 
             builder.setNegativeButton(android.R.string.no) { dialog, which ->
                 // Put patient back
-                activity_doctor_main_rv.adapter!!.notifyDataSetChanged()
+                binding.activityDoctorMainRv.adapter!!.notifyDataSetChanged()
             }
 
             builder.show()
@@ -211,8 +217,8 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
                 }
             }
         }
-        if (activity_doctor_main_rv.adapter != null)
-            activity_doctor_main_rv.adapter!!.notifyDataSetChanged()
+        if (binding.activityDoctorMainRv.adapter != null)
+            binding.activityDoctorMainRv.adapter!!.notifyDataSetChanged()
     }
     //endregion
 
@@ -253,12 +259,12 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_patients_fail));
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.get_patients_fail));
                 return }
 
             // Feedback
-            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_patients_success))
+            GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.get_patients_success))
 
             //GeneralHelper.createToast(baseContext, customToastLayout, getString(R.string.get_patients_success))
 
@@ -320,12 +326,12 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.patient_delete_fail))
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.patient_delete_fail))
                 return }
 
             // Feedback
-            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.patient_deleted))
+            GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.patient_deleted))
 
             deleteUserAsyncTask(result.user!!.id).execute()
         }
@@ -359,8 +365,8 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.user_delete_fail));
+            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.api_is_down)); return }
+            if (result == null) { GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.user_delete_fail));
                 return }
 
             // Feedback
@@ -392,7 +398,7 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
     //region Mockups
     private fun getPatientsForDoctorMockup() {
         // Feedback
-        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_patients_success))
+        GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.get_patients_success))
 
         // Clear
         patientList.clear()
@@ -430,7 +436,7 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
         authRepository.deleteUserLocally(deletedPatient!!.user!!.id)
 
         // Feedback
-        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.patient_deleted))
+        GeneralHelper.showAnimatedToast(customToastBinding, toastAnimation, getString(R.string.patient_deleted))
     }
     //endregion
 }

@@ -41,10 +41,10 @@
                 android:layout_width="@dimen/patientStepIconSize"
                 android:layout_height="@dimen/patientStepIconSize"
                 android:layout_gravity="center"
-                android:tint="@color/lime"
                 android:src="@drawable/ic_user"
                 android:contentDescription="@string/user"
-                android:layout_marginVertical="@dimen/marginVerySmall"/>
+                android:layout_marginVertical="@dimen/marginVerySmall"
+                app:tint="@color/lime" />
 
             <TextView
                 android:id="@+id/activity_add_patient_dietary_txt_personal_info"
@@ -94,10 +94,10 @@
                 android:layout_width="@dimen/patientStepIconSize"
                 android:layout_height="@dimen/patientStepIconSize"
                 android:layout_gravity="center"
-                android:tint="@color/colorPrimary"
                 android:src="@drawable/ic_culinary"
                 android:contentDescription="@string/guidelines"
-                android:layout_marginVertical="@dimen/marginVerySmall"/>
+                android:layout_marginVertical="@dimen/marginVerySmall"
+                app:tint="@color/colorPrimary" />
 
             <TextView
                 android:id="@+id/activity_add_patient_dietary_txt_guidelines"
@@ -137,10 +137,10 @@
                     android:id="@+id/activity_add_patient_dietary_img_calories"
                     android:src="@drawable/ic_calories"
                     android:contentDescription="@string/calories"
-                    android:tint="@color/red"
                     android:layout_width="@dimen/patientDietaryIconSize"
                     android:layout_height="@dimen/patientDietaryIconSize"
-                    android:layout_marginEnd="@dimen/marginSmall"/>
+                    android:layout_marginEnd="@dimen/marginSmall"
+                    app:tint="@color/red" />
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_calories"
@@ -243,11 +243,11 @@
                     android:id="@+id/activity_add_patient_dietary_img_water"
                     android:src="@drawable/ic_water"
                     android:contentDescription="@string/water"
-                    android:tint="@color/blue"
                     android:scaleType="fitCenter"
                     android:layout_width="@dimen/patientDietaryIconSize"
                     android:layout_height="@dimen/patientDietaryIconSize"
-                    android:layout_marginEnd="@dimen/marginSmall"/>
+                    android:layout_marginEnd="@dimen/marginSmall"
+                    app:tint="@color/blue" />
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_water"
@@ -349,10 +349,10 @@
                     android:id="@+id/activity_add_patient_dietary_img_sodium"
                     android:src="@drawable/ic_salt"
                     android:contentDescription="@string/sodium"
-                    android:tint="@color/darkGray"
                     android:layout_width="@dimen/patientDietaryIconSize"
                     android:layout_height="@dimen/patientDietaryIconSize"
-                    android:layout_marginEnd="@dimen/marginSmall"/>
+                    android:layout_marginEnd="@dimen/marginSmall"
+                    app:tint="@color/darkGray" />
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_sodium"
@@ -454,10 +454,10 @@
                     android:id="@+id/activity_add_patient_dietary_img_potassium"
                     android:src="@drawable/ic_k"
                     android:contentDescription="@string/potassium"
-                    android:tint="@color/blue"
                     android:layout_width="@dimen/patientDietaryIconSize"
                     android:layout_height="@dimen/patientDietaryIconSize"
-                    android:layout_marginEnd="@dimen/marginSmall"/>
+                    android:layout_marginEnd="@dimen/marginSmall"
+                    app:tint="@color/blue" />
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_potassium"
@@ -559,10 +559,10 @@
                     android:id="@+id/activity_add_patient_dietary_img_protein"
                     android:src="@drawable/ic_protein"
                     android:contentDescription="@string/proteins"
-                    android:tint="@color/black"
                     android:layout_width="@dimen/patientDietaryIconSize"
                     android:layout_height="@dimen/patientDietaryIconSize"
-                    android:layout_marginEnd="@dimen/marginSmall"/>
+                    android:layout_marginEnd="@dimen/marginSmall"
+                    app:tint="@color/black" />
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_protein"
@@ -663,11 +663,11 @@
                 <ImageView
                     android:id="@+id/activity_add_patient_dietary_img_fiber"
                     android:src="@drawable/ic_grain"
-                    android:tint="@color/yellow"
                     android:contentDescription="@string/fibers"
                     android:layout_width="@dimen/patientDietaryIconSize"
                     android:layout_height="@dimen/patientDietaryIconSize"
-                    android:layout_marginEnd="@dimen/marginSmall"/>
+                    android:layout_marginEnd="@dimen/marginSmall"
+                    app:tint="@color/yellow" />
 
                 <TextView
                     android:id="@+id/activity_add_patient_dietary_txt_fiber"

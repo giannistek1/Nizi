@@ -15,7 +15,6 @@ import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.fragment_patient_feedback.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConversationAdapter
 import nl.stekkinger.nizi.classes.LocalDb
@@ -24,6 +23,7 @@ import nl.stekkinger.nizi.classes.feedback.FeedbackShort
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.patient.PatientData
+import nl.stekkinger.nizi.databinding.FragmentPatientFeedbackBinding
 import nl.stekkinger.nizi.fragments.BaseFragment
 import nl.stekkinger.nizi.repositories.FeedbackRepository
 import java.lang.Exception
@@ -34,6 +34,9 @@ import kotlin.collections.ArrayList
  * A simple [Fragment] subclass.
  */
 class PatientFeedbackFragment : BaseFragment() {
+
+    private var _binding: FragmentPatientFeedbackBinding? = null
+    private val binding get() = _binding!!
 
     private val feedbackRepository: FeedbackRepository = FeedbackRepository()
 
@@ -51,13 +54,13 @@ class PatientFeedbackFragment : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         // Setup UI
-        val view: View = inflater.inflate(R.layout.fragment_patient_feedback, container, false)
-        loader = view.fragment_patient_feedback_loader
-        mNewFeedbackET = view.fragment_patient_feedback_et_newFeedback as EditText
+        _binding = FragmentPatientFeedbackBinding.inflate(inflater, container, false)
+        loader = binding.fragmentPatientFeedbackLoader
+        mNewFeedbackET = binding.fragmentPatientFeedbackEtNewFeedback as EditText
 
         // Setup custom toast
-        val parent: RelativeLayout = view.fragment_patient_feedback_rl
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+        val parent: RelativeLayout = binding.fragmentPatientFeedbackRl
+        //toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
         parent.addView(toastView)
 
         // Sets custom toast animation for every fragment
@@ -71,9 +74,9 @@ class PatientFeedbackFragment : BaseFragment() {
         patientData = bundle.getSerializable(GeneralHelper.EXTRA_PATIENT) as PatientData
 
         val patientName = "${patientData.user.first_name.first()}. ${patientData.user.last_name}"
-        view.fragment_patient_feedback_txt_adviceFor.text = getString(R.string.advice_from, patientName)
+        binding.fragmentPatientFeedbackTxtAdviceFor.text = getString(R.string.advice_from, patientName)
 
-        view.fragment_patient_feedback_btn_addAdvice.setOnClickListener {
+        binding.fragmentPatientFeedbackBtnAddAdvice.setOnClickListener {
             hideKeyboard()
 
             // Guard
@@ -92,20 +95,20 @@ class PatientFeedbackFragment : BaseFragment() {
             if (GeneralHelper.isAdmin()) { addFeedbackMockup(); return@setOnClickListener }
 
             // Check internet connection
-            if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return@setOnClickListener
+            if (!GeneralHelper.hasInternetConnection(binding.root.context!!, toastView, toastAnimation)) return@setOnClickListener
 
             if (addFeedbackAsyncTask().status != AsyncTask.Status.RUNNING)
                 addFeedbackAsyncTask().execute()
         }
 
         // Setup RV
-        mFeedbackRV = view.fragment_patient_feedback_rv
+        mFeedbackRV = binding.fragmentPatientFeedbackRv
         mFeedbackRV.layoutManager = LinearLayoutManager(activity)
         adapter = ConversationAdapter()
         mFeedbackRV.adapter = adapter
 
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return view
+        if (!GeneralHelper.hasInternetConnection(binding.root.context!!, toastView, toastAnimation)) return view
 
         // Get feedback
         if (GeneralHelper.isAdmin()) {
@@ -114,7 +117,7 @@ class PatientFeedbackFragment : BaseFragment() {
             getConversationsAsyncTask().execute()
         }
 
-        return view
+        return binding.root
     }
 
     inner class getConversationsAsyncTask : AsyncTask<Void, Void, ArrayList<Feedback>>() {

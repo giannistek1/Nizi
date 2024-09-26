@@ -9,8 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.fragment_patient_home.*
-import kotlinx.android.synthetic.main.fragment_patient_home.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.EditPatientActivity
 import nl.stekkinger.nizi.classes.LocalDb
@@ -21,6 +19,8 @@ import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
+import nl.stekkinger.nizi.databinding.FragmentPatientFeedbackBinding
+import nl.stekkinger.nizi.databinding.FragmentPatientHomeBinding
 import nl.stekkinger.nizi.fragments.BaseFragment
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.FoodRepository
@@ -28,6 +28,10 @@ import java.util.*
 import kotlin.math.roundToInt
 
 class PatientHomeFragment : BaseFragment() {
+
+    private var _binding: FragmentPatientHomeBinding? = null
+    private val binding get() = _binding!!
+
     private val dietaryRepository: DietaryRepository = DietaryRepository()
     private val foodRepository: FoodRepository = FoodRepository()
 
@@ -49,13 +53,14 @@ class PatientHomeFragment : BaseFragment() {
     // Gets called one time, you CANT use view references in here
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentPatientHomeBinding.inflate(inflater, container, false)
 
         // Inflate the layout for this fragment
-        val view: View = inflater.inflate(R.layout.fragment_patient_home, container, false)
-        loader = view.fragment_patient_home_loader
+        //val view: View = inflater.inflate(R.layout.fragment_patient_home, container, false)
+        loader = binding.fragmentPatientHomeLoader
 
         // Setup custom toast
-        val parent: RelativeLayout = view.fragment_patient_home_rl
+        val parent: RelativeLayout = binding.fragmentPatientHomeRl
         toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
         parent.addView(toastView)
 
@@ -72,12 +77,12 @@ class PatientHomeFragment : BaseFragment() {
 
             // Header
             val fullName = "${patientData.user.first_name} ${patientData.user.last_name}"
-            view.fragment_patient_home_average_of_patient.text =
+            binding.fragmentPatientHomeAverageOfPatient.text =
                 getString(R.string.average_of, fullName)
         }
 
         // Edit Button
-        view.fragment_patient_home_btn_edit.setOnClickListener {
+        binding.fragmentPatientHomeBtnEdit.setOnClickListener {
             val intent = Intent(activity, EditPatientActivity::class.java)
 
             // Prevents multiple activities
@@ -107,7 +112,7 @@ class PatientHomeFragment : BaseFragment() {
         val currentLastDayOfWeek = calendar.time
         selectedLastDayOfWeek = currentLastDayOfWeek
 
-        view.fragment_patient_home_btn_previousWeek.setOnClickListener {
+        binding.fragmentPatientHomeBtnPreviousWeek.setOnClickListener {
             // Set calendar date to first day of selected week,  substract 7, get date
             calendar.time = selectedFirstDayOfWeek
             calendar.add(Calendar.DATE, -7)
@@ -118,15 +123,15 @@ class PatientHomeFragment : BaseFragment() {
             selectedLastDayOfWeek = calendar.time
 
             // Update UI
-            view.fragment_patient_home_week.text = "${sdf.format(selectedFirstDayOfWeek)} - ${sdf.format(selectedLastDayOfWeek)}"
-            view.fragment_patient_home_btn_nextWeek.isEnabled = true
-            view.fragment_patient_home_btn_nextWeek.isClickable = true
-            view.fragment_patient_home_btn_nextWeek.alpha = 1f
+            binding.fragmentPatientHomeWeek.text = "${sdf.format(selectedFirstDayOfWeek)} - ${sdf.format(selectedLastDayOfWeek)}"
+            binding.fragmentPatientHomeBtnNextWeek.isEnabled = true
+            binding.fragmentPatientHomeBtnNextWeek.isClickable = true
+            binding.fragmentPatientHomeBtnNextWeek.alpha = 1f
 
             getConsumptions()
         }
 
-        view.fragment_patient_home_btn_nextWeek.setOnClickListener {
+        binding.fragmentPatientHomeBtnNextWeek.setOnClickListener {
             // Guard
             if (selectedFirstDayOfWeek == currentFirstDayOfWeek) { return@setOnClickListener }
 
@@ -140,19 +145,19 @@ class PatientHomeFragment : BaseFragment() {
 
             if (selectedFirstDayOfWeek == currentFirstDayOfWeek) {
                 // Update UI
-                view.fragment_patient_home_week.text = "${sdf.format(selectedFirstDayOfWeek)} - ${sdf.format(selectedLastDayOfWeek)}"
-                view.fragment_patient_home_btn_nextWeek.isEnabled = false
-                view.fragment_patient_home_btn_nextWeek.isClickable = false
-                view.fragment_patient_home_btn_nextWeek.alpha = 0.2f
+                binding.fragmentPatientHomeWeek.text = "${sdf.format(selectedFirstDayOfWeek)} - ${sdf.format(selectedLastDayOfWeek)}"
+                binding.fragmentPatientHomeBtnNextWeek.isEnabled = false
+                binding.fragmentPatientHomeBtnNextWeek.isClickable = false
+                binding.fragmentPatientHomeBtnNextWeek.alpha = 0.2f
             }
 
             getConsumptions()
         }
 
-        view.fragment_patient_home_week.text = "${sdf.format(selectedFirstDayOfWeek)} - ${sdf.format(selectedLastDayOfWeek)}"
-        view.fragment_patient_home_btn_nextWeek.isEnabled = false
-        view.fragment_patient_home_btn_nextWeek.isClickable = false
-        view.fragment_patient_home_btn_nextWeek.alpha = 0.2f
+        binding.fragmentPatientHomeWeek.text = "${sdf.format(selectedFirstDayOfWeek)} - ${sdf.format(selectedLastDayOfWeek)}"
+        binding.fragmentPatientHomeBtnNextWeek.isEnabled = false
+        binding.fragmentPatientHomeBtnNextWeek.isClickable = false
+        binding.fragmentPatientHomeBtnNextWeek.alpha = 0.2f
 
         return view
     }
@@ -166,8 +171,8 @@ class PatientHomeFragment : BaseFragment() {
     fun refreshGuidelines()
     {
         // Fragment patient home ll guidelines might be null because activity + fragment refresh after editing patient
-        if (patientData != null && fragment_patient_home_ll_guidelines != null) {
-            GuidelinesHelper.initializeGuidelines(activity, fragment_patient_home_ll_guidelines, patientData.diets)
+        if (patientData != null && binding.fragmentPatientHomeLlGuidelines != null) {
+            GuidelinesHelper.initializeGuidelines(activity, binding.fragmentPatientHomeLlGuidelines, patientData.diets)
         }
     }
 

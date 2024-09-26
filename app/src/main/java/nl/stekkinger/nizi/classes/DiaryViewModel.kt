@@ -1,22 +1,25 @@
 package nl.stekkinger.nizi.classes
 
-import android.util.Log.d
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.MealProductAdapter
-import nl.stekkinger.nizi.classes.diary.*
-import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
+import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
+import nl.stekkinger.nizi.classes.diary.Food
+import nl.stekkinger.nizi.classes.diary.FoodMealComponent
+import nl.stekkinger.nizi.classes.diary.Meal
+import nl.stekkinger.nizi.classes.diary.MealFood
+import nl.stekkinger.nizi.classes.diary.MyFood
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.fragments.FoodViewFragment
 import nl.stekkinger.nizi.fragments.MealViewFragment
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Calendar
 
 
 class DiaryViewModel(
@@ -48,14 +51,14 @@ class DiaryViewModel(
 
 
     // foodSearch functions
-    private var mFoodSearch: LiveData<ArrayList<Food>> = Transformations.switchMap<String, ArrayList<Food>>(
-        mSearchText
-    ) { search: String ->  foodSearch(search) }
+    private var mFoodSearch: LiveData<ArrayList<Food>?> = mSearchText.switchMap { search: String ->
+        foodSearch(search)
+    }
 
     private fun foodSearch(searchText: String): MutableLiveData<ArrayList<Food>?> {
         return mRepository.searchFood(searchText)
     }
-    fun getFoodSearch(): LiveData<ArrayList<Food>> { return mFoodSearch }
+    fun getFoodSearch(): LiveData<ArrayList<Food>?> { return mFoodSearch }
     fun setFoodSearch(text: String) { mSearchText.value = text }
 
     fun getFoodByBarcode(barcode: String) { mRepository.getFoodByBarcode(barcode) }
@@ -260,7 +263,7 @@ class DiaryViewModel(
     fun emptyMealProducts() { mealProducts.clear() }
 
     // load the food view fragment with the selected meal
-    val selectedMeal = MutableLiveData<Meal>()
+    val selectedMeal = MutableLiveData<Meal?>()
     fun emptySelectedMeal() { selectedMeal.value = null}
     fun selectMeal(activity: AppCompatActivity, meal: Meal) {
         selectedMeal.value = meal

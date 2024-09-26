@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_patient_home_rl"
     android:layout_width="match_parent"
@@ -24,7 +25,7 @@
             android:layout_weight="0.6"
             android:layout_marginStart="@dimen/marginHorizontal"
             android:layout_marginTop="@dimen/marginNormal"
-            android:layout_marginBottom="@dimen/marginNormal"/>
+            android:layout_marginBottom="@dimen/marginNormal" />
 
         <ImageView
             android:id="@+id/fragment_patient_home_btn_edit"
@@ -32,9 +33,9 @@
             android:layout_height="30dp"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/marginNormal"
-            android:tint="@color/colorAccent"
             android:src="@drawable/ic_edit"
-            android:contentDescription="@string/edit_patient"/>
+            android:contentDescription="@string/edit_patient"
+            app:tint="@color/colorAccent" />
     </LinearLayout>
 
     <!-- Week -->
@@ -60,9 +61,9 @@
                 android:layout_height="@dimen/dateNavigationSize"
                 android:layout_gravity="center_vertical"
                 android:scaleType="centerCrop"
-                android:tint="@color/black"
                 android:src="@drawable/ic_back"
-                android:contentDescription="@string/previous_week"/>
+                android:contentDescription="@string/previous_week"
+                app:tint="@color/black" />
 
         </LinearLayout>
 
@@ -91,9 +92,9 @@
                 android:layout_height="@dimen/dateNavigationSize"
                 android:layout_gravity="center_vertical"
                 android:scaleType="centerCrop"
-                android:tint="@color/black"
                 android:src="@drawable/ic_next"
-                android:contentDescription="@string/next_week"/>
+                android:contentDescription="@string/next_week"
+                app:tint="@color/black" />
         </LinearLayout>
     </LinearLayout>
 

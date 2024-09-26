@@ -1,18 +1,14 @@
 package nl.stekkinger.nizi.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_diary_food.view.*
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.diary.Food
-import nl.stekkinger.nizi.fragments.ConsumptionViewFragment
 
 class MealProductAdapter(
     private var model: DiaryViewModel = DiaryViewModel(),
