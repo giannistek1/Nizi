@@ -4,7 +4,6 @@ import android.app.SearchManager
 import android.content.Context.SEARCH_SERVICE
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -16,13 +15,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.zxing.integration.android.IntentIntegrator
-import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.databinding.FragmentAddFoodBinding
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 class AddFoodFragment: NavigationChildFragment() {
+    private var _binding: FragmentAddFoodBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var model: DiaryViewModel
     private lateinit var queryTextListener: SearchView.OnQueryTextListener
     private lateinit var adapter: FoodSearchAdapter
@@ -30,10 +32,11 @@ class AddFoodFragment: NavigationChildFragment() {
     override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_add_food, container, false)
+        _binding = FragmentAddFoodBinding.inflate(layoutInflater)
         setHasOptionsMenu(true)
 
         val searchView = view.findViewById(R.id.search_food) as SearchView
-        val searchManager: SearchManager = activity!!.getSystemService(SEARCH_SERVICE) as SearchManager
+        val searchManager: SearchManager = requireActivity().getSystemService(SEARCH_SERVICE) as SearchManager
 
         val recyclerView: RecyclerView = view.findViewById(R.id.food_search_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -42,15 +45,16 @@ class AddFoodFragment: NavigationChildFragment() {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
+        // TODO: Expose binding here?
         when (model.getMealTime()) {
-            "Ontbijt" -> activity!!.toolbar_title.text = getString(R.string.add_breakfast)
-            "Lunch" -> activity!!.toolbar_title.text = getString(R.string.add_lunch)
-            "Avondeten" -> activity!!.toolbar_title.text = getString(R.string.add_dinner)
-            "Snack" -> activity!!.toolbar_title.text = getString(R.string.add_snack)
-            else -> activity!!.toolbar_title.text = getString(R.string.diary)
+//            "Ontbijt" -> requireActivity().toolbar_title.text = getString(R.string.add_breakfast)
+//            "Lunch" -> requireActivity().toolbar_title.text = getString(R.string.add_lunch)
+//            "Avondeten" -> requireActivity().toolbar_title.text = getString(R.string.add_dinner)
+//            "Snack" -> requireActivity().toolbar_title.text = getString(R.string.add_snack)
+//            else -> requireActivity().toolbar_title.text = getString(R.string.diary)
         }
 
-        adapter = FoodSearchAdapter(model, fragment = "food", context = context!!)
+        adapter = FoodSearchAdapter(model, fragment = "food", context = requireContext())
         recyclerView.adapter = adapter
 
         if (searchView != null) {
@@ -58,12 +62,12 @@ class AddFoodFragment: NavigationChildFragment() {
             searchView.setOnClickListener {
                 searchView.isIconified = false
             }
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
 
             queryTextListener = object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String): Boolean {
                     model.setFoodSearch(newText)
-                    fragment_add_food_txt_amount.text = getString(R.string.amount_of_products, recyclerView.adapter!!.itemCount)
+                    binding.fragmentAddFoodTxtAmount.text = getString(R.string.amount_of_products, recyclerView.adapter!!.itemCount)
                     return true
                 }
 
@@ -80,9 +84,11 @@ class AddFoodFragment: NavigationChildFragment() {
         // observers
         // get the results of food search
         model.getFoodSearch().observe(viewLifecycleOwner, Observer { foodList ->
-            val amount = foodList.size
-            view.fragment_add_food_txt_amount.text = getString(R.string.amount_of_products, amount)
-            adapter.setFoodList(foodList)
+            val amount = foodList?.size
+            binding.fragmentAddFoodTxtAmount.text = getString(R.string.amount_of_products, amount)
+            if (foodList != null) {
+                adapter.setFoodList(foodList)
+            }
         })
         // when a food is found by barcode scan
         lifecycleScope.launchWhenStarted {
@@ -91,7 +97,7 @@ class AddFoodFragment: NavigationChildFragment() {
                     is FoodRepository.FoodState.Success -> {
                         model.selected.value = it.data
                         model.emptyFoodBarcodeState()
-                        fragmentManager!!.beginTransaction().replace(
+                        requireFragmentManager().beginTransaction().replace(
                             R.id.activity_main_fragment_container,
                             FoodViewFragment()
                         ).commit()
@@ -102,21 +108,21 @@ class AddFoodFragment: NavigationChildFragment() {
         }
 
         // click listeners
-        view.activity_add_meal.setOnClickListener {
-            fragmentManager!!.beginTransaction().replace(
+        binding.activityAddMeal.setOnClickListener {
+            requireFragmentManager().beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     AddMealFragment()
                 ).commit()
         }
 
-        view.activity_favorites.setOnClickListener {
-            fragmentManager!!.beginTransaction().replace(
+        binding.activityFavorites.setOnClickListener {
+            requireFragmentManager().beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     FavoritesFragment()
                 ).commit()
         }
 
-        view.zxing_barcode_scanner.setOnClickListener {
+        binding.zxingBarcodeScanner.setOnClickListener {
             zxing_barcode_scanner()
         }
 
@@ -126,7 +132,7 @@ class AddFoodFragment: NavigationChildFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                requireActivity().supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     DiaryFragment()
                 ).commit()

@@ -54,6 +54,7 @@ class MainActivity : BaseActivity() {
 
         // Setup UI.
         binding = ActivityMainBinding.inflate(layoutInflater)
+        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
@@ -83,7 +84,8 @@ class MainActivity : BaseActivity() {
         user = GeneralHelper.getUser()
 
         // Get data
-        if (GeneralHelper.isAdmin()) { getDoctorMockup(); return }
+//        if (GeneralHelper.isAdmin()) { getDoctorMockup(); return }
+        getDoctorMockup()
 
         // Check internet connection
         if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return

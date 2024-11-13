@@ -2,26 +2,30 @@ package nl.stekkinger.nizi.fragments
 
 import android.app.SearchManager
 import android.content.Context
-import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.Fragment
 import android.os.AsyncTask
-import android.util.Log
+import android.os.Bundle
 import android.util.Log.d
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.MealAdapter
-import nl.stekkinger.nizi.classes.diary.Food
+import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Meal
+import nl.stekkinger.nizi.databinding.FragmentMealsBinding
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
 class AddMealFragment: NavigationChildFragment() {
+    private var _binding: FragmentMealsBinding? = null
+    private val binding get() = _binding!!
+
     private val mRepository: FoodRepository = FoodRepository()
     private lateinit var queryTextListener: SearchView.OnQueryTextListener
     private lateinit var model: DiaryViewModel
@@ -30,10 +34,12 @@ class AddMealFragment: NavigationChildFragment() {
 
     override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_meals, container, false)
-        setHasOptionsMenu(true)
-        aantal = view.fragment_meals_txt_amount
+        _binding = FragmentMealsBinding.inflate(layoutInflater)
 
-        val recyclerView: RecyclerView = view.meal_recycler_view
+        setHasOptionsMenu(true)
+        aantal = binding.fragmentMealsTxtAmount
+
+        val recyclerView: RecyclerView = binding.mealRecyclerView
         // TODO: change recycler view
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
@@ -41,28 +47,29 @@ class AddMealFragment: NavigationChildFragment() {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
         } ?: throw Exception("Invalid Activity")
 
+        // TODO: Expose binding here?
         when (model.getMealTime()) {
-            "Ontbijt" -> activity!!.toolbar_title.text = getString(R.string.add_breakfast)
-            "Lunch" -> activity!!.toolbar_title.text = getString(R.string.add_lunch)
-            "Avondeten" -> activity!!.toolbar_title.text = getString(R.string.add_dinner)
-            "Snack" -> activity!!.toolbar_title.text = getString(R.string.add_snack)
-            else -> activity!!.toolbar_title.text = getString(R.string.diary)
+//            "Ontbijt" -> requireActivity().toolbar_title.text = getString(R.string.add_breakfast)
+//            "Lunch" -> requireActivity().toolbar_title.text = getString(R.string.add_lunch)
+//            "Avondeten" -> requireActivity().toolbar_title.text = getString(R.string.add_dinner)
+//            "Snack" -> requireActivity().toolbar_title.text = getString(R.string.add_snack)
+//            else -> requireActivity().toolbar_title.text = getString(R.string.diary)
         }
 
-        adapter = MealAdapter(model, context = context!!)
+        adapter = MealAdapter(model, context = requireContext())
         recyclerView.adapter = adapter
 
         getMealsAsyncTask().execute()
 
         val searchView = view.findViewById(R.id.search_meal) as SearchView
-        val searchManager: SearchManager = activity!!.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        val searchManager: SearchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager
 
         if (searchView != null) {
             // Fixes that only the icon is clickable
             searchView.setOnClickListener {
                 searchView.isIconified = false
             }
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
 
             queryTextListener = object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String): Boolean {
@@ -79,25 +86,25 @@ class AddMealFragment: NavigationChildFragment() {
         }
 
         // click isteners
-        view.create_meal.setOnClickListener {
+        binding.createMeal.setOnClickListener {
             model.emptySelectedMeal()
             model.setIsMealEdit(false)
 
-            fragmentManager!!.beginTransaction().replace(
+            requireFragmentManager().beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 CreateMealFragment()
             ).addToBackStack(null).commit()
         }
 
-        view.activity_add_food.setOnClickListener {
-            fragmentManager!!.beginTransaction().replace(
+        binding.activityAddFood.setOnClickListener {
+            requireFragmentManager().beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 AddFoodFragment()
             ).commit()
         }
 
-        view.activity_favorites.setOnClickListener {
-            fragmentManager!!.beginTransaction().replace(
+        binding.activityFavorites.setOnClickListener {
+            requireFragmentManager().beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 FavoritesFragment()
             ).commit()
@@ -145,7 +152,7 @@ class AddMealFragment: NavigationChildFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                requireActivity().supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     DiaryFragment()
                 ).commit()

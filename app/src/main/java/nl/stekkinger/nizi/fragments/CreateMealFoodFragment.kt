@@ -1,11 +1,14 @@
 package nl.stekkinger.nizi.fragments
 
 import android.app.SearchManager
-import android.os.Bundle
-import android.view.*
-import android.widget.SearchView
 import android.content.Context.SEARCH_SERVICE
 import android.content.Intent
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -14,15 +17,18 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.zxing.integration.android.IntentIntegrator
-import kotlinx.coroutines.flow.collect
-import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
 import nl.stekkinger.nizi.adapters.MealProductAdapter
+import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.databinding.FragmentCreateMealFoodBinding
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
 class CreateMealFoodFragment: NavigationChildFragment() {
+    private var _binding: FragmentCreateMealFoodBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var model: DiaryViewModel
     private lateinit var queryTextListener: SearchView.OnQueryTextListener
     private lateinit var searchAdapter: FoodSearchAdapter
@@ -30,6 +36,8 @@ class CreateMealFoodFragment: NavigationChildFragment() {
 
     override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_create_meal_food, container, false)
+        _binding = FragmentCreateMealFoodBinding.inflate(layoutInflater)
+
         setHasOptionsMenu(true)
 
         model = activity?.run {
@@ -37,7 +45,7 @@ class CreateMealFoodFragment: NavigationChildFragment() {
         } ?: throw Exception("Invalid Activity")
 
         val searchView: SearchView = view.findViewById(R.id.search_food) as SearchView
-        val searchManager: SearchManager = activity!!.getSystemService(SEARCH_SERVICE) as SearchManager
+        val searchManager: SearchManager = requireActivity().getSystemService(SEARCH_SERVICE) as SearchManager
 
         // rv's
         val searchRV: RecyclerView = view.findViewById(R.id.food_search_recycler_view)
@@ -46,7 +54,7 @@ class CreateMealFoodFragment: NavigationChildFragment() {
         mealProductRV.layoutManager = LinearLayoutManager(activity)
 
         // adapters
-        searchAdapter = FoodSearchAdapter(model, fragment = "meal", context = context!!)
+        searchAdapter = FoodSearchAdapter(model, fragment = "meal", context = requireContext())
         searchRV.adapter = searchAdapter
 
         mealProductAdapter = model.getMealProductAdapter()
@@ -62,7 +70,7 @@ class CreateMealFoodFragment: NavigationChildFragment() {
             searchView.setOnClickListener {
                 searchView.isIconified = false
             }
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(activity!!.componentName))
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(requireActivity().componentName))
 
             queryTextListener = object : SearchView.OnQueryTextListener {
                 override fun onQueryTextChange(newText: String): Boolean {
@@ -81,7 +89,9 @@ class CreateMealFoodFragment: NavigationChildFragment() {
         // stateflows/observers
         // get the results of food search
         model.getFoodSearch().observe(viewLifecycleOwner, Observer { foodList ->
-            searchAdapter.setFoodList(foodList)
+            if (foodList != null) {
+                searchAdapter.setFoodList(foodList)
+            }
         })
 
         // when a barcode scan returns a product
@@ -98,18 +108,18 @@ class CreateMealFoodFragment: NavigationChildFragment() {
         }
 
         // click listeners
-        view.save_btn.setOnClickListener {
+        binding.saveBtn.setOnClickListener {
 
         // Remove last fragment from backstack
-            fragmentManager!!.popBackStack()
+            requireFragmentManager().popBackStack()
 
-            fragmentManager!!.beginTransaction().replace(
+            requireFragmentManager().beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 CreateMealFragment()
             ).commit()
         }
 
-        view.zxing_barcode_scanner.setOnClickListener {
+        binding.zxingBarcodeScanner.setOnClickListener {
             zxing_barcode_scanner(view)
         }
 
@@ -137,8 +147,8 @@ class CreateMealFoodFragment: NavigationChildFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                fragmentManager!!.popBackStack()
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                requireFragmentManager().popBackStack()
+                requireActivity().supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     CreateMealFragment()
                 ).commit()

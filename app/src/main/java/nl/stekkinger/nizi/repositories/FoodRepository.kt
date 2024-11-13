@@ -4,13 +4,18 @@ import android.util.Log.d
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import nl.stekkinger.nizi.classes.*
-import nl.stekkinger.nizi.classes.diary.*
+import nl.stekkinger.nizi.classes.Consumption
+import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
+import nl.stekkinger.nizi.classes.diary.Food
+import nl.stekkinger.nizi.classes.diary.FoodResponse
+import nl.stekkinger.nizi.classes.diary.Meal
+import nl.stekkinger.nizi.classes.diary.MealFood
+import nl.stekkinger.nizi.classes.diary.MyFoodRequest
+import nl.stekkinger.nizi.classes.diary.MyFoodResponse
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import kotlin.collections.ArrayList
 
 class FoodRepository : Repository() {
 
@@ -171,18 +176,20 @@ class FoodRepository : Repository() {
         _diaryState.value = DiaryState.Loading
         val newDate: String = date + "T00:00:00.000Z"
 
-        service.fetchConsumptions(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id, date = newDate).enqueue(object: Callback<ArrayList<ConsumptionResponse>> {
-            override fun onResponse(call: Call<ArrayList<ConsumptionResponse>>, response: Response<ArrayList<ConsumptionResponse>>) {
-                if (response.isSuccessful && response.body() != null) {
-                    _diaryState.value = DiaryState.Success(response.body()!!)
-                } else {
-                    _diaryState.value = DiaryState.Empty
-                }
-            }
-            override fun onFailure(call: Call<ArrayList<ConsumptionResponse>>, t: Throwable) {
-                _diaryState.value = DiaryState.Error(t.message!!)
-            }
-        })
+        // TODO: Nullpointer exception
+
+//        service.fetchConsumptions(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id, date = newDate).enqueue(object: Callback<ArrayList<ConsumptionResponse>> {
+//            override fun onResponse(call: Call<ArrayList<ConsumptionResponse>>, response: Response<ArrayList<ConsumptionResponse>>) {
+//                if (response.isSuccessful && response.body() != null) {
+//                    _diaryState.value = DiaryState.Success(response.body()!!)
+//                } else {
+//                    _diaryState.value = DiaryState.Empty
+//                }
+//            }
+//            override fun onFailure(call: Call<ArrayList<ConsumptionResponse>>, t: Throwable) {
+//                _diaryState.value = DiaryState.Error(t.message!!)
+//            }
+//        })
     }
 
     // Get consumptions for a patient within a date period
@@ -246,18 +253,19 @@ class FoodRepository : Repository() {
     // Get all favorite foods of a user
     fun getFavorites(): MutableStateFlow<FavoritesState> {
         _favoritesState.value = FavoritesState.Loading
-        service.getFavoriteFood(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id).enqueue(object : Callback<ArrayList<MyFoodResponse>> {
-            override fun onResponse(call: Call<ArrayList<MyFoodResponse>>, response: Response<ArrayList<MyFoodResponse>>) {
-                if (response.isSuccessful && response.body() != null) {
-                    _favoritesState.value = FavoritesState.Success(response.body()!!)
-                } else {
-                    _favoritesState.value = FavoritesState.Empty
-                }
-            }
-            override fun onFailure(call: Call<ArrayList<MyFoodResponse>>, t: Throwable) {
-                _favoritesState.value = FavoritesState.Error(t.message!!)
-            }
-        })
+        // TODO: Null pointer exception
+//        service.getFavoriteFood(authHeader = authHeader, patientId = GeneralHelper.getUser().patient!!.id).enqueue(object : Callback<ArrayList<MyFoodResponse>> {
+//            override fun onResponse(call: Call<ArrayList<MyFoodResponse>>, response: Response<ArrayList<MyFoodResponse>>) {
+//                if (response.isSuccessful && response.body() != null) {
+//                    _favoritesState.value = FavoritesState.Success(response.body()!!)
+//                } else {
+//                    _favoritesState.value = FavoritesState.Empty
+//                }
+//            }
+//            override fun onFailure(call: Call<ArrayList<MyFoodResponse>>, t: Throwable) {
+//                _favoritesState.value = FavoritesState.Error(t.message!!)
+//            }
+//        })
         return _favoritesState
     }
 

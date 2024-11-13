@@ -1,35 +1,41 @@
 package nl.stekkinger.nizi.fragments
 
 import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.Fragment
-import android.os.AsyncTask
 import android.util.Log
-import android.util.Log.d
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import kotlinx.coroutines.flow.collect
-import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.FoodSearchAdapter
-import nl.stekkinger.nizi.classes.diary.*
-import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
+import nl.stekkinger.nizi.classes.DiaryViewModel
+import nl.stekkinger.nizi.classes.diary.Food
+import nl.stekkinger.nizi.classes.diary.MyFoodResponse
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
+import nl.stekkinger.nizi.databinding.FragmentFavoritesBinding
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
 class FavoritesFragment: NavigationChildFragment() {
+    private var _binding: FragmentFavoritesBinding? = null
+    private val binding get() = _binding!!
+
     private val mRepository: FoodRepository = FoodRepository()
     private lateinit var model: DiaryViewModel
     private lateinit var adapter: FoodSearchAdapter
 
     override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_favorites, container, false)
+        _binding = FragmentFavoritesBinding.inflate(layoutInflater)
+
         setHasOptionsMenu(true)
 
         model = activity?.run {
@@ -37,10 +43,10 @@ class FavoritesFragment: NavigationChildFragment() {
         } ?: throw Exception("Invalid Activity")
 
         // rc
-        val recyclerView: RecyclerView = view.favorites_rv
+        val recyclerView: RecyclerView = binding.favoritesRv
         recyclerView.layoutManager = LinearLayoutManager(activity)
         // adapter
-        adapter = FoodSearchAdapter(model, fragment = "favorites", context = context!!)
+        adapter = FoodSearchAdapter(model, fragment = "favorites", context = requireContext())
         recyclerView.adapter = adapter
 
         // swipe funct
@@ -89,7 +95,7 @@ class FavoritesFragment: NavigationChildFragment() {
                             foodList.add(food)
                         }
                         val foodAmount = foodList.count().toString()
-                        view.fragment_add_food_txt_amount.text = "Aantal ($foodAmount)"
+                        binding.fragmentAddFoodTxtAmount.text = "Aantal ($foodAmount)"
                         adapter.setFoodList(foodList)
                     }
                     else -> {}
@@ -98,8 +104,8 @@ class FavoritesFragment: NavigationChildFragment() {
         }
 
         // click listeners
-        view.activity_add_food.setOnClickListener {
-            fragmentManager!!
+        binding.activityAddFood.setOnClickListener {
+            requireFragmentManager()
                 .beginTransaction()
                 .replace(
                     R.id.activity_main_fragment_container,
@@ -108,8 +114,8 @@ class FavoritesFragment: NavigationChildFragment() {
                 .commit()
         }
 
-        view.activity_add_meal.setOnClickListener {
-            fragmentManager!!
+        binding.activityAddMeal.setOnClickListener {
+            requireFragmentManager()
                 .beginTransaction()
                 .replace(
                     R.id.activity_main_fragment_container,
@@ -124,7 +130,7 @@ class FavoritesFragment: NavigationChildFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                requireActivity().supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     DiaryFragment()
                 ).commit()

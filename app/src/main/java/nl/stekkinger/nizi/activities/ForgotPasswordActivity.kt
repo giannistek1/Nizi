@@ -37,6 +37,7 @@ class ForgotPasswordActivity : BaseActivity() {
 
         // Setup UI.
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
+        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 

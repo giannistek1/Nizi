@@ -55,6 +55,7 @@ class AddPatientDietaryActivity : BaseActivity() {
 
         // Setup UI.
         binding = ActivityAddPatientDietaryBinding.inflate(layoutInflater)
+        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 

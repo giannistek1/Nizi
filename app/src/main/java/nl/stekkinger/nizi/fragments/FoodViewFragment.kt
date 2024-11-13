@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log.d
-import android.view.*
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.lifecycle.Observer
@@ -14,16 +18,19 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.MyFood
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.databinding.FragmentFoodViewBinding
 import nl.stekkinger.nizi.repositories.FoodRepository
 
 
 class FoodViewFragment : NavigationChildFragment() {
+    private var _binding: FragmentFoodViewBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var model: DiaryViewModel
     private lateinit var mServingInput: TextInputEditText
     private lateinit var mDecreaseBtn: ImageButton
@@ -37,6 +44,8 @@ class FoodViewFragment : NavigationChildFragment() {
      override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_food_view, container, false)
+         _binding = FragmentFoodViewBinding.inflate(layoutInflater)
+
         this.setHasOptionsMenu(true)
 
         // get the DiaryViewModel
@@ -46,15 +55,15 @@ class FoodViewFragment : NavigationChildFragment() {
 
         mCurrentFragment = model.getCurrentFragment()
         mFavBtn = view.findViewById(R.id.heart_food_view)
-        mSaveBtn = view.save_btn
-        mDecreaseBtn = view.decrease_portion
+        mSaveBtn = binding.saveBtn
+        mDecreaseBtn = binding.decreasePortion
         mServingInput = view.findViewById(R.id.serving_input) as TextInputEditText
         // this view does not have a delete button
-        view.delete_food_view.visibility = GONE
+        binding.deleteFoodView.visibility = GONE
 
         mServingInput.addTextChangedListener(textWatcher)
 
-        view.edit_food_view.visibility = GONE
+        binding.editFoodView.visibility = GONE
 
         // stateflows/observers
         model.selected.observe(this, Observer<Food> { food ->
@@ -76,8 +85,8 @@ class FoodViewFragment : NavigationChildFragment() {
             }
 
             // Update the UI
-            title_food_view.text = food.name
-            Picasso.get().load(food.image_url).into(image_food_view)
+            binding.titleFoodView.text = food.name
+            Picasso.get().load(food.image_url).into(binding.imageFoodView)
             updateUI()
         })
 
@@ -119,22 +128,22 @@ class FoodViewFragment : NavigationChildFragment() {
                             model.fetchFavorites()
                             model.emptyToggleFavoriteState()
                         }
-                        view.fragment_food_view_loader.visibility = GONE
+                        binding.fragmentFoodViewLoader.visibility = GONE
                         mFavBtn.isEnabled = true
                         mFavBtn.isClickable = true
                     }
                     is FoodRepository.State.Error -> {
                         if(mIsLiked) Toast.makeText(activity, R.string.error_delete_favorite, Toast.LENGTH_SHORT).show()
                         else Toast.makeText(activity, R.string.error_add_favorite, Toast.LENGTH_SHORT).show()
-                        view.fragment_food_view_loader.visibility = GONE
+                        binding.fragmentFoodViewLoader.visibility = GONE
                         mFavBtn.isEnabled = true
                         mFavBtn.isClickable = true
                     }
                     is FoodRepository.State.Loading -> {
-                        view.fragment_food_view_loader.visibility = VISIBLE
+                        binding.fragmentFoodViewLoader.visibility = VISIBLE
                     }
                     else -> {
-                        view.fragment_food_view_loader.visibility = GONE
+                        binding.fragmentFoodViewLoader.visibility = GONE
                         mFavBtn.isEnabled = true
                         mFavBtn.isClickable = true
                     }
@@ -143,7 +152,7 @@ class FoodViewFragment : NavigationChildFragment() {
         }
 
         // click listeners
-        view.heart_food_view.setOnClickListener {
+        binding.heartFoodView.setOnClickListener {
             // prevent button spamming until result
             mFavBtn.isEnabled = false
             mFavBtn.isClickable = false
@@ -155,7 +164,7 @@ class FoodViewFragment : NavigationChildFragment() {
             }
         }
 
-        view.increase_portion.setOnClickListener {
+        binding.increasePortion.setOnClickListener {
             if (mServingInput.text.toString() != "") {
                 var portion: Float = mServingInput.text.toString().toFloat() + 0.5f
                 mServingInput.setText(portion.toString())
@@ -164,7 +173,7 @@ class FoodViewFragment : NavigationChildFragment() {
             }
         }
 
-        view.decrease_portion.setOnClickListener {
+        binding.decreasePortion.setOnClickListener {
             if (mServingInput.text.toString() != "") {
                 var portion: Float = mServingInput.text.toString().toFloat()
                 if(portion > 0.5) {
@@ -173,7 +182,7 @@ class FoodViewFragment : NavigationChildFragment() {
             }
         }
 
-        view.save_btn.setOnClickListener {
+        binding.saveBtn.setOnClickListener {
             when (mCurrentFragment) {
                 "food" -> {
                     val amount: Float = mServingInput.text.toString().trim().toFloat()
@@ -185,7 +194,7 @@ class FoodViewFragment : NavigationChildFragment() {
                     bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.food_added))
                     fragment.arguments = bundle
 
-                    (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    requireActivity().supportFragmentManager.beginTransaction().replace(
                         R.id.activity_main_fragment_container,
                         fragment
                     ).commit()
@@ -194,7 +203,7 @@ class FoodViewFragment : NavigationChildFragment() {
                     val amount: Float = mServingInput.text.toString().trim().toFloat()
                     model.addMealProduct(mFood, amount)
 
-                    (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    requireActivity().supportFragmentManager.beginTransaction().replace(
                         R.id.activity_main_fragment_container,
                         CreateMealFoodFragment()
                     ).commit()
@@ -203,7 +212,7 @@ class FoodViewFragment : NavigationChildFragment() {
                     val amount: Float = mServingInput.text.toString().trim().toFloat()
                     model.editMealProduct(amount)
 
-                    (activity)!!.supportFragmentManager.beginTransaction().replace(
+                    requireActivity().supportFragmentManager.beginTransaction().replace(
                         R.id.activity_main_fragment_container,
                         CreateMealFoodFragment()
                     ).commit()
@@ -245,13 +254,13 @@ class FoodViewFragment : NavigationChildFragment() {
 
         // updating nutrition values
         val food: Food = mFood
-        serving_size_value.text = "%.2f".format(food.portion_size * amount) + " " + food.weight_unit.unit
-        calories_value_food_view.text = "%.2f".format(food.kcal * amount) + " Kcal"
-        fiber_value_food_view.text = "%.2f".format(food.fiber * amount) + " g"
-        protein_value_food_view.text = "%.2f".format(food.protein * amount) + " g"
-        water_value_food_view.text = "%.2f".format(food.water * amount) + "ml"
-        sodium_value_food_view.text = "%.2f".format(food.sodium * 1000 * amount) + " mg"
-        potassium_value_food_view.text = "%.2f".format(food.potassium * 1000 * amount) + " mg"
+        binding.servingSizeValue.text = "%.2f".format(food.portion_size * amount) + " " + food.weight_unit.unit
+        binding.caloriesValueFoodView.text = "%.2f".format(food.kcal * amount) + " Kcal"
+        binding.fiberValueFoodView.text = "%.2f".format(food.fiber * amount) + " g"
+        binding.proteinValueFoodView.text = "%.2f".format(food.protein * amount) + " g"
+        binding.waterValueFoodView.text = "%.2f".format(food.water * amount) + "ml"
+        binding.sodiumValueFoodView.text = "%.2f".format(food.sodium * 1000 * amount) + " mg"
+        binding.potassiumValueFoodView.text = "%.2f".format(food.potassium * 1000 * amount) + " mg"
     }
 
     private fun isLiked(isLiked: Boolean) {

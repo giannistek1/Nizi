@@ -61,6 +61,7 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
 
         // Setup UI.
         binding = ActivityDoctorMainBinding.inflate(layoutInflater)
+        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 

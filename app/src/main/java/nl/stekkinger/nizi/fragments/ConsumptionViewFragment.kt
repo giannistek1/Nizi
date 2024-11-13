@@ -4,34 +4,35 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
-import android.view.*
 import android.text.TextWatcher
 import android.util.Base64
-import android.util.Log.d
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
 import android.view.View.GONE
+import android.view.ViewGroup
 import android.webkit.URLUtil
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
-import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.FoodMealComponent
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.databinding.FragmentFoodViewBinding
 import nl.stekkinger.nizi.repositories.FoodRepository
-import java.util.ArrayList
 
 
 class ConsumptionViewFragment : NavigationChildFragment() {
+    private var _binding: FragmentFoodViewBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var model: DiaryViewModel
     private lateinit var mConsumption: ConsumptionResponse
     private lateinit var mServingInput: TextInputEditText
@@ -42,6 +43,8 @@ class ConsumptionViewFragment : NavigationChildFragment() {
     override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_food_view, container, false)
+        _binding = FragmentFoodViewBinding.inflate(layoutInflater)
+
         setHasOptionsMenu(true)
 
         // get the DiaryViewModel
@@ -49,10 +52,10 @@ class ConsumptionViewFragment : NavigationChildFragment() {
             ViewModelProviders.of(this).get(DiaryViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
-        view.edit_food_view.visibility = GONE
-        view.heart_food_view.visibility = GONE
-        mSaveBtn = view.save_btn
-        mDecreaseBtn = view.decrease_portion
+        binding.editFoodView.visibility = GONE
+        binding.heartFoodView.visibility = GONE
+        mSaveBtn = binding.saveBtn
+        mDecreaseBtn = binding.decreasePortion
         mServingInput = view.findViewById(R.id.serving_input) as TextInputEditText
 
         mServingInput.addTextChangedListener(textWatcher)
@@ -64,11 +67,11 @@ class ConsumptionViewFragment : NavigationChildFragment() {
             model.setMealTime(food.meal_time)
 
             // Update the UI
-            view.title_food_view.text = mConsumption.food_meal_component.name
+            binding.titleFoodView.text = mConsumption.food_meal_component.name
 
             val image = mConsumption.food_meal_component.image_url
             if (URLUtil.isValidUrl(image)) {
-                Picasso.get().load(image).into(image_food_view)
+                Picasso.get().load(image).into(binding.imageFoodView)
             }
             else if(image != null && image !="") { // bitmap img
                 val decodedString: ByteArray =
@@ -76,10 +79,10 @@ class ConsumptionViewFragment : NavigationChildFragment() {
                 val decodedByte: Bitmap? =
                     BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
                 if (decodedByte != null) {
-                    view.image_food_view.setImageBitmap(decodedByte)
+                    binding.imageFoodView.setImageBitmap(decodedByte)
                 }
             }
-            serving_input.setText(mConsumption.amount.toString(), TextView.BufferType.EDITABLE)
+            binding.servingInput.setText(mConsumption.amount.toString(), TextView.BufferType.EDITABLE)
         })
 
         lifecycleScope.launchWhenStarted {
@@ -97,7 +100,7 @@ class ConsumptionViewFragment : NavigationChildFragment() {
 
                         fragment.arguments = bundle
 
-                        (activity)!!.supportFragmentManager.beginTransaction().replace(
+                        requireActivity().supportFragmentManager.beginTransaction().replace(
                             R.id.activity_main_fragment_container,
                             fragment
                         ).commit()
@@ -108,7 +111,7 @@ class ConsumptionViewFragment : NavigationChildFragment() {
         }
 
         // click listeners
-        view.increase_portion.setOnClickListener {
+        binding.increasePortion.setOnClickListener {
             if (mServingInput.text.toString() != "") {
                 var portion: Float = mServingInput.text.toString().toFloat() + 0.5f
                 mServingInput.setText(portion.toString())
@@ -117,7 +120,7 @@ class ConsumptionViewFragment : NavigationChildFragment() {
             }
         }
 
-        view.decrease_portion.setOnClickListener {
+        binding.decreasePortion.setOnClickListener {
             if (mServingInput.text.toString() != "") {
                 var portion: Float = mServingInput.text.toString().toFloat()
                 if(portion > 0.5) {
@@ -126,13 +129,13 @@ class ConsumptionViewFragment : NavigationChildFragment() {
             }
         }
 
-        view.save_btn.setOnClickListener {
+        binding.saveBtn.setOnClickListener {
             mEdit = true
             val portion: Float = mServingInput.text.toString().trim().toFloat()
             model.editConsumption(mConsumption, portion)
         }
 
-        view.delete_food_view.setOnClickListener {
+        binding.deleteFoodView.setOnClickListener {
             mEdit = false
             model.deleteConsumption(mConsumption.id)
         }
@@ -173,13 +176,13 @@ class ConsumptionViewFragment : NavigationChildFragment() {
         // updating nutrition values
         val oldAmount: Float = mConsumption.amount
         val food: FoodMealComponent = mConsumption.food_meal_component
-        serving_size_value.text = "%.2f".format(food.portion_size / oldAmount * amount) + " " + mConsumption.weight_unit.unit
-        calories_value_food_view.text = "%.2f".format(food.kcal / oldAmount * amount) + " Kcal"
-        fiber_value_food_view.text = "%.2f".format(food.fiber / oldAmount * amount) + " g"
-        protein_value_food_view.text = "%.2f".format(food.protein / oldAmount * amount) + " g"
-        water_value_food_view.text = "%.2f".format(food.water / oldAmount * amount) + "ml"
-        sodium_value_food_view.text = "%.2f".format(food.sodium / oldAmount * 1000 * amount) + " mg"
-        potassium_value_food_view.text = "%.2f".format(food.potassium / oldAmount * 1000 * amount) + " mg"
+        binding.servingSizeValue.text = "%.2f".format(food.portion_size / oldAmount * amount) + " " + mConsumption.weight_unit.unit
+        binding.caloriesValueFoodView.text = "%.2f".format(food.kcal / oldAmount * amount) + " Kcal"
+        binding.fiberValueFoodView.text = "%.2f".format(food.fiber / oldAmount * amount) + " g"
+        binding.proteinValueFoodView.text = "%.2f".format(food.protein / oldAmount * amount) + " g"
+        binding.waterValueFoodView.text = "%.2f".format(food.water / oldAmount * amount) + "ml"
+        binding.sodiumValueFoodView.text = "%.2f".format(food.sodium / oldAmount * 1000 * amount) + " mg"
+        binding.potassiumValueFoodView.text = "%.2f".format(food.potassium / oldAmount * 1000 * amount) + " mg"
     }
 
     private val textWatcher: TextWatcher = object : TextWatcher {
@@ -202,7 +205,7 @@ class ConsumptionViewFragment : NavigationChildFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                requireActivity().supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     DiaryFragment()
                 ).commit()

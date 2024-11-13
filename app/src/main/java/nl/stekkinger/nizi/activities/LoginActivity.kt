@@ -47,6 +47,7 @@ class LoginActivity : BaseActivity() {
 
         // Setup the UI.
         binding = ActivityLoginBinding.inflate(layoutInflater)
+        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 

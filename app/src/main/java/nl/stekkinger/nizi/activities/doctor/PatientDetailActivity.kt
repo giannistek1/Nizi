@@ -44,6 +44,7 @@ class PatientDetailActivity : BaseActivity() {
 
         // Setup UI.
         binding = ActivityPatientDetailBinding.inflate(layoutInflater)
+        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 

@@ -18,13 +18,17 @@ import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
+import nl.stekkinger.nizi.databinding.FragmentHomeBinding
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.FoodRepository
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Calendar
+import java.util.Date
 import kotlin.math.roundToInt
 
 class HomeFragment: BaseFragment() {
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
     private val dietaryRepository: DietaryRepository = DietaryRepository()
     private val foodRepository: FoodRepository = FoodRepository()
 
@@ -44,11 +48,13 @@ class HomeFragment: BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
-        loader = view.fragment_home_loader
-        linearLayoutGuidelines = view.fragment_home_ll_guidelines
+        _binding = FragmentHomeBinding.inflate(layoutInflater)
+
+        loader = binding.fragmentHomeLoader
+        linearLayoutGuidelines = binding.fragmentHomeLlGuidelines
 
         // Setup custom toast
-        val parent: RelativeLayout = view.fragment_home_rl
+        val parent: RelativeLayout = binding.fragmentHomeRl
         toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
         parent.addView(toastView)
 
@@ -80,7 +86,7 @@ class HomeFragment: BaseFragment() {
         calendar.add(Calendar.DATE, -1)
         val yesterday = calendar.time
 
-        view.fragment_home_btn_yesterday.setOnClickListener {
+        binding.fragmentHomeBtnYesterday.setOnClickListener {
             calendar.time = mCurrentDate
             calendar.add(Calendar.DATE, -1)
             val newDate = calendar.time
@@ -90,20 +96,20 @@ class HomeFragment: BaseFragment() {
             mEndDate = calendar.time
 
             if(newDate == yesterday) {
-                view.fragment_home_txt_day.text = getString(R.string.yesterday)
+                binding.fragmentHomeTxtDay.text = getString(R.string.yesterday)
             } else {
-                view.fragment_home_txt_day.text = sdf.format(mCurrentDate)
+                binding.fragmentHomeTxtDay.text = sdf.format(mCurrentDate)
             }
 
             getConsumptions();
 
             // Update UI
-            view.fragment_home_btn_tomorrow.isEnabled = true
-            view.fragment_home_btn_tomorrow.isClickable = true
-            view.fragment_home_btn_tomorrow.alpha = 1f
+            binding.fragmentHomeBtnTomorrow.isEnabled = true
+            binding.fragmentHomeBtnTomorrow.isClickable = true
+            binding.fragmentHomeBtnTomorrow.alpha = 1f
         }
 
-        view.fragment_home_btn_tomorrow.setOnClickListener {
+        binding.fragmentHomeBtnTomorrow.setOnClickListener {
             calendar.time = mCurrentDate
             calendar.add(Calendar.DATE, 1)
             val newDate = calendar.time
@@ -117,24 +123,24 @@ class HomeFragment: BaseFragment() {
 
             if (newDate == today) {
                 // Update UI
-                view.fragment_home_txt_day.text = getString(R.string.today)
-                view.fragment_home_btn_tomorrow.isEnabled = false
-                view.fragment_home_btn_tomorrow.isClickable = false
-                view.fragment_home_btn_tomorrow.alpha = 0.2f
+                binding.fragmentHomeTxtDay.text = getString(R.string.today)
+                binding.fragmentHomeBtnTomorrow.isEnabled = false
+                binding.fragmentHomeBtnTomorrow.isClickable = false
+                binding.fragmentHomeBtnTomorrow.alpha = 0.2f
             } else if(newDate == yesterday) {
-                view.fragment_home_txt_day.text = getString(R.string.yesterday)
+                binding.fragmentHomeTxtDay.text = getString(R.string.yesterday)
             } else {
-                view.fragment_home_txt_day.text = sdf.format(mCurrentDate)
+                binding.fragmentHomeTxtDay.text = sdf.format(mCurrentDate)
             }
 
             getConsumptions()
         }
 
         // Update UI
-        view.fragment_home_txt_day.text = getString(R.string.today)
-        view.fragment_home_btn_tomorrow.isEnabled = false
-        view.fragment_home_btn_tomorrow.isClickable = false
-        view.fragment_home_btn_tomorrow.alpha = 0.2f
+        binding.fragmentHomeTxtDay.text = getString(R.string.today)
+        binding.fragmentHomeBtnTomorrow.isEnabled = false
+        binding.fragmentHomeBtnTomorrow.isClickable = false
+        binding.fragmentHomeBtnTomorrow.alpha = 0.2f
 
         getConsumptions()
 
@@ -155,7 +161,7 @@ class HomeFragment: BaseFragment() {
             getConsumptionsMockup()
         } else {
             // Check internet connection
-            if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return
+//            if (!GeneralHelper.hasInternetConnection(requireContext(), toastView, toastAnimation)) return
 
             getConsumptionsAsyncTask().execute()
         }
@@ -187,14 +193,16 @@ class HomeFragment: BaseFragment() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_consumptions_fail))
-                return }
+//            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+//            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_consumptions_fail))
+//                return }
 
             // Feedback
             //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_consumptions))
 
-            consumptions = result
+            if (result != null) {
+                consumptions = result
+            }
 
             supplements.clear()
 
@@ -243,16 +251,16 @@ class HomeFragment: BaseFragment() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_dietary_fail))
-                return }
+//            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+//            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_dietary_fail))
+//                return }
 
             // Feedback
             //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_dietary))
 
             dietaryGuidelines.clear()
 
-            result.forEachIndexed { _, resultDietary ->
+            result?.forEachIndexed { _, resultDietary ->
                 if (!resultDietary.is_active) return@forEachIndexed
 
                 var index = 0 // Kcal

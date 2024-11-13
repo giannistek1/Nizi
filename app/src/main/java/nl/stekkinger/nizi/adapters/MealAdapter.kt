@@ -3,26 +3,19 @@ package nl.stekkinger.nizi.adapters
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Bundle
 import android.util.Base64
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.util.Log.d
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.Meal
-import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
-import nl.stekkinger.nizi.databinding.ItemConversationBinding
 import nl.stekkinger.nizi.databinding.ItemFoodBinding
-import nl.stekkinger.nizi.fragments.DiaryFragment
 
 class MealAdapter(
     private var model: DiaryViewModel = DiaryViewModel(),
@@ -66,19 +59,19 @@ class MealAdapter(
         }
         holder.title.text = meal.food_meal_component.name
 
-        holder.itemView.add_btn.setOnClickListener {
-            model.addMeal(meal)
-
-            val fragment = DiaryFragment()
-            val bundle = Bundle()
-            bundle.putString(GeneralHelper.TOAST_TEXT, context.getString(R.string.add_meal_success))
-            fragment.arguments = bundle
-
-            (activity).supportFragmentManager.beginTransaction().replace(
-                R.id.activity_main_fragment_container,
-                fragment
-            ).commit()
-        }
+//        holder.itemView.add_btn.setOnClickListener {
+//            model.addMeal(meal)
+//
+//            val fragment = DiaryFragment()
+//            val bundle = Bundle()
+//            bundle.putString(GeneralHelper.TOAST_TEXT, context.getString(R.string.add_meal_success))
+//            fragment.arguments = bundle
+//
+//            (activity).supportFragmentManager.beginTransaction().replace(
+//                R.id.activity_main_fragment_container,
+//                fragment
+//            ).commit()
+//        }
 
     }
 

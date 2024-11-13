@@ -29,11 +29,15 @@ import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.FoodMealComponent
 import nl.stekkinger.nizi.classes.diary.Meal
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.databinding.FragmentCreateMealBinding
 import nl.stekkinger.nizi.repositories.FoodRepository
 import java.io.ByteArrayOutputStream
 
 
 class CreateMealFragment: NavigationChildFragment() {
+    private var _binding: FragmentCreateMealBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var model: DiaryViewModel
     private lateinit var mealProductAdapter: MealProductAdapter
     private lateinit var mInputMealName: EditText
@@ -44,9 +48,11 @@ class CreateMealFragment: NavigationChildFragment() {
 
     override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_create_meal, container, false)
+        _binding = FragmentCreateMealBinding.inflate(layoutInflater)
+
         setHasOptionsMenu(true)
 
-        activity!!.toolbar_title.text = getString(R.string.create_meal)
+//        requireActivity().toolbar_title.text = getString(R.string.create_meal)
 
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
@@ -59,7 +65,7 @@ class CreateMealFragment: NavigationChildFragment() {
             val decodedString: ByteArray = Base64.decode(model.getMealPhoto(), Base64.DEFAULT)
             val decodedByte: Bitmap? = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
             if(decodedByte != null) {
-                view.image_food_view.setImageBitmap(decodedByte)
+                binding.imageFoodView.setImageBitmap(decodedByte)
             }
         }
         updateUI(view)
@@ -75,7 +81,7 @@ class CreateMealFragment: NavigationChildFragment() {
         // collect mealproducts
         val mealProducts: ArrayList<Food> = model.getMealProducts()
         if (mealProducts.count() > 0) {
-            view.create_meal_empty_list_text.visibility = View.GONE
+            binding.createMealEmptyListText.visibility = View.GONE
         }
         // fill the adapter
         mealProductAdapter.setMealProductList(model.getMealProducts())
@@ -95,9 +101,9 @@ class CreateMealFragment: NavigationChildFragment() {
                         }
                         model.emptyMealState()
 
-                        view.fragment_create_meal_loader.visibility = View.GONE
+                        binding.fragmentCreateMealLoader.visibility = View.GONE
 
-                        fragmentManager!!
+                        requireFragmentManager()
                             .beginTransaction()
                             .replace(
                                 R.id.activity_main_fragment_container,
@@ -107,13 +113,13 @@ class CreateMealFragment: NavigationChildFragment() {
                     }
                     is FoodRepository.MealState.Error -> {
                         // Todo: add toast for failure
-                        view.fragment_create_meal_loader.visibility = View.GONE
+                        binding.fragmentCreateMealLoader.visibility = View.GONE
                     }
                     is FoodRepository.MealState.Loading -> {
-                        view.fragment_create_meal_loader.visibility = View.VISIBLE
+                        binding.fragmentCreateMealLoader.visibility = View.VISIBLE
                     }
                     else -> {
-                        view.fragment_create_meal_loader.visibility = View.GONE
+                        binding.fragmentCreateMealLoader.visibility = View.GONE
                     }
                 }
             }
@@ -125,56 +131,56 @@ class CreateMealFragment: NavigationChildFragment() {
                 when(it) {
                     is FoodRepository.FoodsState.Success -> {
                         if (it.data.count() > 0 ) {
-                            view.create_meal_empty_list_text.visibility = View.GONE
+                            binding.createMealEmptyListText.visibility = View.GONE
                         }
                         mealProductAdapter.setMealProductList(it.data)
                         model.setMealProducts(it.data)
-                        view.fragment_create_meal_loader.visibility = View.GONE
+                        binding.fragmentCreateMealLoader.visibility = View.GONE
                         model.emptyFoodsState()
                     }
                     is FoodRepository.FoodsState.Error -> {
                         // TODO: add Error msg toast
-                        view.fragment_create_meal_loader.visibility = View.GONE
+                        binding.fragmentCreateMealLoader.visibility = View.GONE
                     }
                     is FoodRepository.FoodsState.Loading -> {
-                        view.fragment_create_meal_loader.visibility = View.VISIBLE
+                        binding.fragmentCreateMealLoader.visibility = View.VISIBLE
                     }
                     else -> {
-                        view.fragment_create_meal_loader.visibility = View.GONE
+                        binding.fragmentCreateMealLoader.visibility = View.GONE
                     }
                 }
             }
         }
 
         // Update UI with incoming data
-        model.selectedMeal.observe(this, Observer<Meal> { meal ->
-            if (meal != null) {
-                // set meal values in the model
-                model.setIsMealEdit(true)
-                model.setMealId(meal.id)
-                model.setMealComponentId(meal.food_meal_component.id)
-                mMealId = meal.id
-                mInputMealName.setText(meal.food_meal_component.name)
-                if (meal.food_meal_component.image_url != "" && meal.food_meal_component.image_url != null) {
-                    model.setMealPhoto(meal.food_meal_component.image_url)
-                    mPhoto = meal.food_meal_component.image_url
-                    val decodedString: ByteArray =
-                        Base64.decode(meal.food_meal_component.image_url, Base64.DEFAULT)
-                    val decodedByte: Bitmap? =
-                        BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                    if (decodedByte != null) {
-                        view.image_food_view.setImageBitmap(decodedByte)
-                    }
-                } else {
-                    view.image_food_view.setImageResource(R.drawable.ic_culinary)
-                }
-                updateUI(view)
-                model.emptySelectedMeal()
-            }
-        })
+//        model.selectedMeal.observe(this, Observer<Meal> { meal ->
+//            if (meal != null) {
+//                // set meal values in the model
+//                model.setIsMealEdit(true)
+//                model.setMealId(meal.id)
+//                model.setMealComponentId(meal.food_meal_component.id)
+//                mMealId = meal.id
+//                mInputMealName.setText(meal.food_meal_component.name)
+//                if (meal.food_meal_component.image_url != "" && meal.food_meal_component.image_url != null) {
+//                    model.setMealPhoto(meal.food_meal_component.image_url)
+//                    mPhoto = meal.food_meal_component.image_url
+//                    val decodedString: ByteArray =
+//                        Base64.decode(meal.food_meal_component.image_url, Base64.DEFAULT)
+//                    val decodedByte: Bitmap? =
+//                        BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+//                    if (decodedByte != null) {
+//                        binding.imageFoodView.setImageBitmap(decodedByte)
+//                    }
+//                } else {
+//                    binding.imageFoodView.setImageResource(R.drawable.ic_culinary)
+//                }
+//                updateUI(view)
+//                model.emptySelectedMeal()
+//            }
+//        })
 
         // click events
-        view.meal_camera_btn.setOnClickListener {
+        binding.mealCameraBtn.setOnClickListener {
             val callCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             val packageManager = activity!!.packageManager
             if(callCameraIntent.resolveActivity(packageManager) != null) {
@@ -182,18 +188,18 @@ class CreateMealFragment: NavigationChildFragment() {
             }
         }
 
-        view.create_meal_add_food.setOnClickListener {
+        binding.createMealAddFood.setOnClickListener {
             // save input data when switching fragments
             model.setMealName(mInputMealName.text.toString().trim())
             if (mPhoto != "") model.setMealPhoto(mPhoto)
 
-            (activity)!!.supportFragmentManager.beginTransaction().replace(
+            requireActivity().supportFragmentManager.beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 CreateMealFoodFragment()
             ).addToBackStack(null).commit()
         }
 
-        view.create_meal_save_btn.setOnClickListener {
+        binding.createMealSaveBtn.setOnClickListener {
             saveMeal()
         }
 
@@ -219,12 +225,12 @@ class CreateMealFragment: NavigationChildFragment() {
         }
 
         // update UI
-        view.calories_value_meal_view.text = "%.2f".format(totalKcal) + " Kcal"
-        view.fiber_value_meal_view.text = "%.2f".format(totalFiber) + " g"
-        view.protein_value_meal_view.text = "%.2f".format(totalProtein) + " g"
-        view.water_value_meal_view.text = "%.2f".format(totalWater) + "ml"
-        view.sodium_value_meal_view.text = "%.2f".format(totalSodium) + " mg"
-        view.potassium_value_meal_view.text = "%.2f".format(totalPotassium) + " mg"
+        binding.caloriesValueMealView.text = "%.2f".format(totalKcal) + " Kcal"
+        binding.fiberValueMealView.text = "%.2f".format(totalFiber) + " g"
+        binding.proteinValueMealView.text = "%.2f".format(totalProtein) + " g"
+        binding.waterValueMealView.text = "%.2f".format(totalWater) + "ml"
+        binding.sodiumValueMealView.text = "%.2f".format(totalSodium) + " mg"
+        binding.proteinValueMealView.text = "%.2f".format(totalPotassium) + " mg"
     }
 
     private fun saveMeal(){
@@ -315,7 +321,7 @@ class CreateMealFragment: NavigationChildFragment() {
         when(requestCode) {
             CAMERA_REQUEST_CODE -> {
                 if(resultCode == Activity.RESULT_OK && data != null) {
-                    image_food_view.setImageBitmap(data.extras?.get("data") as Bitmap)
+                    binding.imageFoodView.setImageBitmap(data.extras?.get("data") as Bitmap)
                     val bm: Bitmap = data.extras?.get("data") as Bitmap
                     val baos = ByteArrayOutputStream()
                     bm.compress(Bitmap.CompressFormat.JPEG, 50, baos) //bm is the bitmap object
@@ -334,7 +340,7 @@ class CreateMealFragment: NavigationChildFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                requireActivity().supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     AddMealFragment()
                 ).commit()

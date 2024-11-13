@@ -21,8 +21,6 @@ import java.util.Locale
 
 
 object GeneralHelper {
-
-
     const val PREF_TOKEN = "TOKEN"
     const val PREF_USER = "USER"
     const val PREF_IS_DOCTOR = "IS_DOCTOR"
@@ -114,11 +112,10 @@ object GeneralHelper {
     @SuppressLint("NewApi")
     fun hasInternetConnection(context: Context, toastView: CustomToastBinding, toastAnimation: Animation) : Boolean
     {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
         if (connectivityManager != null) {
-            val capabilities =
-                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            val capabilities = connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
             if (capabilities != null) {
                 if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
                     return true

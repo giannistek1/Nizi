@@ -26,9 +26,7 @@ import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.databinding.FragmentPatientFeedbackBinding
 import nl.stekkinger.nizi.fragments.BaseFragment
 import nl.stekkinger.nizi.repositories.FeedbackRepository
-import java.lang.Exception
-import java.util.*
-import kotlin.collections.ArrayList
+import java.util.Date
 
 /**
  * A simple [Fragment] subclass.
@@ -70,7 +68,7 @@ class PatientFeedbackFragment : BaseFragment() {
         )
 
         // Get patient data from bundle
-        val bundle: Bundle = this.arguments!!
+        val bundle: Bundle = this.requireArguments()
         patientData = bundle.getSerializable(GeneralHelper.EXTRA_PATIENT) as PatientData
 
         val patientName = "${patientData.user.first_name.first()}. ${patientData.user.last_name}"
@@ -95,7 +93,7 @@ class PatientFeedbackFragment : BaseFragment() {
             if (GeneralHelper.isAdmin()) { addFeedbackMockup(); return@setOnClickListener }
 
             // Check internet connection
-            if (!GeneralHelper.hasInternetConnection(binding.root.context!!, toastView, toastAnimation)) return@setOnClickListener
+//            if (!GeneralHelper.hasInternetConnection(binding.root.context!!, toastView, toastAnimation)) return@setOnClickListener
 
             if (addFeedbackAsyncTask().status != AsyncTask.Status.RUNNING)
                 addFeedbackAsyncTask().execute()
@@ -108,7 +106,7 @@ class PatientFeedbackFragment : BaseFragment() {
         mFeedbackRV.adapter = adapter
 
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(binding.root.context!!, toastView, toastAnimation)) return view
+//        if (!GeneralHelper.hasInternetConnection(binding.root.context!!, toastView, toastAnimation)) return view
 
         // Get feedback
         if (GeneralHelper.isAdmin()) {
@@ -145,15 +143,15 @@ class PatientFeedbackFragment : BaseFragment() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_feedbacks_fail))
-                return }
+//            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+//            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_feedbacks_fail))
+//                return }
 
             // Feedback
-            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
+//            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
 
             // Save result
-            feedbackList = result.asReversed()
+            feedbackList = result!!.asReversed()
             adapter.setConversationList(feedbackList)
         }
     }
@@ -176,19 +174,19 @@ class PatientFeedbackFragment : BaseFragment() {
             }
         }
 
-        override fun onPostExecute(result: Feedback?) {
+        override fun onPostExecute(result: Feedback) {
             super.onPostExecute(result)
 
             // Loader
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.add_feedback_fail))
-                return }
+//            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+//            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.add_feedback_fail))
+//                return }
 
             // Feedback
-            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.added_feedback))
+//            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.added_feedback))
 
             // Clean input
             mNewFeedbackET.setText("")
@@ -232,7 +230,7 @@ class PatientFeedbackFragment : BaseFragment() {
     //region Mockups
     private fun getConversationsMockup() {
         // Feedback
-        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
+//        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
 
         // Save result
         feedbackList = LocalDb.feedbacks.asReversed()
@@ -243,7 +241,7 @@ class PatientFeedbackFragment : BaseFragment() {
         val newFeedback = feedbackRepository.addFeedbackLocally(newFeedback)
 
         // Feedback
-        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.added_feedback))
+//        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.added_feedback))
 
         // Clean input
         mNewFeedbackET.setText("")

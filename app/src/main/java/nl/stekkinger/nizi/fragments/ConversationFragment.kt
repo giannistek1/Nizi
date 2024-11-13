@@ -16,11 +16,14 @@ import nl.stekkinger.nizi.classes.doctor.Doctor
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
+import nl.stekkinger.nizi.databinding.FragmentConversationBinding
 import nl.stekkinger.nizi.repositories.FeedbackRepository
-import java.lang.Exception
 
 //TODO: no fragment arguments, make a bundle!!
 class ConversationFragment(private val user: UserLogin, private val doctor: Doctor): BaseFragment() {
+    private var _binding: FragmentConversationBinding? = null
+    private val binding get() = _binding!!
+
     private val mRepository: FeedbackRepository = FeedbackRepository()
     private lateinit var adapter: ConversationAdapter
 
@@ -28,19 +31,19 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Setup UI
-        val view: View = inflater.inflate(R.layout.fragment_conversation, container, false)
-        loader = view.fragment_conversation_loader
+        _binding = FragmentConversationBinding.inflate(layoutInflater)
+        loader = binding.fragmentConversationLoader
 
         // Setup custom toast
-        val parent: RelativeLayout = view.fragment_conversation_rl
+        val parent: RelativeLayout = binding.fragmentConversationRl
         toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
         parent.addView(toastView)
 
         val doctorName = "${doctor.user.first_name.first()}. ${doctor.user.last_name}"
-        view.fragment_conversation_txt_advice_from.text = getString(R.string.advice_from, doctorName)
+        binding.fragmentConversationTxtAdviceFrom.text = getString(R.string.advice_from, doctorName)
 
         // Setup RV
-        val recyclerView: RecyclerView = view.fragment_conversation_rv
+        val recyclerView: RecyclerView = binding.fragmentConversationRv
         // TODO: change to recycler view (scrollable)
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
@@ -49,11 +52,12 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
 
         // Todo: Setup as interface so there is no dependency injection, just call getConversations and replace the class at start if Admin
         // Get feedback
-        if (GeneralHelper.isAdmin()) { getConversationsMockup(); return view }
+//        if (GeneralHelper.isAdmin()) { getConversationsMockup(); return view }
+        getConversationsMockup()
 
         // Check internet connection
-        if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return view
-        else { getConversationsAsyncTask().execute() }
+//        if (!GeneralHelper.hasInternetConnection(requireContext(), toastView, toastAnimation)) return view
+//        else { getConversationsAsyncTask().execute() }
 
         return view
     }
@@ -76,19 +80,19 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
             }
         }
 
-        override fun onPostExecute(result: ArrayList<Feedback>?) {
+        override fun onPostExecute(result: ArrayList<Feedback>) {
             super.onPostExecute(result)
 
             // Loader
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_feedbacks_fail))
-                return }
+//            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+//            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_feedbacks_fail))
+//                return }
 
             // Feedback
-            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
+//            GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
 
             d("CONVO", result.toString())
             adapter.setConversationList(result)
@@ -98,7 +102,7 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
     //region Mockup Login
     private fun getConversationsMockup() {
         // Feedback
-        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
+//        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))
 
         d("CONVO", "Conversation mockup loaded.")
         adapter.setConversationList(LocalDb.feedbacks)

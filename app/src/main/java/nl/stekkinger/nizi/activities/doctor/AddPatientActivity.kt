@@ -50,6 +50,7 @@ class AddPatientActivity : BaseActivity() {
 
         // Setup UI.
         binding = ActivityAddPatientBinding.inflate(layoutInflater)
+        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 

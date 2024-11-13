@@ -19,7 +19,7 @@ open class BaseFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //_binding = CustomToastBinding.inflate()
+        _binding = CustomToastBinding.inflate(layoutInflater)
 
         // CustomToastLayout for toast (in case you want a disappearing toast that exists through multiple activities)
         customToastLayout = layoutInflater.inflate(R.layout.custom_toast, binding.llCustomToastWrapper)

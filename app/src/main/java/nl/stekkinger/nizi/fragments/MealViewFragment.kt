@@ -1,43 +1,34 @@
 package nl.stekkinger.nizi.fragments
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.os.AsyncTask
-import android.util.Log
 import android.os.Bundle
 import android.text.Editable
-import android.view.*
 import android.text.TextWatcher
-import android.util.Base64
-import android.util.Log.d
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
 import android.view.View.GONE
-import android.webkit.URLUtil
+import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-import com.squareup.picasso.Picasso
-import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.MealProductAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
-import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
-import nl.stekkinger.nizi.classes.diary.Food
 import nl.stekkinger.nizi.classes.diary.FoodMealComponent
 import nl.stekkinger.nizi.classes.diary.Meal
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.databinding.FragmentFoodViewBinding
 import nl.stekkinger.nizi.repositories.FoodRepository
-import java.util.ArrayList
 
 
 class MealViewFragment : NavigationChildFragment() {
+    private var _binding: FragmentFoodViewBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var model: DiaryViewModel
     private lateinit var mMeal: Meal
     private lateinit var mServingInput: TextInputEditText
@@ -50,6 +41,8 @@ class MealViewFragment : NavigationChildFragment() {
     override fun onCreateChildView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_food_view, container, false)
+        _binding = FragmentFoodViewBinding.inflate(layoutInflater)
+
         setHasOptionsMenu(true)
 
         // get the DiaryViewModel
@@ -68,29 +61,29 @@ class MealViewFragment : NavigationChildFragment() {
         mealProductRV.adapter = mealProductAdapter
 
         // stateflows/observers
-        model.selectedMeal.observe(this, Observer<Meal> { meal ->
-            // store food product
-            mMeal = meal
-            // collects mealproducts belonging to meal
-            model.getMeal(meal!!.id)
-
-            // Update the UI
-            title_food_view.text = meal.food_meal_component.name
-            val image = meal.food_meal_component.image_url
-            if (URLUtil.isValidUrl(image)) {
-                Picasso.get().load(image).into(image_food_view)
-            }
-            else if(image != null && image !="") { // bitmap img
-                val decodedString: ByteArray =
-                    Base64.decode(image, Base64.DEFAULT)
-                val decodedByte: Bitmap? =
-                    BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
-                if (decodedByte != null) {
-                    image_food_view.setImageBitmap(decodedByte)
-                }
-            }
-            updateUI()
-        })
+//        model.selectedMeal.observe(this, Observer<Meal> { meal ->
+//            // store food product
+//            mMeal = meal
+//            // collects mealproducts belonging to meal
+//            model.getMeal(meal!!.id)
+//
+//            // Update the UI
+//            binding.titleFoodView.text = meal.food_meal_component.name
+//            val image = meal.food_meal_component.image_url
+//            if (URLUtil.isValidUrl(image)) {
+//                Picasso.get().load(image).into(binding.imageFoodView)
+//            }
+//            else if(image != null && image !="") { // bitmap img
+//                val decodedString: ByteArray =
+//                    Base64.decode(image, Base64.DEFAULT)
+//                val decodedByte: Bitmap? =
+//                    BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+//                if (decodedByte != null) {
+//                    binding.imageFoodView.setImageBitmap(decodedByte)
+//                }
+//            }
+//            updateUI()
+//        })
 
         // meal data
         lifecycleScope.launchWhenStarted {
@@ -136,7 +129,7 @@ class MealViewFragment : NavigationChildFragment() {
                 when(it) {
                     is FoodRepository.State.Success -> {
                         model.emptyDeleteMealState()
-                        (activity)!!.supportFragmentManager.beginTransaction().replace(
+                        requireActivity().supportFragmentManager.beginTransaction().replace(
                             R.id.activity_main_fragment_container,
                             AddMealFragment()
                         ).commit()
@@ -145,18 +138,18 @@ class MealViewFragment : NavigationChildFragment() {
             }
         }
 
-        view.food_view_meal_products_title.visibility = View.VISIBLE
-        view.food_view_recycler_view.visibility = View.VISIBLE
+        binding.foodViewMealProductsTitle.visibility = View.VISIBLE
+        binding.foodViewRecyclerView.visibility = View.VISIBLE
 
-        view.heart_food_view.visibility = GONE
-        mSaveBtn = view.save_btn
-        mDecreaseBtn = view.decrease_portion
+        binding.heartFoodView.visibility = GONE
+        mSaveBtn = binding.saveBtn
+        mDecreaseBtn = binding.decreasePortion
         mServingInput = view.findViewById(R.id.serving_input) as TextInputEditText
 
         mServingInput.addTextChangedListener(textWatcher)
 
         // click listeners
-        view.increase_portion.setOnClickListener {
+        binding.increasePortion.setOnClickListener {
             if (mServingInput.text.toString() != "") {
                 var portion: Float = mServingInput.text.toString().toFloat() + 0.5f
                 mServingInput.setText(portion.toString())
@@ -165,7 +158,7 @@ class MealViewFragment : NavigationChildFragment() {
             }
         }
 
-        view.decrease_portion.setOnClickListener {
+        binding.decreasePortion.setOnClickListener {
             if (mServingInput.text.toString() != "") {
                 var portion: Float = mServingInput.text.toString().toFloat()
                 if(portion > 0.5) {
@@ -174,7 +167,7 @@ class MealViewFragment : NavigationChildFragment() {
             }
         }
 
-        view.save_btn.setOnClickListener {
+        binding.saveBtn.setOnClickListener {
             val amount: Float = mServingInput.text.toString().trim().toFloat()
             // add meal
             model.addMeal(mMeal, amount)
@@ -185,20 +178,20 @@ class MealViewFragment : NavigationChildFragment() {
             bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.add_meal_success))
             fragment.arguments = bundle
 
-            (activity)!!.supportFragmentManager.beginTransaction().replace(
+            requireActivity().supportFragmentManager.beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 fragment
             ).commit()
         }
 
-        view.edit_food_view.setOnClickListener {
-            (activity)!!.supportFragmentManager.beginTransaction().replace(
+        binding.editFoodView.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 CreateMealFragment()
             ).commit()
         }
 
-        view.delete_food_view.setOnClickListener {
+        binding.deleteFoodView.setOnClickListener {
             model.deleteMeal(mMeal.id)
         }
 
@@ -223,7 +216,7 @@ class MealViewFragment : NavigationChildFragment() {
                             bundle.putString(GeneralHelper.TOAST_TEXT, getString(R.string.delete_food_success))
 
                         fragment.arguments = bundle
-                        (activity)!!.supportFragmentManager.beginTransaction().replace(
+                        requireActivity().supportFragmentManager.beginTransaction().replace(
                             R.id.activity_main_fragment_container,
                             fragment
                         ).commit()
@@ -261,13 +254,13 @@ class MealViewFragment : NavigationChildFragment() {
 
         // updating nutrition values
         val food: FoodMealComponent = mMeal.food_meal_component
-        serving_size_value.text = "%.0f".format(food.portion_size * amount) + " " + mMeal.weight_unit!!.unit
-        calories_value_food_view.text = "%.2f".format(food.kcal * amount) + " Kcal"
-        fiber_value_food_view.text = "%.2f".format(food.fiber * amount) + " g"
-        protein_value_food_view.text = "%.2f".format(food.protein * amount) + " g"
-        water_value_food_view.text = "%.2f".format(food.water * amount) + "ml"
-        sodium_value_food_view.text = "%.2f".format(food.sodium * 1000 * amount) + " mg"
-        potassium_value_food_view.text = "%.2f".format(food.potassium * 1000 * amount) + " mg"
+        binding.servingSizeValue.text = "%.0f".format(food.portion_size * amount) + " " + mMeal.weight_unit!!.unit
+        binding.caloriesValueFoodView.text = "%.2f".format(food.kcal * amount) + " Kcal"
+        binding.fiberValueFoodView.text = "%.2f".format(food.fiber * amount) + " g"
+        binding.proteinValueFoodView.text = "%.2f".format(food.protein * amount) + " g"
+        binding.waterValueFoodView.text = "%.2f".format(food.water * amount) + "ml"
+        binding.sodiumValueFoodView.text = "%.2f".format(food.sodium * 1000 * amount) + " mg"
+        binding.potassiumValueFoodView.text = "%.2f".format(food.potassium * 1000 * amount) + " mg"
     }
 
     private val textWatcher: TextWatcher = object : TextWatcher {
@@ -293,7 +286,7 @@ class MealViewFragment : NavigationChildFragment() {
                 model.resetMealValues()
                 model.emptyMealProducts()
 
-                (activity)!!.supportFragmentManager.beginTransaction().replace(
+                requireActivity().supportFragmentManager.beginTransaction().replace(
                     R.id.activity_main_fragment_container,
                     AddMealFragment()
                 ).commit()

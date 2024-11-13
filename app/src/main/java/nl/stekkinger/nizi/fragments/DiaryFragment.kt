@@ -14,7 +14,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.flow.collect
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.adapters.ConsumptionAdapter
 import nl.stekkinger.nizi.classes.DiaryViewModel
@@ -22,10 +21,15 @@ import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
 import nl.stekkinger.nizi.classes.diary.MyFood
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
+import nl.stekkinger.nizi.databinding.FragmentDiaryBinding
 import nl.stekkinger.nizi.repositories.FoodRepository
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 
 class DiaryFragment: BaseFragment() {
+    private var _binding: FragmentDiaryBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var model: DiaryViewModel
     private lateinit var breakfastAdapter: ConsumptionAdapter
     private lateinit var lunchAdapter: ConsumptionAdapter
@@ -39,10 +43,11 @@ class DiaryFragment: BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view: View = inflater.inflate(R.layout.fragment_diary, container, false)
+        _binding = FragmentDiaryBinding.inflate(layoutInflater)
 
-        fragmentManager!!.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        requireFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
 
-        mNextDayBtn = view.diary_next_date
+        mNextDayBtn = binding.diaryNextDate
 
         model = activity?.run {
             ViewModelProviders.of(this)[DiaryViewModel::class.java]
@@ -51,11 +56,11 @@ class DiaryFragment: BaseFragment() {
         // Hide patient things if isDoctor
         val isDoctor = GeneralHelper.prefs.getBoolean(GeneralHelper.PREF_IS_DOCTOR, false)
 
-        if (!isDoctor)
-            activity!!.toolbar_title.text = getString(R.string.diary)
+//        if (!isDoctor)
+//            requireActivity().toolbar_title.text = getString(R.string.diary)
 
         // Setup custom toast
-        val parent: RelativeLayout = view.fragment_diary_rl
+        val parent: RelativeLayout = binding.fragmentDiaryRl
         toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
         parent.addView(toastView)
 
@@ -64,7 +69,7 @@ class DiaryFragment: BaseFragment() {
         if (bundle != null) {
             val toastText = bundle.getString(GeneralHelper.TOAST_TEXT, "")
 
-            GeneralHelper.showAnimatedToast(toastView, toastAnimation, toastText)
+//            GeneralHelper.showAnimatedToast(toastView, toastAnimation, toastText)
         }
 
         // rv's
@@ -163,16 +168,16 @@ class DiaryFragment: BaseFragment() {
                             lunchAdapter.setConsumptionList(lunchList)
                             dinnerAdapter.setConsumptionList(dinnerList)
                             snackAdapter.setConsumptionList(snackList)
-                            view.fragment_diary_loader.visibility = GONE
+                            binding.fragmentDiaryLoader.visibility = GONE
                         }
                         is FoodRepository.DiaryState.Error -> {
-                            view.fragment_diary_loader.visibility = GONE
+                            binding.fragmentDiaryLoader.visibility = GONE
                         }
                         is FoodRepository.DiaryState.Loading -> {
-                            view.fragment_diary_loader.visibility = VISIBLE
+                            binding.fragmentDiaryLoader.visibility = VISIBLE
                         }
                         else -> {
-                            view.fragment_diary_loader.visibility = GONE
+                            binding.fragmentDiaryLoader.visibility = GONE
                         }
                     }
                 }
@@ -186,17 +191,17 @@ class DiaryFragment: BaseFragment() {
                     is FoodRepository.State.Success -> {
                         // Something has been updated. get new diary data
                         model.getConsumptions(cal)
-                        view.fragment_diary_loader.visibility = GONE
+                        binding.fragmentDiaryLoader.visibility = GONE
                         model.emptyState()
                     }
                     is FoodRepository.State.Error -> {
-                        view.fragment_diary_loader.visibility = GONE
+                        binding.fragmentDiaryLoader.visibility = GONE
                     }
                     is FoodRepository.State.Loading -> {
-                        view.fragment_diary_loader.visibility = VISIBLE
+                        binding.fragmentDiaryLoader.visibility = VISIBLE
                     }
                     else -> {
-                        view.fragment_diary_loader.visibility = GONE
+                        binding.fragmentDiaryLoader.visibility = GONE
                     }
                 }
             }
@@ -221,100 +226,100 @@ class DiaryFragment: BaseFragment() {
         }
 
         // click listeners
-        view.diary_add_breakfast_btn.setOnClickListener {
+        binding.diaryAddBreakfastBtn.setOnClickListener {
             model.setMealTime("Ontbijt")
-            fragmentManager!!.beginTransaction().replace(
+            requireFragmentManager().beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 AddFoodFragment()
             ).addToBackStack(null).commit()
         }
 
-        view.diary_add_lunch_btn.setOnClickListener {
+        binding.diaryAddLunchBtn.setOnClickListener {
             model.setMealTime("Lunch")
-            fragmentManager!!.beginTransaction().replace(
+            requireFragmentManager().beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 AddFoodFragment()
             ).addToBackStack(null).commit()
         }
 
-        view.diary_add_dinner_btn.setOnClickListener {
+        binding.diaryAddDinnerBtn.setOnClickListener {
             model.setMealTime("Avondeten")
-            fragmentManager!!.beginTransaction().replace(
+            requireFragmentManager().beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 AddFoodFragment()
             ).addToBackStack(null).commit()
         }
 
-        view.diary_add_snack_btn.setOnClickListener {
+        binding.diaryAddSnackBtn.setOnClickListener {
             model.setMealTime("Snack")
-            fragmentManager!!.beginTransaction().replace(
+            requireFragmentManager().beginTransaction().replace(
                 R.id.activity_main_fragment_container,
                 AddFoodFragment()
             ).addToBackStack(null).commit()
         }
 
-        view.fragment_diary_breakfast.setOnClickListener {
-            if (view.diary_breakfast_rv.visibility == GONE){
-                view.diary_breakfast_rv.visibility = VISIBLE
+        binding.fragmentDiaryBreakfast.setOnClickListener {
+            if (binding.diaryBreakfastRv.visibility == GONE){
+                binding.diaryBreakfastRv.visibility = VISIBLE
             } else {
-                view.diary_breakfast_rv.visibility = GONE
+                binding.diaryBreakfastRv.visibility = GONE
             }
         }
 
-        view.fragment_diary_lunch.setOnClickListener {
-            if (view.diary_lunch_rv.visibility == GONE){
-                view.diary_lunch_rv.visibility = VISIBLE
+        binding.fragmentDiaryLunch.setOnClickListener {
+            if (binding.diaryLunchRv.visibility == GONE){
+                binding.diaryLunchRv.visibility = VISIBLE
             } else {
-                view.diary_lunch_rv.visibility = GONE
+                binding.diaryLunchRv.visibility = GONE
             }
         }
 
-        view.fragment_diary_dinner.setOnClickListener {
-            if (view.diary_dinner_rv.visibility == GONE){
-                view.diary_dinner_rv.visibility = VISIBLE
+        binding.fragmentDiaryDinner.setOnClickListener {
+            if (binding.diaryDinnerRv.visibility == GONE){
+                binding.diaryDinnerRv.visibility = VISIBLE
             } else {
-                view.diary_dinner_rv.visibility = GONE
+                binding.diaryDinnerRv.visibility = GONE
             }
         }
 
-        view.fragment_diary_snack.setOnClickListener {
-            if (view.diary_snack_rv.visibility == GONE){
-                view.diary_snack_rv.visibility = VISIBLE
+        binding.fragmentDiarySnack.setOnClickListener {
+            if (binding.diarySnackRv.visibility == GONE){
+                binding.diarySnackRv.visibility = VISIBLE
             } else {
-                view.diary_snack_rv.visibility = GONE
+                binding.diarySnackRv.visibility = GONE
             }
         }
 
-        view.diary_prev_date.setOnClickListener {
-            setNewDate(-1, view)
+        binding.diaryPrevDate.setOnClickListener {
+            setNewDate(-1)
         }
 
-        view.diary_next_date.setOnClickListener {
-            setNewDate(1, view)
+        binding.diaryNextDate.setOnClickListener {
+            setNewDate(1)
         }
 
         // btns starting state
-        view.diary_next_date.isEnabled = false
-        view.diary_next_date.isClickable = false
-        view.diary_next_date.alpha = 0.2f
+        binding.diaryNextDate.isEnabled = false
+        binding.diaryNextDate.isClickable = false
+        binding.diaryNextDate.alpha = 0.2f
 
         // Diary view for doctor's side
         if (isDoctor) {
-            view.diary_add_breakfast.visibility = GONE
-            view.diary_add_breakfast_btn.visibility = GONE
-            view.diary_add_lunch.visibility = GONE
-            view.diary_add_lunch_btn.visibility = GONE
-            view.diary_add_dinner.visibility = GONE
-            view.diary_add_dinner_btn.visibility = GONE
-            view.diary_add_snack.visibility = GONE
-            view.diary_add_snack_btn.visibility = GONE
+            binding.diaryAddBreakfast.visibility = GONE
+            binding.diaryAddBreakfastBtn.visibility = GONE
+            binding.diaryAddLunch.visibility = GONE
+            binding.diaryAddLunchBtn.visibility = GONE
+            binding.diaryAddDinner.visibility = GONE
+            binding.diaryAddDinnerBtn.visibility = GONE
+            binding.diaryAddSnack.visibility = GONE
+            binding.diaryAddSnackBtn.visibility = GONE
         }
-        loader = view.fragment_diary_loader
+        loader = binding.fragmentDiaryLoader
         return view
     }
 
     // function to set date in model, and return date as string for UI
-    private fun setNewDate(dayAdjustment: Int, v: View) {
+    private fun setNewDate(dayAdjustment: Int) {
         var cal: Calendar = model.getSelectedDate()
         cal.add(Calendar.DATE, dayAdjustment)
         model.setDiaryDate(cal)
@@ -322,19 +327,19 @@ class DiaryFragment: BaseFragment() {
 
         when (model.getDateString()) {
             "today" -> {
-                v.fragment_diary_date.text = getString(R.string.today)
+                binding.fragmentDiaryDate.text = getString(R.string.today)
                 mNextDayBtn.isEnabled = false
                 mNextDayBtn.isClickable = false
                 mNextDayBtn.alpha = 0.2f
             }
             "yesterday" -> {
-                v.fragment_diary_date.text = getString(R.string.yesterday)
+                binding.fragmentDiaryDate.text = getString(R.string.yesterday)
                 mNextDayBtn.isEnabled = true
                 mNextDayBtn.isClickable = true
                 mNextDayBtn.alpha = 1f
             }
             else -> {
-                v.fragment_diary_date.text = sdf.format(cal.time)
+                binding.fragmentDiaryDate.text = sdf.format(cal.time)
             }
         }
     }
@@ -355,7 +360,7 @@ class DiaryFragment: BaseFragment() {
                 direction: Int
             ) {
                 breakfastAdapter.removeItem(viewHolder.adapterPosition)
-                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted))
+//                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted))
             }
         }
 
@@ -374,7 +379,7 @@ class DiaryFragment: BaseFragment() {
                 direction: Int
             ) {
                 lunchAdapter.removeItem(viewHolder.adapterPosition)
-                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted))
+//                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted))
             }
         }
 
@@ -393,7 +398,7 @@ class DiaryFragment: BaseFragment() {
                 direction: Int
             ) {
                 dinnerAdapter.removeItem(viewHolder.adapterPosition)
-                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted))
+//                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted))
             }
         }
 
@@ -412,7 +417,7 @@ class DiaryFragment: BaseFragment() {
                 direction: Int
             ) {
                 snackAdapter.removeItem(viewHolder.adapterPosition)
-                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted))
+//                GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.food_deleted))
             }
         }
 }

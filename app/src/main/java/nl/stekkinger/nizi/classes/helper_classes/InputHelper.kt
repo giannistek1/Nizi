@@ -5,7 +5,6 @@ import android.util.Patterns
 import android.view.View
 import android.view.animation.Animation
 import android.widget.EditText
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import nl.stekkinger.nizi.R
 import java.util.regex.Pattern
@@ -16,7 +15,7 @@ object InputHelper {
         if (input.text.isBlank()) {
             input.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
             input.requestFocus()
-            GeneralHelper.showAnimatedToast(toastView, toastAnimation, message)
+//            GeneralHelper.showAnimatedToast(toastView, toastAnimation, message)
             return true
         }
         return false

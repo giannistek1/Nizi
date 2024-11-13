@@ -19,12 +19,12 @@ import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
-import nl.stekkinger.nizi.databinding.FragmentPatientFeedbackBinding
 import nl.stekkinger.nizi.databinding.FragmentPatientHomeBinding
 import nl.stekkinger.nizi.fragments.BaseFragment
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.FoodRepository
-import java.util.*
+import java.util.Calendar
+import java.util.Date
 import kotlin.math.roundToInt
 
 class PatientHomeFragment : BaseFragment() {
@@ -208,14 +208,16 @@ class PatientHomeFragment : BaseFragment() {
             loader.visibility = View.GONE
 
             // Guards
-            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_consumptions_fail))
-                return }
+//            if (GeneralHelper.apiIsDown) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.api_is_down)); return }
+//            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_consumptions_fail))
+//                return }
 
             // Feedback
             //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_consumptions));
 
-            consumptions = result
+            if (result != null) {
+                consumptions = result
+            }
 
             supplements.clear()
 
@@ -267,15 +269,15 @@ class PatientHomeFragment : BaseFragment() {
             loader.visibility = View.GONE
 
             // Guard
-            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_dietary_fail))
-                return }
+//            if (result == null) { GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.get_dietary_fail))
+//                return }
 
             // Feedback
             //GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_dietary))
 
             val dietaryGuidelines: ArrayList<DietaryGuideline> = arrayListOf()
 
-            result.forEachIndexed { _, resultDietary ->
+            result?.forEachIndexed { _, resultDietary ->
                 if (!resultDietary.is_active) return@forEachIndexed
 
                 var index = 0 // Kcal
@@ -318,7 +320,7 @@ class PatientHomeFragment : BaseFragment() {
 
         if (requestCode == EDIT_PATIENT_REQUEST_CODE && resultCode == AppCompatActivity.RESULT_OK) {
             // refresh activity
-            activity!!.recreate()
+            requireActivity().recreate()
 
         }
     }
@@ -329,7 +331,7 @@ class PatientHomeFragment : BaseFragment() {
             getConsumptionsMockup()
         } else {
             // Check internet connection
-            if (!GeneralHelper.hasInternetConnection(context!!, toastView, toastAnimation)) return
+//            if (!GeneralHelper.hasInternetConnection(requireContext(), toastView, toastAnimation)) return
 
             getConsumptionsAsyncTask().execute()
         }
