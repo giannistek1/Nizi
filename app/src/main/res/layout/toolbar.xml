@@ -13,35 +13,4 @@
     app:theme="@style/ToolbarBackButtonTheme"
     android:fitsSystemWindows="true">
 
-    <RelativeLayout
-        android:id="@+id/toolbar_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical">
-
-        <!-- Back text -->
-        <TextView
-            android:id="@+id/toolbar_txt_back"
-            android:text=""
-            android:textSize="@dimen/textSizeNormal"
-            android:fontFamily="@font/helvetica_neue_medium"
-            android:textColor="@color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:gravity="center"
-            android:layout_centerInParent="true"/>
-
-        <TextView
-            android:id="@+id/toolbar_title"
-            android:text=""
-            android:textSize="@dimen/textSizeNormal"
-            android:fontFamily="@font/helvetica_neue_medium"
-            android:textColor="@color/white"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:layout_centerInParent="true"
-            android:layout_toEndOf="@+id/toolbar_txt_back"/>
-    </RelativeLayout>
 </androidx.appcompat.widget.Toolbar>

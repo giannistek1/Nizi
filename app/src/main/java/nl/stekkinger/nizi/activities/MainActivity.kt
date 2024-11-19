@@ -21,7 +21,6 @@ import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.databinding.ActivityMainBinding
-import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.fragments.ConversationFragment
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.fragments.HomeFragment
@@ -32,9 +31,8 @@ import nl.stekkinger.nizi.repositories.WeightUnitRepository
 class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var toolbarBinding: ToolbarBinding
 
-    private var TAG = "Main"
+    private val TAG = "Main"
 
     // Repositories
     private val authRepository: AuthRepository = AuthRepository()
@@ -54,13 +52,12 @@ class MainActivity : BaseActivity() {
 
         // Setup UI.
         binding = ActivityMainBinding.inflate(layoutInflater)
-        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        setSupportActionBar(toolbarBinding.toolbar)
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.title = getString(R.string.app_name)
 
-        toolbarBinding.toolbarTitle.text = getString(R.string.app_name)
         loader = binding.activityMainLoader
         binding.activityMainBottomNavigation.setOnNavigationItemSelectedListener(navListener)
 
@@ -122,7 +119,7 @@ class MainActivity : BaseActivity() {
     private val navListener = BottomNavigationView.OnNavigationItemSelectedListener {  menuItem ->
         when (menuItem.itemId) {
             R.id.nav_home -> {
-                toolbarBinding.toolbarTitle.text = getString(R.string.app_name)
+                supportActionBar?.title = getString(R.string.app_name)
                 val fragment = HomeFragment()
 
                 val bundle = Bundle()
@@ -142,7 +139,7 @@ class MainActivity : BaseActivity() {
             }
 
             R.id.nav_conversation -> {
-                toolbarBinding.toolbarTitle.text = getString(R.string.conversations)
+                supportActionBar?.title = getString(R.string.conversations)
                 val fragment = ConversationFragment(user, doctor)
                 supportFragmentManager.beginTransaction().replace(binding.activityMainFragmentContainer.id,  fragment, fragment.javaClass.simpleName)
                     .commit()

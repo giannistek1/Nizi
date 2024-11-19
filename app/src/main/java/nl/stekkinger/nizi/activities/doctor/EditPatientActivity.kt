@@ -19,7 +19,6 @@ import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.databinding.ActivityAddPatientBinding
-import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.repositories.AuthRepository
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -28,7 +27,6 @@ import java.util.Date
 class EditPatientActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAddPatientBinding
-    private lateinit var toolbarBinding: ToolbarBinding
 
     private var TAG = "EditPatient"
 
@@ -52,13 +50,12 @@ class EditPatientActivity : BaseActivity() {
 
         // Setup UI Same layout as add patient
         binding = ActivityAddPatientBinding.inflate(layoutInflater)
-        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        setSupportActionBar(toolbarBinding.toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbarBinding.toolbarTxtBack.text = getString(R.string.patient_overview)
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(R.string.patient_overview)
         loader = binding.activityAddPatientProgressbar
 
         // Setup custom toast

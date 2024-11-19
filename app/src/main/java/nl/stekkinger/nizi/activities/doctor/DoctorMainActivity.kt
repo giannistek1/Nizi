@@ -27,7 +27,6 @@ import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.patient.PatientItem
 import nl.stekkinger.nizi.databinding.ActivityDoctorMainBinding
-import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
 import java.util.Locale
@@ -36,7 +35,6 @@ import java.util.Locale
 class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
 
     private lateinit var binding: ActivityDoctorMainBinding
-    private lateinit var toolbarBinding: ToolbarBinding
 
     private var TAG = "DoctorMain"
 
@@ -61,13 +59,13 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
 
         // Setup UI.
         binding = ActivityDoctorMainBinding.inflate(layoutInflater)
-        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
         // Set toolbar
-        setSupportActionBar(toolbarBinding.toolbar)
-        toolbarBinding.toolbarTitle.text = getString(R.string.patients)
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.title = getString(R.string.patients)
+
         loader = binding.activityDoctorMainLoader
 
         // Setup custom toast
@@ -101,11 +99,12 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
         if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return
 
         // Get patients
-        if (GeneralHelper.isAdmin()) {
-            getPatientsForDoctorMockup(); return
-        }
+//        if (GeneralHelper.isAdmin()) {
+//            getPatientsForDoctorMockup(); return
+//        }
+        getPatientsForDoctorMockup();
 
-        getPatientsForDoctorAsyncTask().execute()
+        //getPatientsForDoctorAsyncTask().execute()
     }
 
     //region Toolbar
@@ -189,12 +188,12 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
                     deletePatientAsyncTask(patient.patient_id).execute()
                 }
                 filteredList.removeAt(viewHolder.adapterPosition)
-                binding.activityDoctorMainRv.adapter!!.notifyDataSetChanged()
+                binding.activityDoctorMainRv.adapter?.notifyDataSetChanged()
             }
 
             builder.setNegativeButton(android.R.string.no) { dialog, which ->
                 // Put patient back
-                binding.activityDoctorMainRv.adapter!!.notifyDataSetChanged()
+                binding.activityDoctorMainRv.adapter?.notifyDataSetChanged()
             }
 
             builder.show()
@@ -211,15 +210,17 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
         if (text.isEmpty()) {
             filteredList.addAll(patientList)
         } else {
-            text = text.toLowerCase(Locale.getDefault())
+            text = text.lowercase(Locale.getDefault())
             for (item in patientList) {
-                if (item.name.toLowerCase(Locale.getDefault()).contains(text)) {
+                if (item.name.lowercase(Locale.getDefault()).contains(text)) {
                     filteredList.add(item)
                 }
             }
         }
         if (binding.activityDoctorMainRv.adapter != null)
-            binding.activityDoctorMainRv.adapter!!.notifyDataSetChanged()
+        {
+            binding.activityDoctorMainRv.adapter?.notifyDataSetChanged()
+        }
     }
     //endregion
 

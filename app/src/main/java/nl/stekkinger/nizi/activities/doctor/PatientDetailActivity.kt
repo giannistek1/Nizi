@@ -18,7 +18,6 @@ import nl.stekkinger.nizi.classes.patient.PatientShort
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.databinding.ActivityPatientDetailBinding
-import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.fragments.DiaryFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientFeedbackFragment
 import nl.stekkinger.nizi.fragments.doctor.PatientHomeFragment
@@ -30,7 +29,6 @@ import nl.stekkinger.nizi.repositories.WeightUnitRepository
 class PatientDetailActivity : BaseActivity() {
 
     private lateinit var binding: ActivityPatientDetailBinding
-    private lateinit var toolbarBinding: ToolbarBinding
 
     private val authRepository = AuthRepository()
     private val patientRepository = PatientRepository()
@@ -44,14 +42,13 @@ class PatientDetailActivity : BaseActivity() {
 
         // Setup UI.
         binding = ActivityPatientDetailBinding.inflate(layoutInflater)
-        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        setSupportActionBar(toolbarBinding.toolbar)
+        setSupportActionBar(findViewById(R.id.toolbar))
         // Back button
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbarBinding.toolbarTxtBack.text = getString(R.string.patient_overview)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(R.string.patient_overview)
         loader = binding.activityPatientDetailLoader
         binding.activityPatientDetailBottomNavigation.setOnNavigationItemSelectedListener(navListener)
 

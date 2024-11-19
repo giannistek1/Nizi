@@ -17,14 +17,12 @@ import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.password.ForgotPasswordRequest
 import nl.stekkinger.nizi.classes.password.ForgotPasswordResponse
 import nl.stekkinger.nizi.databinding.ActivityForgotPasswordBinding
-import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.repositories.AuthRepository
 
 
 class ForgotPasswordActivity : BaseActivity() {
 
     private lateinit var binding: ActivityForgotPasswordBinding
-    private lateinit var toolbarBinding: ToolbarBinding
 
     private var TAG = "ForgotPassword"
 
@@ -37,15 +35,14 @@ class ForgotPasswordActivity : BaseActivity() {
 
         // Setup UI.
         binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
-        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        setSupportActionBar(toolbarBinding.toolbar)
+        setSupportActionBar(findViewById(R.id.toolbar))
         // Back button
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         // Show app title by hiding the bar overlayed on the toolbar
-        toolbarBinding.toolbarBar.visibility = View.GONE
+        supportActionBar?.title = getString(R.string.app_name)
         loader = binding.activityForgotPasswordLoader
 
         // Setup custom toast

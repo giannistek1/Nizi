@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.EditPatientActivity
@@ -59,10 +58,10 @@ class PatientHomeFragment : BaseFragment() {
         //val view: View = inflater.inflate(R.layout.fragment_patient_home, container, false)
         loader = binding.fragmentPatientHomeLoader
 
-        // Setup custom toast
-        val parent: RelativeLayout = binding.fragmentPatientHomeRl
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+//        // Setup custom toast (gives error leak)
+//        val parent: RelativeLayout = binding.fragmentPatientHomeRl
+//        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+//        parent.addView(toastView)
 
         // Get patient data from bundle
         val bundle: Bundle? = this.arguments
@@ -70,10 +69,10 @@ class PatientHomeFragment : BaseFragment() {
         if (bundle != null) {
             patientData = bundle.getSerializable(GeneralHelper.EXTRA_PATIENT) as PatientData
 
-            if (GeneralHelper.isAdmin())
+//            if (GeneralHelper.isAdmin())
                 weightUnits = LocalDb.weightUnits
-            else
-                weightUnits = GeneralHelper.getWeightUnitHolder()!!.weightUnits
+//            else
+//                weightUnits = GeneralHelper.getWeightUnitHolder()!!.weightUnits
 
             // Header
             val fullName = "${patientData.user.first_name} ${patientData.user.last_name}"

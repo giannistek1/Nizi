@@ -24,7 +24,6 @@ import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.LoginRequest
 import nl.stekkinger.nizi.classes.login.LoginResponse
 import nl.stekkinger.nizi.databinding.ActivityLoginBinding
-import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.repositories.AuthRepository
 import java.util.Locale
 
@@ -32,7 +31,6 @@ import java.util.Locale
 class LoginActivity : BaseActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var toolbarBinding: ToolbarBinding
 
     private var TAG = "Login"
 
@@ -47,13 +45,12 @@ class LoginActivity : BaseActivity() {
 
         // Setup the UI.
         binding = ActivityLoginBinding.inflate(layoutInflater)
-        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        setSupportActionBar(toolbarBinding.toolbar)
+        setSupportActionBar(findViewById(R.id.toolbar))
         // Show app title by hiding the bar overlayed on the toolbar
-        toolbarBinding.toolbar.visibility = View.GONE
+        supportActionBar?.title = getString(R.string.app_name)
         loader = binding.activityLoginLoader
         Linkify.addLinks(binding.activityLoginTxtNierstichtingUrl, Linkify.WEB_URLS)
         Linkify.addLinks(binding.activityLoginTxtNierstichtingPhonenumber, Linkify.PHONE_NUMBERS)
@@ -111,7 +108,7 @@ class LoginActivity : BaseActivity() {
         //activity_login_et_password.setText("Welkom123")
 
         binding.activityLoginEtUsername.setText("patient") // Patient
-        binding.activityLoginEtUsername.setText("patient") // Patient
+        binding.activityLoginEtPassword.setText("patient") // Patient
         //activity_login_et_username.setText("doctor") // Doctor
         //activity_login_et_password.setText("doctor") // Doctor
 
@@ -150,8 +147,8 @@ class LoginActivity : BaseActivity() {
 
         val loginRequest = LoginRequest(usernameET.text.toString(), passwordET.text.toString())
 
-        if (usernameET.text.toString().toLowerCase(Locale.ROOT) == "doctor") { loginDoctorMockup(); return }
-        if (usernameET.text.toString().toLowerCase(Locale.ROOT) == "patient") { loginPatientMockup(); return }
+        if (usernameET.text.toString().lowercase(Locale.ROOT) == "doctor") { loginDoctorMockup(); return }
+        if (usernameET.text.toString().lowercase(Locale.ROOT) == "patient") { loginPatientMockup(); return }
 
         if (loginAsyncTask(loginRequest).status != AsyncTask.Status.RUNNING)
             loginAsyncTask(loginRequest).execute()

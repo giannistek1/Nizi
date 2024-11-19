@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -56,10 +55,10 @@ class PatientFeedbackFragment : BaseFragment() {
         loader = binding.fragmentPatientFeedbackLoader
         mNewFeedbackET = binding.fragmentPatientFeedbackEtNewFeedback as EditText
 
-        // Setup custom toast
-        val parent: RelativeLayout = binding.fragmentPatientFeedbackRl
-        //toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+        // Setup custom toast (gives error leak)
+//        val parent: RelativeLayout = binding.fragmentPatientFeedbackRl
+//        //toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+//        parent.addView(toastView)
 
         // Sets custom toast animation for every fragment
         toastAnimation = AnimationUtils.loadAnimation(
@@ -90,13 +89,14 @@ class PatientFeedbackFragment : BaseFragment() {
             )
 
             // Admin guard
-            if (GeneralHelper.isAdmin()) { addFeedbackMockup(); return@setOnClickListener }
+//            if (GeneralHelper.isAdmin()) { addFeedbackMockup(); return@setOnClickListener }
+            addFeedbackMockup();
 
             // Check internet connection
 //            if (!GeneralHelper.hasInternetConnection(binding.root.context!!, toastView, toastAnimation)) return@setOnClickListener
 
-            if (addFeedbackAsyncTask().status != AsyncTask.Status.RUNNING)
-                addFeedbackAsyncTask().execute()
+//            if (addFeedbackAsyncTask().status != AsyncTask.Status.RUNNING)
+//                addFeedbackAsyncTask().execute()
         }
 
         // Setup RV

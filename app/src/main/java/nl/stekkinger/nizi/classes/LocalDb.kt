@@ -99,7 +99,7 @@ object LocalDb {
 
     val feedbacks: ArrayList<Feedback> = arrayListOf(
         Feedback(0, "Gesprek samenvatting", "Even beter op uw eiwit-inname letten! Ga naar www.letopuwvoeding.com voor advies.", Date("1/1/2000"), false, LocalDb.patientShort, LocalDb.doctorShort),
-        Feedback(0, "Gesprek samenvatting", "Goed gedaan, ga zo door!.", Date("2/2/2002"), false, LocalDb.patientShort, LocalDb.doctorShort)
+        Feedback(1, "Gesprek samenvatting", "Goed gedaan, ga zo door!.", Date("2/2/2002"), false, LocalDb.patientShort, LocalDb.doctorShort)
     )
 
     val consumptionResponses: ArrayList<ConsumptionResponse> = arrayListOf(

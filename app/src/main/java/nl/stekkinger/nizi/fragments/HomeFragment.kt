@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import com.google.gson.Gson
 import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.diary.ConsumptionResponse
@@ -17,7 +15,6 @@ import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
 import nl.stekkinger.nizi.classes.helper_classes.GuidelinesHelper
 import nl.stekkinger.nizi.classes.login.UserLogin
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnit
-import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.databinding.FragmentHomeBinding
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.FoodRepository
@@ -53,20 +50,21 @@ class HomeFragment: BaseFragment() {
         loader = binding.fragmentHomeLoader
         linearLayoutGuidelines = binding.fragmentHomeLlGuidelines
 
-        // Setup custom toast
-        val parent: RelativeLayout = binding.fragmentHomeRl
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+        // Setup custom toast (gives view leak error)
+//        val parent: RelativeLayout = binding.fragmentHomeRl
+//        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+//        parent.addView(toastView)
 
         // WeightUnits
-        weightUnits = if (GeneralHelper.isAdmin()) {
-            LocalDb.weightUnits;
-        } else {
-            val gson = Gson()
-            val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
-            val weightUnitHolder: WeightUnitHolder = gson.fromJson(json, WeightUnitHolder::class.java)
-            weightUnitHolder.weightUnits
-        }
+//        weightUnits = if (GeneralHelper.isAdmin()) {
+//            LocalDb.weightUnits;
+//        } else {
+//            val gson = Gson()
+//            val json: String = GeneralHelper.prefs.getString(GeneralHelper.PREF_WEIGHT_UNIT, "")!!
+//            val weightUnitHolder: WeightUnitHolder = gson.fromJson(json, WeightUnitHolder::class.java)
+//            weightUnitHolder.weightUnits
+//        }
+        weightUnits = LocalDb.weightUnits
 
         user = GeneralHelper.getUser()
 
@@ -157,14 +155,14 @@ class HomeFragment: BaseFragment() {
 
     //region Get Consumptions
     private fun getConsumptions() {
-        if (GeneralHelper.isAdmin()) {
+//        if (GeneralHelper.isAdmin()) {
             getConsumptionsMockup()
-        } else {
-            // Check internet connection
-//            if (!GeneralHelper.hasInternetConnection(requireContext(), toastView, toastAnimation)) return
-
-            getConsumptionsAsyncTask().execute()
-        }
+//        } else {
+//            // Check internet connection
+////            if (!GeneralHelper.hasInternetConnection(requireContext(), toastView, toastAnimation)) return
+//
+//            getConsumptionsAsyncTask().execute()
+//        }
     }
     inner class getConsumptionsAsyncTask() : AsyncTask<Void, Void, ArrayList<ConsumptionResponse>>()
     {

@@ -6,7 +6,6 @@ import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import nl.stekkinger.nizi.R
@@ -34,10 +33,10 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
         _binding = FragmentConversationBinding.inflate(layoutInflater)
         loader = binding.fragmentConversationLoader
 
-        // Setup custom toast
-        val parent: RelativeLayout = binding.fragmentConversationRl
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+        // Setup custom toast (gives view leak error)
+//        val parent: RelativeLayout = binding.fragmentConversationRl
+//        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+//        parent.addView(toastView)
 
         val doctorName = "${doctor.user.first_name.first()}. ${doctor.user.last_name}"
         binding.fragmentConversationTxtAdviceFrom.text = getString(R.string.advice_from, doctorName)
@@ -99,7 +98,7 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
         }
     }
 
-    //region Mockup Login
+    //region Mockup Conversations
     private fun getConversationsMockup() {
         // Feedback
 //        GeneralHelper.showAnimatedToast(toastView, toastAnimation, getString(R.string.fetched_feedbacks))

@@ -21,7 +21,6 @@ import nl.stekkinger.nizi.classes.patient.Patient
 import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.classes.weight_unit.WeightUnitHolder
 import nl.stekkinger.nizi.databinding.ActivityAddPatientDietaryBinding
-import nl.stekkinger.nizi.databinding.ToolbarBinding
 import nl.stekkinger.nizi.repositories.AuthRepository
 import nl.stekkinger.nizi.repositories.DietaryRepository
 import nl.stekkinger.nizi.repositories.PatientRepository
@@ -29,7 +28,6 @@ import nl.stekkinger.nizi.repositories.PatientRepository
 class EditPatientDietaryActivity : BaseActivity() {
 
     private lateinit var binding: ActivityAddPatientDietaryBinding
-    private lateinit var toolbarBinding: ToolbarBinding
 
     private var TAG = "EditPatientDietary"
 
@@ -53,13 +51,12 @@ class EditPatientDietaryActivity : BaseActivity() {
 
         // Setup UI same as AddPatientDietary
         binding = ActivityAddPatientDietaryBinding.inflate(layoutInflater)
-        toolbarBinding = ToolbarBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
 
-        setSupportActionBar(toolbarBinding.toolbar)
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        toolbarBinding.toolbarTxtBack.text = getString(R.string.personal_info_short)
+        setSupportActionBar(findViewById(R.id.toolbar))
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = getString(R.string.personal_info_short)
         loader = binding.activityAddPatientDietaryLoader
 
         // Setup custom toast
