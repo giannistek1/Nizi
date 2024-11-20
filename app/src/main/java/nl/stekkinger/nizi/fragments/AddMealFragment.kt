@@ -110,7 +110,7 @@ class AddMealFragment: NavigationChildFragment() {
             ).commit()
         }
 
-        return view
+        return binding.root
     }
 
     inner class getMealsAsyncTask() : AsyncTask<Void, Void, ArrayList<Meal>>() {

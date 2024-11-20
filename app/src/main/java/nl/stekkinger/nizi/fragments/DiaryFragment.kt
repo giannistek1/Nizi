@@ -61,8 +61,8 @@ class DiaryFragment: BaseFragment() {
 
         // Setup custom toast
         val parent: RelativeLayout = binding.fragmentDiaryRl
-        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(toastView)
+//        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+//        parent.addView(toastView)
 
         // Get foodAdded data from bundle
         val bundle: Bundle? = this.arguments
@@ -315,7 +315,7 @@ class DiaryFragment: BaseFragment() {
             binding.diaryAddSnackBtn.visibility = GONE
         }
         loader = binding.fragmentDiaryLoader
-        return view
+        return binding.root
     }
 
     // function to set date in model, and return date as string for UI

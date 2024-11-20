@@ -48,7 +48,7 @@ class ForgotPasswordActivity : BaseActivity() {
         // Setup custom toast
         val parent: RelativeLayout = binding.activityForgotPasswordRl
         //toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(customToastLayout)
+//        parent.addView(customToastLayout)
 
         binding.activityForgotPasswordEtEmail.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -94,7 +94,7 @@ class ForgotPasswordActivity : BaseActivity() {
 
         // Checks (Guards)
         if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return
-        if (InputHelper.inputIsEmpty(this, emailET, customToastLayout, toastAnimation, getString(R.string.email_cant_be_empty))) return
+//        if (InputHelper.inputIsEmpty(this, emailET, customToastLayout, toastAnimation, getString(R.string.email_cant_be_empty))) return
 
         val forgotPasswordRequest = ForgotPasswordRequest(emailET.text.toString())
 

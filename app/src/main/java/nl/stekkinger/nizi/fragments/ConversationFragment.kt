@@ -58,7 +58,7 @@ class ConversationFragment(private val user: UserLogin, private val doctor: Doct
 //        if (!GeneralHelper.hasInternetConnection(requireContext(), toastView, toastAnimation)) return view
 //        else { getConversationsAsyncTask().execute() }
 
-        return view
+        return binding.root
     }
 
     inner class getConversationsAsyncTask : AsyncTask<Void, Void, ArrayList<Feedback>>() {

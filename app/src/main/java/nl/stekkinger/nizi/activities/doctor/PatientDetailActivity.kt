@@ -55,7 +55,7 @@ class PatientDetailActivity : BaseActivity() {
         // Setup custom toast
         val parent: RelativeLayout = binding.activityPatientDetailRl
         //toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(customToastLayout)
+//        parent.addView(customToastLayout)
 
         // Overrides custom toast animation for with bottom navigation
         toastAnimation = AnimationUtils.loadAnimation(

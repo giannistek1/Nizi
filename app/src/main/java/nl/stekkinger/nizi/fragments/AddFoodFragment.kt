@@ -126,7 +126,7 @@ class AddFoodFragment: NavigationChildFragment() {
             zxing_barcode_scanner()
         }
 
-        return view
+        return binding.root
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

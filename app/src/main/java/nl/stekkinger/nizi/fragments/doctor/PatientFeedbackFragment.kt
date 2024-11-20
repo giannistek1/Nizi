@@ -20,7 +20,6 @@ import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.feedback.Feedback
 import nl.stekkinger.nizi.classes.feedback.FeedbackShort
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
-import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.patient.PatientData
 import nl.stekkinger.nizi.databinding.FragmentPatientFeedbackBinding
 import nl.stekkinger.nizi.fragments.BaseFragment
@@ -77,8 +76,8 @@ class PatientFeedbackFragment : BaseFragment() {
             hideKeyboard()
 
             // Guard
-            if (InputHelper.inputIsEmpty(mContext!!, mNewFeedbackET, toastView, toastAnimation, getString(R.string.feedback_is_empty)))
-                return@setOnClickListener
+//            if (InputHelper.inputIsEmpty(mContext!!, mNewFeedbackET, toastView, toastAnimation, getString(R.string.feedback_is_empty)))
+//                return@setOnClickListener
 
             val sdf = GeneralHelper.getCreateDateFormat()
 
@@ -109,11 +108,11 @@ class PatientFeedbackFragment : BaseFragment() {
 //        if (!GeneralHelper.hasInternetConnection(binding.root.context!!, toastView, toastAnimation)) return view
 
         // Get feedback
-        if (GeneralHelper.isAdmin()) {
+//        if (GeneralHelper.isAdmin()) {
             getConversationsMockup()
-        } else {
-            getConversationsAsyncTask().execute()
-        }
+//        } else {
+//            getConversationsAsyncTask().execute()
+//        }
 
         return binding.root
     }

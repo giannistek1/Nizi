@@ -61,7 +61,7 @@ class EditPatientDietaryActivity : BaseActivity() {
 
         // Setup custom toast
         val parent: RelativeLayout = binding.activityAddPatientDietaryRl
-        parent.addView(customToastLayout)
+//        parent.addView(customToastLayout)
 
         // Add inputs to list
         textViewList = arrayListOf(binding.activityAddPatientDietaryEtCalMin, binding.activityAddPatientDietaryEtCalMax,
@@ -242,7 +242,7 @@ class EditPatientDietaryActivity : BaseActivity() {
             toast.setGravity(Gravity.BOTTOM, 0, 0)
             GeneralHelper.makeToast(baseContext, customToastBinding, getString(R.string.patient_edited))
             //customToastLayout.toast_text.text = getString(R.string.patient_edited)
-            toast.view = customToastLayout
+//            toast.view = customToastLayout
             toast.show()
 
             updateUserAsyncTask().execute()

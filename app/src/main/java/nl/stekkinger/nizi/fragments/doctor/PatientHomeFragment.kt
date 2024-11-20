@@ -158,7 +158,7 @@ class PatientHomeFragment : BaseFragment() {
         binding.fragmentPatientHomeBtnNextWeek.isClickable = false
         binding.fragmentPatientHomeBtnNextWeek.alpha = 0.2f
 
-        return view
+        return binding.root
     }
 
     override fun onStart() {

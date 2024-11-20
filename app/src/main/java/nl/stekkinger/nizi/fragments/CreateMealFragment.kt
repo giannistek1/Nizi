@@ -203,7 +203,7 @@ class CreateMealFragment: NavigationChildFragment() {
             saveMeal()
         }
 
-        return view
+        return binding.root
     }
 
     private fun updateUI(view: View) {

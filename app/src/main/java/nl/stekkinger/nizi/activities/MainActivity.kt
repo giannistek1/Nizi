@@ -63,7 +63,7 @@ class MainActivity : BaseActivity() {
 
         // Setup custom toast
         val parent: RelativeLayout = binding.activityMainRl
-        parent.addView(customToastLayout)
+//        parent.addView(customToastLayout)
 
         // Overrides custom toast animation for with bottom navigation
         toastAnimation = AnimationUtils.loadAnimation(
@@ -87,8 +87,8 @@ class MainActivity : BaseActivity() {
         // Check internet connection
         if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return
 
-        getWeightUnits().execute()
-        getDoctorAsyncTask().execute()
+//        getWeightUnits().execute()
+//        getDoctorAsyncTask().execute()
     }
 
     //region Toolbar

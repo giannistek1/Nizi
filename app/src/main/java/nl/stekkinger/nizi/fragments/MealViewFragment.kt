@@ -226,7 +226,7 @@ class MealViewFragment : NavigationChildFragment() {
             }
         }
 
-        return view
+        return binding.root
     }
 
     private fun updateUI() {

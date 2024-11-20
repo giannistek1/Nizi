@@ -14,7 +14,7 @@ open class BaseActivity : AppCompatActivity() {
 
     protected lateinit var customToastBinding: CustomToastBinding
 
-    protected lateinit var customToastLayout: View
+//    protected lateinit var customToastLayout: View
     protected lateinit var loader: View
 
     protected lateinit var toastAnimation: Animation
@@ -26,7 +26,7 @@ open class BaseActivity : AppCompatActivity() {
         //setContentView(view)
 
         // CustomToastLayout for toast (in case you want a disappearing toast that exists through multiple activities)
-        customToastLayout = layoutInflater.inflate(R.layout.custom_toast, customToastBinding.llCustomToastWrapper)
+//        customToastLayout = layoutInflater.inflate(R.layout.custom_toast, customToastBinding.llCustomToastWrapper)
 
         // Sets custom toast animation for every activity
         toastAnimation = AnimationUtils.loadAnimation(

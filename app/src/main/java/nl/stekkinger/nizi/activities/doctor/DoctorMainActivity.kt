@@ -70,8 +70,8 @@ class DoctorMainActivity : BaseActivity(), AdapterView.OnItemSelectedListener  {
 
         // Setup custom toast
         val parent: RelativeLayout = binding.activityDoctorMainRl
-        //toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(customToastLayout)
+//        toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
+//        parent.addView(customToastLayout)
 
         // Get User and doctorId
         user = GeneralHelper.getUser()

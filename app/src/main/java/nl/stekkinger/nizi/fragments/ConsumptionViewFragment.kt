@@ -146,7 +146,7 @@ class ConsumptionViewFragment : NavigationChildFragment() {
             }
             false
         }
-        return view
+        return binding.root
     }
 
     // updating values in the view

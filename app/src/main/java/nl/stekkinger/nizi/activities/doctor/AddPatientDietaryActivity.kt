@@ -63,7 +63,7 @@ class AddPatientDietaryActivity : BaseActivity() {
 
         // Setup custom toast
         val parent: RelativeLayout = binding.activityAddPatientDietaryRl
-        parent.addView(customToastLayout)
+//        parent.addView(customToastLayout)
 
         // Ideally dynamic inputs
         // Add inputs to list

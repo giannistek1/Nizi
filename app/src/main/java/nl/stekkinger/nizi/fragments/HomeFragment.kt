@@ -142,7 +142,7 @@ class HomeFragment: BaseFragment() {
 
         getConsumptions()
 
-        return view
+        return binding.root
     }
 
     fun refreshGuidelines()

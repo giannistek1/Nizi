@@ -124,7 +124,7 @@ class FavoritesFragment: NavigationChildFragment() {
                 .commit()
         }
 
-        return view
+        return binding.root
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

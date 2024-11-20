@@ -61,7 +61,7 @@ class EditPatientActivity : BaseActivity() {
         // Setup custom toast
         val parent: RelativeLayout = binding.activityAddPatientRl
         //oastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(customToastLayout)
+//        parent.addView(customToastLayout)
 
         // Fill patient
         if (intent.extras != null) {
@@ -101,10 +101,10 @@ class EditPatientActivity : BaseActivity() {
         passwordConfirmET.setBackgroundColor(Color.TRANSPARENT)
 
         // Guards/Checks
-        if (InputHelper.inputIsEmpty(this, firstNameET, customToastLayout, toastAnimation, getString(R.string.empty_first_name))) return
-        if (InputHelper.inputIsEmpty(this, lastNameET, customToastLayout, toastAnimation, getString(R.string.empty_last_name))) return
-        if (InputHelper.inputIsEmpty(this, dobET, customToastLayout, toastAnimation, getString(R.string.empty_date_of_birth))) return
-        if (InputHelper.inputIsEmpty(this, emailET, customToastLayout, toastAnimation, getString(R.string.empty_email))) return
+//        if (InputHelper.inputIsEmpty(this, firstNameET, customToastLayout, toastAnimation, getString(R.string.empty_first_name))) return
+//        if (InputHelper.inputIsEmpty(this, lastNameET, customToastLayout, toastAnimation, getString(R.string.empty_last_name))) return
+//        if (InputHelper.inputIsEmpty(this, dobET, customToastLayout, toastAnimation, getString(R.string.empty_date_of_birth))) return
+//        if (InputHelper.inputIsEmpty(this, emailET, customToastLayout, toastAnimation, getString(R.string.empty_email))) return
 
         val checkedGenderRadioButtonId: Int = binding.activityAddPatientRgGender.checkedRadioButtonId
         if (checkedGenderRadioButtonId == -1) { return }

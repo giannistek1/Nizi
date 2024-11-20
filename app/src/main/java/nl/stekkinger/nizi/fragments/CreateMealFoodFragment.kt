@@ -123,7 +123,7 @@ class CreateMealFoodFragment: NavigationChildFragment() {
             zxing_barcode_scanner(view)
         }
 
-        return view
+        return binding.root
     }
 
     private val itemTouchHelperCallback: ItemTouchHelper.SimpleCallback =

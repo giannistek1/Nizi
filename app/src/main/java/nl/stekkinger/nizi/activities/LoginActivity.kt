@@ -20,7 +20,6 @@ import nl.stekkinger.nizi.R
 import nl.stekkinger.nizi.activities.doctor.DoctorMainActivity
 import nl.stekkinger.nizi.classes.LocalDb
 import nl.stekkinger.nizi.classes.helper_classes.GeneralHelper
-import nl.stekkinger.nizi.classes.helper_classes.InputHelper
 import nl.stekkinger.nizi.classes.login.LoginRequest
 import nl.stekkinger.nizi.classes.login.LoginResponse
 import nl.stekkinger.nizi.databinding.ActivityLoginBinding
@@ -62,7 +61,7 @@ class LoginActivity : BaseActivity() {
         // Setup custom toast (any Relative layout will do)
         val parent: RelativeLayout = binding.activityLoginRlHeader
         //toastView = layoutInflater.inflate(R.layout.custom_toast, parent, false)
-        parent.addView(customToastLayout)
+//        parent.addView(customToastLayout)
 
         binding.activityLoginEtUsername.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
@@ -142,8 +141,8 @@ class LoginActivity : BaseActivity() {
 
         // Checks (Guards)
         if (!GeneralHelper.hasInternetConnection(this, customToastBinding, toastAnimation)) return
-        if (InputHelper.inputIsEmpty(this, usernameET, customToastLayout, toastAnimation, getString(R.string.username_cant_be_empty))) return
-        if (InputHelper.inputIsEmpty(this, passwordET, customToastLayout, toastAnimation, getString(R.string.password_cant_be_empty))) return
+//        if (InputHelper.inputIsEmpty(this, usernameET, customToastLayout, toastAnimation, getString(R.string.username_cant_be_empty))) return
+//        if (InputHelper.inputIsEmpty(this, passwordET, customToastLayout, toastAnimation, getString(R.string.password_cant_be_empty))) return
 
         val loginRequest = LoginRequest(usernameET.text.toString(), passwordET.text.toString())
 

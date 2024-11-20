@@ -59,7 +59,7 @@ class AddPatientActivity : BaseActivity() {
         // Setup custom toast
         val parent: RelativeLayout = binding.activityAddPatientRl
         //customToastBinding = CustomToastBinding.inflate(layoutInflater)
-        parent.addView(customToastLayout)
+//        parent.addView(customToastLayout)
 
         // Date of Birth
         binding.activityAddPatientEtDob.setOnClickListener {
@@ -126,12 +126,12 @@ class AddPatientActivity : BaseActivity() {
         passwordConfirmET.setBackgroundColor(Color.TRANSPARENT)
 
         // Guards/Checks
-        if (InputHelper.inputIsEmpty(this, firstNameET, customToastLayout, toastAnimation, getString(R.string.empty_first_name))) return
-        if (InputHelper.inputIsEmpty(this, lastNameET, customToastLayout, toastAnimation, getString(R.string.empty_last_name))) return
-        if (InputHelper.inputIsEmpty(this, dobET, customToastLayout, toastAnimation, getString(R.string.empty_date_of_birth))) return
-        if (InputHelper.inputIsEmpty(this, emailET, customToastLayout, toastAnimation, getString(R.string.empty_email))) return
-        if (InputHelper.inputIsEmpty(this, passwordET, customToastLayout, toastAnimation, getString(R.string.empty_password))) return
-        if (InputHelper.inputIsEmpty(this, passwordConfirmET, customToastLayout, toastAnimation, getString(R.string.empty_password_confirm))) return
+//        if (InputHelper.inputIsEmpty(this, firstNameET, customToastLayout, toastAnimation, getString(R.string.empty_first_name))) return
+//        if (InputHelper.inputIsEmpty(this, lastNameET, customToastLayout, toastAnimation, getString(R.string.empty_last_name))) return
+//        if (InputHelper.inputIsEmpty(this, dobET, customToastLayout, toastAnimation, getString(R.string.empty_date_of_birth))) return
+//        if (InputHelper.inputIsEmpty(this, emailET, customToastLayout, toastAnimation, getString(R.string.empty_email))) return
+//        if (InputHelper.inputIsEmpty(this, passwordET, customToastLayout, toastAnimation, getString(R.string.empty_password))) return
+//        if (InputHelper.inputIsEmpty(this, passwordConfirmET, customToastLayout, toastAnimation, getString(R.string.empty_password_confirm))) return
 
         val checkedGenderRadioButtonId: Int = binding.activityAddPatientRgGender.checkedRadioButtonId
         if (checkedGenderRadioButtonId == -1) { return }
