@@ -59,7 +59,7 @@ class AddMealFragment: NavigationChildFragment() {
         adapter = MealAdapter(model, context = requireContext())
         recyclerView.adapter = adapter
 
-        getMealsAsyncTask().execute()
+//        getMealsAsyncTask().execute()
 
         val searchView = view.findViewById(R.id.search_meal) as SearchView
         val searchManager: SearchManager = requireActivity().getSystemService(Context.SEARCH_SERVICE) as SearchManager

@@ -83,8 +83,8 @@ object LocalDb {
     val testfoodMealComponent2 = FoodMealComponent(2,"Volle melk (Campina)", "Volle melk van Campina", 2f, 0f, 0f, 0f, 225f, 0f, 225f, "https://d3r3h30p75xj6a.cloudfront.net/artikelen/155532_1_407418_638149077088485279.png?width=500&height=500&mode=crop", 2)
 
     val testfoodMealComponent3 = FoodMealComponent(3,"Appel (Elstar)", "Elstar appel", 250f, 0f, 0f, 0f, 1000f, 0f, 250f, "https://fruitmasters.com/wp-content/uploads/2020/04/2020_Packshot_Elstar_500x500px-300x300.png", 3)
-    val testfoodMealComponent4 = FoodMealComponent(4,"Appel (Elstar)", "Elstar appel", 2500f, 0f, 0f, 0f, 100f, 0f, 2500f, "https://fruitmasters.com/wp-content/uploads/2020/04/2020_Packshot_Elstar_500x500px-300x300.png", 4)
-    val testfoodMealComponent5 = FoodMealComponent(5,"Appel (Elstar)", "Elstar appel", 25000f, 0f, 0f, 0f, 100f, 0f, 25000f, "https://fruitmasters.com/wp-content/uploads/2020/04/2020_Packshot_Elstar_500x500px-300x300.png", 5)
+    val testfoodMealComponent4 = FoodMealComponent(4,"Grote Appel (Elstar)", "Grote Elstar appel", 2500f, 0f, 0f, 0f, 100f, 0f, 2500f, "https://fruitmasters.com/wp-content/uploads/2020/04/2020_Packshot_Elstar_500x500px-300x300.png", 4)
+    val testfoodMealComponent5 = FoodMealComponent(5,"Mega Appel (Elstar)", "Mega Elstar appel", 25000f, 0f, 0f, 0f, 100f, 0f, 25000f, "https://fruitmasters.com/wp-content/uploads/2020/04/2020_Packshot_Elstar_500x500px-300x300.png", 5)
 
 
     val testConsumptionResponse1 = ConsumptionResponse(1, 1f, "05-31-2023", "Ontbijt", patientDiary, testWeightUnit1, testfoodMealComponent1)
