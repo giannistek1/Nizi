@@ -35,7 +35,7 @@ object LocalDb {
     private val myFoods: ArrayList<MyFood> = arrayListOf()
     private val consumptionsShort: ArrayList<ConsumptionShort>? = arrayListOf()
 
-    private val testWeightUnit1 = WeightUnit(1, "kilocalorien","kcal")
+    private val testWeightUnit1 = WeightUnit(1, "calorieën","kcal")
     private val testWeightUnit2 = WeightUnit(2, "gram","gr")
     private val testWeightUnit3 = WeightUnit(3, "milligram","mg")
     private val testWeightUnit4 = WeightUnit(4, "milliliter","ml")
@@ -58,7 +58,7 @@ object LocalDb {
     //val testDietaryRestriction1: DietaryRestriction = DietaryRestriction(1, "Eiwit","Eiwitten", weight_unit = testWeightUnit2)
     //val testDietaryRestriction2: DietaryRestriction = DietaryRestriction(2, "Kalium","Kalium", weight_unit = testWeightUnit3)
 
-    val testDietaryRestrictionShort1 = DietaryRestrictionShort(1, "Calorieinname","Kilocalorien", weight_unit = 1)
+    val testDietaryRestrictionShort1 = DietaryRestrictionShort(1, "Calorieinname","Calorieën", weight_unit = 1)
     val testDietaryRestrictionShort2 = DietaryRestrictionShort(2, "Eiwitinname","Eiwitten", weight_unit = 2)
     val testDietaryRestrictionShort3 = DietaryRestrictionShort(3, "Kaliuminname","Kalium", weight_unit = 3)
     val testDietaryRestrictionShort4 = DietaryRestrictionShort(4, "Vochtinname","Vocht", weight_unit = 4)

@@ -132,6 +132,7 @@ class MainActivity : BaseActivity() {
             }
 
             R.id.nav_diary -> {
+                supportActionBar?.title = getString(R.string.diary)
                 val fragment = DiaryFragment()
                 supportFragmentManager.beginTransaction().replace(binding.activityMainFragmentContainer.id,  fragment, fragment.javaClass.simpleName)
                     .commit()
